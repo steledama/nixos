@@ -5,7 +5,7 @@
 { config, pkgs, inputs, ... }:
 
 let
-  # Definisci il nome utente
+  # user name definition
   username = "stefano";
 in
 
@@ -17,9 +17,9 @@ in
       # home manager
       inputs.home-manager.nixosModules.default
       # nvidia
-      ../../modules/nixos/nvidia.nix
+      ../../system/nvidia.nix
       # kernel zen
-      ../../modules/nixos/zen.nix
+      ../../system/zen.nix
     ];
 
   # Bootloader.
@@ -143,6 +143,10 @@ in
     anydesk # remote dektop
     obsidian # writing and note taking tool
     unrar # Utility for RAR archives
+    # gdrive
+    kdePackages.kio-gdrive
+    kdePackages.kaccounts-providers
+    kdePackages.kaccounts-integration
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
