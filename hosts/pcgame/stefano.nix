@@ -26,22 +26,32 @@ imports = [
 # bash aliases and start commands
  ../../user/bash.nix
 ];
-
+  # allowUnfree
+  nixpkgs.config.allowUnfree = true;
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    inkscape # vector design
-    zathura # pdf viewer
-    neofetch # A fast, highly customizable system info script
-    font-awesome # Font Awesome - OTF font
-    cmatrix # Simulates the falling characters theme from The Matrix movie
+    # unfree software
+    google-chrome # browser
+    microsoft-edge # work browser
+    anydesk # remote dektop
+    obsidian # writing and note taking tool
+    vscode # gui code editor
     # lazyvim (neovim distribution)
+    unrar # unfree utility for RAR archives
     lazygit # git frontend
     gcc # c compiler
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     ripgrep # A utility that combines the usability of The Silver Searcher with the raw speed of grep
     fd # A simple, fast and user-friendly alternative to find
     unzip # An extraction utility for archives compressed in .zip format
+    # others
+    gimp # pixel design
+    inkscape # vector design
+    zathura # pdf viewer
+    neofetch # A fast, highly customizable system info script
+    font-awesome # Font Awesome - OTF font
+    cmatrix # Simulates the falling characters theme from The Matrix movie
     wl-clipboard # Command-line copy/paste utilities for Wayland
 
     # # It is sometimes useful to fine-tune packages, for example, by applying

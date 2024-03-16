@@ -119,7 +119,6 @@ in
     {
       # also pass inputs to home-manager modules
       extraSpecialArgs = { inherit inputs; };
-
       users = {
         ${username} = import ./${username}.nix;
       };
@@ -135,14 +134,7 @@ in
     wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     git # version control
     firefox # browser
-    vscode # gui code editor
     nixpkgs-fmt # code formater for nix
-    # unfree software
-    google-chrome # browser
-    microsoft-edge # work browser
-    anydesk # remote dektop
-    obsidian # writing and note taking tool
-    unrar # Utility for RAR archives
     # gdrive
     kdePackages.kio-gdrive
     kdePackages.kaccounts-providers
