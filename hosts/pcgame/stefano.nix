@@ -42,6 +42,7 @@ imports = [
     ripgrep # A utility that combines the usability of The Silver Searcher with the raw speed of grep
     fd # A simple, fast and user-friendly alternative to find
     unzip # An extraction utility for archives compressed in .zip format
+    wl-clipboard # Command-line copy/paste utilities for Wayland
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
