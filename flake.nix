@@ -24,6 +24,12 @@
             ./hosts/pcgame-configuration.nix
           ];
         };
+        acquisti-laptop = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/acquisti-laptop-configuration.nix
+          ];
+        };
       };
     };
 }
