@@ -8,7 +8,7 @@
   imports =
     [
       # host hardware scan result
-      ./pcgame-hardware-configuration.nix
+      ./acquisti-laptop-hardware-configuration.nix
       # kernel zen (comment out for default kernel)
       ./system/zen.nix
       # GPU (choose one)
