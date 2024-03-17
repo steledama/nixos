@@ -12,14 +12,14 @@
   ];
   # excluding some applications from the default install
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
-  # plasma-browser-integration
-  # konsole
-  # oxygen
-];
-qt = {
-  enable = true;
-  platformTheme = "gnome";
-  style = "adwaita-dark";
-};
+    # plasma-browser-integration
+    # konsole
+    # oxygen
+  ];
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = "adwaita-dark";
+  };
 }
 

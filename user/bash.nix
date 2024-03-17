@@ -12,13 +12,13 @@
     '';
 
     shellAliases = {
-      gcCleanup="nix-collect-garbage --delete-old && sudo nix-collect-garbage -d";
-      v="nvim";
-      sv="sudo nvim";
-      ll="ls -l";
-      la="ls -a";
-      lal="ls -al";
-      ".."="cd ..";
+      gcCleanup = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d";
+      v = "nvim";
+      sv = "sudo nvim";
+      ll = "ls -l";
+      la = "ls -a";
+      lal = "ls -al";
+      ".." = "cd ..";
     };
   };
 }

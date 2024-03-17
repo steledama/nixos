@@ -18,12 +18,12 @@
     in
     {
       nixosConfigurations = {
-       pcgame = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/pcgame/configuration.nix
-        ];
+        pcgame = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/pcgame/configuration.nix
+          ];
+        };
       };
-    };
     };
 }

@@ -4,30 +4,30 @@
     enable = true;
     settings = {
       window = {
-	padding.x = 15;
-	padding.y = 15;
-	# decorations = "none";
-	startup_mode = "Windowed";
-	dynamic_title = true;
-	opacity = 0.9;
+        padding.x = 15;
+        padding.y = 15;
+        # decorations = "none";
+        startup_mode = "Windowed";
+        dynamic_title = true;
+        opacity = 0.9;
       };
       cursor = {
-	style = {
-	  shape = "Beam";
-	  blinking = "On";
-	};
+        style = {
+          shape = "Beam";
+          blinking = "On";
+        };
       };
       live_config_reload = true;
       font = {
-	normal.family = "JetBrainsMono NFM";
-	bold.family = "JetBrainsMono NFM";
-	italic.family = "JetBrainsMono NFM";
-	bold_italic.family = "JetBrainsMono NFM";
-	size = 14;
+        normal.family = "JetBrainsMono NFM";
+        bold.family = "JetBrainsMono NFM";
+        italic.family = "JetBrainsMono NFM";
+        bold_italic.family = "JetBrainsMono NFM";
+        size = 14;
       };
-	colors.draw_bold_text_with_bright_colors = true;
-      };
+      colors.draw_bold_text_with_bright_colors = true;
     };
-  }
+  };
+}
 
 

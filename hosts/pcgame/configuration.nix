@@ -56,13 +56,13 @@ in
 
   # syncthing
   services = {
-        syncthing = {
-        enable = true;
-        user = "${username}";
-        dataDir = "/home/${username}";    # Default folder for new synced folders
-        configDir = "/home/${username}/.config/syncthing";   # Folder for Syncthing's settings and keys
-        };
+    syncthing = {
+      enable = true;
+      user = "${username}";
+      dataDir = "/home/${username}"; # Default folder for new synced folders
+      configDir = "/home/${username}/.config/syncthing"; # Folder for Syncthing's settings and keys
     };
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${username} = {

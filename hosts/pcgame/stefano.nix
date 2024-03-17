@@ -15,17 +15,17 @@
   # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
-# Imports program configuration modules
-imports = [
- # terminal alacritty
- ../../user/alacritty.nix
- # terminal system info
- ../../user/neofetch.nix
- # bash prompt customization
- ../../user/starship.nix
-# bash aliases and start commands
- ../../user/bash.nix
-];
+  # Imports program configuration modules
+  imports = [
+    # terminal alacritty
+    ../../user/alacritty.nix
+    # terminal system info
+    ../../user/neofetch.nix
+    # bash prompt customization
+    ../../user/starship.nix
+    # bash aliases and start commands
+    ../../user/bash.nix
+  ];
   # allowUnfree
   nixpkgs.config.allowUnfree = true;
   # The home.packages option allows you to install Nix packages into your
