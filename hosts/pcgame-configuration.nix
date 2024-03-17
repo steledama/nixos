@@ -4,19 +4,14 @@
 
 { config, pkgs, inputs, ... }:
 
-let
-  # user name definition
-  username = "stefano";
-in
-
 {
   imports =
     [
-      # hardware scan result
+      # host hardware scan result
       ./pcgame-hardware-configuration.nix
-      # kernel zen (comment for default kernel)
+      # kernel zen (comment out for default kernel)
       ./system/zen.nix
-      # gpu brand (choose one)
+      # GPU (choose one)
       # gpu nvidia
       ./system/nvidia.nix
       # gpu amd
@@ -37,12 +32,12 @@ in
       ./system/print.nix
       # ssh
       # ./system/ssh.nix
-      # display manager (choose one)
+      # Display Manager
       # sddm (kde and hyprland)
       ./system/sddm.nix
       # gdm (gnome)
       # ./system/gdm.nix
-      # desktop environment (choose one)
+      # Desktop Environmnet
       # kde
       ./system/kde6.nix
       # ./system/kde5.nix
@@ -54,35 +49,9 @@ in
   # HOSTNAME
   networking.hostName = "nixos"; # Define your hostname.
 
-  # syncthing
-  services = {
-    syncthing = {
-      enable = true;
-      user = "${username}";
-      dataDir = "/home/${username}"; # Default folder for new synced folders
-      configDir = "/home/${username}/.config/syncthing"; # Folder for Syncthing's settings and keys
-    };
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
-    isNormalUser = true;
-    description = "${username}";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    ];
-  };
-
-  home-manager =
-    {
-      # also pass inputs to home-manager modules
-      extraSpecialArgs = { inherit inputs; };
-      users = {
-        ${username} = import ../users/${username}.nix;
-      };
-    };
-
-  # List packages installed in system profile. To search, run:
+    # allow unfree software
+  nixpkgs.config.allowUnfree = true;
+    # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim # terminal editor
@@ -103,6 +72,32 @@ in
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.stefano = {
+    isNormalUser = true;
+    description = "stefano";
+    extraGroups = [ "networkmanager" "wheel" ];
+  };
+
+  home-manager =
+    {
+      # also pass inputs to home-manager modules
+      extraSpecialArgs = { inherit inputs; };
+      users = {
+        stefano = import ../users/stefano.nix;
+      };
+    };
+
+      # syncthing
+  services = {
+    syncthing = {
+      enable = true;
+      user = "stefano";
+      dataDir = "/home/stefano"; # Default folder for new synced folders
+      configDir = "/home/stefano/.config/syncthing"; # Folder for Syncthing's settings and keys
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
