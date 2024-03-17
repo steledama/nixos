@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 {
+  # allow unfree software
+  nixpkgs.config.allowUnfree = true;
   # Optimization settings
   nix = {
     settings = {
