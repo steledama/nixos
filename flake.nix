@@ -21,7 +21,7 @@
         pcgame = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/pcgame/configuration.nix
+            ./hosts/pcgame-configuration.nix
           ];
         };
       };

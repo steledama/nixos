@@ -13,41 +13,41 @@ in
   imports =
     [
       # hardware scan result
-      ./hardware-configuration.nix
+      ./pcgame-hardware-configuration.nix
       # kernel zen (comment for default kernel)
-      ../../system/zen.nix
+      ./system/zen.nix
       # gpu brand (choose one)
       # gpu nvidia
-      ../../system/nvidia.nix
+      ./system/nvidia.nix
       # gpu amd
-      # ../../system/amd.nix
+      # ./system/amd.nix
       # gpu intel
-      # ../../system/intel.nix
+      # ./system/intel.nix
       # boot
-      ../../system/boot.nix
+      ./system/boot.nix
       # locale
-      ../../system/it.nix
+      ./system/it.nix
       # networking
-      ../../system/networking.nix
+      ./system/networking.nix
       # nix
-      ../../system/nix.nix
+      ./system/nix.nix
       # sound
-      ../../system/sound.nix
+      ./system/sound.nix
       # print
-      ../../system/print.nix
+      ./system/print.nix
       # ssh
-      # ../../system/ssh.nix
+      # ./system/ssh.nix
       # display manager (choose one)
       # sddm (kde and hyprland)
-      ../../system/sddm.nix
+      ./system/sddm.nix
       # gdm (gnome)
-      # ../../system/gdm.nix
+      # ./system/gdm.nix
       # desktop environment (choose one)
       # kde
-      ../../system/kde6.nix
-      # ../../system/kde5.nix
+      ./system/kde6.nix
+      # ./system/kde5.nix
       # gnome
-      # ../../system/gnome.nix
+      # ./system/gnome.nix
       # home manager
       inputs.home-manager.nixosModules.default
     ];
@@ -78,7 +78,7 @@ in
       # also pass inputs to home-manager modules
       extraSpecialArgs = { inherit inputs; };
       users = {
-        ${username} = import ./${username}.nix;
+        ${username} = import ../users/${username}.nix;
       };
     };
 
@@ -88,8 +88,6 @@ in
     neovim # terminal editor
     wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     git # version control
-    firefox # browser
-    nixpkgs-fmt # code formater for nix
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

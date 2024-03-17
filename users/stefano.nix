@@ -18,21 +18,28 @@
   # Imports program configuration modules
   imports = [
     # terminal alacritty
-    ../../user/alacritty.nix
+    ./user/alacritty.nix
     # terminal system info
-    ../../user/neofetch.nix
+    ./user/neofetch.nix
     # bash prompt customization
-    ../../user/starship.nix
+    ./user/starship.nix
     # bash aliases and start commands
-    ../../user/bash.nix
+    ./user/bash.nix
   ];
-  # allowUnfree
+  # allowUnfree packages
   nixpkgs.config.allowUnfree = true;
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    firefox # browser
+    gimp # pixel design
+    inkscape # vector design
+    zathura # pdf viewer
+    nixpkgs-fmt # code formater for nix
+    neofetch # A fast, highly customizable system info script
+    font-awesome # Font Awesome - OTF font
+    cmatrix # Simulates the falling characters theme from The Matrix movie
     # unfree software
-    google-chrome # browser
     microsoft-edge # work browser
     anydesk # remote dektop
     obsidian # writing and note taking tool
@@ -45,13 +52,6 @@
     ripgrep # A utility that combines the usability of The Silver Searcher with the raw speed of grep
     fd # A simple, fast and user-friendly alternative to find
     unzip # An extraction utility for archives compressed in .zip format
-    # others
-    gimp # pixel design
-    inkscape # vector design
-    zathura # pdf viewer
-    neofetch # A fast, highly customizable system info script
-    font-awesome # Font Awesome - OTF font
-    cmatrix # Simulates the falling characters theme from The Matrix movie
     wl-clipboard # Command-line copy/paste utilities for Wayland
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
@@ -68,6 +68,15 @@
     #   echo "Hello, ${config.home.username}!"
     # '')
   ];
+
+  # editor
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
+  # self enable
+  programs.home-manager = {
+    enable = true;
+  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -98,12 +107,4 @@
   # or
   #
   #  /etc/profiles/per-user/stefano/etc/profile.d/hm-session-vars.sh
-  #
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
-
-  programs.home-manager = {
-    enable = true;
-  };
 }
