@@ -26,7 +26,7 @@ in
       # boot
       ../../system/boot.nix
       # locale
-      ../../system/locale.nix
+      ../../system/it.nix
       # networking
       ../../system/networking.nix
       # nix
