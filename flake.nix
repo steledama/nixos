@@ -21,13 +21,13 @@
         pcgame = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/pcgame-configuration.nix
+            ./hosts/pcgame.nix
           ];
         };
         acquisti-laptop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/acquisti-laptop-configuration.nix
+            ./hosts/acquisti-laptop.nix
           ];
         };
       };
