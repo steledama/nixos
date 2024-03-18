@@ -25,7 +25,7 @@ I believe this scenario is both desirable and achievable, especially within the 
 
 Downloading the graphical ISO image from the from the [download page](https://nixos.org/download/) can be confusing, as it's on the same page as the package manager downloads, and there are several options to choose from. It may seem that selecting an ISO with a desktop environment conditions the choice of environment during the installation process, but this isn't the case. You can, for example, download the GNOME ISO to install the KDE environment or any other desktop environment you prefer. It doesn't matter which ISO you use to install the system; simply choose the recommended one (GNOME) and proceed with the installation as you would with any other Linux distribution. There are plenty of guides available on how to do this. After rebooting the system with your fresh NixOS installation, let the adventure begin!
 
-## Enable flake
+## The default configuration
 
 With a fresh new installation of NixOs you have two confgiuration files in /etc/nixos
 
@@ -34,4 +34,18 @@ With a fresh new installation of NixOs you have two confgiuration files in /etc/
 configuration.nix import hardware-configuration.nix, in the proposed schema the arrow direction is from the file that point another file.
 
 - configuration.nix: as the name suggest is the file where is the coinfiguration is declared. If have a look at it there is the way the sytema boot, the hostname, the display manager, the desktop envirnment ecc..
-- hardware-configuration.nix: contains the hardware specific information ad collected by the hardware scan during the installation process. We can repeate the hardware scan with the following command:
+- hardware-configuration.nix: contains the hardware specific information ad collected by the hardware scan during the installation process. We can repeate the hardware scan and save a new hadrware file with the following command:
+
+```
+nixos-generate-config --show-hardware-config > hardware.nix
+```
+
+## Enable flake
+
+## Enable home-manager
+
+## Configure the version control of the configuration with git
+
+## Structure the config with modules
+
+## Advanced configurations methods

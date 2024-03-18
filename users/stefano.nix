@@ -43,6 +43,7 @@
     neofetch # A fast, highly customizable system info script
     font-awesome # Font Awesome - OTF font
     cmatrix # Simulates the falling characters theme from The Matrix movie
+    remmina # desktop remoto
     # unfree software
     microsoft-edge # work browser
     anydesk # remote dektop

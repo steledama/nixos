@@ -1,11 +1,11 @@
 { pkgs, config, ... }:
 {
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager.enable = false;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # vm
-  networking.useDHCP = false;
+  networking.interfaces.enp7s0.useDHCP = false;
   networking.bridges = {
     "br0" = {
       interfaces = [ "enp7s0" ];
