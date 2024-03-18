@@ -79,7 +79,7 @@
   users.users.ttacquisti = {
     isNormalUser = true;
     description = "ttacquisti";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
   };
 
   home-manager =
