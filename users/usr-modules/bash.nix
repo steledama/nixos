@@ -12,7 +12,7 @@
     '';
 
     shellAliases = {
-      gcCleanup = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d";
+      gcCleanup = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
       v = "nvim";
       sv = "sudo nvim";
       ll = "ls -l";

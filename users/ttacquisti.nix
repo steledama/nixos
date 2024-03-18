@@ -27,6 +27,8 @@
     ./usr-modules/starship.nix
     # bash aliases and start commands
     ./usr-modules/bash.nix
+    # cursor
+    ./usr-modules/cursor.nix
   ];
   # allowUnfree packages
   nixpkgs.config.allowUnfree = true;

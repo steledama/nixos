@@ -18,13 +18,17 @@
   # Imports program configuration modules
   imports = [
     # terminal alacritty
-    ./usr-modules/alacritty.nix
+    #./usr-modules/alacritty.nix
+    # terminal kitty
+    ./usr-modules/kitty.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization
     ./usr-modules/starship.nix
     # bash aliases and start commands
     ./usr-modules/bash.nix
+    # cursor
+    ./usr-modules/cursor.nix
   ];
   # allowUnfree packages
   nixpkgs.config.allowUnfree = true;
