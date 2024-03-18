@@ -51,9 +51,9 @@
   # HOSTNAME
   networking.hostName = "nixos"; # Define your hostname.
 
-    # allow unfree software
+  # allow unfree software
   nixpkgs.config.allowUnfree = true;
-    # List packages installed in system profile. To search, run:
+  # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim # terminal editor
@@ -79,7 +79,7 @@
   users.users.stefano = {
     isNormalUser = true;
     description = "stefano";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
   };
 
   home-manager =
@@ -91,7 +91,7 @@
       };
     };
 
-      # syncthing
+  # syncthing
   services = {
     syncthing = {
       enable = true;
