@@ -36,15 +36,15 @@
       # ./sys-modules/ssh.nix
       # Display Manager
       # sddm (kde and hyprland)
-      ./sys-modules/sddm.nix
+      # ./sys-modules/sddm.nix
       # gdm (gnome)
-      # ./sys-modules/gdm.nix
+      ./sys-modules/gdm.nix
       # Desktop Environmnet
       # kde
-      ./sys-modules/kde6.nix
+      #./sys-modules/kde6.nix
       # ./sys-modules/kde5.nix
       # gnome
-      # ./sys-modules/gnome.nix
+      ./sys-modules/gnome.nix
       # home manager
       inputs.home-manager.nixosModules.default
     ];
