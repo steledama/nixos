@@ -2,20 +2,20 @@
 
 {
   # Enable the kde Desktop Environment.
-  services.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   # excluding some applications from the default install
-  environment.gnome.excludiePackages = (with pkgs; [
-    gnome-photos
-    gnome-tour
+  environment.gnome.excludePackages = (with pkgs; [
+    gnome-photos # photo
+    gnome-tour # presentation tour
+    gedit # text editor
   ]) ++ (with pkgs.gnome; [
     cheese # webcam tool
     gnome-music
     gnome-terminal
-    gedit # text editor
     epiphany # web browser
     geary # email reader
     evince # document viewer
-    gnome-characters
+    gnome-characters # fonts
     totem # video player
     tali # poker game
     iagno # go game

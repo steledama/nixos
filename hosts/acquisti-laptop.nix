@@ -36,24 +36,24 @@
       # ./sys-modules/ssh.nix
       # Display Manager
       # sddm (kde and hyprland)
-      ./sys-modules/sddm.nix
+      # ./sys-modules/sddm.nix
       # gdm (gnome)
-      # ./sys-modules/gdm.nix
+      ./sys-modules/gdm.nix
       # Desktop Environmnet
       # kde
-      ./sys-modules/kde6.nix
+      # ./sys-modules/kde6.nix
       # ./sys-modules/kde5.nix
       # gnome
-      # ./sys-modules/gnome.nix
+      ./sys-modules/gnome.nix
       # home manager
       inputs.home-manager.nixosModules.default
     ];
   # HOSTNAME
   networking.hostName = "nixos"; # Define your hostname.
 
-    # allow unfree software
+  # allow unfree software
   nixpkgs.config.allowUnfree = true;
-    # List packages installed in system profile. To search, run:
+  # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim # terminal editor
@@ -79,7 +79,7 @@
   users.users.ttacquisti = {
     isNormalUser = true;
     description = "ttacquisti";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
   };
 
   home-manager =
@@ -91,7 +91,7 @@
       };
     };
 
-      # syncthing
+  # syncthing
   services = {
     syncthing = {
       enable = true;
