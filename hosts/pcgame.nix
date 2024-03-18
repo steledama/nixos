@@ -30,6 +30,8 @@
       ./sys-modules/sound.nix
       # print
       ./sys-modules/print.nix
+      # virtual machine
+      ./sys-modules/vm.nix
       # ssh
       # ./sys-modules/ssh.nix
       # Display Manager
