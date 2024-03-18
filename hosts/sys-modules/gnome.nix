@@ -3,6 +3,12 @@
 {
   # Enable the kde Desktop Environment.
   services.xserver.desktopManager.gnome.enable = true;
+
+  # include
+  environment.systemPackages = with pkgs; [
+    # gnome.adwaita-icon-theme
+  ];
+
   # excluding some applications from the default install
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos # photo
