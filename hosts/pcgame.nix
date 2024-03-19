@@ -105,7 +105,7 @@
   users.users.stefano = {
     isNormalUser = true;
     description = "stefano";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" "qemu"];
   };
 
   home-manager =
