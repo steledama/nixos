@@ -17,10 +17,8 @@
 
   # Imports program configuration modules
   imports = [
-    # terminal alacritty
-    #./usr-modules/alacritty.nix
-    # terminal kitty
-    ./usr-modules/kitty.nix
+    # terminals
+    ./usr-modules/terminals.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization
@@ -35,10 +33,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    firefox # browser
-    gimp # pixel design
-    inkscape # vector design
-    zathura # pdf viewer
+    firefox # personal browser
     nixpkgs-fmt # code formater for nix
     neofetch # A fast, highly customizable system info script
     font-awesome # Font Awesome - OTF font

@@ -6,13 +6,13 @@
   # dconf
   programs.dconf.enable = true;
   # guest additions
-  services.qemuGuest.enable = true;
-  services.spice-vdagentd.enable = true;
-  services.spice-webdavd.enable = true;
+  # services.qemuGuest.enable = true;
+  # services.spice-vdagentd.enable = true;
+  # services.spice-webdavd.enable = true;
   # others
   environment.systemPackages = with pkgs; [
-    libvirt
-    virt-viewer
+    # libvirt
+    virtiofsd # shared folder between host and guest
   ];
 }
 

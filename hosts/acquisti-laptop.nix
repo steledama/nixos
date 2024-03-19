@@ -22,14 +22,14 @@
       ./sys-modules/boot.nix
       # locale
       ./sys-modules/it.nix
-      # networking
-      ./sys-modules/networking.nix
       # nix
       ./sys-modules/nix.nix
       # sound
       ./sys-modules/sound.nix
       # print
       ./sys-modules/print.nix
+      # syncthing
+      ./sys-modules/syncthing.nix
       # virtual machine
       ./sys-modules/vm.nix
       # ssh
@@ -48,8 +48,30 @@
       # home manager
       inputs.home-manager.nixosModules.default
     ];
-  # HOSTNAME
-  networking.hostName = "nixos"; # Define your hostname.
+
+  # NETWORKING
+  # hostname
+  networking.hostName = "acquisti-laptop"; # Define your hostname.
+  # networkmanager
+  networking.networkmanager.enable = true;
+  # Enables wireless support via wpa_supplicant.
+  # networking.wireless.enable = true;
+  # bridge for virtual network
+  # networking.interfaces.enp7s0.useDHCP = false;
+  # networking.bridges = {
+  #   "br0" = {
+  #     interfaces = [ "enp7s0" ];
+  #   };
+  # };
+  # networking.interfaces.br0.ipv4.addresses = [{
+  #   address = "192.168.1.27";
+  #   prefixLength = 24;
+  # }];
+  # networking.defaultGateway = "192.168.1.1";
+  # networking.nameservers = [ "192.168.1.1" "8.8.8.8" ];
+  # proxy
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # allow unfree software
   nixpkgs.config.allowUnfree = true;
@@ -59,6 +81,10 @@
     neovim # terminal editor
     wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     git # version control
+    google-chrome # browser
+    gimp # pixel design
+    inkscape # vector design
+    zathura # pdf viewer
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -90,16 +116,6 @@
         ttacquisti = import ../users/ttacquisti.nix;
       };
     };
-
-  # syncthing
-  services = {
-    syncthing = {
-      enable = true;
-      user = "ttacquisti";
-      dataDir = "/home/ttacquisti"; # Default folder for new synced folders
-      configDir = "/home/ttacquisti/.config/syncthing"; # Folder for Syncthing's settings and keys
-    };
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
