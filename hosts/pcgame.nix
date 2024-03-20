@@ -8,7 +8,7 @@
   imports =
     [
       # host hardware scan result
-      ./hw-pcgame.nix
+      ./hw/hw-pcgame.nix
       # kernel zen (comment out for default kernel)
       ./sys-modules/zen.nix
       # GPU (choose one)
@@ -105,7 +105,7 @@
   users.users.stefano = {
     isNormalUser = true;
     description = "stefano";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
   };
 
   home-manager =
