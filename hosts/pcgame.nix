@@ -30,7 +30,7 @@
       ./sys-modules/print.nix
       # syncthing
       ./sys-modules/syncthing.nix
-      # virtual machine
+      # virtualization
       ./sys-modules/vm.nix
       # ssh
       # ./sys-modules/ssh.nix
@@ -105,7 +105,7 @@
   users.users.stefano = {
     isNormalUser = true;
     description = "stefano";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" "qemu"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
   };
 
   home-manager =
