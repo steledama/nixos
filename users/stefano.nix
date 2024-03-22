@@ -17,8 +17,12 @@
 
   # Imports program configuration modules
   imports = [
-    # terminals
-    ./usr-modules/terminals.nix
+    # alacritty
+    ./usr-modules/alacritty.nix
+    # kitty
+    # ./usr-modules/kitty.nix
+    # wezterm
+    # ./usr-modules/wezterm.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization

@@ -17,7 +17,7 @@
   ]) ++ (with pkgs.gnome; [
     cheese # webcam tool
     gnome-music # music
-    gnome-terminal # terminal
+    # gnome-terminal # terminal
     epiphany # web browser
     geary # email reader
     evince # document viewer
