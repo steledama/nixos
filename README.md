@@ -27,28 +27,114 @@ Downloading the graphical ISO image from the from the [download page](https://ni
 
 ## The out of the box configuration
 
-With a fresh new installation of NixOs you have two confgiuration files in /etc/nixos
+With a fresh installation of NixOS, you have two configuration files in /etc/nixos:
 
-- configuration.nix: as the name suggest is the file where is the coinfiguration is declared. If have a look at it there is the way the sytema boot, the hostname, the display manager, the desktop envirnment ecc.. In this file the hadware-configuration.nix is imported
-- hardware-configuration.nix: contains the hardware specific information ad collected by the hardware scan during the installation process. 
+- configuration.nix: As the name suggests, this file declares the system's configuration. If you take a look at it, you'll find settings for how the system boots, the hostname, the display manager, the desktop environment, etc. This file imports hardware-configuration.nix.
+- hardware-configuration.nix: This file contains hardware-specific information collected during the installation process's hardware scan. You can repeat the hardware scan and save a new hardware file with the following command:
 
-![Out of the box NixOs configuration](./readme-img/outofthebox.png)
-
-In the proposed schema the arrow direction is from the file that point to the imported file.
-We can repeate the hardware scan and save a new hadrware file with the following command:
-
-```
+```bash
 nixos-generate-config --show-hardware-config > hardware.nix
 ```
 
-## Enable flake
+The proposed diagram depicts the schema for the out-of-the-box NixOS configuration:
 
-![Flake enabled configuration](./readme-img/flakeenabled.png)
+![Out of the box configuration](./readme-img/out-of-the-box.png)
 
-## Enable home-manager
+What's great about this method of managing the system is that instead of using imperative commands to install applications or configure their behavior, you have a single declaration of how you want your system to be. This is a game-changer, a paradigm shift that comes with the cost of additional complexity and diversity. Let's briefly address these aspects:
 
-## Configure the version control of the configuration with git
+- Complexity: Mainly driven by the use of a programming language (Nix) to declare and configure the system. Nowadays, we see two trends that, in my opinion, balance this aspect. On one hand, the use of AI tools that facilitate the use of programming languages; on the other hand, programs are increasingly configured by programming languages (e.g., Lua) rather than simple text files, as was common in the traditional way.
+- Diversity: Typically, a program is configured by a text file in the .config or etc folder, often hidden as dotfiles. Users are accustomed to this approach and understand how things are done in this traditional way but the fact that are done in this way and you are confortable to do it in this way it does not mean it is the best one.
 
-## Structure the config with modules
+With the NixOS approach, every time we change the declaration and rebuild the system, all packages and configurations are rebuilt and stored in the nix/store folder. Where files and binaries are expected to be, they are substituted by a symlink with a long hash-tagged name that poin to nix/store location. This may seem ugly at first glance, and it is... if you're unfamiliar with it and you do not not what it means: it means that the system is immutable; each time you change the declaration, a new symlink is created without overwriting the old one. This allows you to easily roll back to a previous state of the system. Installing or upgrading one package cannot break other packages. It allows you to roll back to previous versions, and ensures that no package is in an inconsistent state during an upgrade. It means packages are built in isolation from each other, ensuring they are reproducible and don't have undeclared dependencies, so if a package works on one machine, it will also work on another.
+
+## Flakes: what they are and why they are necessary
+
+A big problem of what I call the 'out of the box' configuration is that is not reproducible as it is expected to be. When you install nixos by default the systems gets pinned to the latest commit of the stable branche of nix github repository. All packages you intall and all options you apply are ten taken from this commit called 'channel' untill you esplicitely update to a new commit/channel. With this approach if you are to share the configuration with someone else there is not guarantie that that the commit will be the same. This is where nix flakes come into play. Basically it is a system to manage the nix code dependencies in a declarative way. Despite it is still officially an 'experimental features' it is adopted by everyone since several years now and is pratically an obbligated way to take all the strength of nixOs. First we need to edit the configuration.nix file:
+
+```bash
+sudo nano /etc/configuration.nix
+```
+
+to add this line:
+
+```nix
+nix.settings.experimental-features = ["nix-command" "flakes"];
+```
+
+Save the file and rebuild the system to enable flake:
+
+```bash
+sudo nixos-rebuild switch
+```
+
+Now that flake is anabled we have an immediate advantage: the configuration can be stored everywhere in the system. I suggest to move it in the home directory:
+
+```bash
+cd ~
+cp -r /etc/nixos .
+```
+
+so that you do not need sudo privileges to edit it. We can now add a flake file to the configuration:
+
+```bash
+touch /home/nixos/flake.nix
+```
+
+and past the following:
+
+```nix
+{
+  description = "Nixos config flake";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  };
+
+  outputs = { self, nixpkgs, ... }@inputs:
+    {
+      nixosConfigurations = {
+        nixos = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./configuration.nix
+          ];
+        };
+      };
+    };
+}
+```
+
+With this file we declare that we whant as input the unstable branch (of course you can chose the stable one as well) and we take as a module the configuration.nix file. Let us rebuild the system with the following command:
+
+```bash
+cd /home/nixos
+sudo nixos-rebuild switch --flake .
+```
+
+This time we rebuild the system with the flake so the rebuild process produce a flake.lock file in the folder in wich are explicitely tracked all the versions of all the single packages with all the dependencies of your system. A similar function is the packages.js file in nodejs environment. At this time, after rebuild the system with flake we can shematize the configuration as follow:
+
+![Flake enabled configuration](./readme-img/flake.png)
+
+With flake you packages versions are declared inside the configuration and assure full reprooducibility. To update the sytem is a two step process: first we need to update flake with this command:
+
+```bash
+nix update flake
+```
+
+This command does not update the sytem but just the flake.lock file. Next, when we rebuild the system that will be done accordingly to flake.lock file.
+
+## Home-manager: control the entire system
+
+Enabling flake make the system trully reproducible reducing at minnimum th evariables to share configurationes between different machines but what about the user preferences? Can we apply the same declarative and immutability paraddigm we use for the system at the user level too? We need to enable home manager. There are two ways. Enable as a standalone or as a module.
+
+### Standalone
+
+### As a module
+
+![Flake enabled configuration](./readme-img/home-manager.png)
+
+## Version controlling your configuration
+
+## Starting structuring your configuration sytem
 
 ## Advanced configurations methods
