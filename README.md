@@ -111,6 +111,13 @@ cd /home/nixos
 sudo nixos-rebuild switch --flake .
 ```
 
+This command works if the hostname of the current system is the same as defined in the flake.nix file ('nixos' in the example above). If the hostname of the actual system has a different name you just need to specify in the command:
+
+```bash
+cd /home/nixos
+sudo nixos-rebuild switch --flake .#nixos
+```
+
 This time we rebuild the system with the flake so the rebuild process produce a flake.lock file in the folder in wich are explicitely tracked all the versions of all the single packages with all the dependencies of your system. A similar function is the packages.js file in nodejs environment. At this time, after rebuild the system with flake we can shematize the configuration as follow:
 
 ![Flake enabled configuration](./readme-img/flake.png)
@@ -125,16 +132,112 @@ This command does not update the sytem but just the flake.lock file. Next, when 
 
 ## Home-manager: control the entire system
 
-Enabling flake make the system trully reproducible reducing at minnimum th evariables to share configurationes between different machines but what about the user preferences? Can we apply the same declarative and immutability paraddigm we use for the system at the user level too? We need to enable home manager. There are two ways. Enable as a standalone or as a module.
+Enabling flake make the system trully reproducible reducing at minnimum the variables to share configurationes between different machines... but what about the user preferences? Can we apply the same declarative and immutability paraddigm we use for the system at the user level too? We need to enable home manager. Home manager takes the philosophy of nix and nixOs and applies it to all user dotfiles and user level applications rather than effecting the sytemwide configuration. As we saw evrytime we build a system it produce a distinct generation making easy to roll back to a previous configuration if something goes wrong. Home manger takes nix files as an input (e.g. home.nix) and translate them into generated dotfiles (e.g. .bashrc .vimrc ecc..) which occupay the normal loaction that thay would normally but as symlinks managed through the power of nix. Other than the roll back generation anothe advantages is that it make much easier to switch back and forth between different configureations (e.g. gnome, kde, hyperland... ). To start using home-manager with flake we need to add to the input section to our flake.nix file together with the nixpkgs:
+
+```nix
+home-manager = {
+  url = "github:nix-community/home-manager";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+```
+
+The first url is where the github repo where the community release the module, the second instruction is to be sure that the home-manager version follows the nixpks version chose.
+As well described in the [home manger website](https://nix-community.github.io/home-manager/) from here are two ways to use home-manager:
+
+- standalone installation: managed by the user account and there is no need of root user privileges so you can take the configuration and bring in a machine where you do not have admin access.
+- module installation: the user level configurations is made with the same command as systems rebuild, no other command, User configurations are centralized and managed by system admin that can control al the dotfiles of multiple users on the entire system at once.
 
 ### Standalone
 
+If you are following Nixpkgs master or an unstable channel you can run:
+
+```bash
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+```
+
+and if you follow a Nixpkgs version 23.11 channel you can run
+
+```bash
+nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager
+nix-channel --update
+```
+
+Run the Home Manager installation command and create the first Home Manager generation:
+
+```bash
+nix-shell '<home-manager>' -A install
+```
+
+NOTE: If you see an error (e.g. source do not found) just log out and log in again. Home manager declarative manage itself so, when installed as standalone you need to install in the 'imperative way as an exception. Once finished, Home Manager should be active and available in your user environment. From now we can edit the file in .config/home-manager/home.nix and rebuild the user environment with this command:
+
+```bash
+home-manager switch
+```
+
+To use the home-manager stand alone installation with flake and to have all the system and user configuration in an unique place just copy the home.nix file:
+
+```bash
+cp .config/home-manager/home.nix /home/nixos
+```
+
+add the user configuration in the flake.nix (just below the nixosConfigurations):
+
+```nix
+homeConfigurations = {
+  userName = home-manager.lib.homeManagerConfiguration {
+    specialArgs = { inherit inputs; };
+    modules = [
+      ./home.nix
+    ];
+  };
+};
+```
+
+Where userName is the username of the user. In this way from the /home/nixos folder (or where you chose to store the configuration) you can rebuild the home with the following command:
+
+```bash
+home-manager switch --flake .
+```
+
+This command works if the current user is the same defined in the flake.nix (in the example above is 'userName'). If it is not you just need to specify the user you want to rebuild the home:
+
+```bash
+home-manager switch --flake .#userName
+```
+
 ### As a module
+
+If you prefear to install as a module (as i did for my config in this repo) you add the home-manager module in the configuration.nix file:
+
+```nix
+home-manager =
+  {
+    # also pass inputs to home-manager modules
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      userName = import ./home.nix;
+    };
+  };
+```
+
+where the userName is the actual username of the user you want to build the home.
+At this point with the command:
+
+```bash
+sudo nixos-rebuild switch --flake .
+```
+
+we both rebuild the system and the user specified in configuration.nix with only one command. We can rapresent the home-manager installation as a module with the following flowchart:
 
 ![Flake enabled configuration](./readme-img/home-manager.png)
 
+In my opinion this would be the out of the box configuration, a starting point to start structuting it and add modules, hosts, users... but before to go with that it is important to se better an d with an example how to use home-manager once installed in either one of the two ways we just saw.
+
+### How to use home manager
+
 ## Version controlling your configuration
 
-## Starting structuring your configuration sytem
+## Start configuration structuring and modularity
 
 ## Advanced configurations methods

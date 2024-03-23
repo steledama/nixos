@@ -108,6 +108,7 @@
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
   };
 
+  # HOME-MANAGER as module
   home-manager =
     {
       # also pass inputs to home-manager modules
