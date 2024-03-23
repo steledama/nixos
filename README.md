@@ -49,7 +49,7 @@ With the NixOS approach, every time we change the declaration and rebuild the sy
 
 ## Flakes: what they are and why they are necessary
 
-A big problem of what I call the 'out of the box' configuration is that is not reproducible as it is expected to be. When you install nixos by default the systems gets pinned to the latest commit of the stable branche of nix github repository. All packages you intall and all options you apply are ten taken from this commit called 'channel' untill you esplicitely update to a new commit/channel. With this approach if you are to share the configuration with someone else there is not guarantie that that the commit will be the same. This is where nix flakes come into play. Basically it is a system to manage the nix code dependencies in a declarative way. Despite it is still officially an 'experimental features' it is adopted by everyone since several years now and is pratically an obbligated way to take all the strength of nixOs. First we need to edit the configuration.nix file:
+A significant issue with what I call the 'out-of-the-box' configuration is that it's not as reproducible as expected. When you install NixOS by default, the system gets pinned to the latest commit of the stable branch of the Nix GitHub repository. All packages you install and all options you apply are then taken from this commit, called a 'channel', until you explicitly update to a new commit/channel. With this approach, if you share the configuration with someone else, there's no guarantee that the commit will be the same. This is where Nix flakes come into play. Basically, it's a system to manage Nix code dependencies in a declarative way. Despite still being officially an 'experimental feature', it has been largely adopted for several years now and is practically a necessary way to harness all the strengths of NixOS. First, we need to edit the configuration.nix file:
 
 ```bash
 sudo nano /etc/configuration.nix
@@ -80,7 +80,7 @@ so that you do not need sudo privileges to edit it. We can now add a flake file 
 touch /home/nixos/flake.nix
 ```
 
-and past the following:
+and past the following on it:
 
 ```nix
 {
@@ -104,35 +104,35 @@ and past the following:
 }
 ```
 
-With this file we declare that we whant as input the unstable branch (of course you can chose the stable one as well) and we take as a module the configuration.nix file. Let us rebuild the system with the following command:
+With this file, we declare that we want to use the unstable branch as input. Of course, you can choose the stable branch as well with the following URL: nixpkgs.url = "github:nixos/nixpkgs/release-23.11";. Additionally, we specify the configuration.nix file as a module. Let's rebuild the system with the following command:
 
 ```bash
 cd /home/nixos
 sudo nixos-rebuild switch --flake .
 ```
 
-This command works if the hostname of the current system is the same as defined in the flake.nix file ('nixos' in the example above). If the hostname of the actual system has a different name you just need to specify in the command:
+This command works if the hostname of the current system matches the one defined in the flake.nix file ('nixos' in the example above). If the hostname of the actual system differs, you just need to specify it in the command:
 
 ```bash
 cd /home/nixos
 sudo nixos-rebuild switch --flake .#nixos
 ```
 
-This time we rebuild the system with the flake so the rebuild process produce a flake.lock file in the folder in wich are explicitely tracked all the versions of all the single packages with all the dependencies of your system. A similar function is the packages.js file in nodejs environment. At this time, after rebuild the system with flake we can shematize the configuration as follow:
+This time, when we rebuild the system with the flake, the rebuild process produces a flake.lock file in the folder. This file explicitly tracks all the versions of each individual package along with all the dependencies of your system (a similar function exists in the Node.js environment with the packages.js file). Now, after rebuilding the system with the flake, we can schematize the configuration as follows:
 
 ![Flake enabled configuration](./readme-img/flake.png)
 
-With flake you packages versions are declared inside the configuration and assure full reprooducibility. To update the sytem is a two step process: first we need to update flake with this command:
+With flakes, your package versions are declared inside the configuration, ensuring full reproducibility. Updating the system is a two-step process: first, we need to update the flake with this command:
 
 ```bash
 nix update flake
 ```
 
-This command does not update the sytem but just the flake.lock file. Next, when we rebuild the system that will be done accordingly to flake.lock file.
+This command does not update the system but just the flake.lock file. Next, when we rebuild the system, it will be done according to the flake.lock file.
 
 ## Home-manager: control the entire system
 
-Enabling flake make the system trully reproducible reducing at minnimum the variables to share configurationes between different machines... but what about the user preferences? Can we apply the same declarative and immutability paraddigm we use for the system at the user level too? We need to enable home manager. Home manager takes the philosophy of nix and nixOs and applies it to all user dotfiles and user level applications rather than effecting the sytemwide configuration. As we saw evrytime we build a system it produce a distinct generation making easy to roll back to a previous configuration if something goes wrong. Home manger takes nix files as an input (e.g. home.nix) and translate them into generated dotfiles (e.g. .bashrc .vimrc ecc..) which occupay the normal loaction that thay would normally but as symlinks managed through the power of nix. Other than the roll back generation anothe advantages is that it make much easier to switch back and forth between different configureations (e.g. gnome, kde, hyperland... ). To start using home-manager with flake we need to add to the input section to our flake.nix file together with the nixpkgs:
+Enabling flakes makes the system truly reproducible, minimizing the variables when sharing configurations between different machines. However, what about user preferences? Can we apply the same declarative and immutable paradigm we use for the system at the user level too? We need to enable Home Manager. Home Manager takes the philosophy of Nix and NixOS and applies it to all user dotfiles and user-level applications, rather than affecting the system-wide configuration. Just like every time we build a system, it produces a distinct generation, making it easy to roll back to a previous configuration if something goes wrong. Home Manager takes Nix files as input (e.g., home.nix) and translates them into generated dotfiles (e.g., .bashrc, .vimrc, etc.), which occupy the normal location they would but as symlinks managed through the power of Nix. Besides the rollback generation, another advantage is that it makes it much easier to switch back and forth between different configurations (e.g., GNOME, KDE, Hyperland, etc.). To start using Home Manager with flakes, we need to add it to the input section of our flake.nix file along with Nixpkgs:
 
 ```nix
 home-manager = {
@@ -141,13 +141,13 @@ home-manager = {
 };
 ```
 
-The first url is where the github repo where the community release the module, the second instruction is to be sure that the home-manager version follows the nixpks version chose.
-As well described in the [home manger website](https://nix-community.github.io/home-manager/) from here are two ways to use home-manager:
+The first URL is the GitHub repository where the community releases the module, while the second instruction ensures that the Home Manager version matches the Nixpkgs version chosen.
+As well described in the [home manger website](https://nix-community.github.io/home-manager/) there are two ways to use Home Manager:
 
-- standalone installation: managed by the user account and there is no need of root user privileges so you can take the configuration and bring in a machine where you do not have admin access.
-- module installation: the user level configurations is made with the same command as systems rebuild, no other command, User configurations are centralized and managed by system admin that can control al the dotfiles of multiple users on the entire system at once.
+- standalone installation: Managed by the user account, there is no need for root user privileges. This allows you to take the configuration and apply it to a machine where you do not have admin access.
+- module installation: User-level configurations are managed with the same command as system rebuilds. No additional commands are required. User configurations are centralized and managed by system administrators who can control all the dotfiles of multiple users on the entire system at once.
 
-### Standalone
+### Standalone installation
 
 If you are following Nixpkgs master or an unstable channel you can run:
 
@@ -169,13 +169,13 @@ Run the Home Manager installation command and create the first Home Manager gene
 nix-shell '<home-manager>' -A install
 ```
 
-NOTE: If you see an error (e.g. source do not found) just log out and log in again. Home manager declarative manage itself so, when installed as standalone you need to install in the 'imperative way as an exception. Once finished, Home Manager should be active and available in your user environment. From now we can edit the file in .config/home-manager/home.nix and rebuild the user environment with this command:
+Note: If you encounter an error (e.g., source not found), simply log out and log in again. Home Manager declaratively manages itself, so when installed as standalone, you need to install it in the 'imperative' way as an exception. Once finished, Home Manager should be active and available in your user environment. From now on, you can edit the file in .config/home-manager/home.nix and rebuild the user environment with this command:
 
 ```bash
 home-manager switch
 ```
 
-To use the home-manager stand alone installation with flake and to have all the system and user configuration in an unique place just copy the home.nix file:
+To use Home Manager standalone installation with flakes and to have all the system and user configurations in a single place, simply copy the home.nix file:
 
 ```bash
 cp .config/home-manager/home.nix /home/nixos
@@ -200,13 +200,13 @@ Where userName is the username of the user. In this way from the /home/nixos fol
 home-manager switch --flake .
 ```
 
-This command works if the current user is the same defined in the flake.nix (in the example above is 'userName'). If it is not you just need to specify the user you want to rebuild the home:
+This command works if the current user matches teh one defined in the flake.nix (in the example above is 'userName'). If it is not you just need to specify the user you want to rebuild the home:
 
 ```bash
 home-manager switch --flake .#userName
 ```
 
-### As a module
+### Installation as a module
 
 If you prefear to install as a module (as i did for my config in this repo) you add the home-manager module in the configuration.nix file:
 
@@ -232,11 +232,11 @@ we both rebuild the system and the user specified in configuration.nix with only
 
 ![Flake enabled configuration](./readme-img/home-manager.png)
 
-In my opinion this would be the out of the box configuration, a starting point to start structuting it and add modules, hosts, users... but before to go with that it is important to se better an d with an example how to use home-manager once installed in either one of the two ways we just saw.
+In my opinion, this would be the out-of-the-box configuration, serving as a starting point to structure it and add modules, hosts, users, etc. However, before proceeding with that, it's important to understand better and see an example of how to use Home Manager once installed in either of the two ways we just discussed.
 
 ### How to use home manager
 
-## Version controlling your configuration
+## Version control on your configurations
 
 ## Start configuration structuring and modularity
 
