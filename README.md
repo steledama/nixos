@@ -1,11 +1,126 @@
-# NixOS for dummies
+# NixOS kickstart guide for beginners
 
-This repository contains my NixOS configuration. The README serves as a step-by-step guide to understanding NixOS and its initial configuration process. It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS. To do so we have some steps:
+This repository contains my NixOS configuration. The README serves as a step-by-step guide to understanding NixOS and its initial configuration process. It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
 
-- Install nixos
-- Enable flakes
-- Enable home manager
-- Structure the configuration
+## Quick start
+
+### Install
+
+At the moment there are two requirements:
+
+- a working nixOs installation
+- uefi boot on gpt
+
+Edit configuration.nix file to enable flake and add git:
+
+```bash
+sudo nano /etc/configuration.nix
+```
+
+add this line:
+
+```nix
+nix.settings.experimental-features = ["nix-command" "flakes"];
+```
+
+add git in this section:
+
+```nix
+# List packages installed in system profile. To search, run:
+# $ nix search wget
+environment.systemPackages = with pkgs; [
+neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+wget
+git
+];
+```
+
+Rebuild the system:
+
+```bash
+sudo nixos-rebuild switch
+```
+
+Clone this repo
+
+```bash
+git clone git@gitlab.com:stefano.pompa/nixos.git
+```
+
+Copy your actual configuration.nix file and hardware-configuration.nix file:
+
+```bash
+cp /etc/nixos/configuration.nix ~/nixos/hosts/
+cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/HW/
+```
+
+Generate a barbone home.nix file:
+
+```bash
+nix run home-manager/master -- init
+```
+
+Copy it to the users folder:
+
+```bash
+cp ~/.config/home-manager/home.nix ~/nixos/users/
+```
+
+Edit ~/nixos/hosts/configuration.nix with your favorite editor to add this lines and adpat it with the username defined during installation:
+
+```nix
+home-manager =
+  {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      ## change 'userName' with your actual username
+      userName = import ../users/home.nix;
+    };
+  };
+```
+
+Uncomment the following lines in ~/nixos/flake.nix (check that the hostname in the networking section of your configuration.nix is 'nixos' that is the default of every new installations):
+
+```nix
+# kichstart: (uncomment the following and check the hostname)
+nixos = nixpkgs.lib.nixosSystem {
+  specialArgs = { inherit inputs; };
+  modules = [
+    ./hosts/configuration.nix
+  ];
+};
+```
+
+Go to your config directory (if you follow the instructions is ~/nixos) and launch ethe rebuild command:
+
+```bash
+sudo nixos-rebuild switch --flake .
+```
+
+### Quick recap on how to use
+
+To update the system and the user home. From you config directory (~/nixos)
+
+1. `nix update flake`
+2. `sudo nixos-rebuild switch --flake .`
+
+To clean the bootloader:
+
+```bash
+gcCleanup
+```
+
+To add a host:
+
+1. Copy an existing host .nix file in hosts folder and rename it
+2. Edit to adjust to your needs
+3. Add the host entry in flake.nix file
+
+To add a user:
+
+1. Copy an existing user .nix file in users folder and rename it
+2. Edit to adjust to your needs
+3. Add the user entry in the hosts .nix files you want define it
 
 ## Nix language, Nix package manager and NixOs
 
@@ -234,7 +349,7 @@ nix run home-manager/master -- init
 Then copy it to the folder where all other configurations files are stored:
 
 ```bash
-cp ~/.config/home-manager/home.nix /etc/nixos/
+cp ~/.config/home-manager/home.nix ~/nixos/
 ```
 
 At this point with the command:
@@ -251,6 +366,8 @@ we both rebuild the system as declared in configuration.nix, and the user decalr
 In my opinion, this would be the out-of-the-box configuration, serving as a starting point to structure it and add modules, hosts, users, etc. However, before proceeding with that, it's important to understand better and see an example of how to use Home Manager once installed in either of the two ways we just discussed.
 
 ## How to use system manager and home manager
+
+A this point we have a directory with all configurations files in it
 
 ## Version control on your configurations
 

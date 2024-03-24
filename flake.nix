@@ -32,6 +32,13 @@
               ./hosts/acquisti-laptop.nix
             ];
           };
+          # kichstart: (uncomment the following and check the hostname)
+          # nixos = nixpkgs.lib.nixosSystem {
+          #   specialArgs = { inherit inputs; };
+          #   modules = [
+          #     ./hosts/configuration.nix
+          #   ];
+          # };
         };
       # HOME-MANAGER as standalone
       # homeConfigurations =
