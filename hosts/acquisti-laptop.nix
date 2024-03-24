@@ -85,6 +85,7 @@
     gimp # pixel design
     inkscape # vector design
     zathura # pdf viewer
+    libreoffice-fresh # open source office suite
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
