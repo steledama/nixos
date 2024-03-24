@@ -436,7 +436,7 @@ Using git to have a version control of your system configuration is the natural 
 rm -r .git/
 ```
 
-### Basic git configuration
+### Basic git first configuration
 
 Let us start a basic git configuration with username and email:
 
@@ -463,6 +463,64 @@ programs.git = {
   };
 };
 ```
+
+After this basic config we can initialize the git control of the folder:
+
+```bash
+git init
+```
+
+### Create a SSH key
+
+If you do not have an ssh key you need one:
+
+- Open Terminal.
+- Paste the text below, replacing the email used in the example with your GitHub email address.
+
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+This creates a new SSH key, using the provided email as a label.
+
+- When you're prompted to "Enter a file in which to save the key", you can press **Enter** to accept the default file location. Please note that if you created SSH keys previously, ssh-keygen may ask you to rewrite another key, in which case we recommend creating a custom-named SSH key
+
+### Add the ssh key to your github account
+
+- Copy the SSH public key to your clipboard:
+
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+Then select and copy the contents of the id_ed25519.pub file displayed in the terminal to your clipboard. If your SSH public key file has a different name than the example code, modify the filename to match your current setup.
+Tip: Alternatively, you can locate the hidden .ssh folder, open the file in your favorite text editor, and copy it to your clipboard.
+
+- In the upper-right corner of any page, click your profile photo, then click Settings.
+- In the "Access" section of the sidebar, click SSH and GPG keys.
+- In the "Title" field, add a descriptive label for the new key. For example, if you're using a personal laptop, you might call this key "Personal laptop".
+- Select the type of key, either authentication or signing.
+- In the "Key" field, paste your public key.
+- Click Add SSH key.
+- If prompted, confirm access to your account on GitHub.
+
+### Remote repo configuration in local folder
+
+We need to go to the directory where the config file are stored, where we init the git control and tell git the remote repo:
+
+```bash
+git remote add origin <the link of your remote repo>
+```
+
+### Basic git workflow
+
+The basic git workflow involve a three steps process:
+
+1. Add modifications to the staging: `git add .`
+2. Commit the changes: `git commit -m "brief description of changes"`
+3. Push the changes to remote: `git push`
+
+I suggest to use a terminal UI for git commands to manage this steps faster and easily such as [lazygit](https://github.com/jesseduffield/lazygit).
 
 ## Start structuring multihost and multiuser modular configuration
 
