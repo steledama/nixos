@@ -206,6 +206,10 @@ This command works if the current user matches teh one defined in the flake.nix 
 home-manager switch --flake .#userName
 ```
 
+This is the flowchart of flake with home-manager installed standalone:
+
+![Home-manager standalone](./readme-img/home-manager-standalone.png)
+
 ### Installation as a module
 
 If you prefear to install as a module (as i did for my config in this repo) you add the home-manager module in the configuration.nix file:
@@ -230,7 +234,7 @@ sudo nixos-rebuild switch --flake .
 
 we both rebuild the system and the user specified in configuration.nix with only one command. We can rapresent the home-manager installation as a module with the following flowchart:
 
-![Flake enabled configuration](./readme-img/home-manager.png)
+![Home-manager as module](./readme-img/home-manager-module.png)
 
 In my opinion, this would be the out-of-the-box configuration, serving as a starting point to structure it and add modules, hosts, users, etc. However, before proceeding with that, it's important to understand better and see an example of how to use Home Manager once installed in either of the two ways we just discussed.
 
