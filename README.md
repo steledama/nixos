@@ -41,7 +41,7 @@ Rebuild the system:
 sudo nixos-rebuild switch
 ```
 
-Clone this repo
+Clone this repo from your home directory
 
 ```bash
 git clone git@gitlab.com:stefano.pompa/nixos.git
@@ -51,7 +51,7 @@ Copy your actual configuration.nix file and hardware-configuration.nix file:
 
 ```bash
 cp /etc/nixos/configuration.nix ~/nixos/hosts/
-cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/HW/
+cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/hw/
 ```
 
 Generate a barbone home.nix file:
@@ -60,13 +60,13 @@ Generate a barbone home.nix file:
 nix run home-manager/master -- init
 ```
 
-Copy it to the users folder:
+Copy it in the nixos folder to the users directory:
 
 ```bash
 cp ~/.config/home-manager/home.nix ~/nixos/users/
 ```
 
-Edit ~/nixos/hosts/configuration.nix with your favorite editor to add this lines and adpat it with the username defined during installation:
+Edit ~/nixos/hosts/configuration.nix with your favorite editor to add this lines and change 'userName' to match the username defined during installation:
 
 ```nix
 home-manager =
@@ -91,13 +91,13 @@ nixos = nixpkgs.lib.nixosSystem {
 };
 ```
 
-Go to your config directory (if you follow the instructions is ~/nixos) and launch ethe rebuild command:
+Go to your config directory (if you follow the instructions is ~/nixos) and launch the rebuild command:
 
 ```bash
 sudo nixos-rebuild switch --flake .
 ```
 
-### Quick recap on how to use
+### How to use this config
 
 To update the system and the user home. From you config directory (~/nixos)
 
@@ -124,7 +124,7 @@ To add a user:
 
 ## Nix language, Nix package manager and NixOs
 
-Before starting, it's important to avoid confusion and clarify the difference between:
+It's important to avoid confusion and clarify the difference between:
 
 - Nix language: the programming language used by the Nix to configure the system.
 - Nix: a tool that takes a unique approach to package management and system configuration. It works for different Linux distributions (e.g., Ubuntu, Linux Mint, etc.) as well as Apple macOS systems.
@@ -363,11 +363,70 @@ we both rebuild the system as declared in configuration.nix, and the user decalr
 
 ![Home-manager as module](./readme-img/home-manager-module.png)
 
-In my opinion, this would be the out-of-the-box configuration, serving as a starting point to structure it and add modules, hosts, users, etc. However, before proceeding with that, it's important to understand better and see an example of how to use Home Manager once installed in either of the two ways we just discussed.
+In my opinion, this would be the out-of-the-box configuration, serving as a starting point to structure it and add modules, hosts, users, etc. However, before proceeding with that, it's important to understand better and see an example of how to use Home Manager once installed.
 
-## How to use system manager and home manager
+## The nixOs way to manage system and user
 
-A this point we have a directory with all configurations files in it
+At this point we have a directory with all configurations files in it, flake and home-manger enabled. Now, how do we get nix to actually do usefull stuff for us?
+This is going to involve us exploring the thousands of options that are out there for various programs and embedding them in home.nix (user space) and configuration.nix (system space). One of the best places to explore those options are in [MyNixOS web page](https://mynixos.com/). If we do not find a proper way to declare a setting for home-manager we have a couple of easy and fast shortcuts.
+
+### The cleanest way: bash example
+
+Let us make a basic bash configuration in the nixOs way, a typical user space profile to declare for home-manager. If we search bash we ended up with several results but the most important one is set the eanble options to 'true' if we want home-manager create bash related files created as symlinks as dicussed earlier. We can further add aliases, autocompletion, starts neofetch at the start, add starship custom prompt...
+
+```nix
+# Configure Bash
+
+programs.bash = {
+enable = true;
+enableCompletion = true; # neofetch and starship initialization
+initExtra = ''
+neofetch
+eval "$(starship init bash)"
+'';
+
+    shellAliases = {
+      gcCleanup = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
+      v = "nvim";
+      sv = "sudo nvim";
+      ll = "ls -l";
+      la = "ls -a";
+      lal = "ls -al";
+      ".." = "cd ..";
+    };
+
+};
+```
+
+It is important to distinguish between system level configurations and user level configurations. In [MyNixOS](https://mynixos.com/) the first one contains 'nixpkgs/option' and we need to put in the configuration.nix file and the seconds containg 'home-manager' and we need to put them in home.nix. As stated in the comment of the barbone home.nix file home-manager can handle plain config files through 'home.file'
+
+### home.file: embed the file
+
+With the home.file method you can embed a file (e.g in the dotfile directory):
+
+```nix
+  home.file = {
+  ".screenrc".source = dotfiles/screenrc;
+  };
+```
+
+Building this configuration will create a copy of 'dotfiles/screenrc' in the Nix store so that in '~/.screenrc' there is a symlink to the Nix store copy.
+
+### home.file: set the file content immediately
+
+The second way to manage dotfiles is to set the file content immediately:
+
+```nix
+home.file = {
+  ".gradle/gradle.properties".text =
+  ''
+    org.gradle.console=verbose
+    org.gradle.daemon.idletimeout=3600000
+  '';
+};
+```
+
+In this way you do not have the power of nix programming language ad it is just a flat plain hard coded text... but it gets the work done!
 
 ## Version control on your configurations
 
