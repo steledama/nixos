@@ -430,6 +430,42 @@ In this way you do not have the power of nix programming language ad it is just 
 
 ## Version control on your configurations
 
-## Start configuration structuring and modularity
+Using git to have a version control of your system configuration is the natural conseguence of having a system managment with nixOs, it is strongly suggested and incoraged. If you clone this repository just remove the .git folder to start from skratch mange your configuration:
+
+```bash
+rm -r .git/
+```
+
+### Basic git configuration
+
+Let us start a basic git configuration with username and email:
+
+```bash
+git config --global user.name "userName"
+git config --global user.email "your@email.com"
+```
+
+And it is very usefull to change the default branch name to match the one of the most popular git repos like [gitHub](https://github.com/) and [gitLab](https://gitlab.com).
+
+```bash
+git config --global init.defaultBranch "main"
+```
+
+This configurationa can be done declaratively in nix style adding this to your home.nix:
+
+```nix
+programs.git = {
+  enable = true;
+  userName = "yourUserName";
+  userEmail = "your@email.com";
+  extraConfig = {
+    init.defaultBranch = "main";
+  };
+};
+```
+
+## Start structuring multihost and multiuser modular configuration
+
+![Multi hosts/users modular configuration](./readme-img/modular.png)
 
 ## Advanced configurations methods
