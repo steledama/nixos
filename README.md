@@ -45,7 +45,7 @@ What's great about this method of managing the system is that instead of using i
 - Complexity: Mainly driven by the use of a programming language (Nix) to declare and configure the system. Nowadays, we see two trends that, in my opinion, balance this aspect. On one hand, the use of AI tools that facilitate the use of programming languages; on the other hand, programs are increasingly configured by programming languages (e.g., Lua) rather than simple text files, as was common in the traditional way.
 - Diversity: Typically, a program is configured by a text file in the .config or etc folder, often hidden as dotfiles. Users are accustomed to this approach and understand how things are done in this traditional way but the fact that are done in this way and you are confortable to do it in this way it does not mean it is the best one.
 
-With the NixOS approach, every time we change the declaration and rebuild the system, all packages and configurations are rebuilt and stored in the nix/store folder. Where files and binaries are expected to be, they are substituted by a symlink with a long hash-tagged name that poin to nix/store location. This may seem ugly at first glance, and it is... if you're unfamiliar with it and you do not not what it means: it means that the system is immutable; each time you change the declaration, a new symlink is created without overwriting the old one. This allows you to easily roll back to a previous state of the system. Installing or upgrading one package cannot break other packages. It allows you to roll back to previous versions, and ensures that no package is in an inconsistent state during an upgrade. It means packages are built in isolation from each other, ensuring they are reproducible and don't have undeclared dependencies, so if a package works on one machine, it will also work on another.
+With the NixOS approach, every time we change the declaration and rebuild the system, all packages and configurations are rebuilt and stored in the nix/store folder. Where files and binaries are expected to be, they are substituted by a symlink with a long hash-tagged name that poin to nix/store location. This may seem ugly at first glance, and it is... if you're unfamiliar with it and you do not know what it means: it means that the system is immutable; each time you change the declaration, a new symlink is created without overwriting the old one. This allows you to easily roll back to a previous state of the system. Installing or upgrading one package cannot break other packages. It allows you to roll back to previous versions, and ensures that no package is in an inconsistent state during an upgrade. It means packages are built in isolation from each other, ensuring they are reproducible and don't have undeclared dependencies, so if a package works on one machine, it will also work on another.
 
 ## Flakes: what they are and why they are necessary
 
@@ -200,7 +200,7 @@ Where userName is the username of the user. In this way from the /home/nixos fol
 home-manager switch --flake .
 ```
 
-This command works if the current user matches teh one defined in the flake.nix (in the example above is 'userName'). If it is not you just need to specify the user you want to rebuild the home:
+This command works if the current user matches the one defined in the flake.nix (in the example above is 'userName'). If this is not the cae, you just need to specify the user you want to rebuild the home:
 
 ```bash
 home-manager switch --flake .#userName
@@ -210,9 +210,9 @@ This is the flowchart of flake with home-manager installed standalone:
 
 ![Home-manager standalone](./readme-img/home-manager-standalone.png)
 
-### Installation as a module
+### Installation as a module (like in this repo)
 
-If you prefear to install as a module (as i did for my config in this repo) you add the home-manager module in the configuration.nix file:
+If you prefear to install as a module you add the home-manager module in the configuration.nix file:
 
 ```nix
 home-manager =
@@ -225,20 +225,32 @@ home-manager =
   };
 ```
 
-where the userName is the actual username of the user you want to build the home.
+where the userName is the actual username of the user you want to build the home. With this procedure we do not have the file home.nix. To produce a barbone home.nix template execute the following comand:
+
+```bash
+nix run home-manager/master -- init
+```
+
+Then copy it to the folder where all other configurations files are stored:
+
+```bash
+cp ~/.config/home-manager/home.nix /etc/nixos/
+```
+
 At this point with the command:
 
 ```bash
+cd ~
 sudo nixos-rebuild switch --flake .
 ```
 
-we both rebuild the system and the user specified in configuration.nix with only one command. We can rapresent the home-manager installation as a module with the following flowchart:
+we both rebuild the system as declared in configuration.nix, and the user decalred in home.nix and imported in configuration.nix. With the module home-manager installation we rebuild the system and the user home directory with only one command. We can rapresent the home-manager installation as a module with the following flowchart:
 
 ![Home-manager as module](./readme-img/home-manager-module.png)
 
 In my opinion, this would be the out-of-the-box configuration, serving as a starting point to structure it and add modules, hosts, users, etc. However, before proceeding with that, it's important to understand better and see an example of how to use Home Manager once installed in either of the two ways we just discussed.
 
-### How to use home manager
+## How to use system manager and home manager
 
 ## Version control on your configurations
 
