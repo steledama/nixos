@@ -4,7 +4,10 @@ This repository contains my NixOS configuration. The README serves as a step-by-
 
 ## Quick start
 
-TODO: one command to set the system (see [this video](https://www.youtube.com/watch?v=Dm11dcJ0vWY&t=11s), and [the channel](https://www.youtube.com/@librephoenix))
+TODO:
+
+- one command to install the system (see [this video](https://www.youtube.com/watch?v=Dm11dcJ0vWY&t=11s), and [the channel](https://www.youtube.com/@librephoenix))
+- Add hyperland in modules
 
 ### Install
 
