@@ -367,12 +367,11 @@ In my opinion, this would be the out-of-the-box configuration, serving as a star
 
 ## The nixOs way to manage system and user
 
-At this point we have a directory with all configurations files in it, flake and home-manger enabled. Now, how do we get nix to actually do usefull stuff for us?
-This is going to involve us exploring the thousands of options that are out there for various programs and embedding them in home.nix (user space) and configuration.nix (system space). One of the best places to explore those options are in [MyNixOS web page](https://mynixos.com/). If we do not find a proper way to declare a setting for home-manager we have a couple of easy and fast shortcuts.
+At this point, we have a directory with all configuration files in it, with flakes and Home Manager enabled. Now, how do we get Nix to actually do useful stuff for us? This is going to involve exploring the thousands of options available for various programs and embedding them in `home.nix` (user space) and `configuration.nix` (system space). One of the best places to explore those options is [MyNixOS website](https://mynixos.com/). If we do not find a proper way to declare a setting for Home Manager, we have a couple of easy and fast shortcuts.
 
 ### The cleanest way: bash example
 
-Let us make a basic bash configuration in the nixOs way, a typical user space profile to declare for home-manager. If we search bash we ended up with several results but the most important one is set the eanble options to 'true' if we want home-manager create bash related files created as symlinks as dicussed earlier. We can further add aliases, autocompletion, starts neofetch at the start, add starship custom prompt...
+Let's make a basic bash configuration in the NixOS way, a typical user space profile to declare for Home Manager. If we search bash, we end up with several results, but the most important one is to set the enable options to 'true' if we want Home Manager to create bash-related files as symlinks, as discussed earlier. We can further add aliases, autocompletion, start neofetch at the start, add starship custom prompt...
 
 ```nix
 # Configure Bash
@@ -398,7 +397,8 @@ eval "$(starship init bash)"
 };
 ```
 
-It is important to distinguish between system level configurations and user level configurations. In [MyNixOS](https://mynixos.com/) the first one contains 'nixpkgs/option' and we need to put in the configuration.nix file and the seconds containg 'home-manager' and we need to put them in home.nix. As stated in the comment of the barbone home.nix file home-manager can handle plain config files through 'home.file'
+It is important to distinguish between system-level configurations and user-level configurations. In MyNixOS, the former contains 'nixpkgs/option', and we need to put it in the configuration.nix file, while the latter contains 'home-manager', and we need to put them in home.nix.
+As stated in the comment of the barebone home.nix file, Home Manager can handle plain config files through 'home.file'.
 
 ### home.file: embed the file
 
@@ -426,11 +426,11 @@ home.file = {
 };
 ```
 
-In this way you do not have the power of nix programming language ad it is just a flat plain hard coded text... but it gets the work done!
+This way, you do not have the power of Nix programming language, and it is just a flat plain hardcoded text... but it gets the work done!
 
-## Version control on your configurations
+## Version control on the configuration
 
-Using git to have a version control of your system configuration is the natural conseguence of having a system managment with nixOs, it is strongly suggested and incoraged. If you clone this repository just remove the .git folder to start from skratch mange your configuration:
+Using Git to have a version control of your system configuration is the natural consequence of having system management with NixOS; it is strongly suggested and encouraged. If you clone this repository, just remove the .git folder to start from scratch managing your configuration:
 
 ```bash
 rm -r .git/
@@ -451,7 +451,7 @@ And it is very usefull to change the default branch name to match the one of the
 git config --global init.defaultBranch "main"
 ```
 
-This configurationa can be done declaratively in nix style adding this to your home.nix:
+This configurationa can be done declaratively in nix style adding this to your `home.nix`:
 
 ```nix
 programs.git = {
@@ -522,8 +522,36 @@ The basic git workflow involve a three steps process:
 
 I suggest to use a terminal UI for git commands to manage this steps faster and easily such as [lazygit](https://github.com/jesseduffield/lazygit).
 
-## Start structuring multihost and multiuser modular configuration
+## Multihost and Multiuser Modular Configuration
 
-![Multi hosts/users modular configuration](./readme-img/modular.png)
+We have our configuration folder, managed by a solid version control system, with all the files we need to manage our system at both the system and user levels.
+Even for a single machine and a single user, as you proceed declaring all the finest aspects of the system, you will soon arrive at a moment when you feel the need to divide your config files to make the task of maintaining, enhancing, and updating your system simpler and easier.
+Making the configuration modular is definitely a good choice, even in the case of one host and one user. In case you start to add hosts (e.g., the desktop machine and the laptop) or users, it becomes so necessary. The very good news is that with Nix, you have the power to manage a fleet of hosts and users in just one place. On the internet, you will find tons of ways of structuring Nix configs. In this section, I will propose my actual very basic simple multihost and multiuser config structure.
 
-## Advanced configurations methods
+![Multi Hosts/Users Modular Configuration](./readme-img/modular.png)
+
+From `flake.nix`, it is important to list all the hosts managed. The best practice is to name all the hosts configurations with the hostname of the system. The same hostname is the name of the file (the old `configuration.nix`), and I am placing all the hosts in the `hosts` folder. In the `hosts` folder, there is the `hw` folder with all the hardware modules (the hardware-configuration.nix file). The name of the hardware module is `hw-hostname.nix`, so it is easier to import the right files in `flake.nix` and `hosts1.nix`, and if the configuration matches the hostname, the rebuild command can be the same for all systems and can be aliased in bash.
+
+A similar situation is for the user: `home.nix` is renamed with the `username.nix`, and all users are placed in the `users` directory and listed/declared/imported in the `host.nix` file. In both the `users` and `hosts` directories, there is a folder (respectively `usr-modules` and `sys-modules`) with all parts of the configuration that can be reused between hosts and users.
+The guideline is to reduce at minimum the specific declarations for hosts and users and delegate all the possible to modules.
+In hosts at the moment, I prefer to declare:
+
+- system modules to use
+- network settings
+- users list defined in the host
+- system packages
+
+In user space, I prefer to use the user Nix file to declare:
+
+- user modules to use
+- user packages
+- user environment variables
+
+This is my actual configuration. I am improving it, I would like, for instance, to add Hyperland as a module. I am aware that it is trivial. It does not make use of:
+
+- if/then statements in Nix programming languages
+- custom modules
+- overlays
+- ...
+
+I am studying others' configs because I feel that the time I invest in it is time that I save if I need to replicate my systems between different machines or share my configurations with others. I hope this readme can help a beginner like me to start moving first steps in this powerful tech and community.
