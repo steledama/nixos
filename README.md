@@ -516,6 +516,49 @@ We need to go to the directory where the config file are stored, where we init t
 ```bash
 git remote add origin <the link of your remote repo>
 ```
+### Multiaccount managment
+
+Managing multiple account on different repos or in the same repo require an additional file in .ssh/config:
+
+```
+Host gitlab.com
+  HostName gitlab.com
+  User git
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/gitlab_personal
+
+# github-work
+Host github.com
+  HostName github.com
+  User git
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/github_work
+
+# github-personal
+Host github-personal
+  HostName github.com
+  User git
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/github_personal
+```
+
+With this config file you con manage multiple accounts. You just need to match the ssh key with the one in the config file and the remote link has to match the one specified on the config file. Fors istance to clone a repo:
+
+```bash
+git clone git@github.com-personal:stefano.pompa/nvim.git
+```
+
+to see the remote in an existing repo:
+
+```bash
+git remote -v
+```
+
+To change a remote link:
+
+```bash
+git remote set-url origin git@github-personal:username/repository.git
+```
 
 ### Basic git workflow
 
