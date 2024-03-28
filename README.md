@@ -2,6 +2,27 @@
 
 This repository contains my NixOS configuration. The README serves as a step-by-step guide to understanding NixOS and its initial configuration process. It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
 
+## Indice
+
+- [Quick start](#quick-start)
+  - [Install](#install)
+  - [How to use this config](#how-to-use-this-config)
+- [Nix language, Nix package manager and NixOs](#nix-language-nix-package-manager-and-nixos)
+- [ISO image to install NixOs](#iso-image-to-install-nixos)
+- [The out of the box configuration](#the-out-of-the-box-configuration)
+- [Flakes: what they are and why they are necessary](#flakes-what-they-are-and-why-they-are-necessary)
+- [Home-manager: control the entire system](#home-manager-control-the-entire-system)
+  - [Standalone installation](#standalone-installation)
+  - [Installation as a module (like in this repo)](#installation-as-a-module-like-in-this-repo)
+- [Version control on the configuration](#version-control-on-the-configuration)
+  - [Basic git first configuration](#basic-git-first-configuration)
+  - [Create a SSH key](#create-a-ssh-key)
+  - [Add the ssh key to your github account](#add-the-ssh-key-to-your-github-account)
+  - [Remote repo configuration in local folder](#remote-repo-configuration-in-local-folder)
+  - [Multiaccount managment](#multiaccount-managment)
+  - [Basic git workflow](#basic-git-workflow)
+- [Multihost and Multiuser Modular Configuration](#multihost-and-multiuser-modular-configuration)
+
 ## Quick start
 
 TODO:
@@ -516,7 +537,7 @@ We need to go to the directory where the config file are stored, where we init t
 ```bash
 git remote add origin <the link of your remote repo>
 ```
-### Multiaccount managment
+### Multi account management
 
 Managing multiple account on different repos or in the same repo require an additional file in .ssh/config:
 
