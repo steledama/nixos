@@ -28,8 +28,6 @@
       ./sys-modules/sound.nix
       # print
       ./sys-modules/print.nix
-      # syncthing
-      ./sys-modules/syncthing.nix
       # virtualization
       ./sys-modules/vm.nix
       # ssh

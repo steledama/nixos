@@ -31,6 +31,8 @@
     ./usr-modules/bash.nix
     # cursor
     ./usr-modules/cursor.nix
+    # syncthing
+    ./usr-modules/syncthing.nix
   ];
   # allowUnfree packages
   nixpkgs.config.allowUnfree = true;
