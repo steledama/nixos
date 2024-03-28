@@ -19,7 +19,7 @@ This repository contains my NixOS configuration. The README serves as a step-by-
   - [Create a SSH key](#create-a-ssh-key)
   - [Add the ssh key to your github account](#add-the-ssh-key-to-your-github-account)
   - [Remote repo configuration in local folder](#remote-repo-configuration-in-local-folder)
-  - [Multiaccount managment](#multiaccount-managment)
+  - [Multi account management](#multi-account-management)
   - [Basic git workflow](#basic-git-workflow)
 - [Multihost and Multiuser Modular Configuration](#multihost-and-multiuser-modular-configuration)
 
