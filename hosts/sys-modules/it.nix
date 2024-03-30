@@ -5,7 +5,7 @@
   # Set your time zone.
   time.timeZone = "Europe/Rome";
   # Hw clock
-  time.hardwareClockInLocalTime = false;
+  time.hardwareClockInLocalTime = true;
   # Select internationalisation properties.
   i18n.defaultLocale = "it_IT.UTF-8";
 
