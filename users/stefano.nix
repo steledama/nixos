@@ -58,6 +58,8 @@
     fd # A simple, fast and user-friendly alternative to find
     unzip # An extraction utility for archives compressed in .zip format
     wl-clipboard # Command-line copy/paste utilities for Wayland
+    # python
+    python3
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
