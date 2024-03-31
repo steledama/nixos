@@ -44,7 +44,7 @@
     neofetch # A fast, highly customizable system info script
     font-awesome # Font Awesome - OTF font
     cmatrix # Simulates the falling characters theme from The Matrix movie
-    etcher # flash os images on usb drive
+    usbimager # flash os images on usb drive
     # unfree software
     microsoft-edge # work browser
     anydesk # remote dektop
