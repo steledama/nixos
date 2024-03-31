@@ -44,6 +44,7 @@
     neofetch # A fast, highly customizable system info script
     font-awesome # Font Awesome - OTF font
     cmatrix # Simulates the falling characters theme from The Matrix movie
+    etcher # flash os images on usb drive
     # unfree software
     microsoft-edge # work browser
     anydesk # remote dektop
@@ -58,9 +59,6 @@
     fd # A simple, fast and user-friendly alternative to find
     unzip # An extraction utility for archives compressed in .zip format
     wl-clipboard # Command-line copy/paste utilities for Wayland
-    # python
-    python3
-
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
