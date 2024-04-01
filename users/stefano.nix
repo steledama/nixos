@@ -46,7 +46,6 @@
     cmatrix # Simulates the falling characters theme from The Matrix movie
     usbimager # flash os iso images on usb drive
     # unfree software
-    microsoft-edge # work browser
     anydesk # remote dektop
     obsidian # writing and note taking tool
     vscode # gui code editor
