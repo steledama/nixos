@@ -566,7 +566,7 @@ Host github-personal
 With this config file you con manage multiple accounts. You just need to match the ssh key with the one in the config file and the remote link has to match the one specified on the config file. Fors istance to clone a repo:
 
 ```bash
-git clone git@github.com-personal:stefano.pompa/nvim.git
+git clone git@github-personal:steledama/nvim.git
 ```
 
 to see the remote in an existing repo:
