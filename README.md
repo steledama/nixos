@@ -136,6 +136,14 @@ To clean the bootloader:
 gcCleanup
 ```
 
+To change boot time out and default os:
+
+```bash
+sudo nvim /boot/loader/loader.conf
+```
+
+set to 'auto-windows' as default to set windows as default os
+
 To add a host:
 
 1. Copy an existing host .nix file in hosts folder and rename it
@@ -625,3 +633,35 @@ This is my actual configuration. I am improving it, I would like, for instance, 
 - ...
 
 I am studying others' configs because I feel that the time I invest in it is time that I save if I need to replicate my systems between different machines or share my configurations with others. I hope this readme can help a beginner like me to start moving first steps in this powerful tech and community.
+
+## Appendix
+
+### Alsa store bug
+
+To solve alsa store error:
+Create the file /var/lib/alsa/asound.state:
+
+```bash
+sudo mkdir -p /var/lib/alsa
+sudo touch /var/lib/alsa/asound.state
+```
+
+Set correct permissions:
+
+```bash
+sudo chmod 644 /var/lib/alsa/asound.state
+sudo chown root:root /var/lib/alsa/asound.state
+```
+
+Verify alsa config saving alsa stata in asound.state:
+
+```bash
+sudo alsactl store
+```
+
+rebuild the system:
+
+```bash
+cd /home/nixos
+sudo nixos-rebuild switch --flake .
+```
