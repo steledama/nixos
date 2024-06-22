@@ -127,7 +127,7 @@ sudo nixos-rebuild switch --flake .
 
 To update the system and the user home. From you config directory (~/nixos)
 
-1. `nix update flake`
+1. `nix flake update`
 2. `sudo nixos-rebuild switch --flake .`
 
 To clean the bootloader:
@@ -266,7 +266,7 @@ This time, when we rebuild the system with the flake, the rebuild process produc
 With flakes, your package versions are declared inside the configuration, ensuring full reproducibility. Updating the system is a two-step process: first, we need to update the flake with this command:
 
 ```bash
-nix update flake
+nix flake update
 ```
 
 This command does not update the system but just the flake.lock file. Next, when we rebuild the system, it will be done according to the flake.lock file.
@@ -537,6 +537,7 @@ We need to go to the directory where the config file are stored, where we init t
 ```bash
 git remote add origin <the link of your remote repo>
 ```
+
 ### Multi account management
 
 Managing multiple account on different repos or in the same repo require an additional file in .ssh/config:

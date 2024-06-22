@@ -7,11 +7,10 @@
       layout = "it";
       variant = "";
     };
-    # touchpad support
-    libinput.enable = true;
-    # display manager
+    # display manager: gnome login
     displayManager.gdm = {
       enable = true;
+      wayland = true;
       # autoNumlock = true;
     };
   };
