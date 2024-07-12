@@ -103,9 +103,9 @@
   # networking.firewall.enable = false;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ttacquisti = {
+  users.users.acquisti = {
     isNormalUser = true;
-    description = "ttacquisti";
+    description = "acquisti";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
   };
 
@@ -115,7 +115,7 @@
       # also pass inputs to home-manager modules
       extraSpecialArgs = { inherit inputs; };
       users = {
-        ttacquisti = import ../users/ttacquisti.nix;
+        acquisti = import ../users/acquisti.nix;
       };
     };
 
