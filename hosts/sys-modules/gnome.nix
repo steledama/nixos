@@ -14,15 +14,15 @@
     gnome-photos # photo
     gnome-tour # presentation tour
     gedit # text editor
-  ]) ++ (with pkgs.gnome; [
-    cheese # webcam tool
-    gnome-music # music
-    # gnome-terminal # terminal
     epiphany # web browser
     geary # email reader
     evince # document viewer
-    gnome-characters # fonts
     totem # video player
+    # cheese # webcam tool
+  ]) ++ (with pkgs.gnome; [
+    gnome-music # music
+    # gnome-terminal # terminal
+    # gnome-characters # fonts
     tali # poker game
     iagno # go game
     hitori # sudoku game

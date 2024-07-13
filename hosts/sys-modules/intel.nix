@@ -7,7 +7,7 @@
   };
 
   # OpenGL
-  hardware.opengl = {
+  hardware.graphics = {
     extraPackages = with pkgs; [
       intel-media-driver
       vaapiIntel

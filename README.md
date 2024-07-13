@@ -662,6 +662,5 @@ sudo alsactl store
 rebuild the system:
 
 ```bash
-cd /home/nixos
 sudo nixos-rebuild switch --flake .
 ```
