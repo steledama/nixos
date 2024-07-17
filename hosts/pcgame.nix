@@ -86,6 +86,7 @@
     inkscape # vector design
     zathura # pdf viewer
     libreoffice-fresh # suite office open source
+    mailspring # posta
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
