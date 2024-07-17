@@ -1,14 +1,14 @@
 { pkgs, config, ... }:
 {
 
-  # syncthing
+  # syncthing to configure 127.0.0.1:8384
   services = {
     syncthing = {
       enable = true;
       tray.enable = true;
       # user = "ttacquisti";
-      # dataDir = "/home/ttacquisti"; # Default folder for new synced folders
-      # configDir = "/home/ttacquisti/.config/syncthing"; # Folder for Syncthing's settings and keys
+      # dataDir = "/home/acquisti"; # Default folder for new synced folders
+      # configDir = "/home/acquisti/.config/syncthing"; # Folder for Syncthing's settings and keys
     };
   };
 }

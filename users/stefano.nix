@@ -49,6 +49,7 @@
     anydesk # remote dektop
     obsidian # writing and note taking tool
     vscode # gui code editor
+    lftp # ftp client
     # lazyvim (neovim distribution)
     unrar # unfree utility for RAR archives
     lazygit # git frontend
