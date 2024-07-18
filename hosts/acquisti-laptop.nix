@@ -84,7 +84,7 @@
     google-chrome # browser
     gimp # pixel design
     inkscape # vector design
-    zathura # pdf viewer
+    # zathura # pdf viewer
     libreoffice-fresh # open source office suite
     mailspring # posta
   ];
