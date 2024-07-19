@@ -42,7 +42,6 @@
     firefox # personal browser
     nixpkgs-fmt # code formater for nix
     neofetch # A fast, highly customizable system info script
-    font-awesome # Font Awesome - OTF font
     cmatrix # Simulates the falling characters theme from The Matrix movie
     usbimager # flash os images on usb drive
     # unfree software
@@ -59,12 +58,6 @@
     fd # A simple, fast and user-friendly alternative to find
     unzip # An extraction utility for archives compressed in .zip format
     wl-clipboard # Command-line copy/paste utilities for Wayland
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; }) # font alacritty
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -82,6 +75,26 @@
   programs.home-manager = {
     enable = true;
   };
+
+# browser with some fonts settings
+  programs.google-chrome = {
+  enable = true;
+  package = pkgs.google-chrome;
+  commandLineArgs = [
+    "--enable-features=WebUIDarkMode"
+    "--force-dark-mode"
+    "--disable-features=UseChromeOSDirectVideoDecoder"
+    "--enable-gpu-rasterization"
+    "--enable-zero-copy"
+  ];
+};
+# fonts settings for gnome
+dconf.settings = {
+  "org/gnome/desktop/interface" = {
+    font-antialiasing = "rgba";
+    font-hinting = "slight";
+  };
+};
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. If you don't want to manage your shell through Home

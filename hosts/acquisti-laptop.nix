@@ -47,6 +47,8 @@
       ./sys-modules/gnome.nix
       # home manager
       inputs.home-manager.nixosModules.default
+      # fonts
+      ./sys-modules/fonts.nix
     ];
 
   # NETWORKING
@@ -81,10 +83,8 @@
     neovim # terminal editor
     wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     git # version control
-    google-chrome # browser
     gimp # pixel design
     inkscape # vector design
-    # zathura # pdf viewer
     libreoffice-fresh # open source office suite
     mailspring # posta
   ];
