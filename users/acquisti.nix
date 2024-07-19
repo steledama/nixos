@@ -40,24 +40,31 @@
   # environment.
   home.packages = with pkgs; [
     firefox # personal browser
-    nixpkgs-fmt # code formater for nix
-    neofetch # A fast, highly customizable system info script
-    cmatrix # Simulates the falling characters theme from The Matrix movie
-    usbimager # flash os images on usb drive
+    gimp # pixel design
+    inkscape # vector design
+    libreoffice-fresh # open source office suite
+    mailspring # posta
     # unfree software
     anydesk # remote dektop
     obsidian # writing and note taking tool
     vscode # gui code editor
-    lftp # ftp client
-    # lazyvim (neovim distribution)
-    unrar # unfree utility for RAR archives
+    # utility
     lazygit # git frontend
-    gcc # c compiler
+    nixpkgs-fmt # code formater for nix
+    neofetch # A fast, highly customizable system info script
+    cmatrix # Simulates the falling characters theme from The Matrix movie
+    usbimager # flash os iso images on usb drive
+    # easyfatt
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
+    lftp # ftp client requisito easyfatt
+    # neovim and lazyvim (neovim distribution)
+    neovim # terminal editor
+    gcc # c compiler
     ripgrep # A utility that combines the usability of The Silver Searcher with the raw speed of grep
     fd # A simple, fast and user-friendly alternative to find
-    unzip # An extraction utility for archives compressed in .zip format
     wl-clipboard # Command-line copy/paste utilities for Wayland
+    unrar # unfree utility for RAR archives
+    unzip # An extraction utility for archives compressed in .zip format
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -76,25 +83,25 @@
     enable = true;
   };
 
-# browser with some fonts settings
+  # browser with some fonts settings
   programs.google-chrome = {
-  enable = true;
-  package = pkgs.google-chrome;
-  commandLineArgs = [
-    "--enable-features=WebUIDarkMode"
-    "--force-dark-mode"
-    "--disable-features=UseChromeOSDirectVideoDecoder"
-    "--enable-gpu-rasterization"
-    "--enable-zero-copy"
-  ];
-};
-# fonts settings for gnome
-dconf.settings = {
-  "org/gnome/desktop/interface" = {
-    font-antialiasing = "rgba";
-    font-hinting = "slight";
+    enable = true;
+    package = pkgs.google-chrome;
+    commandLineArgs = [
+      "--enable-features=WebUIDarkMode"
+      "--force-dark-mode"
+      "--disable-features=UseChromeOSDirectVideoDecoder"
+      "--enable-gpu-rasterization"
+      "--enable-zero-copy"
+    ];
   };
-};
+  # fonts settings for gnome
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      font-antialiasing = "rgba";
+      font-hinting = "slight";
+    };
+  };
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. If you don't want to manage your shell through Home

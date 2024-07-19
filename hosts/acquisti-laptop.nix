@@ -80,13 +80,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim # terminal editor
     wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     git # version control
-    gimp # pixel design
-    inkscape # vector design
-    libreoffice-fresh # open source office suite
-    mailspring # posta
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
