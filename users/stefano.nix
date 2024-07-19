@@ -83,7 +83,7 @@
     enable = true;
   };
 
-  # browser with some fonts settings
+  # browser for work with some fonts settings
   programs.google-chrome = {
     enable = true;
     package = pkgs.google-chrome;
