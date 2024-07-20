@@ -39,6 +39,8 @@
       # ./sys-modules/sddm.nix
       # gdm (gnome)
       ./sys-modules/gdm.nix
+      # lightdm (gnome x11)
+      # ./sys-modules/lightdm.nix
       # Desktop Environmnet
       # kde
       #./sys-modules/kde6.nix
@@ -49,6 +51,8 @@
       inputs.home-manager.nixosModules.default
       # fonts
       ./sys-modules/fonts.nix
+      # gaming
+      # ./sys-modules/gaming.nix
     ];
 
   # NETWORKING

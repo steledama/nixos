@@ -97,10 +97,15 @@
   };
   # fonts settings for gnome
   dconf.settings = {
+    # fonts renedering
     "org/gnome/desktop/interface" = {
       font-antialiasing = "rgba";
       font-hinting = "slight";
     };
+    # Forza GNOME a usare X11
+  # "org/gnome/mutter" = {
+  #   experimental-features = [];
+  # };
   };
 
   # Home Manager can also manage your environment variables through
