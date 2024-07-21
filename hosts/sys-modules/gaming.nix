@@ -16,11 +16,12 @@
     wineWowPackages.stable
     winetricks
     protontricks
-    protonge  # Versione personalizzata di Proton
+    protonup-qt # per gestire le versioni di protonGE
+    gamemode # Feral GameMode
   ];
 
   # Abilita il supporto 32-bit (necessario per molti giochi)
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable32Bit = true;
 
   # Ottimizzazioni per il gaming
   boot.kernel.sysctl = {
@@ -30,9 +31,4 @@
 
   # Abilita GameMode
   programs.gamemode.enable = true;
-
-  # Abilita Feral GameMode
-  environment.systemPackages = with pkgs; [
-    gamemode
-  ];
 }

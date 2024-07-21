@@ -7,6 +7,8 @@
 {
   imports =
     [
+      # home manager
+      inputs.home-manager.nixosModules.default
       # host hardware scan result
       ./hw/hardware-pcgame.nix
       # kernel zen (comment out for default kernel)
@@ -39,20 +41,16 @@
       # ./sys-modules/sddm.nix
       # gdm (gnome)
       ./sys-modules/gdm.nix
-      # lightdm (gnome x11)
-      # ./sys-modules/lightdm.nix
       # Desktop Environmnet
       # kde
       #./sys-modules/kde6.nix
       # ./sys-modules/kde5.nix
       # gnome
       ./sys-modules/gnome.nix
-      # home manager
-      inputs.home-manager.nixosModules.default
       # fonts
       ./sys-modules/fonts.nix
       # gaming
-      # ./sys-modules/gaming.nix
+      ./sys-modules/gaming.nix
     ];
 
   # NETWORKING

@@ -50,6 +50,7 @@
     vscode # gui code editor
     # utility
     lazygit # git frontend
+    nil # nix language server
     nixpkgs-fmt # code formater for nix
     neofetch # A fast, highly customizable system info script
     cmatrix # Simulates the falling characters theme from The Matrix movie
@@ -102,10 +103,7 @@
       font-antialiasing = "rgba";
       font-hinting = "slight";
     };
-    # Forza GNOME a usare X11
-  # "org/gnome/mutter" = {
-  #   experimental-features = [];
-  # };
+
   };
 
   # Home Manager can also manage your environment variables through
