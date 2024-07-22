@@ -40,6 +40,7 @@
   # environment.
   home.packages = with pkgs; [
     firefox # personal browser
+    brave # work browser
     gimp # pixel design
     inkscape # vector design
     libreoffice-fresh # open source office suite
@@ -85,18 +86,6 @@
     enable = true;
   };
 
-  # browser for work with some fonts settings
-  programs.google-chrome = {
-    enable = true;
-    package = pkgs.google-chrome;
-    commandLineArgs = [
-      "--enable-features=WebUIDarkMode"
-      "--force-dark-mode"
-      "--disable-features=UseChromeOSDirectVideoDecoder"
-      "--enable-gpu-rasterization"
-      "--enable-zero-copy"
-    ];
-  };
   # fonts settings for gnome
   dconf.settings = {
     "org/gnome/desktop/interface" = {
