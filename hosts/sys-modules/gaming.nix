@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  # Configura Wine
+  nixpkgs.config.wine.build = "wineWow";
+
   # Abilita Steam
   programs.steam = {
     enable = true;
@@ -8,7 +11,7 @@
     dedicatedServer.openFirewall = true; # Apre le porte per i server dedicati Steam
   };
 
-  # Installa Lutris, Heroic e Bottles
+  # Installa Lutris, Heroic, Bottles e altri strumenti per il gaming
   environment.systemPackages = with pkgs; [
     lutris
     heroic
@@ -18,6 +21,7 @@
     protontricks
     protonup-qt # per gestire le versioni di protonGE
     gamemode # Feral GameMode
+    wine
   ];
 
   # Abilita il supporto 32-bit (necessario per molti giochi)
@@ -31,4 +35,9 @@
 
   # Abilita GameMode
   programs.gamemode.enable = true;
+
+  # Configura Wine
+  environment.sessionVariables = {
+    WINEDLLOVERRIDES = "winemenubuilder.exe=d";
+  };
 }
