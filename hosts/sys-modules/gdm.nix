@@ -10,7 +10,7 @@
     # display manager: gnome login
     displayManager.gdm = {
       enable = true;
-      wayland = false;
+      wayland = true;
       # autoNumlock = true;
     };
   };

@@ -48,6 +48,7 @@
     anydesk # remote dektop
     obsidian # writing and note taking tool
     vscode # gui code editor
+    zed-editor # vscode fatest alternative
     # utility
     lazygit # git frontend
     nil # nix language server

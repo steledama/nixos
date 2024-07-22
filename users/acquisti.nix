@@ -48,8 +48,10 @@
     anydesk # remote dektop
     obsidian # writing and note taking tool
     vscode # gui code editor
+    zed-editor # vscode fatest alternative
     # utility
     lazygit # git frontend
+    nil # nix language server
     nixpkgs-fmt # code formater for nix
     neofetch # A fast, highly customizable system info script
     cmatrix # Simulates the falling characters theme from The Matrix movie
