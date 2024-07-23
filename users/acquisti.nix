@@ -49,7 +49,6 @@
     anydesk # remote dektop
     obsidian # writing and note taking tool
     vscode # gui code editor
-    zed-editor # vscode fatest alternative
     # utility
     lazygit # git frontend
     nil # nix language server
@@ -84,14 +83,6 @@
   # self enable
   programs.home-manager = {
     enable = true;
-  };
-
-  # fonts settings for gnome
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      font-antialiasing = "rgba";
-      font-hinting = "slight";
-    };
   };
 
   # Home Manager can also manage your environment variables through

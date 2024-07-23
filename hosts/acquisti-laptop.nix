@@ -9,8 +9,12 @@
     [
       # host hardware scan result
       ./hw/hardware-acquisti-laptop.nix
+      # home manager
+      inputs.home-manager.nixosModules.default
+
       # kernel zen (comment out for default kernel)
       ./sys-modules/zen.nix
+
       # GPU (choose one)
       # gpu nvidia
       # ./sys-modules/nvidia.nix
@@ -18,6 +22,7 @@
       # ./sys-modules/amd.nix
       # gpu intel
       ./sys-modules/intel.nix
+
       # boot
       ./sys-modules/boot.nix
       # locale
@@ -30,25 +35,27 @@
       ./sys-modules/print.nix
       # virtual machine
       ./sys-modules/vm.nix
+      # fonts
+      ./sys-modules/fonts.nix
+      # gaming
+      # ./sys-modules/gaming.nix
       # ssh
       # ./sys-modules/ssh.nix
       # touchpad
       ./sys-modules/touchpad.nix
-      # Display Manager
+
+      # Display Manager (choose one)
       # sddm (kde and hyprland)
       # ./sys-modules/sddm.nix
       # gdm (gnome)
       ./sys-modules/gdm.nix
-      # Desktop Environmnet
+
+      # Desktop Environmnet (choose one)
       # kde
       # ./sys-modules/kde6.nix
       # ./sys-modules/kde5.nix
       # gnome
       ./sys-modules/gnome.nix
-      # home manager
-      inputs.home-manager.nixosModules.default
-      # fonts
-      ./sys-modules/fonts.nix
     ];
 
   # NETWORKING
