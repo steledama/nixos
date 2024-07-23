@@ -1,9 +1,9 @@
 { pkgs, config, ... }:
 
 {
-  services.xserver = {
-    enable = true;
-    xkb = {
+  services = {
+    xserver.enable = true;
+    xserver.xkb = {
       layout = "it";
       variant = "";
     };

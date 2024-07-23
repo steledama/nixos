@@ -9,6 +9,7 @@
     kio-gdrive
     kaccounts-providers
     kaccounts-integration
+    ksshaskpass
   ];
   # excluding some applications from the default install
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
@@ -16,5 +17,12 @@
     # konsole
     # oxygen
   ];
+
+  # services.gnome.gnome-keyring.enable = false;
+  # security.pam.services.sddm.enableKwallet = true;
+  # programs.kdeconnect.enable = true;
+  # programs.ssh.askPassword = "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
+
 }
+
 
