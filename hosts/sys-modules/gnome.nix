@@ -3,13 +3,19 @@
 {
   services.xserver = {
     enable = true;
+    # Italian keyboard
+    xkb.layout = "it";
+    xkb.Variant = "";
+    # Gdm display manager
     displayManager.gdm = {
       enable = true;
       wayland = true;
     };
+    # Gnome desktop environment
     desktopManager.gnome.enable = true;
   };
 
+  # Exclude GNOME-specific packages here
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
     gnome-tour
@@ -25,8 +31,8 @@
     atomix
   ]);
 
-  environment.systemPackages = with pkgs; [
-    # Add any additional GNOME-specific packages here
-  ];
+  # Add GNOME-specific packages here
+  environment.systemPackages = (with pkgs; [
+  ]);
 }
 
