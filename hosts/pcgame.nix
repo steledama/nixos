@@ -7,21 +7,24 @@
 {
   imports =
     [
-      # home manager
+      # HOME MANAGER
       inputs.home-manager.nixosModules.default
-      # host hardware scan result
+
+      # HARDWARE
       ./hw/hardware-pcgame.nix
 
-      # kernel zen (comment out for default kernel)
+      # KERNEL (comment out for default kernel)
       ./sys-modules/zen.nix
 
       # GPU (choose one)
-      # gpu nvidia
-      ./sys-modules/nvidia.nix
-      # gpu amd
-      # ./sys-modules/amd.nix
-      # gpu intel
       # ./sys-modules/intel.nix
+      ./sys-modules/nvidia.nix
+      # ./sys-modules/amd.nix
+
+      # DE: Desktop Environment (choose one)
+      ./sys-modules/cinnamon.nix
+      # ./sys-modules/gnome.nix
+      # ./sys-modules/kde.nix
 
       # boot
       ./sys-modules/boot.nix
@@ -37,17 +40,12 @@
       ./sys-modules/vm.nix
       # fonts
       ./sys-modules/fonts.nix
-      # gaming
-      ./sys-modules/gaming.nix
-      # ssh
-      # ./sys-modules/ssh.nix
       # touchpad
       # ./sys-modules/touchpad.nix
-
-      # Desktop Environmnet (choose one)
-      # ./sys-modules/kde.nix
-      ./sys-modules/gnome.nix
-      # ./sys-modules/cinnamon.nix
+      # ssh
+      # ./sys-modules/ssh.nix
+      # gaming
+      ./sys-modules/gaming.nix
     ];
 
   # NETWORKING
