@@ -44,18 +44,10 @@
       # touchpad
       ./sys-modules/touchpad.nix
 
-      # Display Manager (choose one)
-      # sddm (kde and hyprland)
-      # ./sys-modules/sddm.nix
-      # gdm (gnome)
-      ./sys-modules/gdm.nix
-
       # Desktop Environmnet (choose one)
-      # kde
-      # ./sys-modules/kde6.nix
-      # ./sys-modules/kde5.nix
-      # gnome
+      # ./sys-modules/kde.nix
       ./sys-modules/gnome.nix
+      # ./sys-modules/cinnamon.nix
     ];
 
   # NETWORKING
