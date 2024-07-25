@@ -45,6 +45,7 @@
     inkscape # vector design
     libreoffice-fresh # open source office suite
     mailspring # posta
+    thunderbird-128 # posta
     # unfree software
     anydesk # remote dektop
     obsidian # writing and note taking tool

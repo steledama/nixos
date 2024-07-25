@@ -22,8 +22,8 @@
       # ./sys-modules/amd.nix
 
       # DE: Desktop Environment (choose one)
-      # ./sys-modules/cinnamon.nix
-      ./sys-modules/gnome.nix
+      ./sys-modules/cinnamon.nix
+      # ./sys-modules/gnome.nix
       # ./sys-modules/kde.nix
 
       # boot
