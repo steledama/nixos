@@ -27,6 +27,7 @@
     # Cinnamon specific system packages
     gnome-online-accounts # account google
     gvfs # virtual filesystem support library for google drive
+    system-config-printer # graphic utility to install printers
   ];
 }
 
