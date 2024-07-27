@@ -112,6 +112,22 @@
       };
     };
 
+  # Service fo fix home monitor resolution
+  systemd.services.display-setup = {
+    description = "Set up display resolutions for Acquisti Laptop";
+    wantedBy = [ "multi-user.target" ];
+    before = [ "display-manager.service" ];
+    script = builtins.readFile ./acquisti-laptop-monitor.sh;
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+  };
+  # check service status:
+  # systemctl status display-setup
+  # check service log
+  # journalctl -u display-setup
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
