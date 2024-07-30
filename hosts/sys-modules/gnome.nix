@@ -5,7 +5,7 @@
     enable = true;
     # Italian keyboard
     xkb.layout = "it";
-    xkb.Variant = "";
+    xkb.variant = "";
     # Gdm display manager
     displayManager.gdm = {
       enable = true;
