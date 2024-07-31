@@ -46,6 +46,8 @@
       # ./sys-modules/ssh.nix
       # gaming
       # ./sys-modules/gaming.nix
+      # SMB (Windows network share)
+      ./sys-modules/smb.nix
     ];
 
   # NETWORKING
@@ -127,6 +129,15 @@
   # systemctl status display-setup
   # check service log
   # journalctl -u display-setup
+
+  services.windowsShare = {
+    enable = true;
+    deviceAddress = "//10.40.40.98/scan";
+    mountPoint = "/mnt/windowsshare";
+    credentials = ./../smb-secrets; # Percorso relativo alla posizione del file dell'host
+    uid = 1000;
+    gid = 100;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
