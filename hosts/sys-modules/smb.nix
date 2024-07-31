@@ -1,8 +1,4 @@
 # This module provides flexible configuration for mounting Windows network shares (SMB)
-# Note: Remember to create a credentials file at /etc/nixos/smb-secrets with content:
-# username=YourUsername
-# password=YourPassword
-# Ensure to set appropriate permissions: chmod 600 /etc/nixos/smb-secrets
 
 { config, lib, pkgs, ... }:
 
@@ -10,16 +6,22 @@ with lib;
 
 let
   cfg = config.services.windowsShare;
+
+  # Helper function to safely get user UID
+  getUserUid = username:
+    if config.users.users ? ${username}
+    then toString config.users.users.${username}.uid
+    else "1000"; # Default UID if user not found
+
+  # Helper function to safely get user GID
+  getUserGid = username:
+    if config.users.users ? ${username} && config.users.users.${username} ? group
+    then toString config.users.groups.${config.users.users.${username}.group}.gid
+    else "100"; # Default GID if group not found
 in
 {
   options.services.windowsShare = {
     enable = mkEnableOption "Windows network share mounting";
-
-    mountPoint = mkOption {
-      type = types.str;
-      default = "/mnt/windowsshare";
-      description = "Where to mount the Windows share";
-    };
 
     deviceAddress = mkOption {
       type = types.str;
@@ -27,22 +29,21 @@ in
       description = "Address of the Windows share";
     };
 
-    credentials = mkOption {
-      type = types.path;
-      example = "./smb-secrets";
-      description = "Path to the credentials file, relative to the host configuration file";
+    username = mkOption {
+      type = types.str;
+      description = "Username for the Windows share";
     };
 
-    uid = mkOption {
-      type = types.int;
-      default = 1000;
-      description = "UID for the mounted share";
+    mountPoint = mkOption {
+      type = types.str;
+      default = "/mnt/windowsshare";
+      description = "Where to mount the Windows share";
     };
 
-    gid = mkOption {
-      type = types.int;
-      default = 100;
-      description = "GID for the mounted share";
+    credentialsFile = mkOption {
+      type = types.str;
+      default = "/etc/nixos/smb-secrets";
+      description = "Path to the credentials file";
     };
   };
 
@@ -56,16 +57,27 @@ in
         "x-systemd.automount"
         "noauto"
         "x-systemd.idle-timeout=60"
-        "credentials=${toString cfg.credentials}"
-        "uid=${toString cfg.uid}"
-        "gid=${toString cfg.gid}"
+        "credentials=${cfg.credentialsFile}"
+        "uid=${getUserUid cfg.username}"
+        "gid=${getUserGid cfg.username}"
+        "file_mode=0664"
+        "dir_mode=0775"
       ];
     };
 
     systemd.tmpfiles.rules = [
       "d ${cfg.mountPoint} 0755 root root -"
     ];
+
+    # Ensure the credentials file exists and has correct permissions
+    system.activationScripts.smbCredentials = ''
+      if [ ! -f ${cfg.credentialsFile} ]; then
+        touch ${cfg.credentialsFile}
+        chmod 600 ${cfg.credentialsFile}
+        echo "username=${cfg.username}" > ${cfg.credentialsFile}
+        echo "password=YourPasswordHere" >> ${cfg.credentialsFile}
+        echo "Remember to set the correct password in ${cfg.credentialsFile}"
+      fi
+    '';
   };
 }
-
-

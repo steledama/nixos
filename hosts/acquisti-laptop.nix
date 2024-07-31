@@ -130,13 +130,19 @@
   # check service log
   # journalctl -u display-setup
 
+  # Windows Network Share Configuration
+  # This section configures the mounting of a Windows SMB share.
+  # You can add multiple share configurations by duplicating this block and changing the settings.
+  # For advanced options, see the SMB module file at ./sys-modules/smb.nix
   services.windowsShare = {
     enable = true;
-    deviceAddress = "//10.40.40.98/scan";
-    mountPoint = "/mnt/windowsshare";
-    credentials = ./../smb-secrets; # Percorso relativo alla posizione del file dell'host
-    uid = 1000;
-    gid = 100;
+    deviceAddress = "//192.168.1.13/condivisa";
+    username = "acquisti";
+    # Optional: you can overwrite the default mount point if needed
+    # mountPoint = "/mnt/windowsshare";
+    # Optional: you can specify a custom path for the credentials file
+    # credentialsFile = "/etc/nixos/smb-secrets";
+    credentialsFile = "/home/acquisti/nixos/smb-secrets";
   };
 
   # This value determines the NixOS release from which the default
