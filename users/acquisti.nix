@@ -44,8 +44,7 @@
     gimp # pixel design
     inkscape # vector design
     libreoffice-fresh # open source office suite
-    mailspring # posta
-    evolution # posta2
+    evolution # posta
     # unfree software
     anydesk # remote dektop
     obsidian # writing and note taking tool
