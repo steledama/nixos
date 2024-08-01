@@ -136,7 +136,7 @@
   # For advanced options, see the SMB module file at ./sys-modules/smb.nix
   services.windowsShare = {
     enable = true;
-    deviceAddress = "//192.168.1.13/condivisa";
+    deviceAddress = "//10.40.40.98/scan";
     username = "acquisti";
     # Optional: you can overwrite the default mount point if needed
     # mountPoint = "/mnt/windowsshare";
