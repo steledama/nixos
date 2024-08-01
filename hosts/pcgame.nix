@@ -38,9 +38,9 @@
       ./sys-modules/sound.nix
       # print
       ./sys-modules/print.nix
-      # SMB (Windows network share)
+      # smb (windows network share)
       # ./sys-modules/smb.nix
-      # network: uncomment only in case of static or bridge configuration
+      # network (uncomment only in case of static or bridge configuration)
       # ./sys-modules/network.nix
       # virtualization
       # ./sys-modules/vm.nix
@@ -52,6 +52,33 @@
       ./sys-modules/gaming.nix
     ];
 
+  # allow unfree software
+  nixpkgs.config.allowUnfree = true;
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    wget # Tool for retrieving files using HTTP, HTTPS, and FTP
+    git # version control
+  ];
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.stefano = {
+    isNormalUser = true;
+    description = "stefano";
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+  };
+
+  # HOME-MANAGER as module
+  home-manager =
+    {
+      # also pass inputs to home-manager modules
+      extraSpecialArgs = { inherit inputs; };
+      users = {
+        stefano = import ../users/stefano.nix;
+      };
+    };
+
   # Basic network configuration
   networking = {
     hostName = "pcgame";
@@ -59,7 +86,7 @@
     networkmanager.enable = true;
   };
 
-  # For advanced network configurations, uncomment the module above and the following configuration.
+  # Static or bridge network configs (uncomment the module above and configure)
   # networking.customSetup = {
   #   # Define a static IP address:
   #   staticIP.address = "192.168.1.27";
@@ -85,32 +112,6 @@
   #   # - 'ls /sys/class/net' (lists network interfaces)
   #   # - 'networkctl list' (shows network interfaces and their status)
   # };
-
-  # allow unfree software
-  nixpkgs.config.allowUnfree = true;
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    wget # Tool for retrieving files using HTTP, HTTPS, and FTP
-    git # version control
-  ];
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.stefano = {
-    isNormalUser = true;
-    description = "stefano";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
-  };
-
-  # HOME-MANAGER as module
-  home-manager =
-    {
-      # also pass inputs to home-manager modules
-      extraSpecialArgs = { inherit inputs; };
-      users = {
-        stefano = import ../users/stefano.nix;
-      };
-    };
 
   # Windows Network Share Configuration (uncomment the module smb.nix above and configure)
   # This section configures the mounting of a Windows SMB share.
