@@ -45,7 +45,7 @@
     inkscape # vector design
     libreoffice-fresh # open source office suite
     mailspring # posta
-    claws-mail # posta 2
+    evolution # posta2
     # unfree software
     anydesk # remote dektop
     obsidian # writing and note taking tool
