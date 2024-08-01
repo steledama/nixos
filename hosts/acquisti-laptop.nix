@@ -26,6 +26,8 @@
       ./sys-modules/gnome.nix
       # ./sys-modules/kde.nix
 
+      # fonts
+      ./sys-modules/fonts.nix
       # boot
       ./sys-modules/boot.nix
       # locale
@@ -36,43 +38,54 @@
       ./sys-modules/sound.nix
       # print
       ./sys-modules/print.nix
-      # virtual machine
-      ./sys-modules/vm.nix
-      # fonts
-      ./sys-modules/fonts.nix
-      # touchpad
-      ./sys-modules/touchpad.nix
-      # ssh
-      # ./sys-modules/ssh.nix
-      # gaming
-      # ./sys-modules/gaming.nix
       # SMB (Windows network share)
       ./sys-modules/smb.nix
+      # network: uncomment only in case of static or bridge configuration
+      # ./sys-modules/network.nix
+      # virtualization
+      # ./sys-modules/vm.nix
+      # ssh
+      # ./sys-modules/ssh.nix
+      # touchpad
+      ./sys-modules/touchpad.nix
+      # gaming
+      # ./sys-modules/gaming.nix
+
     ];
 
-  # NETWORKING
-  # hostname
-  networking.hostName = "acquisti-laptop"; # Define your hostname.
-  # networkmanager
-  networking.networkmanager.enable = true;
-  # Enables wireless support via wpa_supplicant.
-  # networking.wireless.enable = true;
-  # bridge for virtual network
-  # networking.interfaces.enp7s0.useDHCP = false;
-  # networking.bridges = {
-  #   "br0" = {
-  #     interfaces = [ "enp7s0" ];
-  #   };
+  # Basic network configuration
+  networking = {
+    hostName = "acquisti-laptop";
+    # comment out in case of static or bridge network config
+    networkmanager.enable = true;
+  };
+
+  # For advanced network configurations, uncomment the module above and the following configuration.
+  # networking.customSetup = {
+  #   # Define a static IP address:
+  #   staticIP.address = "192.168.1.27";
+  #   # Note: Default prefix length is 24, change in network.nix if needed
+  #   
+  #   # Define the default gateway:
+  #   gateway = "192.168.1.1";
+  #   
+  #   # Define DNS servers:
+  #   nameservers = [ "192.168.1.1" "8.8.8.8" ];
+  #   
+  #   # Uncomment one of the following types:
+  #   type = "static";
+  #   # type = "bridge"; # only needed in case of virtual module uncommented (vm.nix)
+  #   
+  #   # For bridge configuration:
+  #   # bridgeConfig.name = "br0";
+  #   
+  #   # Specify interface only if automatic detection fails:
+  #   # interface = "enp7s0";
+  #   # To discover network interfaces, you can use these commands:
+  #   # - 'ip link show' (shows all network interfaces)
+  #   # - 'ls /sys/class/net' (lists network interfaces)
+  #   # - 'networkctl list' (shows network interfaces and their status)
   # };
-  # networking.interfaces.br0.ipv4.addresses = [{
-  #   address = "192.168.1.27";
-  #   prefixLength = 24;
-  # }];
-  # networking.defaultGateway = "192.168.1.1";
-  # networking.nameservers = [ "192.168.1.1" "8.8.8.8" ];
-  # proxy
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # allow unfree software
   nixpkgs.config.allowUnfree = true;
