@@ -126,6 +126,21 @@
       };
     };
 
+  # Windows Network Share Configuration (uncomment the module smb.nix above and configure)
+  # This section configures the mounting of a Windows SMB share.
+  # You can add multiple share configurations by duplicating this block and changing the settings.
+  # For advanced options, see the SMB module file at ./sys-modules/smb.nix
+  # services.windowsShare = {
+  #   enable = true;
+  #   deviceAddress = "//192.168.1.1/share";
+  #   username = "stefano";
+  #   # Optional: you can overwrite the default mount point if needed
+  #   # mountPoint = "/mnt/windowsshare";
+  #   # Optional: you can specify a custom path for the credentials file
+  #   # credentialsFile = "/etc/nixos/smb-secrets";
+  #   credentialsFile = "/home/stefano/nixos/smb-secrets";
+  # };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

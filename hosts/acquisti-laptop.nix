@@ -143,7 +143,7 @@
   # check service log
   # journalctl -u display-setup
 
-  # Windows Network Share Configuration
+  # Windows Network Share Configuration (uncomment the module smb.nix above and configure)
   # This section configures the mounting of a Windows SMB share.
   # You can add multiple share configurations by duplicating this block and changing the settings.
   # For advanced options, see the SMB module file at ./sys-modules/smb.nix
