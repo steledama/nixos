@@ -34,21 +34,30 @@
     # syncthing
     ./usr-modules/syncthing.nix
   ];
+
   # allowUnfree packages
   nixpkgs.config.allowUnfree = true;
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    # browsers
     firefox # personal browser
     brave # work browser
+
+    # graphics
     gimp # pixel design
     inkscape # vector design
+
+    # office
     libreoffice-fresh # open source office suite
-    evolution # posta
+    evolution # mail client
+
     # unfree software
     anydesk # remote dektop
     obsidian # writing and note taking tool
     vscode # gui code editor
+
     # utility
     lazygit # git frontend
     nil # nix language server
@@ -56,10 +65,12 @@
     neofetch # A fast, highly customizable system info script
     cmatrix # Simulates the falling characters theme from The Matrix movie
     usbimager # flash os iso images on usb drive
+
     # easyfatt
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     lftp # ftp client requisito easyfatt
-    # neovim and lazyvim (neovim distribution)
+
+    # neovim and lazyvim reqs (neovim distribution)
     neovim # terminal editor
     gcc # c compiler
     ripgrep # A utility that combines the usability of The Silver Searcher with the raw speed of grep
@@ -67,13 +78,6 @@
     wl-clipboard # Command-line copy/paste utilities for Wayland
     unrar # unfree utility for RAR archives
     unzip # An extraction utility for archives compressed in .zip format
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
   ];
 
   # editor
@@ -84,19 +88,4 @@
   programs.home-manager = {
     enable = true;
   };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/stefano/etc/profile.d/hm-session-vars.sh
 }

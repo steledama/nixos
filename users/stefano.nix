@@ -34,8 +34,10 @@
     # syncthing
     ./usr-modules/syncthing.nix
   ];
+
   # allowUnfree packages
   nixpkgs.config.allowUnfree = true;
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
@@ -76,36 +78,15 @@
     wl-clipboard # Command-line copy/paste utilities for Wayland
     unrar # unfree utility for RAR archives
     unzip # An extraction utility for archives compressed in .zip format
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
   ];
 
   # editor
   home.sessionVariables = {
     EDITOR = "nvim";
   };
+
   # self enable
   programs.home-manager = {
     enable = true;
   };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/stefano/etc/profile.d/hm-session-vars.sh
 }
