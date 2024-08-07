@@ -59,8 +59,15 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     git # version control
+    lazygit # git frontend
+    neovim # terminal editor
+    nil # nix language server
+    nixpkgs-fmt # code formater for nix
+    wget # Tool for retrieving files using HTTP, HTTPS, and FTP
+    unzip # An extraction utility for archives compressed in .zip format
+    usbimager # flash os iso images on usb drive
+    gcc # c compiler
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

@@ -41,30 +41,15 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    # unfree software
-    firefox # personal browser
-    brave # work browser
-    obsidian # writing and note taking tool
-    # vscode # gui code editor
-
-    # FOSS
-    ungoogled-chromium # FOSS chrome
-    zettlr # FOSS writing and note taking tool
-    vscodium # vscode FOSS
-
-    # office
+    ungoogled-chromium # browser
+    zettlr # note and writing
+    vscodium # gui code editor
     libreoffice-fresh # open source office suite
     evolution # mail client
-
-    # graphics
     gimp # pixel design
     inkscape # vector design
-
-    # easyfatt
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     lftp # ftp client requisito easyfatt
-
-    # utility
     neofetch # A fast, highly customizable system info script
   ];
 
