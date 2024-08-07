@@ -33,7 +33,7 @@
 
   # Add GNOME-specific packages here
   environment.systemPackages = (with pkgs; [
-    gnome.dconf-editor
+    dconf-editor
   ]);
 }
 

@@ -41,43 +41,31 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    # browsers
+    # unfree software
     firefox # personal browser
     brave # work browser
+    obsidian # writing and note taking tool
+    # vscode # gui code editor
 
-    # graphics
-    gimp # pixel design
-    inkscape # vector design
+    # FOSS
+    ungoogled-chromium # FOSS chrome
+    zettlr # FOSS writing and note taking tool
+    vscodium # vscode FOSS
 
     # office
     libreoffice-fresh # open source office suite
     evolution # mail client
 
-    # unfree software
-    anydesk # remote dektop
-    obsidian # writing and note taking tool
-    vscode # gui code editor
-
-    # utility
-    lazygit # git frontend
-    nil # nix language server
-    nixpkgs-fmt # code formater for nix
-    neofetch # A fast, highly customizable system info script
-    cmatrix # Simulates the falling characters theme from The Matrix movie
-    usbimager # flash os iso images on usb drive
+    # graphics
+    gimp # pixel design
+    inkscape # vector design
 
     # easyfatt
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     lftp # ftp client requisito easyfatt
 
-    # neovim and lazyvim reqs (neovim distribution)
-    neovim # terminal editor
-    gcc # c compiler
-    ripgrep # A utility that combines the usability of The Silver Searcher with the raw speed of grep
-    fd # A simple, fast and user-friendly alternative to find
-    wl-clipboard # Command-line copy/paste utilities for Wayland
-    unrar # unfree utility for RAR archives
-    unzip # An extraction utility for archives compressed in .zip format
+    # utility
+    neofetch # A fast, highly customizable system info script
   ];
 
   # editor
