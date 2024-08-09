@@ -4,14 +4,12 @@ let
   gnomeWallpaperDir = "${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome";
 in
 {
-  # Install hyprpaper and gnome-backgrounds at system level
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     hyprpaper
-    gnome.gnome-backgrounds
   ];
 
-  # Create a system-wide configuration for hyprpaper
-  environment.etc."hypr/hyprpaper.conf".text = ''
+  # Configuration for hyprpaper
+  xdg.configFile."hypr/hyprpaper.conf".text = ''
     # Preload several GNOME wallpapers
     preload = ${gnomeWallpaperDir}/adwaita-day.jpg
     preload = ${gnomeWallpaperDir}/adwaita-morning.jpg

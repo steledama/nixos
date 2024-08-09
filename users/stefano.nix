@@ -33,6 +33,8 @@
     ./usr-modules/cursor.nix
     # syncthing
     ./usr-modules/syncthing.nix
+    # hyprland (with gnome)
+    ./usr-modules/hyprland
   ];
 
   # allowUnfree packages

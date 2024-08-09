@@ -24,8 +24,6 @@
       # DE: Desktop Environment
       # ./sys-modules/cinnamon.nix
       ./sys-modules/gnome.nix
-      # hyprland (with gnome)
-      ./sys-modules/hyprland
       # ./sys-modules/kde.nix
 
       # fonts

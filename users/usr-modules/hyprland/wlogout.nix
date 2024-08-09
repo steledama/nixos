@@ -6,13 +6,13 @@ let
   iconPath = "/path/to/your/icons";
 in
 {
-  # Install wlogout at system level
-  environment.systemPackages = with pkgs; [
+  # Install wlogout
+  home.packages = with pkgs; [
     wlogout
   ];
 
-  # Create a system-wide configuration for wlogout
-  environment.etc."wlogout/layout".text = ''
+  # Configuration for wlogout
+  xdg.configFile."wlogout/layout".text = ''
     {
         "label" : "lock",
         "action" : "swaylock",
@@ -51,8 +51,8 @@ in
     }
   '';
 
-  # Create a system-wide style configuration for wlogout
-  environment.etc."wlogout/style.css".text = ''
+  # Style configuration for wlogout
+  xdg.configFile."wlogout/style.css".text = ''
     * {
         background-image: none;
     }

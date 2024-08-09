@@ -1,28 +1,19 @@
 { config, pkgs, ... }:
 
 {
-  # Install Hyprland and related packages
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     hyprland
     xdg-desktop-portal-hyprland
     xdg-desktop-portal-gtk
-    # Add other necessary packages here
   ];
 
-  # Enable Hyprland
-  programs.hyprland = {
+  wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
 
-  # Minimal XDG portal configuration
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
-  };
-
   # Basic Hyprland configuration
-  environment.etc."hypr/hyprland.conf".text = ''
+  wayland.windowManager.hyprland.extraConfig = ''
     # Use GNOME Settings Daemon to manage settings
     exec-once = ${pkgs.gnome.gnome-settings-daemon}/libexec/gnome-settings-daemon
 
