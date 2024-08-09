@@ -7,7 +7,7 @@
   ];
 
   # Configuration for Waybar
-  home.file.".config/waybar/config".text = builtins.toJSON {
+  environment.etc."xdg/waybar/config".text = builtins.toJSON {
     mainBar = {
       layer = "top";
       position = "top";
@@ -66,7 +66,7 @@
   };
 
   # Style for Waybar
-  home.file.".config/waybar/style.css".text = ''
+  environment.etc."xdg/waybar/style.css".text = ''
     * {
       border: none;
       border-radius: 0;

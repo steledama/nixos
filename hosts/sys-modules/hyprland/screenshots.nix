@@ -17,7 +17,7 @@ let
   '';
 in
 {
-  home.packages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     grim
     slurp
     wl-clipboard

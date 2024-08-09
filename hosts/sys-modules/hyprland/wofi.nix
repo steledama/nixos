@@ -5,7 +5,7 @@
   environment.systemPackages = with pkgs; [ wofi ];
 
   # Wofi configuration
-  home.file.".config/wofi/config".text = ''
+  environment.etc."xdg/wofi/config".text = ''
     width=500
     height=300
     location=center
@@ -24,7 +24,7 @@
   '';
 
   # Wofi style
-  home.file.".config/wofi/style.css".text = ''
+  environment.etc."xdg/wofi/style.css".text = ''
     window {
       margin: 0px;
       border: 2px solid #414868;
