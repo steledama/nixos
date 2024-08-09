@@ -1,11 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    hyprland
-    xdg-desktop-portal-hyprland
-    xdg-desktop-portal-gtk
-  ];
+  # home.packages = with pkgs; [
+  #   hyprland
+  #   xdg-desktop-portal-hyprland
+  #   xdg-desktop-portal-gtk
+  # ];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -63,7 +63,7 @@
     bind = ALT, Print, exec, screenshot-window
     bind = SUPER, R, exec, wofi --show drun # Use your app launcher
     bind = SUPER, Tab, workspace, previous
-    bind = SUPER, Return, exec, alacritty # Replace with your preferred terminal
+    bind = SUPER, T, exec, alacritty # Replace with your preferred terminal
     bind = CTRL, Left, movefocus, l
     bind = CTRL, Right, movefocus, r
     bind = CTRL, Up, movefocus, u
@@ -100,11 +100,6 @@
 
     gestures {
       workspace_swipe = off
-    }
-
-    # Example custom device configuration
-    device:epic mouse V1 {
-      sensitivity = -0.5
     }
   '';
 }

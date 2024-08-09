@@ -31,9 +31,20 @@
     atomix
   ]);
 
-  # Add GNOME-specific packages here
+  # Add system packages here
   environment.systemPackages = (with pkgs; [
     dconf-editor
+    # hyprland
+    hyprland
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gtk
   ]);
+
+  # Enable Hyprland
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
 }
 

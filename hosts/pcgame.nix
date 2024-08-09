@@ -84,6 +84,10 @@
       users = {
         stefano = import ../users/stefano.nix;
       };
+      # Existing configs backup
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      backupFileExtension = "backup";
     };
 
   # Basic network configuration
