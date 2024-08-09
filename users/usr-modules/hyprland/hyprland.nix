@@ -1,18 +1,25 @@
 { config, pkgs, ... }:
 
-{
-  # home.packages = with pkgs; [
-  #   hyprland
-  #   xdg-desktop-portal-hyprland
-  #   xdg-desktop-portal-gtk
-  # ];
+let
+  wallpaperDir = "${config.home.homeDirectory}/.config/hypr/wallpapers";
+  changeWallpaperScript = pkgs.writeShellScript "change-wallpaper" ''
+    #!/bin/sh
+    while true; do
+      wallpaper=$(find ${wallpaperDir} -type f | shuf -n 1)
+      hyprctl hyprpaper preload "$wallpaper"
+      hyprctl hyprpaper wallpaper "eDP-1,$wallpaper"
+      sleep 1200  # 20 minutes
+    done
+  '';
+in
 
+{
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
 
-  # Basic Hyprland configuration
+  # Hyprland configuration
   wayland.windowManager.hyprland.extraConfig = ''
     # Use GNOME Settings Daemon to manage settings
     exec-once = ${pkgs.gnome.gnome-settings-daemon}/libexec/gnome-settings-daemon
@@ -21,7 +28,11 @@
     exec-once = waybar
 
     # Set wallpaper
-    exec-once = hyprpaper
+    exec-once = ${changeWallpaperScript}
+
+    # Initialize wl-paste for clipboard support
+    exec-once = wl-paste --type text --watch cliphist store
+    exec-once = wl-paste --type image --watch cliphist store
 
     # Set Italian keyboard layout
     input {
@@ -51,7 +62,7 @@
     bind = SUPER, B, exec, chromium # Replace with your preferred terminal
     bind = ALT, Tab, cyclenext
     bind = ALT, code:51, cyclenext, prev # Alt + Backslash
-    bind = SUPER, D, exec, hyprctl dispatch workspace e+0
+    bind = SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
     bind = CTRL SUPER, Right, workspace, +1
     bind = CTRL SUPER, Left, workspace, -1
     bind = ALT CTRL SUPER, Right, movetoworkspace, +1

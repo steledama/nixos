@@ -21,6 +21,7 @@ in
     grim
     slurp
     wl-clipboard
+    cliphist
     screenshot-area
     screenshot-full
     screenshot-window

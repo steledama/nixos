@@ -6,103 +6,80 @@
   };
 
   home.file.".config/waybar/config" = {
-    # Overwrite the file
     force = true;
     text = ''
       {
-          "layer": "top", // Waybar at top layer
-          "position": "top", // Waybar at the bottom of your screen
-          "height": 24, // Waybar height
-          // "width": 1366, // Waybar width
-          // Choose the order of the modules
-          "modules-left": ["hyprland/workspaces", "hyprland/mode", "custom/spotify"],
-          "modules-center": ["hyprland/window"],
-          "modules-right": ["backlight", "pulseaudio", "network", "cpu", "memory", "battery", "tray", "clock"],
+          "layer": "top",
+          "position": "top",
+          "height": 24,
+          "modules-left": ["hyprland/workspaces"],
+          "modules-center": ["hyprland/window", "clock"],
+          "modules-right": ["backlight", "pulseaudio", "network", "cpu", "memory", "battery", "tray", "custom/power"],
           "hyprland/workspaces": {
               "disable-scroll": true,
               "all-outputs": false,
               "format": "{icon}",
               "format-icons": {
-                  "1": "",
-                  "2": "",
-                  "3": "",
-                  "4": "",
-                  "5": "",
-                  "urgent": "",
-                  "focused": "",
-                  "default": ""
+                  "active": "•",
+                  "default": "◦"
               }
           },
-          "hyprland/mode": {
-              "format": "<span style=\"italic\">{}</span>"
-          },
-          "tray": {
-              // "icon-size": 21,
-              "spacing": 10
+          "hyprland/window": {
+              "max-length": 50
           },
           "clock": {
-              "format-alt": "{:%Y-%m-%d}"
+              "format": "{:%H:%M}",
+              "tooltip-format": "{:%Y-%m-%d}"
           },
           "cpu": {
-              "format": "{usage}% "
+              "format": "{usage}% "
           },
           "memory": {
-              "format": "{}% "
+              "format": "{}% "
           },
           "battery": {
               "states": {
-                  // "good": 95,
                   "warning": 30,
                   "critical": 15
               },
               "format": "{capacity}% {icon}",
-              // "format-good": "", // An empty format will hide the module
-              // "format-full": "",
-              "format-icons": ["", "", "", "", ""]
+              "format-icons": ["", "", "", "", ""]
           },
           "network": {
-              // "interface": "wlp2s0", // (Optional) To force the use of this interface
-              "format-wifi": "{essid} ({signalStrength}%) ",
-              "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+              "format-wifi": "{essid} ({signalStrength}%) ",
+              "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
               "format-disconnected": "Disconnected ⚠"
           },
           "pulseaudio": {
-              //"scroll-step": 1,
               "format": "{volume}% {icon}",
-              "format-bluetooth": "{volume}% {icon}",
-              "format-muted": "",
+              "format-bluetooth": "{volume}% {icon}",
+              "format-muted": "",
               "format-icons": {
-                  "headphones": "",
-                  "handsfree": "",
-                  "headset": "",
-                  "phone": "",
-                  "portable": "",
-                  "car": "",
-                  "default": ["", ""]
+                  "headphones": "",
+                  "handsfree": "",
+                  "headset": "",
+                  "phone": "",
+                  "portable": "",
+                  "car": "",
+                  "default": ["", ""]
               },
-              "on-click": ""
-          },
-          "custom/spotify": {
-              "format": " {}",
-              "max-length": 40,
-              "interval": 30, // Remove this if your script is endless and write in loop
-              "exec": "$HOME/.config/waybar/mediaplayer.sh 2> /dev/null", // Script in resources folder
-              "exec-if": "pgrep spotify"
+              "on-click": "pavucontrol"
           },
           "backlight": {
-        	"device": "intel_backlight",
-        	"format": "{percent}% {icon}",
-        	"format-icons": ["", ""]
+              "device": "intel_backlight",
+              "format": "{percent}% {icon}",
+              "format-icons": ["", ""]
+          },
+          "custom/power": {
+              "format": "󰐥",
+              "on-click": "wlogout",
+              "tooltip": false
           }
       }
-
     '';
   };
 
-
-
   home.file.".config/waybar/style.css" = {
-    # Overwrite the file
     force = true;
     text = ''
       * {
@@ -114,101 +91,48 @@
       }
 
       window#waybar {
-          background: transparent;
-          color: white;
+          background: rgba(43, 48, 59, 0.5);
+          border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+          color: #ffffff;
       }
-
-      #window {
-          font-weight: bold;
-          font-family: "Ubuntu";
-      }
-      /*
-      #workspaces {
-          padding: 0 5px;
-      }
-      */
 
       #workspaces button {
           padding: 0 5px;
           background: transparent;
-          color: white;
-          border-top: 2px solid transparent;
+          color: #ffffff;
+          border-bottom: 3px solid transparent;
       }
 
-      #workspaces button.focused {
-          color: #c9545d;
-          border-top: 2px solid #c9545d;
-      }
-
-      #mode {
+      #workspaces button.active {
           background: #64727D;
-          border-bottom: 3px solid white;
+          border-bottom: 3px solid #ffffff;
       }
 
-      #clock, #battery, #cpu, #memory, #network, #pulseaudio, #custom-spotify, #tray, #mode {
-          padding: 0 3px;
-          margin: 0 2px;
+      #clock,
+      #battery,
+      #cpu,
+      #memory,
+      #network,
+      #pulseaudio,
+      #tray,
+      #backlight,
+      #custom-power {
+          padding: 0 10px;
+          margin: 0 5px;
       }
 
-      #clock {
+      #custom-power {
+          color: #ff5555;
+      }
+
+      #window {
           font-weight: bold;
       }
 
-      #battery {
-      }
-
-      #battery icon {
-          color: red;
-      }
-
-      #battery.charging {
-      }
-
-      @keyframes blink {
-          to {
-              background-color: #ffffff;
-              color: black;
-          }
-      }
-
       #battery.warning:not(.charging) {
-          color: white;
-          animation-name: blink;
-          animation-duration: 0.5s;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-          animation-direction: alternate;
-      }
-
-      #cpu {
-      }
-
-      #memory {
-      }
-
-      #network {
-      }
-
-      #network.disconnected {
+          color: #ffffff;
           background: #f53c3c;
       }
-
-      #pulseaudio {
-      }
-
-      #pulseaudio.muted {
-      }
-
-      #custom-spotify {
-          color: rgb(102, 220, 105);
-      }
-
-      #tray {
-      }
-
-      #backlight {
-      }
-
     '';
   };
 }

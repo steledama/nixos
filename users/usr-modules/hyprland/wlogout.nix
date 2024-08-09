@@ -1,15 +1,29 @@
 { config, pkgs, ... }:
 
 let
-  # Define paths for custom icons if you want to use them
-  # Otherwise, wlogout will use its default icons
-  iconPath = "/path/to/your/icons";
+  # Define the path to your custom icons
+  iconPath = "${config.home.homeDirectory}/.config/hypr/wlogoutIcons";
 in
 {
   # Install wlogout
   home.packages = with pkgs; [
     wlogout
   ];
+
+  # Ensure the icon directory exists
+  home.file.".config/hypr/wlogoutIcons/.keep".text = "";
+
+  # Copy custom icons to the correct location
+  # You need to place your icons in the nix configuration directory
+  # alongside this wlogout.nix file
+  home.file = {
+    "${iconPath}/lock.png".source = ./wlogoutIcons/lock.png;
+    "${iconPath}/logout.png".source = ./wlogoutIcons/logout.png;
+    "${iconPath}/suspend.png".source = ./wlogoutIcons/suspend.png;
+    "${iconPath}/hibernate.png".source = ./wlogoutIcons/hibernate.png;
+    "${iconPath}/shutdown.png".source = ./wlogoutIcons/shutdown.png;
+    "${iconPath}/reboot.png".source = ./wlogoutIcons/reboot.png;
+  };
 
   # Configuration for wlogout
   xdg.configFile."wlogout/layout".text = ''
@@ -75,27 +89,27 @@ in
     }
     
     #lock {
-        background-image: image(url("${iconPath}/lock.png"), url("/usr/share/wlogout/icons/lock.png"));
+        background-image: image(url("${iconPath}/lock.png"));
     }
     
     #logout {
-        background-image: image(url("${iconPath}/logout.png"), url("/usr/share/wlogout/icons/logout.png"));
+        background-image: image(url("${iconPath}/logout.png"));
     }
     
     #suspend {
-        background-image: image(url("${iconPath}/suspend.png"), url("/usr/share/wlogout/icons/suspend.png"));
+        background-image: image(url("${iconPath}/suspend.png"));
     }
     
     #hibernate {
-        background-image: image(url("${iconPath}/hibernate.png"), url("/usr/share/wlogout/icons/hibernate.png"));
+        background-image: image(url("${iconPath}/hibernate.png"));
     }
     
     #shutdown {
-        background-image: image(url("${iconPath}/shutdown.png"), url("/usr/share/wlogout/icons/shutdown.png"));
+        background-image: image(url("${iconPath}/shutdown.png"));
     }
     
     #reboot {
-        background-image: image(url("${iconPath}/reboot.png"), url("/usr/share/wlogout/icons/reboot.png"));
+        background-image: image(url("${iconPath}/reboot.png"));
     }
   '';
 }
