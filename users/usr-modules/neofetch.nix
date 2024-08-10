@@ -14,12 +14,29 @@
         info "  GPU" gpu
         info "  MEM" memory
         prin " "
-        prin "       "
+        prin "       "
     }
     distro_shorthand="on"
     memory_unit="gib"
     cpu_temp="C"
     separator=" >"
     stdout="off"
+    
+    # Disable the large ASCII logo but keep small icons
+    image_backend="off"
+    image_source="auto"
+
+    # Customize the appearance
+    bold="on"
+    underline_enabled="on"
+    underline_char="-"
+    separator=" >"
+
+    # Colors for text
+    colors=(distro)
+    
+    # Customize info display
+    package_managers="on"
+    os_arch="on"
   '';
 }

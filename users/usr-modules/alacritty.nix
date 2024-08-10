@@ -4,9 +4,14 @@
     enable = true;
     settings = {
       window = {
-        padding.x = 15;
-        padding.y = 15;
-        # decorations = "none";
+        dimensions = {
+          columns = 120;
+          lines = 34;
+        };
+        padding = {
+          x = 15;
+          y = 15;
+        };
         startup_mode = "Windowed";
         dynamic_title = true;
         opacity = 0.9;
@@ -29,5 +34,4 @@
     };
   };
 }
-
 
