@@ -5,8 +5,8 @@
     settings = {
       window = {
         dimensions = {
-          columns = 120;
-          lines = 34;
+          columns = 110;
+          lines = 36;
         };
         padding = {
           x = 15;
