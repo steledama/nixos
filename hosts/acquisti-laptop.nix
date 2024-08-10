@@ -21,10 +21,8 @@
       # ./sys-modules/nvidia.nix
       # ./sys-modules/amd.nix
 
-      # DE: Desktop Environment (choose one)
-      # ./sys-modules/cinnamon.nix
+      # DE: Desktop Environment
       ./sys-modules/gnome.nix
-      # ./sys-modules/kde.nix
 
       # fonts
       ./sys-modules/fonts.nix

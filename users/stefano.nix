@@ -19,10 +19,6 @@
   imports = [
     # alacritty
     ./usr-modules/alacritty.nix
-    # kitty
-    ./usr-modules/kitty.nix
-    # wezterm
-    ./usr-modules/wezterm.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization
@@ -33,8 +29,6 @@
     ./usr-modules/cursor.nix
     # syncthing
     ./usr-modules/syncthing.nix
-    # hyprland (with gnome)
-    ./usr-modules/hyprland
   ];
 
   # allowUnfree packages

@@ -22,9 +22,7 @@
       # ./sys-modules/amd.nix
 
       # DE: Desktop Environment
-      # ./sys-modules/cinnamon.nix
       ./sys-modules/gnome.nix
-      # ./sys-modules/kde.nix
 
       # fonts
       ./sys-modules/fonts.nix
