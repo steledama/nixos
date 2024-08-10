@@ -47,6 +47,7 @@
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     lftp # ftp client requisito easyfatt
     neofetch # A fast, highly customizable system info script
+    wezterm # terminal
   ];
 
   # editor
