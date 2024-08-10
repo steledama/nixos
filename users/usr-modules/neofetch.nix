@@ -6,7 +6,6 @@
         info "  OS " distro
         info underline
         info "  VER" kernel
-        info "  UP " uptime
         info "  PKG" packages
         info "  DE " de
         info "  TER" term
@@ -14,7 +13,6 @@
         info "  GPU" gpu
         info "  MEM" memory
         prin " "
-        prin "       "
     }
     distro_shorthand="on"
     memory_unit="gib"

@@ -5,33 +5,41 @@
     enable = true;
     extraConfig = ''
       local wezterm = require 'wezterm'
-      
+      local act = wezterm.action
+
       return {
         font = wezterm.font('JetBrains Mono'),
-        font_size = 14,
+        font_size = 12,
         color_scheme = 'Dracula',
         window_background_opacity = 0.9,
-        window_padding = {
-          left = 15,
-          right = 15,
-          top = 15,
-          bottom = 15,
-        },
-        initial_cols = 120,
-        initial_rows = 38,
         unix_domains = {
           {
             name = 'unix',
           },
         },
         window_close_confirmation = 'NeverPrompt',
-        
-        -- Abilita il salvataggio della posizione e dimensione della finestra
         window_decorations = "RESIZE",
-        
-        -- Funzione per caricare la posizione e le dimensioni salvate
-        mux_env_remove = {"WEZTERM_UNIX_SOCKET"},
+
+        -- Override all default shortcuts
+        disable_default_key_bindings = true,
+
+        -- Custom shortcut definitions
+        keys = {
+          -- Shortcut to open a new tab (Ctrl + T)
+          { key = 't', mods = 'CTRL', action = act.SpawnTab 'DefaultDomain' },
+
+          -- Shortcut to close the current tab (Ctrl + W)
+          { key = 'w', mods = 'CTRL', action = act.CloseCurrentTab{ confirm = false } },
+
+          -- Other necessary shortcuts
+          { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo 'Clipboard' },
+          { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom 'Clipboard' },
+          { key = 'f', mods = 'CTRL|SHIFT', action = act.ToggleFullScreen },
+        },
       }
     '';
   };
+
+  # Ensure the configuration directory exists
+  home.file.".config/wezterm/.keep".text = "";
 }
