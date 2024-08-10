@@ -24,9 +24,13 @@
             name = 'unix',
           },
         },
-        -- Abilita il salvataggio della posizione e dimensione della finestra
-        save_window_position = true,
         window_close_confirmation = 'NeverPrompt',
+        
+        -- Abilita il salvataggio della posizione e dimensione della finestra
+        window_decorations = "RESIZE",
+        
+        -- Funzione per caricare la posizione e le dimensioni salvate
+        mux_env_remove = {"WEZTERM_UNIX_SOCKET"},
       }
     '';
   };
