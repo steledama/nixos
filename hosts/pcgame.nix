@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports =
@@ -48,6 +48,8 @@
       # ./sys-modules/touchpad.nix
       # gaming
       ./sys-modules/gaming.nix
+      # db
+      # ./sys-modules/postgre.nix
     ];
 
   # allow unfree software
@@ -66,7 +68,6 @@
     usbimager # flash os iso images on usb drive
     gcc # c compiler
     python3 # python language interpreter
-    postgresql # open source object-relational database system
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -146,5 +147,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }

@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+# starship module
 {
   programs.starship.enable = true;
   programs.starship.settings = {

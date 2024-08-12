@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs }:
 {
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override {

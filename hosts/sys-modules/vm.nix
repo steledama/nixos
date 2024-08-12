@@ -1,5 +1,4 @@
 # This module provides basic configuration for virtualization on NixOS
-
 { config, lib, pkgs, ... }:
 
 with lib;

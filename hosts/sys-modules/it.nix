@@ -1,4 +1,3 @@
-{ pkgs, config, ... }:
 {
   # Configure console keymap
   console.keyMap = "it";

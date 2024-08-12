@@ -1,4 +1,3 @@
-{ pkgs, config, ... }:
 {
   # Optimization settings
   nix = {

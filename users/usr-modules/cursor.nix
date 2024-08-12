@@ -1,7 +1,6 @@
-{ pkgs, config, lib, ... }:
-
+# Configure Cursor Theme
+{ pkgs }:
 {
-  # Configure Cursor Theme
   home.pointerCursor = {
     gtk.enable = true;
     x11.enable = true;
