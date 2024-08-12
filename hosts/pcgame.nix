@@ -66,6 +66,7 @@
     usbimager # flash os iso images on usb drive
     gcc # c compiler
     python3 # python language interpreter
+    postgresql # open source object-relational database system
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
