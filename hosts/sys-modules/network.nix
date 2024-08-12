@@ -1,6 +1,6 @@
 # This module provides configuration options for static and bridge network setups
 
-{ config, lib }:
+{ config, lib, ... }:
 
 with lib;
 

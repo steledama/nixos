@@ -1,5 +1,5 @@
 # Configure Cursor Theme
-{ pkgs }:
+{ pkgs, ... }:
 {
   home.pointerCursor = {
     gtk.enable = true;

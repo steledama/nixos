@@ -11,11 +11,6 @@
     };
 
   outputs = { self, nixpkgs, ... }@inputs:
-    let
-      config = {
-        allowUnfree = true;
-      };
-    in
     {
       # system configurations
       nixosConfigurations =
