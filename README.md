@@ -550,7 +550,7 @@ git remote add origin <the link of your remote repo>
 
 Managing multiple account on different repos or in the same repo require an additional file in .ssh/config:
 
-```
+```text
 Host gitlab.com
   HostName gitlab.com
   User git

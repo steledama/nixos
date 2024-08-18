@@ -18,7 +18,7 @@
   # Imports program configuration modules
   imports = [
     # terminal
-    ./usr-modules/wezterm.nix
+    ./usr-modules/alacritty.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization
@@ -38,7 +38,6 @@
   # environment.
   home.packages = with pkgs; [
     ungoogled-chromium # browser
-    zettlr # note and writing
     vscodium # gui code editor
     libreoffice-fresh # open source office suite
     evolution # mail client
@@ -47,6 +46,7 @@
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     lftp # ftp client requisito easyfatt
     neofetch # A fast, highly customizable system info script
+    obsidian # note taking
   ];
 
   # editor
