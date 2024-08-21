@@ -90,6 +90,12 @@
     hostName = "acquisti-laptop";
     # comment out in case of static or bridge network config
     networkmanager.enable = true;
+
+    # Configurazione del firewall
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 8000 ]; # Apre la porta 8000 per Django
+    };
   };
 
   # Static or bridge network configs (uncomment the module above and configure)
