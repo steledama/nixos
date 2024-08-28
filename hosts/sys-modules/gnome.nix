@@ -21,9 +21,8 @@
     gnome-tour
     gedit
     epiphany
-    # geary
+    geary
     totem
-  ]) ++ (with pkgs.gnome; [
     gnome-music
     tali
     iagno

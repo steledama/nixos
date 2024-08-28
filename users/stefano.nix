@@ -40,7 +40,7 @@
     ungoogled-chromium # browser
     vscodium # gui code editor
     libreoffice-fresh # open source office suite
-    evolution # mail client
+    thunderbird # mail client
     gimp # pixel design
     inkscape # vector design
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
