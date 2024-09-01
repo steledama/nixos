@@ -46,7 +46,8 @@
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     lftp # ftp client requisito easyfatt
     neofetch # A fast, highly customizable system info script
-    logseq # Personal Knowledge Managment
+    obsidian # Personal Knowledge Managment
+    # logseq # Personal Knowledge Managment
   ];
 
   # editor
