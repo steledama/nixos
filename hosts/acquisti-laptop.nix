@@ -94,7 +94,8 @@
     # Configurazione del firewall
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 8000 ]; # Apre la porta 8000 per Django
+      # Apre le porte 8000 per Django e 8069 per odoo
+      allowedTCPPorts = [ 8000 8069 ];
     };
   };
 
