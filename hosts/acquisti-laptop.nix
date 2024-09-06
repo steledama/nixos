@@ -42,6 +42,8 @@
       # ./sys-modules/network.nix
       # virtualization
       # ./sys-modules/vm.nix
+      # containers
+      ./sys-modules/docker.nix
       # ssh
       # ./sys-modules/ssh.nix
       # touchpad
@@ -73,6 +75,12 @@
     isNormalUser = true;
     description = "acquisti";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+  };
+
+  # containers
+  virtualisation.dockerSetup = {
+    enable = true;
+    user = "acquisti";
   };
 
   # HOME-MANAGER as module
