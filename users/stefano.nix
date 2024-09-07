@@ -38,14 +38,13 @@
   # environment.
   home.packages = with pkgs; [
     ungoogled-chromium # browser
-    vscodium # gui code editor
     libreoffice-fresh # open source office suite
     thunderbird # mail client
     gimp # pixel design
     inkscape # vector design
     neofetch # A fast, highly customizable system info script
     obsidian # Personal Knowledge Managment
-    # logseq # Personal Knowledge Managment
+    vscode # gui code editor
   ];
 
   # editor
