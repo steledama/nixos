@@ -43,6 +43,7 @@
     gimp # pixel design
     inkscape # vector design
     neofetch # A fast, highly customizable system info script
+    zoxide # smarter cd command
     obsidian # Personal Knowledge Managment
     vscode # gui code editor
   ];
@@ -63,6 +64,13 @@
     options = [
       "--cmd cd"
     ];
+  };
+  # Ensure Zoxide is initialized in Bash
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      eval "$(zoxide init bash)"
+    '';
   };
 
 }
