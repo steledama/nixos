@@ -45,6 +45,7 @@
     neofetch # A fast, highly customizable system info script
     obsidian # Personal Knowledge Managment
     vscode # gui code editor
+    amule # Peer-to-peer client for the eD2K and Kademlia networks
   ];
 
   # editor
