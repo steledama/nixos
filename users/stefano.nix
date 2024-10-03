@@ -43,9 +43,11 @@
     gimp # pixel design
     inkscape # vector design
     neofetch # A fast, highly customizable system info script
+    zoxide # smarter cd command
     obsidian # Personal Knowledge Managment
     vscode # gui code editor
     amule # Peer-to-peer client for the eD2K and Kademlia networks
+    calibre # Comprehensive e-book software
   ];
 
   # editor
@@ -57,4 +59,21 @@
   programs.home-manager = {
     enable = true;
   };
+
+  # Zoxide configuration
+  programs.zoxide = {
+    enable = true;
+    enableBashIntegration = true;
+    options = [
+      "--cmd cd"
+    ];
+  };
+  # Ensure Zoxide is initialized in Bash
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      eval "$(zoxide init bash)"
+    '';
+  };
+
 }

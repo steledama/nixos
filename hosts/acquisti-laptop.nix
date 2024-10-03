@@ -68,7 +68,6 @@
     usbimager # Utility to flash os iso images on usb drive
     gcc # C compiler
     lsof # Tool to list open files
-    zoxide # A fast cd command that learns your habits
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

@@ -68,7 +68,6 @@
     usbimager # Utility to flash os iso images on usb drive
     gcc # C compiler
     lsof # Tool to list open files
-    zoxide # A fast cd command that learns your habits
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -103,6 +102,23 @@
     hostName = "pcgame";
     # comment out in case of static or bridge network config
     networkmanager.enable = true;
+
+    # Configurazione del firewall
+    firewall = {
+      enable = true;
+
+      # Porte TCP per aMule
+      allowedTCPPorts = [
+        4662 # Porta principale per il trasferimento dati eD2K
+        4672 # Porta per le connessioni in entrata (configurable in aMule)
+      ];
+
+      # Porte UDP per aMule
+      allowedUDPPorts = [
+        4665 # Porta per il server eD2K
+        4672 # Porta per le connessioni Kad
+      ];
+    };
   };
 
   # Static or bridge network configs (uncomment the module above and configure)
