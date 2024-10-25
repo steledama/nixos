@@ -61,8 +61,8 @@
     git # Version control
     lazygit # Git frontend
     neovim # Terminal editor
-    nil # Nix language server
-    nixpkgs-fmt # Code formater for nix
+    nixd # Nix language server
+    nixfmt-rfc-style # Code formater for nix
     wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     unzip # An extraction utility for archives compressed in .zip format
     usbimager # Utility to flash os iso images on usb drive

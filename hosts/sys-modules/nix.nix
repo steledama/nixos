@@ -10,6 +10,9 @@
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       ];
     };
+    # Set nixpkgs path to match the one from flake inputs
+    # This ensures consistency between flake and non-flake commands
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     # garbage collection automation
     gc = {
       automatic = true;
