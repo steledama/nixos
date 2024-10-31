@@ -659,8 +659,14 @@ Verify alsa config saving alsa stata in asound.state:
 sudo alsactl store
 ```
 
-rebuild the system:
+rebuild the system and switch to the new one:
 
 ```bash
 sudo nixos-rebuild switch --flake .
+```
+
+rebuild the system and wait to reboot to switch to the new one:
+
+```bash
+sudo nixos-rebuild boot --flake .
 ```
