@@ -5,52 +5,51 @@
 { pkgs, inputs, ... }:
 
 {
-  imports =
-    [
-      # HOME MANAGER
-      inputs.home-manager.nixosModules.default
+  imports = [
+    # HOME MANAGER
+    inputs.home-manager.nixosModules.default
 
-      # HARDWARE
-      ./hw/hardware-pcgame.nix
+    # HARDWARE
+    ./hw/hardware-pcgame.nix
 
-      # KERNEL (comment out for default kernel)
-      ./sys-modules/zen.nix
+    # KERNEL (comment out for default kernel)
+    ./sys-modules/zen.nix
 
-      # GPU (choose one)
-      # ./sys-modules/intel.nix
-      ./sys-modules/nvidia.nix
-      # ./sys-modules/amd.nix
+    # GPU (choose one)
+    # ./sys-modules/intel.nix
+    ./sys-modules/nvidia.nix
+    # ./sys-modules/amd.nix
 
-      # DE: Desktop Environment
-      ./sys-modules/gnome.nix
+    # DE: Desktop Environment
+    ./sys-modules/gnome.nix
 
-      # fonts
-      ./sys-modules/fonts.nix
-      # boot
-      ./sys-modules/boot.nix
-      # locale
-      ./sys-modules/it.nix
-      # nix
-      ./sys-modules/nix.nix
-      # sound
-      ./sys-modules/sound.nix
-      # print
-      ./sys-modules/print.nix
-      # smb (windows network share)
-      # ./sys-modules/smb.nix
-      # network (uncomment only in case of static or bridge configuration)
-      # ./sys-modules/network.nix
-      # virtualization
-      # ./sys-modules/vm.nix
-      # containers
-      ./sys-modules/docker.nix
-      # ssh
-      # ./sys-modules/ssh.nix
-      # touchpad
-      # ./sys-modules/touchpad.nix
-      # gaming
-      ./sys-modules/gaming.nix
-    ];
+    # fonts
+    ./sys-modules/fonts.nix
+    # boot
+    ./sys-modules/boot.nix
+    # locale
+    ./sys-modules/it.nix
+    # nix
+    ./sys-modules/nix.nix
+    # sound
+    ./sys-modules/sound.nix
+    # print
+    ./sys-modules/print.nix
+    # smb (windows network share)
+    # ./sys-modules/smb.nix
+    # network (uncomment only in case of static or bridge configuration)
+    # ./sys-modules/network.nix
+    # virtualization
+    # ./sys-modules/vm.nix
+    # containers
+    ./sys-modules/docker.nix
+    # ssh
+    # ./sys-modules/ssh.nix
+    # touchpad
+    # ./sys-modules/touchpad.nix
+    # gaming
+    # ./sys-modules/gaming.nix
+  ];
 
   # allow unfree software
   nixpkgs.config.allowUnfree = true;
@@ -74,7 +73,11 @@
   users.users.stefano = {
     isNormalUser = true;
     description = "stefano";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+    ];
   };
 
   # containers
@@ -84,18 +87,19 @@
   };
 
   # HOME-MANAGER as module
-  home-manager =
-    {
-      # also pass inputs to home-manager modules
-      extraSpecialArgs = { inherit inputs; };
-      users = {
-        stefano = import ../users/stefano.nix;
-      };
-      # Existing configs backup
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      backupFileExtension = "backup";
+  home-manager = {
+    # also pass inputs to home-manager modules
+    extraSpecialArgs = {
+      inherit inputs;
     };
+    users = {
+      stefano = import ../users/stefano.nix;
+    };
+    # Existing configs backup
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
+  };
 
   # Basic network configuration
   networking = {

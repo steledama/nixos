@@ -130,6 +130,12 @@ To update the system and the user home. From you config directory (~/nixos)
 1. `nix flake update`
 2. `sudo nixos-rebuild switch --flake .`
 
+rebuild the system and wait to reboot to switch to the new one:
+
+```bash
+sudo nixos-rebuild boot --flake .
+```
+
 To clean the bootloader:
 
 ```bash
@@ -663,10 +669,4 @@ rebuild the system and switch to the new one:
 
 ```bash
 sudo nixos-rebuild switch --flake .
-```
-
-rebuild the system and wait to reboot to switch to the new one:
-
-```bash
-sudo nixos-rebuild boot --flake .
 ```
