@@ -66,6 +66,39 @@
       # Advanced
       term = "xterm-kitty";
       update_check_interval = 0;
+
+      # Catppuccin Mocha Theme Colors
+      foreground = "#CDD6F4";
+      background = "#1E1E2E";
+      selection_foreground = "#1E1E2E";
+      selection_background = "#F5E0DC";
+      cursor = "#F5E0DC";
+      cursor_text_color = "#1E1E2E";
+      
+      # Terminal colors
+      color0 = "#45475A";
+      color8 = "#585B70";
+      color1 = "#F38BA8";
+      color9 = "#F38BA8";
+      color2 = "#A6E3A1";
+      color10 = "#A6E3A1";
+      color3 = "#F9E2AF";
+      color11 = "#F9E2AF";
+      color4 = "#89B4FA";
+      color12 = "#89B4FA";
+      color5 = "#F5C2E7";
+      color13 = "#F5C2E7";
+      color6 = "#94E2D5";
+      color14 = "#94E2D5";
+      color7 = "#BAC2DE";
+      color15 = "#A6ADC8";
+      
+      # Tab bar colors
+      active_tab_foreground = "#1E1E2E";
+      active_tab_background = "#CBA6F7";
+      inactive_tab_foreground = "#CDD6F4";
+      inactive_tab_background = "#181825";
+      tab_bar_background = "#11111B";
     };
     
     # Keyboard shortcuts
@@ -81,12 +114,9 @@
       "ctrl+shift+minus" = "change_font_size all -2.0";
       "ctrl+shift+backspace" = "change_font_size all 0";
     };
-    
-    # Theme settings
-    theme = "Catppuccin-Mocha";
   };
   
-  # Se vuoi installare kitty-themes o imagemagick, aggiungili ai pacchetti home
+  # Additional packages
   home.packages = with pkgs; [
     kitty-themes
     imagemagick
