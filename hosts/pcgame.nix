@@ -111,16 +111,19 @@
     firewall = {
       enable = true;
 
-      # Porte TCP per aMule
+      # Porte TCP
       allowedTCPPorts = [
-        4662 # Porta principale per il trasferimento dati eD2K
-        4672 # Porta per le connessioni in entrata (configurable in aMule)
+        4662 # aMule dati eD2K
+        4672 # aMule connessioni in entrata
+        8080 # ERPNext
+        # 8000 # Django
+        # 8069 # odoo
       ];
 
-      # Porte UDP per aMule
+      # Porte UDP
       allowedUDPPorts = [
-        4665 # Porta per il server eD2K
-        4672 # Porta per le connessioni Kad
+        4665 # aMule eD2K
+        4672 # aMule Kad
       ];
     };
   };
@@ -150,21 +153,6 @@
   #   # - 'ip link show' (shows all network interfaces)
   #   # - 'ls /sys/class/net' (lists network interfaces)
   #   # - 'networkctl list' (shows network interfaces and their status)
-  # };
-
-  # Windows Network Share Configuration (uncomment the module smb.nix above and configure)
-  # This section configures the mounting of a Windows SMB share.
-  # You can add multiple share configurations by duplicating this block and changing the settings.
-  # For advanced options, see the SMB module file at ./sys-modules/smb.nix
-  # services.windowsShare = {
-  #   enable = true;
-  #   deviceAddress = "//192.168.1.1/share";
-  #   username = "stefano";
-  #   # Optional: you can overwrite the default mount point if needed
-  #   # mountPoint = "/mnt/windowsshare";
-  #   # Optional: you can specify a custom path for the credentials file
-  #   # credentialsFile = "/etc/nixos/smb-secrets";
-  #   credentialsFile = "/home/stefano/nixos/smb-secrets";
   # };
 
   # This value determines the NixOS release from which the default

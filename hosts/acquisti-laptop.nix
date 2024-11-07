@@ -5,52 +5,51 @@
 { pkgs, inputs, ... }:
 
 {
-  imports =
-    [
-      # HOME MANAGER
-      inputs.home-manager.nixosModules.default
+  imports = [
+    # HOME MANAGER
+    inputs.home-manager.nixosModules.default
 
-      # HARDWARE
-      ./hw/hardware-acquisti-laptop.nix
+    # HARDWARE
+    ./hw/hardware-acquisti-laptop.nix
 
-      # KERNEL (comment out for default kernel)
-      ./sys-modules/zen.nix
+    # KERNEL (comment out for default kernel)
+    ./sys-modules/zen.nix
 
-      # GPU (choose one)
-      ./sys-modules/intel.nix
-      # ./sys-modules/nvidia.nix
-      # ./sys-modules/amd.nix
+    # GPU (choose one)
+    ./sys-modules/intel.nix
+    # ./sys-modules/nvidia.nix
+    # ./sys-modules/amd.nix
 
-      # DE: Desktop Environment
-      ./sys-modules/gnome.nix
+    # DE: Desktop Environment
+    ./sys-modules/gnome.nix
 
-      # fonts
-      ./sys-modules/fonts.nix
-      # boot
-      ./sys-modules/boot.nix
-      # locale
-      ./sys-modules/it.nix
-      # nix
-      ./sys-modules/nix.nix
-      # sound
-      ./sys-modules/sound.nix
-      # print
-      ./sys-modules/print.nix
-      # smb (windows network share)
-      ./sys-modules/smb.nix
-      # network (uncomment only in case of static or bridge configuration)
-      # ./sys-modules/network.nix
-      # virtualization
-      # ./sys-modules/vm.nix
-      # containers
-      ./sys-modules/docker.nix
-      # ssh
-      # ./sys-modules/ssh.nix
-      # touchpad
-      ./sys-modules/touchpad.nix
-      # gaming
-      # ./sys-modules/gaming.nix
-    ];
+    # fonts
+    ./sys-modules/fonts.nix
+    # boot
+    ./sys-modules/boot.nix
+    # locale
+    ./sys-modules/it.nix
+    # nix
+    ./sys-modules/nix.nix
+    # sound
+    ./sys-modules/sound.nix
+    # print
+    ./sys-modules/print.nix
+    # smb (windows network share)
+    ./sys-modules/smb.nix
+    # network (uncomment only in case of static or bridge configuration)
+    # ./sys-modules/network.nix
+    # virtualization
+    # ./sys-modules/vm.nix
+    # containers
+    ./sys-modules/docker.nix
+    # ssh
+    # ./sys-modules/ssh.nix
+    # touchpad
+    ./sys-modules/touchpad.nix
+    # gaming
+    # ./sys-modules/gaming.nix
+  ];
 
   # allow unfree software
   nixpkgs.config.allowUnfree = true;
@@ -74,7 +73,11 @@
   users.users.acquisti = {
     isNormalUser = true;
     description = "acquisti";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+    ];
   };
 
   # containers
@@ -84,14 +87,15 @@
   };
 
   # HOME-MANAGER as module
-  home-manager =
-    {
-      # also pass inputs to home-manager modules
-      extraSpecialArgs = { inherit inputs; };
-      users = {
-        acquisti = import ../users/acquisti.nix;
-      };
+  home-manager = {
+    # also pass inputs to home-manager modules
+    extraSpecialArgs = {
+      inherit inputs;
     };
+    users = {
+      acquisti = import ../users/acquisti.nix;
+    };
+  };
 
   # Basic network configuration
   networking = {
@@ -102,8 +106,20 @@
     # Configurazione del firewall
     firewall = {
       enable = true;
-      # Apre le porte 8000 per Django e 8069 per odoo
-      allowedTCPPorts = [ 8000 8069 ];
+      # Porte TCP
+      allowedTCPPorts = [
+        # 4662 # aMule dati eD2K
+        # 4672 # aMule connessioni in entrata
+        8080 # ERPNext
+        # 8000 # Django
+        # 8069 # odoo
+      ];
+
+      # Porte UDP
+      # allowedUDPPorts = [
+      #   4665 # aMule eD2K
+      #   4672 # aMule Kad
+      # ];
     };
   };
 
@@ -135,18 +151,24 @@
   # };
 
   # Windows network share configs (uncomment the module smb.nix above and configure)
-  # This section configures the mounting of a Windows SMB share.
-  # You can add multiple share configurations by duplicating this block and changing the settings.
-  # For advanced options, see the SMB module file at ./sys-modules/smb.nix
-  services.windowsShare = {
+  services.windowsShares = {
     enable = true;
-    deviceAddress = "//10.40.40.98/scan";
-    username = "acquisti";
-    # Optional: you can overwrite the default mount point if needed
-    # mountPoint = "/mnt/windowsshare";
-    # Optional: you can specify a custom path for the credentials file
-    # credentialsFile = "/etc/nixos/smb-secrets";
-    credentialsFile = "/home/acquisti/nixos/smb-secrets";
+    shares = {
+      scan = {
+        enable = true;
+        deviceAddress = "//10.40.40.98/scan";
+        username = "acquisti";
+        mountPoint = "/mnt/scan";
+        credentialsFile = "/home/acquisti/nixos/smb-secrets";
+      };
+      manuali = {
+        enable = true;
+        deviceAddress = "//10.40.40.98/manuali";
+        username = "acquisti";
+        mountPoint = "/mnt/manuali";
+        credentialsFile = "/home/acquisti/nixos/smb-secrets";
+      };
+    };
   };
 
   # Service fo fix home monitor resolution (specific for this laptop in my home monitor)
@@ -154,16 +176,16 @@
   # systemctl status display-setup
   # check service log
   # journalctl -u display-setup
-  systemd.services.display-setup = {
-    description = "Set up display resolutions for Acquisti Laptop";
-    wantedBy = [ "multi-user.target" ];
-    before = [ "display-manager.service" ];
-    script = builtins.readFile ./acquisti-laptop-monitor.sh;
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-  };
+  # systemd.services.display-setup = {
+  #   description = "Set up display resolutions for Acquisti Laptop";
+  #   wantedBy = [ "multi-user.target" ];
+  #   before = [ "display-manager.service" ];
+  #   script = builtins.readFile ./acquisti-laptop-monitor.sh;
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = "root";
+  #   };
+  # };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
