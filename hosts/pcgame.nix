@@ -80,12 +80,6 @@
     ];
   };
 
-  # containers
-  virtualisation.dockerSetup = {
-    enable = true;
-    user = "stefano";
-  };
-
   # HOME-MANAGER as module
   home-manager = {
     # also pass inputs to home-manager modules
@@ -154,6 +148,12 @@
   #   # - 'ls /sys/class/net' (lists network interfaces)
   #   # - 'networkctl list' (shows network interfaces and their status)
   # };
+
+  # Docker containers
+  virtualisation.dockerSetup = {
+    enable = true;
+    user = "stefano";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

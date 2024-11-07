@@ -80,12 +80,6 @@
     ];
   };
 
-  # containers
-  virtualisation.dockerSetup = {
-    enable = true;
-    user = "acquisti";
-  };
-
   # HOME-MANAGER as module
   home-manager = {
     # also pass inputs to home-manager modules
@@ -171,21 +165,11 @@
     };
   };
 
-  # Service fo fix home monitor resolution (specific for this laptop in my home monitor)
-  # check service status:
-  # systemctl status display-setup
-  # check service log
-  # journalctl -u display-setup
-  # systemd.services.display-setup = {
-  #   description = "Set up display resolutions for Acquisti Laptop";
-  #   wantedBy = [ "multi-user.target" ];
-  #   before = [ "display-manager.service" ];
-  #   script = builtins.readFile ./acquisti-laptop-monitor.sh;
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     User = "root";
-  #   };
-  # };
+  # Docker containers
+  virtualisation.dockerSetup = {
+    enable = true;
+    user = "acquisti";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
