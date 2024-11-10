@@ -125,12 +125,19 @@ sudo nixos-rebuild switch --flake .
 
 ### How to use this config
 
-To update the system and the user home. From you config directory (~/nixos)
+To update:
 
-1. `nix flake update`
-2. `sudo nixos-rebuild switch --flake .`
+```bash
+nix flake update
+```
 
-rebuild the system and wait to reboot to switch to the new one:
+Rebuild the system and the user home and switch to the new system go to your config directory (~/nixos):
+
+```bash
+sudo nixos-rebuild switch --flake .
+```
+
+Or rebuild the system and wait to reboot to switch to the new one:
 
 ```bash
 sudo nixos-rebuild boot --flake .
