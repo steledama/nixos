@@ -46,6 +46,7 @@
     zoxide # smarter cd command
     obsidian # Personal Knowledge Managment
     vscode # gui code editor
+    anydesk
   ];
 
   # editor
