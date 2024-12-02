@@ -6,7 +6,8 @@
     format = "$shlvl$time$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$character";
     shlvl = {
       disabled = false;
-      symbol = "ﰬ";
+      # Usando un simbolo da font-awesome invece di nerdfonts
+      symbol = "⚡";
       style = "bright-red bold";
     };
     time = {
