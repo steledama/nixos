@@ -18,7 +18,7 @@
   # Imports program configuration modules
   imports = [
     # terminal
-    ./usr-modules/kitty.nix
+    ./usr-modules/alacritty.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization
