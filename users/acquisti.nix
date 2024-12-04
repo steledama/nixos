@@ -47,6 +47,7 @@
     obsidian # Personal Knowledge Managment
     vscode # gui code editor
     anydesk
+    filezilla # ftp client
   ];
 
   # editor
