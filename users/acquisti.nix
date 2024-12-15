@@ -38,6 +38,7 @@
   # environment.
   home.packages = with pkgs; [
     ungoogled-chromium # browser
+    google-chrome # work browser
     libreoffice-fresh # open source office suite
     thunderbird # mail client
     gimp # pixel design

@@ -37,7 +37,8 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    ungoogled-chromium # browser
+    ungoogled-chromium # private browser
+    google-chrome # work browser
     libreoffice-fresh # open source office suite
     thunderbird # mail client
     gimp # pixel design
