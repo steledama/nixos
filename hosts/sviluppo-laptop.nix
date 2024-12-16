@@ -70,7 +70,7 @@
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.acquisti = {
+  users.users.sviluppo = {
     isNormalUser = true;
     description = "sviluppo";
     extraGroups = [
@@ -87,7 +87,7 @@
       inherit inputs;
     };
     users = {
-      acquisti = import ../users/sviluppo.nix;
+      sviluppo = import ../users/sviluppo.nix;
     };
   };
 
