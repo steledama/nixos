@@ -40,7 +40,7 @@ At the moment there are two requirements:
 Edit configuration.nix file to enable flake and add git:
 
 ```bash
-sudo nano /etc/configuration.nix
+sudo nano /etc/nixos/configuration.nix
 ```
 
 add this line:
@@ -70,7 +70,7 @@ sudo nixos-rebuild switch
 Clone this repo from your home directory
 
 ```bash
-git clone git@gitlab.com:stefano.pompa/nixos.git
+git clone https://gitlab.com/stefano.pompa/nixos.git
 ```
 
 Copy your actual configuration.nix file and hardware-configuration.nix file:
