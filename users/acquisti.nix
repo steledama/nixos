@@ -49,6 +49,7 @@
     vscode # gui code editor
     anydesk
     filezilla # ftp client
+    efibootmgr # utility to manage (EFI) Boot Manager
   ];
 
   # editor
