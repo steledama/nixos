@@ -67,6 +67,7 @@
     usbimager # Utility to flash os iso images on usb drive
     gcc # C compiler
     lsof # Tool to list open files
+    efibootmgr # utility to manage (EFI) Boot Manager
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

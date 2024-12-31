@@ -17,8 +17,6 @@
 
   # Imports program configuration modules
   imports = [
-    # terminal
-    ./usr-modules/alacritty.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization
@@ -49,7 +47,7 @@
     vscode # gui code editor
     anydesk
     filezilla # ftp client
-    efibootmgr # utility to manage (EFI) Boot Manager
+    ghostty # terminal emulator
   ];
 
   # editor

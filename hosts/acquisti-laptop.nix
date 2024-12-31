@@ -67,6 +67,7 @@
     usbimager # Utility to flash os iso images on usb drive
     gcc # C compiler
     lsof # Tool to list open files
+    efibootmgr # utility to manage (EFI) Boot Manager
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -122,20 +123,20 @@
   #   # Define a static IP address:
   #   staticIP.address = "192.168.1.27";
   #   # Note: Default prefix length is 24, change in network.nix if needed
-  #   
+  #
   #   # Define the default gateway:
   #   gateway = "192.168.1.1";
-  #   
+  #
   #   # Define DNS servers:
   #   nameservers = [ "192.168.1.1" "8.8.8.8" ];
-  #   
+  #
   #   # Uncomment one of the following types:
   #   type = "static";
   #   # type = "bridge"; # only needed in case of virtual module uncommented (vm.nix)
-  #   
+  #
   #   # For bridge configuration:
   #   # bridgeConfig.name = "br0";
-  #   
+  #
   #   # Specify interface only if automatic detection fails:
   #   # interface = "enp7s0";
   #   # To discover network interfaces, you can use these commands:

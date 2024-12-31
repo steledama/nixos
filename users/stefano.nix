@@ -17,8 +17,6 @@
 
   # Imports program configuration modules
   imports = [
-    # terminal
-    ./usr-modules/alacritty.nix
     # terminal system info
     ./usr-modules/neofetch.nix
     # bash prompt customization
@@ -50,7 +48,7 @@
     amule # Peer-to-peer client for the eD2K and Kademlia networks
     calibre # Comprehensive e-book software
     filezilla # ftp client
-    efibootmgr # utility to manage (EFI) Boot Manager
+    ghostty # terminal emulator
   ];
 
   # editor
