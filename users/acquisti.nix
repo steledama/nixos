@@ -48,6 +48,7 @@
     anydesk
     filezilla # ftp client
     ghostty # terminal emulator
+    alacritty # terminal emulator
   ];
 
   # editor
