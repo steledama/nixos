@@ -17,8 +17,6 @@
 
   # Imports program configuration modules
   imports = [
-    # terminal system info
-    ./usr-modules/neofetch.nix
     # bash prompt customization
     ./usr-modules/starship.nix
     # bash aliases and start commands
