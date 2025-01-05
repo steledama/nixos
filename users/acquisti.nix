@@ -17,8 +17,6 @@
 
   # Imports program configuration modules
   imports = [
-    # bash prompt customization
-    ./usr-modules/starship.nix
     # bash aliases and start commands
     ./usr-modules/bash.nix
     # cursor
@@ -33,19 +31,19 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    ungoogled-chromium # browser
+    firefox # browser
     google-chrome # work browser
     libreoffice-fresh # open source office suite
     thunderbird # mail client
     gimp # pixel design
     inkscape # vector design
-    neofetch # A fast, highly customizable system info script
-    zoxide # smarter cd command
     obsidian # Personal Knowledge Managment
     vscode # gui code editor
     anydesk
     filezilla # ftp client
     alacritty # terminal emulator
+    neofetch # A fast, highly customizable system info script
+    starship
   ];
 
   # editor
@@ -55,22 +53,6 @@
   # self enable
   programs.home-manager = {
     enable = true;
-  };
-
-  # Zoxide configuration
-  programs.zoxide = {
-    enable = true;
-    enableBashIntegration = true;
-    options = [
-      "--cmd cd"
-    ];
-  };
-  # Ensure Zoxide is initialized in Bash
-  programs.bash = {
-    enable = true;
-    initExtra = ''
-      eval "$(zoxide init bash)"
-    '';
   };
 
 }
