@@ -1,16 +1,17 @@
 { inputs, ... }:
-
 {
-  # Optimization settings
   nix = {
     settings = {
-      # enable flakes
-      experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true;
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      experimental-features = [
+        "nix-command"
+        "flakes"
       ];
+      auto-optimise-store = true;
+      # Keep build dependencies and outputs in the nix store
+      # This improves development experience by keeping intermediary build files
+      # and helps with debugging builds
+      keep-outputs = true;
+      keep-derivations = true;
     };
     # Set nixpkgs path to match the one from flake inputs
     # This ensures consistency between flake and non-flake commands
@@ -23,4 +24,3 @@
     };
   };
 }
-
