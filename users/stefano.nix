@@ -48,7 +48,7 @@
     amule # Peer-to-peer client for the eD2K and Kademlia networks
     calibre # Comprehensive e-book software
     filezilla # ftp client
-    ghostty # terminal emulator
+    alacritty # terminal emulator
   ];
 
   # editor

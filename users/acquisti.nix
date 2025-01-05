@@ -47,7 +47,6 @@
     vscode # gui code editor
     anydesk
     filezilla # ftp client
-    ghostty # terminal emulator
     alacritty # terminal emulator
   ];
 
