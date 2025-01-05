@@ -42,8 +42,8 @@
     anydesk
     filezilla # ftp client
     alacritty # terminal emulator
-    neofetch # A fast, highly customizable system info script
-    starship
+    neofetch # terminal system info script
+    starship # terminal prompt customization
   ];
 
   # editor
@@ -54,5 +54,4 @@
   programs.home-manager = {
     enable = true;
   };
-
 }

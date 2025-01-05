@@ -33,15 +33,5 @@
           ];
         };
       };
-      # HOME-MANAGER as standalone
-      # homeConfigurations =
-      # {
-      #   user = home-manager.lib.homeManagerConfiguration {
-      #     specialArgs = { inherit inputs; };
-      #     modules = [
-      #       ./users/stefano.nix
-      #     ];
-      #   };
-      # };
     };
 }

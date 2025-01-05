@@ -15,7 +15,6 @@
   environment.systemPackages = with pkgs; [
     lutris
     heroic
-    bottles
     wineWowPackages.stable
     winetricks
     protontricks
