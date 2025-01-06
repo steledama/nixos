@@ -1,41 +1,13 @@
 # NixOS kickstart guide for beginners
 
-This repository contains my NixOS configuration. The README serves as a step-by-step guide to understanding NixOS and its initial configuration process. It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
+This repository contains my NixOS minimal Gnome configuration. The README serves as a step-by-step guide to the initial configuration and to understanding NixOS. It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
 
-## Indice
-
-- [Quick start](#quick-start)
-  - [Install](#install)
-  - [How to use this config](#how-to-use-this-config)
-- [Nix language, Nix package manager and NixOs](#nix-language-nix-package-manager-and-nixos)
-- [ISO image to install NixOs](#iso-image-to-install-nixos)
-- [The out of the box configuration](#the-out-of-the-box-configuration)
-- [Flakes: what they are and why they are necessary](#flakes-what-they-are-and-why-they-are-necessary)
-- [Home-manager: control the entire system](#home-manager-control-the-entire-system)
-  - [Standalone installation](#standalone-installation)
-  - [Installation as a module (like in this repo)](#installation-as-a-module-like-in-this-repo)
-- [Version control on the configuration](#version-control-on-the-configuration)
-  - [Basic git first configuration](#basic-git-first-configuration)
-  - [Create a SSH key](#create-a-ssh-key)
-  - [Add the ssh key to your github account](#add-the-ssh-key-to-your-github-account)
-  - [Remote repo configuration in local folder](#remote-repo-configuration-in-local-folder)
-  - [Multi account management](#multi-account-management)
-  - [Basic git workflow](#basic-git-workflow)
-- [Multihost and Multiuser Modular Configuration](#multihost-and-multiuser-modular-configuration)
-
-## Quick start
-
-TODO:
-
-- one command to install the system (see [this video](https://www.youtube.com/watch?v=Dm11dcJ0vWY&t=11s), and [the channel](https://www.youtube.com/@librephoenix))
-- Add hyperland in modules
-
-### Install
+## Install
 
 At the moment there are two requirements:
 
-- a working nixOs installation
-- uefi boot on gpt
+- A working nixOs installation
+- Uefi boot on gpt
 
 Edit configuration.nix file to enable flake and add git:
 
@@ -43,7 +15,7 @@ Edit configuration.nix file to enable flake and add git:
 sudo nano /etc/nixos/configuration.nix
 ```
 
-add this line:
+add this line to enable flakes:
 
 ```nix
 nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -73,57 +45,60 @@ Clone this repo from your home directory
 git clone https://gitlab.com/stefano.pompa/nixos.git
 ```
 
-Copy your actual configuration.nix file and hardware-configuration.nix file:
+Copy your actual hardware-configuration.nix file and rename it as 'hardware-hostname' where the hostname is your actual hostname, the defoult one aftyer a fresh installation is 'nixos' so the file should be renamed as 'hardware-nixos':
 
 ```bash
-cp /etc/nixos/configuration.nix ~/nixos/hosts/
-cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/hw/
+cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/hw/hardware-nixos.nix
 ```
 
-Generate a barbone home.nix file:
+Rename a user configuration file from the repo (es. 'stefano.nix') with the name of your user (es. jhon.nix):
 
 ```bash
-nix run home-manager/master -- init
+mv ~/nixos/users/stefano.nix ~/nixos/users/jhon.nix
 ```
 
-Copy it in the nixos folder to the users directory:
+Rename a host configuration file from the repo (es. 'pcgame.nix') with the name of your ushoster (es. nixos.nix):
 
 ```bash
-cp ~/.config/home-manager/home.nix ~/nixos/users/
+mv ~/nixos/hosts/pcgam.nix ~/nixos/hosts/nixos.nix
 ```
 
-Edit ~/nixos/hosts/configuration.nix with your favorite editor to add this lines and change 'userName' to match the username defined during installation:
+Edit ~/nixos/hosts/nixos.nix with your favorite editor to substitute 'stefano' to match your username es 'jhon' and edit the same file to substitute the hostname 'pcgame' with yours (es 'nixos')
 
-```nix
-home-manager =
-  {
-    extraSpecialArgs = { inherit inputs; };
-    users = {
-      ## change 'userName' with your actual username
-      userName = import ../users/home.nix;
-    };
-  };
-```
-
-Uncomment the following lines in ~/nixos/flake.nix (check that the hostname in the networking section of your configuration.nix is 'nixos' that is the default of every new installations):
+Edit the following lines in ~/nixos/flake.nix:
 
 ```nix
 # kichstart: (uncomment the following and check the hostname)
 nixos = nixpkgs.lib.nixosSystem {
   specialArgs = { inherit inputs; };
   modules = [
-    ./hosts/configuration.nix
+    ./hosts/nixos.nix
   ];
 };
+```
+
+Edit the user config file:
+
+```bash
+sudo nvim ~/nixos/users/jhon.nix
+```
+
+Edit this lines to configure the user:
+
+````bash
+home.username = "jhon";
+ home.homeDirectory = "/home/jhon";
 ```
 
 Go to your config directory (if you follow the instructions is ~/nixos) and launch the rebuild command:
 
 ```bash
 sudo nixos-rebuild switch --flake .
-```
+````
 
-### How to use this config
+Do not forget the dot at the end of the command. Once you are done yau are in the new system. A reboot is suggested to fully appreciate the configuration.
+
+## How to use this config
 
 To update:
 
@@ -131,25 +106,25 @@ To update:
 nix flake update
 ```
 
-Rebuild the system and the user home and switch to the new system go to your config directory (~/nixos):
+Rebuild the system and the user home and switch to the new system. Go to the config durectory and execute this command:
 
 ```bash
 sudo nixos-rebuild switch --flake .
 ```
 
-Or rebuild the system and wait to reboot to switch to the new one:
+To rebuild the system and wait to reboot to switch to the new one:
 
 ```bash
 sudo nixos-rebuild boot --flake .
 ```
 
-To clean the bootloader:
+To clean the bootloader this is the configured alias:
 
 ```bash
 gcCleanup
 ```
 
-To change boot time out and default os:
+At the end it open with vin the following file to change boot time out and default os:
 
 ```bash
 sudo nvim /boot/loader/loader.conf
