@@ -647,6 +647,50 @@ This is my actual configuration. I am improving it, I would like, for instance, 
 
 I am studying others' configs because I feel that the time I invest in it is time that I save if I need to replicate my systems between different machines or share my configurations with others. I hope this readme can help a beginner like me to start moving first steps in this powerful tech and community.
 
+## Cross-Platform System Keyboard Shortcuts
+
+This section aims to provide a consistent and efficient keyboard shortcut experience between Windows and Linux (Gnome). The goal is to feel productive and "at home" across the two systems in the shortest time possible. Two guiding principles shape our choices for keyboard shortcuts:
+
+1. **Cross-platform compatibility**: Shortcuts should be configurable across Windows and Linux.
+2. **Minimalism**: Shortcuts should be as close to out-of-the-box as possible, respecting default configurations while minimizing customizations and reducing the number of shortcuts to learn.
+
+As a consequence of these considerations, the most efficient approach in my opinion is to adapt our habits (and muscle memory) to a configuration as close as possible to the default settings of the most widespread default environment: Windows.
+
+### Microsoft Windows and Linux
+
+Windows is the most widespread environment out there. While I personally prefer Linux for home and work, I don't like feeling lost when using a Windows PC. Microsoft arrived 'late to the party' with virtual desktops and tiling windows, but with Windows 11, there are some clear steps in that direction. Here's an overview of what I consider the main basic Windows general shortcuts that are working out of the box on every Windows machine together with the most productive shortcuts to add.
+After the distro choice, there is the desktop environment or window manager to choose from. Gnome is a sort of love-it-or-hate-it environment. You first have to understand the underlying design, and then you have to embrace it; then you could love or hate it. I suggest you start from [this video](https://www.youtube.com/watch?v=wbDLfRjam0E) to get an idea of the Gnome design vision. I personally love it as the sweet spot between the revolutionary tiling window manager experience and the traditional classic desktop experience of Windows (Cinnamon, KDE, Xfce, MATE...). GNOME has a clear, clever, and brave user experience design vision and in my opinion, it is the most beautiful and advanced desktop environment of all, even compared to Mac's proprietary closed-source operating system.
+
+### The shortcuts table
+
+To set up these shortcuts in gnome go to: Settings > Keyboard > Keyboard Shortcuts. These are to be considered our custom optimized shortcuts setup:
+
+| Function                           | Shortcut                     | Windows | Gnome                                         |
+| ---------------------------------- | ---------------------------- | ------- | --------------------------------------------- |
+| Close window                       | `Alt + F4`                   | default | default                                       |
+| Maximize window                    | `Super + Up`                 | default | default                                       |
+| Minimize window                    | `Super + Down`               | default | no                                            |
+| Snap window left                   | `Super + Left`               | default | default                                       |
+| Snap window right                  | `Super + Right`              | default | default                                       |
+| Launch apps from panel             | `Super + Number`             | default | default                                       |
+| File Explorer                      | `Super + E`                  | default | Launchers > Home folder                       |
+| Show desktop selection screen      | `Super + Tab`                | default | System > Show overview\*                      |
+| Cycle windows                      | `Alt + Tab`                  | default | Navigation > Highlight applications           |
+| Cycle application windows          | `Alt + Backslash`            | no\*\*  | default                                       |
+| Show desktop                       | `Super + D`                  | default | Navigation > Hide all normal windows          |
+| Switch to next desktop             | `Ctrl + Super + Right`       | default | Navigation > Move to workspace on the right   |
+| Switch to previous desktop         | `Ctrl + Super + Left`        | default | Navigation > Move to workspace on the left    |
+| Interactive area screenshot        | `Shift + Super + S`          | default | Screenshots > Take a screenshot interactively |
+| Open run dialog                    | `Super + R`                  | default | System > Show exec command prompt             |
+| Move window to next workplace      | `Alt + Ctrl + Super + Right` | no      | Navigation > Move window to right workspace   |
+| Move window to previous workplace  | `Alt + Ctrl + Super + Left`  | no      | Navigation > Move window to left workspace    |
+| Move window to above monitor\*\*\* | `Alt + Ctrl + Super + Up`    | no      | Navigation > "Move window one monitor up"     |
+| Move window to below monitor\*\*\* | `Alt + Ctrl + Super + Down`  | no      | Navigation > "Move window one monitor down"   |
+
+\* Just `Super` is the default to show the overview, which is more than just showing the desktop and it is just better overall. To ensure consistency, we add this shortcut that disable the default Navigation > Highlight applications shortcut that is better assign to `Alt + Tab` (see below note)
+\*\* This function does not exist on Windows. In Windows `Alt + Tab` switches between windows in the current desktop. In gnome for consistency you could do the same choosing to assign the shortcut to `Highlight windows` but you have the option to assign another shortcut to cycle between all the open windows of the current application (see `Alt + Backslash`) so as an exeption to the consistency principle above is much better to assign the `Alt + Tab` shortcut to `Highlight applications`. There is anothe option in `Settings > Multi-tasking > Application switching`, in wich you can choose if you want to switch the applications in the present workspace only or between all open applications (defoult). The latter default option allow you to have all applications in a metter of one single shourtcut considering that you can switch back and forward with just one single shortcut and you do not need to cycle all because it rememebr the last two apllciations switch. This settings combination is for me a big increase in productivity compared to Windows.
+\*\*\* Shortcuts working on up-down multi-monitor disposition
+
 ## Appendix
 
 ### Alsa store bug
