@@ -87,7 +87,7 @@ Edit this lines to configure the user:
 
 ```bash
 home.username = "jhon";
- home.homeDirectory = "/home/jhon";
+home.homeDirectory = "/home/jhon";
 ```
 
 Go to your config directory (if you follow the instructions is ~/nixos) and launch the rebuild command:
