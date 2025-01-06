@@ -655,7 +655,7 @@ To set up these shortcuts in gnome go to: Settings > Keyboard > Keyboard Shortcu
 | File Explorer                      | `Super + E`                  | default | Launchers > Home folder                       |
 | Show desktop selection screen      | `Super + Tab`                | default | System > Show overview\*                      |
 | Cycle windows                      | `Alt + Tab`                  | default | Navigation > Highlight applications           |
-| Cycle application windows          | `Alt + Backslash`            | no\*\*  | default                                       |
+| Cycle application windows          | `Alt + Backslash`            | no\*\*  | Navigation > Highlight applications windows   |
 | Show desktop                       | `Super + D`                  | default | Navigation > Hide all normal windows          |
 | Switch to next desktop             | `Ctrl + Super + Right`       | default | Navigation > Move to workspace on the right   |
 | Switch to previous desktop         | `Ctrl + Super + Left`        | default | Navigation > Move to workspace on the left    |
