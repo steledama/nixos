@@ -85,7 +85,7 @@ sudo nvim ~/nixos/users/jhon.nix
 
 Edit this lines to configure the user:
 
-````bash
+```bash
 home.username = "jhon";
  home.homeDirectory = "/home/jhon";
 ```
@@ -94,7 +94,7 @@ Go to your config directory (if you follow the instructions is ~/nixos) and laun
 
 ```bash
 sudo nixos-rebuild switch --flake .
-````
+```
 
 Do not forget the dot at the end of the command. Once you are done yau are in the new system. A reboot is suggested to fully appreciate the configuration.
 
