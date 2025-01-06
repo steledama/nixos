@@ -15,7 +15,6 @@
   environment.systemPackages = with pkgs; [
     lutris
     heroic
-    wineWowPackages.stable
     winetricks
     protontricks
     protonup-qt # per gestire le versioni di protonGE

@@ -16,23 +16,29 @@
   };
 
   # Exclude GNOME-specific packages here
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-photos
-    gnome-tour
-    gedit
-    epiphany
-    geary
-    totem
-    gnome-music
-    tali
-    iagno
-    hitori
-    atomix
-  ]);
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
+      gnome-console
+      gnome-photos
+      gnome-tour
+      gedit
+      epiphany
+      geary
+      totem
+      gnome-music
+      tali
+      iagno
+      hitori
+      atomix
+    ]
+  );
 
   # Add system packages here
-  environment.systemPackages = (with pkgs; [
-    dconf-editor
-  ]);
+  environment.systemPackages = (
+    with pkgs;
+    [
+      dconf-editor
+    ]
+  );
 }
-
