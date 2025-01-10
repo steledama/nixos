@@ -2,7 +2,7 @@
 
 This repository contains my NixOS minimal Gnome configuration. The README serves as a step-by-step guide to the initial configuration and to understanding NixOS.
 
-![The minimal vanilla gnome system](./readme-img/screenshot.png)
+![The minimal vanilla gnome system](.screenshot.png)
 
 It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
 
@@ -177,9 +177,11 @@ With a fresh installation of NixOS, you have two configuration files in /etc/nix
 nixos-generate-config --show-hardware-config > hardware.nix
 ```
 
-The proposed diagram depicts the schema for the out-of-the-box NixOS configuration:
+This is the directory structure for the out-of-the-box NixOS configuration:
 
-![Out of the box configuration](./readme-img/out-of-the-box.png)
+/etc/nixos/
+├── configuration.nix # Main system configuration file
+└── hardware-configuration.nix # Hardware-specific configuration
 
 What's great about this method of managing the system is that instead of using imperative commands to install applications or configure their behavior, you have a single declaration of how you want your system to be. This is a game-changer, a paradigm shift that comes with the cost of additional complexity and diversity. Let's briefly address these aspects:
 
@@ -259,11 +261,16 @@ cd /home/nixos
 sudo nixos-rebuild switch --flake .#nixos
 ```
 
-This time, when we rebuild the system with the flake, the rebuild process produces a flake.lock file in the folder. This file explicitly tracks all the versions of each individual package along with all the dependencies of your system (a similar function exists in the Node.js environment with the packages.js file). Now, after rebuilding the system with the flake, we can schematize the configuration as follows:
+This time, when we rebuild the system with the flake, the rebuild process produces a flake.lock file in the folder. This file explicitly tracks all the versions of each individual package along with all the dependencies of your system (a similar function exists in the Node.js environment with the packages.js file). Now, after rebuilding the system with the flake.
+This is the directory structure for the flake enabled configuration:
 
-![Flake enabled configuration](./readme-img/flake.png)
+/home/your-username/nixos/
+├── flake.nix # Flake configuration file
+├── flake.lock # Auto-generated dependency lock file
+├── configuration.nix # Main system configuration
+└── hardware-configuration.nix # Hardware-specific settings
 
-With flakes, your package versions are declared inside the configuration, ensuring full reproducibility. Updating the system is a two-step process: first, we need to update the flake with this command:
+With flakes, your package versions are declared inside the flake.lock, ensuring full reproducibility. Updating the system is a two-step process: first, we need to update the flake with this command:
 
 ```bash
 nix flake update
@@ -347,10 +354,6 @@ This command works if the current user matches the one defined in the flake.nix 
 home-manager switch --flake .#userName
 ```
 
-This is the flowchart of flake with home-manager installed standalone:
-
-![Home-manager standalone](./readme-img/home-manager-standalone.png)
-
 ### Installation as a module (like in this repo)
 
 If you prefear to install as a module you add the home-manager module in the configuration.nix file:
@@ -385,15 +388,22 @@ cd ~
 sudo nixos-rebuild switch --flake .
 ```
 
-we both rebuild the system as declared in configuration.nix, and the user decalred in home.nix and imported in configuration.nix. With the module home-manager installation we rebuild the system and the user home directory with only one command. We can rapresent the home-manager installation as a module with the following flowchart:
-
-![Home-manager as module](./readme-img/home-manager-module.png)
+we both rebuild the system as declared in configuration.nix, and the user decalred in home.nix and imported in configuration.nix. With the module home-manager installation we rebuild the system and the user home directory with only one command.
 
 In my opinion, this would be the out-of-the-box configuration, serving as a starting point to structure it and add modules, hosts, users, etc. However, before proceeding with that, it's important to understand better and see an example of how to use Home Manager once installed.
 
 ## The nixOs way to manage system and user
 
-At this point, we have a directory with all configuration files in it, with flakes and Home Manager enabled. Now, how do we get Nix to actually do useful stuff for us? This is going to involve exploring the thousands of options available for various programs and embedding them in `home.nix` (user space) and `configuration.nix` (system space). One of the best places to explore those options is [MyNixOS website](https://mynixos.com/). If we do not find a proper way to declare a setting for Home Manager, we have a couple of easy and fast shortcuts.
+At this point, we have a directory with all configuration files in it, with flakes and Home Manager enabled.
+
+/home/your-username/nixos/
+├── flake.nix # Flake configuration with home-manager input
+├── flake.lock # Auto-generated dependency lock file
+├── configuration.nix # Main system configuration with home-manager module
+├── hardware-configuration.nix # Hardware-specific settings
+└── home.nix # User-specific configuration
+
+Now, how do we get Nix to actually do useful stuff for us? This is going to involve exploring the thousands of options available for various programs and embedding them in `home.nix` (user space) and `configuration.nix` (system space). One of the best places to explore those options is [MyNixOS website](https://mynixos.com/). If we do not find a proper way to declare a setting for Home Manager, we have a couple of easy and fast shortcuts.
 
 ### The cleanest way: bash example
 
@@ -592,39 +602,232 @@ The basic git workflow involve a three steps process:
 
 I suggest to use a terminal UI for git commands to manage this steps faster and easily such as [lazygit](https://github.com/jesseduffield/lazygit).
 
-## Multihost and Multiuser Modular Configuration
+## Multi-Host and Multi-User NixOS Configuration Structure
 
-We have our configuration folder, managed by a solid version control system, with all the files we need to manage our system at both the system and user levels.
-Even for a single machine and a single user, as you proceed declaring all the finest aspects of the system, you will soon arrive at a moment when you feel the need to divide your config files to make the task of maintaining, enhancing, and updating your system simpler and easier.
-Making the configuration modular is definitely a good choice, even in the case of one host and one user. In case you start to add hosts (e.g., the desktop machine and the laptop) or users, it becomes so necessary. The very good news is that with Nix, you have the power to manage a fleet of hosts and users in just one place. On the internet, you will find tons of ways of structuring Nix configs. In this section, I will propose my actual very basic simple multihost and multiuser config structure.
+A well-structured NixOS configuration for managing multiple hosts and users should be modular, maintainable, and scalable. Here's a recommended structure based on community best practices:
 
-![Multi Hosts/Users Modular Configuration](./readme-img/modular.png)
+nixos-config/
+├── flake.nix # Main flake definition
+├── flake.lock # Dependency lockfile
+│
+├── hosts/ # Host-specific configurations
+│ ├── default.nix # Common configurations for all hosts
+│ ├── laptop/ # Laptop configuration
+│ │ ├── default.nix # Main laptop configuration
+│ │ └── hardware.nix # Laptop hardware configuration
+│ └── desktop/ # Desktop configuration
+│ ├── default.nix # Main desktop configuration
+│ └── hardware.nix # Desktop hardware configuration
+│
+├── modules/ # Reusable modules
+│ ├── system/ # System-level modules
+│ │ ├── desktop/ # Desktop environment configs
+│ │ │ ├── gnome.nix
+│ │ │ └── kde.nix
+│ │ ├── services/ # System services
+│ │ │ ├── docker.nix
+│ │ │ └── printing.nix
+│ │ └── hardware/ # Generic hardware configs
+│ │ ├── bluetooth.nix
+│ │ └── audio.nix
+│ │
+│ └── home/ # Home-manager modules
+│ ├── desktop/ # Desktop configurations
+│ │ ├── dconf.nix
+│ │ └── themes.nix
+│ ├── dev/ # Development tools
+│ │ ├── git.nix
+│ │ └── vscode.nix
+│ └── shell/ # Shell configurations
+│ ├── bash.nix
+│ └── zsh.nix
+│
+├── overlays/ # Custom overlays
+│ ├── default.nix # Overlay aggregator
+│ └── custom-pkgs.nix # Custom packages
+│
+├── pkgs/ # Custom packages
+│ └── my-package/ # Example package
+│ └── default.nix
+│
+├── home/ # Home-manager user configurations
+│ ├── default.nix # Common configurations
+│ ├── alice/ # Alice user configuration
+│ │ └── default.nix
+│ └── bob/ # Bob user configuration
+│ └── default.nix
+│
+└── lib/ # Custom helper functions
+└── default.nix
 
-From `flake.nix`, it is important to list all the hosts managed. The best practice is to name all the hosts configurations with the hostname of the system. The same hostname is the name of the file (the old `configuration.nix`), and I am placing all the hosts in the `hosts` folder. In the `hosts` folder, there is the `hw` folder with all the hardware modules (the hardware-configuration.nix file). The name of the hardware module is `hw-hostname.nix`, so it is easier to import the right files in `flake.nix` and `hosts1.nix`, and if the configuration matches the hostname, the rebuild command can be the same for all systems and can be aliased in bash.
+### flake.nix general example
 
-A similar situation is for the user: `home.nix` is renamed with the `username.nix`, and all users are placed in the `users` directory and listed/declared/imported in the `host.nix` file. In both the `users` and `hosts` directories, there is a folder (respectively `usr-modules` and `sys-modules`) with all parts of the configuration that can be reused between hosts and users.
-The guideline is to reduce at minimum the specific declarations for hosts and users and delegate all the possible to modules.
-In hosts at the moment, I prefer to declare:
+```nix
+{
+  description = "NixOS Configuration";
 
-- system modules to use
-- network settings
-- users list defined in the host
-- system packages
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Other common inputs
+  };
 
-In user space, I prefer to use the user Nix file to declare:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+    let
+      lib = nixpkgs.lib;
+      system = "x86_64-linux";
 
-- user modules to use
-- user packages
-- user environment variables
+      # Helper function for host configuration
+      mkHost = hostname: extraModules: lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs self; };
+        modules = [
+          ./hosts/${hostname}
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ] ++ extraModules;
+      };
+    in
+    {
+      nixosConfigurations = {
+        laptop = mkHost "laptop" [];
+        desktop = mkHost "desktop" [];
+      };
 
-This is my actual configuration. I am improving it, I would like, for instance, to add Hyperland as a module. I am aware that it is trivial. It does not make use of:
+      # Additional outputs (e.g., custom packages, overlays, etc.)
+    };
+}
+```
 
-- if/then statements in Nix programming languages
-- custom modules
-- overlays
-- ...
+### hosts/laptop/default.nix example
 
-I am studying others' configs because I feel that the time I invest in it is time that I save if I need to replicate my systems between different machines or share my configurations with others. I hope this readme can help a beginner like me to start moving first steps in this powerful tech and community.
+```nix
+{ config, pkgs, lib, ... }:
+{
+  imports = [
+    ./hardware.nix
+    ../../modules/system/desktop/gnome.nix
+    ../../modules/system/hardware/bluetooth.nix
+  ];
+
+  networking.hostName = "laptop";
+
+  # Laptop-specific configurations
+}
+```
+
+### home/alice/default.nix example
+
+```nix
+{ config, pkgs, ... }:
+{
+  imports = [
+    ../../modules/home/dev/git.nix
+    ../../modules/home/shell/zsh.nix
+  ];
+
+  home = {
+    username = "alice";
+    homeDirectory = "/home/alice";
+    stateVersion = "23.11";
+  };
+  # User-specific configurations
+}
+```
+
+### Key Principles
+
+Separation of Concerns
+
+- hosts/: Machine-specific configurations
+- modules/: Reusable components
+- home/: User-specific configurations
+- overlays/: Package customizations
+- lib/: Common helper functions
+
+Modularity
+
+- Each component is self-contained
+- Modules are easily reusable across hosts and users
+- Configuration is easily extensible
+
+Naming Conventions
+
+- Descriptive names for modules and files
+- Consistent use of default.nix
+- Clear hierarchical structure
+
+Best Practices
+
+- Use of helper functions to reduce duplication
+- Separation of hardware and software configuration
+- Centralized dependency management
+- Logical module organization
+
+User Management
+
+- Home-manager integrated as NixOS module
+- Separate and modular user configurations
+- Easy addition of new users
+
+### Benefits of this Structure
+
+Scalability
+
+- Easy addition of new hosts
+- Simple management of multiple users
+- Reusable modules
+
+Maintainability
+
+- Clear and logical organization
+- Separation of concerns
+- Easy debugging
+
+Flexibility
+
+- Support for different configurations
+- Easy customization per host/user
+- Efficient variant management
+
+### Practical Usage
+
+To add a new host:
+
+- Create a new directory in hosts/
+- Add hardware configuration
+- Import necessary modules
+- Add the host in flake.nix
+
+To add a new user:
+
+- Create a new directory in home/
+- Configure basic settings
+- Import necessary modules
+- Add the user to the host configuration
+
+To create a new module:
+
+- Add the file in the appropriate directory under modules/
+- Define options and configuration
+- Import where needed
+
+### Migration Notes
+
+When migrating from a simpler configuration to this structure:
+
+- Start by moving common configurations into modules
+- Gradually separate host-specific configurations
+- Organize user configurations
+- Add functionality incrementally
+
+This structure provides a solid foundation for managing a NixOS setup of any size, from a single machine to a fleet of systems with multiple users. It emphasizes code reuse, maintainability, and scalability while following NixOS community best practices.
 
 ## Cross-Platform System Keyboard Shortcuts
 

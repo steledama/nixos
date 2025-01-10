@@ -1,1 +1,17 @@
+# smb
 smb-secrets
+
+# Nix build result
+result
+result-*
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo

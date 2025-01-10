@@ -9,29 +9,31 @@
     };
   };
 
-  outputs =
-    { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+
+      # Helper function to create host configurations
+      mkHost = hostname: extraModules: nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/${hostname}/default.nix  # Percorso più specifico
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ] ++ extraModules;
+      };
+    in
     {
-      # system configurations
+      # Host configurations
       nixosConfigurations = {
-        pcgame = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/pcgame.nix
-          ];
-        };
-        acquisti-laptop = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/acquisti-laptop.nix
-          ];
-        };
-        sviluppo-laptop = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/sviluppo-laptop.nix
-          ];
-        };
+        pcgame = mkHost "pcgame" [];
+        acquisti-laptop = mkHost "acquisti-laptop" [];
+        sviluppo-laptop = mkHost "sviluppo-laptop" [];
       };
     };
 }
