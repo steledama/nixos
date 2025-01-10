@@ -15,7 +15,7 @@
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
-    amule  # Peer-to-peer client for the eD2K and Kademlia networks
+    # User-specific packages (additional to common ones)
   ];
 
   # Any user-specific overrides or additional configurations can go here
