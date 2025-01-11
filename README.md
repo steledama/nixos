@@ -58,11 +58,11 @@ git clone https://gitlab.com/stefano.pompa/nixos.git
 mv /etc/nixos/hardware-configuration.nix /home/your-user/nixos/hosts/your-hostname/hardware.nix
 ```
 
-- Change the name of the user directory in home/ (es. 'home/stefano' in 'home/your-user'):
-- Edit the host configuration file (es. 'hosts/your-hostaname/default.nix') to reflect the user in the host configuration (es. change the occurences form 'stefano' to 'your-user') and configure the sytem modules imported on it
-- Change modules/system/locale.nix to reflect your language
+- Change the name of the user directory (es. 'home/stefano' in 'home/your-user')
+- Edit the host configuration file hosts/your-hostaname/default.nix to reflect the user in the host configuration (es. replace 'stefano' with 'your-user') and configure the sytem modules imported
+- Edit modules/system/locale.nix to reflect your language
 - Change the host in flake.nix (es. from 'pcgame' to 'your-hostname')
-- Edit the basic settings in user main config file user/your-user/default.nix and configure the user modules imported on it
+- Edit the basic settings in user main config file user/your-user/default.nix and configure the user modules imported
 - Go to your root config directory and launch the rebuild command:
 
 ```bash
