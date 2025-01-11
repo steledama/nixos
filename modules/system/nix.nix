@@ -12,6 +12,8 @@
       # and helps with debugging builds
       keep-outputs = true;
       keep-derivations = true;
+      # Increase download buffer size to 50MB (default is 16MB)
+      download-buffer-size = 50 * 1024 * 1024;
     };
     # Set nixpkgs path to match the one from flake inputs
     # This ensures consistency between flake and non-flake commands

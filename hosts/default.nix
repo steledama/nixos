@@ -1,5 +1,10 @@
 # Common configuration shared by all hosts
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # Import common system modules
@@ -8,7 +13,7 @@
     ../modules/system/hardware/sound.nix
     ../modules/system/boot.nix
     ../modules/system/fonts.nix
-    ../modules/system/it.nix
+    ../modules/system/locale.nix
     ../modules/system/nix.nix
     ../modules/system/services/print.nix
   ];

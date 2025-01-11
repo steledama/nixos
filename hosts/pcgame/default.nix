@@ -8,7 +8,7 @@
   imports = [
     # Import common configurations
     ../default.nix
-    
+
     # Import hardware configuration
     ./hardware.nix
 
@@ -47,6 +47,12 @@
     backupFileExtension = "backup";
   };
 
+  # Docker containers configuration specific to this host
+  virtualisation.dockerSetup = {
+    enable = true;
+    user = "stefano";
+  };
+
   # Basic network configuration
   networking = {
     hostName = "pcgame";
@@ -69,12 +75,6 @@
         4672 # aMule Kad
       ];
     };
-  };
-
-  # Docker containers configuration specific to this host
-  virtualisation.dockerSetup = {
-    enable = true;
-    user = "stefano";
   };
 
   # This value determines the NixOS release from which the default

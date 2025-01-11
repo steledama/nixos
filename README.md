@@ -6,12 +6,14 @@ This repository contains my NixOS minimal Gnome configuration. The README serves
 
 It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
 
-## Install
+## Requirements
 
 At the moment there are two requirements:
 
 - A working nixOs installation
 - Uefi boot on gpt
+
+## Prepare the system
 
 Edit configuration.nix file to enable flake and add git:
 
@@ -43,58 +45,27 @@ Rebuild the system:
 sudo nixos-rebuild switch
 ```
 
+## Clone and customize the configuration
+
 Clone this repo from your home directory
 
 ```bash
 git clone https://gitlab.com/stefano.pompa/nixos.git
 ```
 
-Copy your actual hardware-configuration.nix file and rename it as 'hardware-hostname' where the hostname is your actual hostname, the defoult one aftyer a fresh installation is 'nixos' so the file should be renamed as 'hardware-nixos':
+- Change the name of one of hosts directory (es. 'hosts/pcgame' in 'hotst/your-hostname')
+- Move your hardware configuration in the host directory just renamed above:
 
 ```bash
-cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/hw/hardware-nixos.nix
+mv /etc/nixos/hardware-configuration.nix /home/your-user/nixos/hosts/your-hostname/hardware.nix
 ```
 
-Rename a user configuration file from the repo (es. 'stefano.nix') with the name of your user (es. jhon.nix):
-
-```bash
-mv ~/nixos/users/stefano.nix ~/nixos/users/jhon.nix
-```
-
-Rename a host configuration file from the repo (es. 'pcgame.nix') with the name of your ushoster (es. nixos.nix):
-
-```bash
-mv ~/nixos/hosts/pcgam.nix ~/nixos/hosts/nixos.nix
-```
-
-Edit ~/nixos/hosts/nixos.nix with your favorite editor to substitute 'stefano' to match your username es 'jhon' and edit the same file to substitute the hostname 'pcgame' with yours (es 'nixos')
-
-Edit the following lines in ~/nixos/flake.nix:
-
-```nix
-# kichstart: (uncomment the following and check the hostname)
-nixos = nixpkgs.lib.nixosSystem {
-  specialArgs = { inherit inputs; };
-  modules = [
-    ./hosts/nixos.nix
-  ];
-};
-```
-
-Edit the user config file:
-
-```bash
-sudo nvim ~/nixos/users/jhon.nix
-```
-
-Edit this lines to configure the user:
-
-```bash
-home.username = "jhon";
-home.homeDirectory = "/home/jhon";
-```
-
-Go to your config directory (if you follow the instructions is ~/nixos) and launch the rebuild command:
+- Change the name of the user directory in home/ (es. 'home/stefano' in 'home/your-user'):
+- Edit the host configuration file (es. 'hosts/your-hostaname/default.nix') to reflect the user in the host configuration (es. change the occurences form 'stefano' to 'your-user') and configure the sytem modules imported on it
+- Change modules/system/locale.nix to reflect your language
+- Change the host in flake.nix (es. from 'pcgame' to 'your-hostname')
+- Edit the basic settings in user main config file user/your-user/default.nix and configure the user modules imported on it
+- Go to your root config directory and launch the rebuild command:
 
 ```bash
 sudo nixos-rebuild switch --flake .
@@ -102,18 +73,12 @@ sudo nixos-rebuild switch --flake .
 
 Do not forget the dot at the end of the command. Once you are done yau are in the new system. A reboot is suggested to fully appreciate the configuration.
 
-## How to use this config
+## Practical Usage
 
 To update:
 
 ```bash
 nix flake update
-```
-
-Rebuild the system and the user home and switch to the new system. Go to the config durectory and execute this command:
-
-```bash
-sudo nixos-rebuild switch --flake .
 ```
 
 To rebuild the system and wait to reboot to switch to the new one:
@@ -136,17 +101,24 @@ sudo nvim /boot/loader/loader.conf
 
 set to 'auto-windows' as default to set windows as default os
 
-To add a host:
+To add a new host:
 
-1. Copy an existing host .nix file in hosts folder and rename it
-2. Edit to adjust to your needs
-3. Add the host entry in flake.nix file
+- Create a new directory in hosts/
+- Add hardware configuration
+- Create the default.nix file with tha host main configuration with the user settings and import necessary system modules
+- Add the host in flake.nix
 
-To add a user:
+To add a new user:
 
-1. Copy an existing user .nix file in users folder and rename it
-2. Edit to adjust to your needs
-3. Add the user entry in the hosts .nix files you want define it
+- Create a new directory in home/
+- Create the the default.nix user file to configure basic settings and necessary modules
+- Add the user to the host configuration
+
+To create a new module:
+
+- Add the file in the appropriate directory under modules/
+- Define options and configuration
+- Import where needed
 
 ## Nix language, Nix package manager and NixOs
 
@@ -795,28 +767,6 @@ Flexibility
 - Support for different configurations
 - Easy customization per host/user
 - Efficient variant management
-
-### Practical Usage
-
-To add a new host:
-
-- Create a new directory in hosts/
-- Add hardware configuration
-- Import necessary modules
-- Add the host in flake.nix
-
-To add a new user:
-
-- Create a new directory in home/
-- Configure basic settings
-- Import necessary modules
-- Add the user to the host configuration
-
-To create a new module:
-
-- Add the file in the appropriate directory under modules/
-- Define options and configuration
-- Import where needed
 
 ### Migration Notes
 
