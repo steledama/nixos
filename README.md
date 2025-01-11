@@ -2,8 +2,6 @@
 
 This repository contains my NixOS minimal Gnome configuration. The README serves as a step-by-step guide to the initial configuration and to understanding NixOS.
 
-![The minimal vanilla gnome system](.screenshot.png)
-
 It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
 
 ## Requirements
@@ -151,9 +149,11 @@ nixos-generate-config --show-hardware-config > hardware.nix
 
 This is the directory structure for the out-of-the-box NixOS configuration:
 
+```bash
 /etc/nixos/
 ├── configuration.nix # Main system configuration file
 └── hardware-configuration.nix # Hardware-specific configuration
+```
 
 What's great about this method of managing the system is that instead of using imperative commands to install applications or configure their behavior, you have a single declaration of how you want your system to be. This is a game-changer, a paradigm shift that comes with the cost of additional complexity and diversity. Let's briefly address these aspects:
 
@@ -236,11 +236,13 @@ sudo nixos-rebuild switch --flake .#nixos
 This time, when we rebuild the system with the flake, the rebuild process produces a flake.lock file in the folder. This file explicitly tracks all the versions of each individual package along with all the dependencies of your system (a similar function exists in the Node.js environment with the packages.js file). Now, after rebuilding the system with the flake.
 This is the directory structure for the flake enabled configuration:
 
+```bash
 /home/your-username/nixos/
 ├── flake.nix # Flake configuration file
 ├── flake.lock # Auto-generated dependency lock file
 ├── configuration.nix # Main system configuration
 └── hardware-configuration.nix # Hardware-specific settings
+```
 
 With flakes, your package versions are declared inside the flake.lock, ensuring full reproducibility. Updating the system is a two-step process: first, we need to update the flake with this command:
 
@@ -368,12 +370,14 @@ In my opinion, this would be the out-of-the-box configuration, serving as a star
 
 At this point, we have a directory with all configuration files in it, with flakes and Home Manager enabled.
 
+```bash
 /home/your-username/nixos/
 ├── flake.nix # Flake configuration with home-manager input
 ├── flake.lock # Auto-generated dependency lock file
 ├── configuration.nix # Main system configuration with home-manager module
 ├── hardware-configuration.nix # Hardware-specific settings
 └── home.nix # User-specific configuration
+```
 
 Now, how do we get Nix to actually do useful stuff for us? This is going to involve exploring the thousands of options available for various programs and embedding them in `home.nix` (user space) and `configuration.nix` (system space). One of the best places to explore those options is [MyNixOS website](https://mynixos.com/). If we do not find a proper way to declare a setting for Home Manager, we have a couple of easy and fast shortcuts.
 
@@ -578,6 +582,7 @@ I suggest to use a terminal UI for git commands to manage this steps faster and 
 
 A well-structured NixOS configuration for managing multiple hosts and users should be modular, maintainable, and scalable. Here's a recommended structure based on community best practices:
 
+```bash
 nixos-config/
 ├── flake.nix # Main flake definition
 ├── flake.lock # Dependency lockfile
@@ -631,6 +636,7 @@ nixos-config/
 │
 └── lib/ # Custom helper functions
 └── default.nix
+```
 
 ### flake.nix general example
 
