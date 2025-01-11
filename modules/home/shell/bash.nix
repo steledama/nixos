@@ -9,6 +9,8 @@
       # neofetch
       # start with starship custom prompt
       eval "$(starship init bash)"
+      # add direnv hook
+      eval "$(direnv hook bash)"
     '';
 
     shellAliases = {

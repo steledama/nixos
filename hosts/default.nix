@@ -34,5 +34,6 @@
     gcc # C compiler
     lsof # Tool to list open files
     efibootmgr # utility to manage (EFI) Boot Manager
+    direnv # Shell extension that manages your environment
   ];
 }
