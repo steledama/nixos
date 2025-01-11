@@ -37,7 +37,7 @@
 
     # System utilities
     filezilla
-    alacritty
+    kitty
     neofetch
     starship
   ];
