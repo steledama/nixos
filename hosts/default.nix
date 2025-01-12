@@ -21,19 +21,31 @@
   # Common system configurations
   nixpkgs.config.allowUnfree = true;
 
-  # Common system packages
   environment.systemPackages = with pkgs; [
+    # Development tools
     git # Version control
-    lazygit # Git frontend
-    neovim # Terminal editor
-    nixd # Nix language server
-    nixfmt-rfc-style # Code formater for nix
-    wget # Tool for retrieving files using HTTP, HTTPS, and FTP
-    unzip # An extraction utility for archives compressed in .zip format
-    usbimager # Utility to flash os iso images on usb drive
+    lazygit # Git TUI frontend
     gcc # C compiler
-    lsof # Tool to list open files
-    efibootmgr # utility to manage (EFI) Boot Manager
+    nixd # Nix language server
+    nixfmt-rfc-style # Code formatter for nix
     direnv # Shell extension that manages your environment
+
+    # System editors
+    neovim # Terminal editor
+
+    # System monitoring and diagnostics
+    btop # Resource monitor (CPU, memory, disks, network, processes)
+    iotop # I/O usage monitoring
+    lm_sensors # Hardware sensors reading
+    lsof # Tool to list open files
+    pciutils # Tools for inspecting PCI devices (includes lspci)
+
+    # System management
+    efibootmgr # EFI Boot Manager utility
+    usbimager # OS image USB flasher
+
+    # Network and file utilities
+    wget # HTTP/HTTPS/FTP file retrieval
+    unzip # ZIP archive extraction
   ];
 }
