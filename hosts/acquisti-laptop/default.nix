@@ -8,7 +8,7 @@
   imports = [
     # Import common configurations
     ../default.nix
-    
+
     # Import hardware configuration
     ./hardware.nix
 
@@ -51,6 +51,9 @@
 
   # Basic network configuration
   networking = {
+    extraHosts = ''
+      127.0.0.1 baserow.localhost n8n.localhost qdrant.localhost
+    '';
     hostName = "acquisti-laptop";
     networkmanager.enable = true;
 
@@ -59,6 +62,9 @@
       enable = true;
       allowedTCPPorts = [
         8080 # ERPNext
+        3000 # baserow
+        5678 # n8n
+        6333 # qdrant
       ];
     };
   };
