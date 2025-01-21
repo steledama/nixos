@@ -9,9 +9,8 @@
 {
   # Import common home modules
   imports = [
-    ../modules/home/shell/bash.nix
-    ../modules/home/desktop/cursor.nix
-    ../modules/home/desktop/syncthing.nix
+    ../modules/home/bash.nix
+    ../modules/home/syncthing.nix
   ];
 
   # Enable unfree packages

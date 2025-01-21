@@ -38,6 +38,7 @@
     with pkgs;
     [
       dconf-editor
+      adwaita-icon-theme
     ]
   );
 }
