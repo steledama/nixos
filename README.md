@@ -859,3 +859,11 @@ rebuild the system and switch to the new one:
 ```bash
 sudo nixos-rebuild switch --flake .
 ```
+
+### Cursor theme bug
+
+If there is no cursor at first gnome start:
+
+```bash
+gsettings reset org.gnome.desktop.interface cursor-theme
+```

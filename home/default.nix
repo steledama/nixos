@@ -36,10 +36,6 @@
 
     # System utilities
     filezilla
-    kitty
-    alacritty
-    wezterm
-    ghostty
     neofetch
     starship
   ];
