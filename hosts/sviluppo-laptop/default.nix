@@ -6,26 +6,18 @@
 
 {
   imports = [
-    # Import common configurations
-    ../default.nix
-    
-    # Import hardware configuration
+    # Hardware specific for this host
     ./hardware.nix
-
-    # KERNEL (zen kernel specific to this host)
+    # Common configurations
+    ../default.nix
+    # Kernel
     ../../modules/system/zen.nix
-
-    # GPU (specific to this host - intel)
+    # Hardware
     ../../modules/system/hardware/intel.nix
-
-    # Docker (specific to this host)
-    ../../modules/system/services/docker.nix
-
-    # SMB (specific to this host)
-    ../../modules/system/services/smb.nix
-
-    # Touchpad (laptop specific)
     ../../modules/system/hardware/touchpad.nix
+    # Services
+    ../../modules/system/services/docker.nix
+    ../../modules/system/services/smb.nix
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.

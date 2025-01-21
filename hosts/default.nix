@@ -9,13 +9,13 @@
 {
   # Import common system modules
   imports = [
-    ../modules/system/desktop/gnome.nix
-    ../modules/system/hardware/sound.nix
     ../modules/system/boot.nix
-    ../modules/system/fonts.nix
     ../modules/system/locale.nix
     ../modules/system/nix.nix
+    ../modules/system/fonts.nix
+    ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
+    ../modules/system/desktop/gnome.nix
   ];
 
   # Common system configurations

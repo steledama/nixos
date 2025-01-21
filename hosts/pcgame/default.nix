@@ -6,19 +6,15 @@
 
 {
   imports = [
-    # Import common configurations
-    ../default.nix
-
-    # Import hardware configuration
+    # Hardware specific for this host
     ./hardware.nix
-
-    # KERNEL (zen kernel specific to this host)
+    # Common configurations
+    ../default.nix
+    # Kernel
     ../../modules/system/zen.nix
-
-    # GPU (specific to this host - nvidia)
+    # Hardware
     ../../modules/system/hardware/nvidia.nix
-
-    # Docker (specific to this host)
+    # Services
     ../../modules/system/services/docker.nix
   ];
 
