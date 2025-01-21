@@ -3,10 +3,10 @@
 {
   services.xserver = {
     enable = true;
-    # Italian keyboard
+    # Keyboard
     xkb.layout = "it";
     xkb.variant = "";
-    # Gdm display manager
+    # Display manager GDM
     displayManager.gdm = {
       enable = true;
       wayland = true;
@@ -15,7 +15,25 @@
     desktopManager.gnome.enable = true;
   };
 
-  # Exclude GNOME-specific packages here
+  # Themes environment variables
+  environment.variables = {
+    GTK_THEME = "Adwaita";
+    XCURSOR_THEME = "Adwaita";
+    GNOME_SHELL_THEME = "Adwaita";
+  };
+
+  # Pacchetti di sistema
+  environment.systemPackages = (
+    with pkgs;
+    [
+      dconf-editor
+      adwaita-icon-theme
+      gnome-themes-extra
+      gnome-shell-extensions
+    ]
+  );
+
+  # Specific gnome exclusiona
   environment.gnome.excludePackages = (
     with pkgs;
     [
@@ -30,15 +48,6 @@
       iagno
       hitori
       atomix
-    ]
-  );
-
-  # Add system packages here
-  environment.systemPackages = (
-    with pkgs;
-    [
-      dconf-editor
-      adwaita-icon-theme
     ]
   );
 }

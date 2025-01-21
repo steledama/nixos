@@ -860,10 +860,28 @@ rebuild the system and switch to the new one:
 sudo nixos-rebuild switch --flake .
 ```
 
-### Cursor theme bug
+### Adwaita theme bug
 
-If there is no cursor at first gnome start:
+Cursor theme reset set and check
 
 ```bash
 gsettings reset org.gnome.desktop.interface cursor-theme
+gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+gsettings get org.gnome.desktop.interface cursor-theme
+```
+
+Icons theme reset, set and check
+
+```bash
+gsettings reset org.gnome.desktop.interface icon-theme
+gsettings set org.gnome.desktop.interface icon-theme 'Adwaita'
+gsettings get org.gnome.desktop.interface icon-theme
+```
+
+WM (GNOME Shell) theme reset, set and check
+
+```bash
+gsettings reset org.gnome.shell.extensions.user-theme name
+gsettings set org.gnome.shell.extensions.user-theme name 'Adwaita'
+gsettings get org.gnome.shell.extensions.user-theme name
 ```
