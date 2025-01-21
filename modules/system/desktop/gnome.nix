@@ -15,13 +15,6 @@
     desktopManager.gnome.enable = true;
   };
 
-  # Themes environment variables
-  environment.variables = {
-    GTK_THEME = "Adwaita";
-    XCURSOR_THEME = "Adwaita";
-    GNOME_SHELL_THEME = "Adwaita";
-  };
-
   # Pacchetti di sistema
   environment.systemPackages = (
     with pkgs;

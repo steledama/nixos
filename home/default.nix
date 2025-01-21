@@ -38,10 +38,6 @@
     filezilla
     neofetch
     starship
-
-    # Adwaita icons and gtk theme
-    adwaita-icon-theme
-    gnome-themes-extra
   ];
 
   # Common editor configuration
