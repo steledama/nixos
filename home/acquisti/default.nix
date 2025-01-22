@@ -4,6 +4,7 @@
   # Import common configurations
   imports = [
     ../default.nix
+    ../../modules/home/gnome-theme.nix
   ];
 
   # User-specific information
@@ -15,7 +16,7 @@
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
-    anydesk  # Remote desktop software
+    anydesk # Remote desktop software
   ];
 
   # Any user-specific overrides or additional configurations can go here

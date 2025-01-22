@@ -860,14 +860,14 @@ rebuild the system and switch to the new one:
 sudo nixos-rebuild switch --flake .
 ```
 
-### Adwaita theme bug
+### Gnome theme bug
 
-Cursor theme reset set and check
+WM (GNOME Shell) theme reset, set and check
 
 ```bash
-gsettings reset org.gnome.desktop.interface cursor-theme
-gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
-gsettings get org.gnome.desktop.interface cursor-theme
+gsettings reset org.gnome.shell.extensions.user-theme name
+gsettings set org.gnome.shell.extensions.user-theme name 'Adwaita'
+gsettings get org.gnome.shell.extensions.user-theme name
 ```
 
 Icons theme reset, set and check
@@ -878,10 +878,10 @@ gsettings set org.gnome.desktop.interface icon-theme 'Adwaita'
 gsettings get org.gnome.desktop.interface icon-theme
 ```
 
-WM (GNOME Shell) theme reset, set and check
+Cursor theme reset set and check
 
 ```bash
-gsettings reset org.gnome.shell.extensions.user-theme name
-gsettings set org.gnome.shell.extensions.user-theme name 'Adwaita'
-gsettings get org.gnome.shell.extensions.user-theme name
+gsettings reset org.gnome.desktop.interface cursor-theme
+gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+gsettings get org.gnome.desktop.interface cursor-theme
 ```
