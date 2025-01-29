@@ -55,6 +55,7 @@
         8000 # baserow backend
         5678 # n8n
         6333 # qdrant
+        80 # wordpress
       ];
     };
   };
