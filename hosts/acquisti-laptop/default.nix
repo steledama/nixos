@@ -50,13 +50,10 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [
-        8080 # ERPNext
-        3000 # baserow frontend
-        8000 # baserow backend
-        5678 # n8n
-        6333 # qdrant
         80 # wordpress
-        3001 # script
+        3001 # controlP
+        3000 # baserow frontend
+        5678 # n8n
       ];
     };
   };
