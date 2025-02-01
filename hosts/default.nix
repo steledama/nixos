@@ -29,6 +29,7 @@
     nixd # Nix language server
     nixfmt-rfc-style # Code formatter for nix
     direnv # Shell extension that manages your environment
+    openssl # Cryptographic library that implements the SSL and TLS protocols
 
     # System editors
     neovim # Terminal editor
