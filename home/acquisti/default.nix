@@ -17,6 +17,7 @@
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
     anydesk # Remote desktop software
+    insomnia # API client
   ];
 
   # Any user-specific overrides or additional configurations can go here
