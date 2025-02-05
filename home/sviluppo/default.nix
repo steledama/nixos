@@ -15,6 +15,7 @@
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
+    upscayl
     # User-specific packages (additional to common ones)
   ];
 

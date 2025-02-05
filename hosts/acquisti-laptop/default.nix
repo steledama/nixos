@@ -51,6 +51,7 @@
       enable = true;
       allowedTCPPorts = [
         80 # wordpress
+        443 # https
         3001 # controlP
         3000 # baserow frontend
         5678 # n8n
