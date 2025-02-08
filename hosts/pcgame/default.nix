@@ -62,7 +62,11 @@
       allowedTCPPorts = [
         4662 # aMule eD2K data
         4672 # aMule incoming connections
-        8080 # ERPNext
+        80 # wordpress
+        443 # https
+        3001 # controlP
+        3000 # baserow frontend
+        5678 # n8n
       ];
 
       # UDP Ports
