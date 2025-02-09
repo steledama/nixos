@@ -4,6 +4,7 @@
   # Import common configurations
   imports = [
     ../default.nix
+    ../../modules/home/syncthing.nix
     ../../modules/home/gnome-theme.nix
   ];
 

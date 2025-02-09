@@ -10,7 +10,6 @@
   # Import common home modules
   imports = [
     ../modules/home/bash.nix
-    ../modules/home/syncthing.nix
   ];
 
   # Enable unfree packages
