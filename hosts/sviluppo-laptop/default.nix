@@ -18,6 +18,7 @@
     # Services
     ../../modules/system/services/docker.nix
     ../../modules/system/services/smb.nix
+    ../../modules/system/services/ssh.nix
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -50,7 +51,9 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [
-        8080 # ERPNext
+        80 # wordpress
+        443 # https
+        22 # ssh
       ];
     };
   };
