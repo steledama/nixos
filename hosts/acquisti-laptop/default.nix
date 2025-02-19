@@ -50,12 +50,17 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [
-        80 # wordpress
-        443 # https
-        3001 # controlP
-        3000 # baserow frontend
-        5678 # n8n
+        80
+        443
+        3001
+        3000
+        5678
       ];
+
+      # Permetti il traffico sulle porte specificate per tutte le interfacce
+      allowPing = true;
+      logRefusedConnections = true;
+      logRefusedPackets = true;
     };
   };
 

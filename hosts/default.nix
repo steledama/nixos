@@ -48,5 +48,6 @@
     # Network and file utilities
     wget # HTTP/HTTPS/FTP file retrieval
     unzip # ZIP archive extraction
+    tcpdump
   ];
 }
