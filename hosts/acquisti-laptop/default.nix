@@ -44,9 +44,17 @@
   # Basic network configuration
   networking = {
     hostName = "acquisti-laptop";
-    networkmanager.enable = true;
 
-    # Firewall configuration
+    networkmanager = {
+      enable = true;
+      settings = {
+        "connection" = {
+          "ethernet.route-metric" = 100;
+          "wifi.route-metric" = 200;
+        };
+      };
+    };
+
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -56,8 +64,6 @@
         3000
         5678
       ];
-
-      # Permetti il traffico sulle porte specificate per tutte le interfacce
       allowPing = true;
       logRefusedConnections = true;
       logRefusedPackets = true;
