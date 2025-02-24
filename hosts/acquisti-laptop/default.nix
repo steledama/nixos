@@ -45,6 +45,14 @@
   networking = {
     hostName = "acquisti-laptop";
 
+    # Aggiungiamo la configurazione hosts
+    hosts = {
+      "127.0.0.1" = [
+        "madalu.controlliamo.com"
+        "10.40.40.130"
+      ];
+    };
+
     networkmanager = {
       enable = true;
       settings = {
