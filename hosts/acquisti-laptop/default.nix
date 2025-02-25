@@ -45,11 +45,12 @@
   networking = {
     hostName = "acquisti-laptop";
 
-    # Aggiungiamo la configurazione hosts
+    # Hosts
     hosts = {
       "127.0.0.1" = [
         "madalu.controlliamo.com"
         "10.40.40.130"
+        "192.168.1.16"
       ];
     };
 

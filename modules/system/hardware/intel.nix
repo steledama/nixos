@@ -1,19 +1,15 @@
-{ pkgs, ... }:
-{
-  nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override {
-      enableHybridCodec = true;
-    };
-  };
+# In configuration.nix (livello sistema)
+{ config, pkgs, ... }:
 
-  # OpenGL
+{
+  # Configurazione hardware Intel
   hardware.graphics = {
+    enable = true;
     extraPackages = with pkgs; [
       intel-media-driver
-      vaapiIntel
+      (vaapiIntel.override { enableHybridCodec = true; })
       vaapiVdpau
       libvdpau-va-gl
     ];
   };
 }
-

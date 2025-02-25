@@ -47,6 +47,14 @@
     hostName = "sviluppo-laptop";
     networkmanager.enable = true;
 
+    # Hosts
+    hosts = {
+      "127.0.0.1" = [
+        "5.89.62.125"
+        "10.40.40.129"
+      ];
+    };
+
     # Firewall configuration
     firewall = {
       enable = true;

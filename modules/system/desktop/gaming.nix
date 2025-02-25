@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 {
-  # Configura Wine
-  nixpkgs.config.wine.build = "wineWow";
+  # wine
+  #######
 
   # Abilita Steam
   programs.steam = {
@@ -33,9 +33,4 @@
 
   # Abilita GameMode
   programs.gamemode.enable = true;
-
-  # Configura Wine
-  environment.sessionVariables = {
-    WINEDLLOVERRIDES = "winemenubuilder.exe=d";
-  };
 }

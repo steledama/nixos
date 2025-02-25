@@ -1,4 +1,4 @@
-# Common configuration shared by all users
+# Common home configuration shared by all users
 {
   config,
   lib,
@@ -11,9 +11,6 @@
   imports = [
     ../modules/home/bash.nix
   ];
-
-  # Enable unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # Common packages for all users
   home.packages = with pkgs; [
