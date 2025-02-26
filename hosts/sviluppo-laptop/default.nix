@@ -64,14 +64,14 @@
         deviceAddress = "//10.40.40.98/scan";
         username = "acquisti";
         mountPoint = "/mnt/scan";
-        credentialsFile = "/home/acquisti/nixos/smb-secrets";
+        credentialsFile = "/home/sviluppo/nixos/smb-secrets";
       };
       manuali = {
         enable = true;
         deviceAddress = "//10.40.40.98/manuali";
         username = "acquisti";
         mountPoint = "/mnt/manuali";
-        credentialsFile = "/home/acquisti/nixos/smb-secrets";
+        credentialsFile = "/home/sviluppo/nixos/smb-secrets";
       };
     };
   };
