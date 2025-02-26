@@ -4,7 +4,6 @@
   # Import common configurations
   imports = [
     ../default.nix
-    ../../modules/home/syncthing.nix
   ];
 
   # User-specific information
@@ -17,7 +16,6 @@
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
     upscayl
-    # User-specific packages (additional to common ones)
   ];
 
   # Any user-specific overrides or additional configurations can go here
