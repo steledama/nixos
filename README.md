@@ -497,6 +497,20 @@ This creates a new SSH key, using the provided email as a label.
 
 - When you're prompted to "Enter a file in which to save the key", you can press **Enter** to accept the default file location. Please note that if you created SSH keys previously, ssh-keygen may ask you to rewrite another key, in which case we recommend creating a custom-named SSH key
 
+You can use this kay in serveral way, for istance to allow a pc thge connection to another pc:
+
+```bash
+ssh-copy-id -i ~/.ssh/key-name.pub -p port-number username@real-server-address
+```
+
+When you run this command:
+
+- You will be prompted for the user's password on the remote server.
+- The command will add your public key to the file ~/.ssh/authorized_keys on the remote server.
+- From that moment on, you will be able to access the server using your corresponding private key without having to enter a password.
+
+This is a fundamental step in setting up SSH access with key authentication, which is more secure and convenient than using passwords.
+
 ### Add the ssh key to your github account
 
 - Copy the SSH public key to your clipboard:
@@ -529,25 +543,29 @@ git remote add origin <the link of your remote repo>
 Managing multiple account on different repos or in the same repo require an additional file in .ssh/config:
 
 ```text
+Host alias-name-to-use-ssh-command
+  HostName real-server-address
+  User username
+  IdentityFile ~/.ssh/id_ed25519.pub
+  Port 2222
+
 Host gitlab.com
   HostName gitlab.com
   User git
   PreferredAuthentications publickey
-  IdentityFile ~/.ssh/gitlab_personal
+  IdentityFile ~/.ssh/id_ed25519.pub
 
-# github-work
 Host github.com
   HostName github.com
   User git
   PreferredAuthentications publickey
-  IdentityFile ~/.ssh/github_work
+  IdentityFile ~/.ssh/id_ed25519.pub
 
-# github-personal
 Host github-personal
   HostName github.com
   User git
   PreferredAuthentications publickey
-  IdentityFile ~/.ssh/github_personal
+  IdentityFile ~/.ssh/id_ed25519.pub
 ```
 
 With this config file you con manage multiple accounts. You just need to match the ssh key with the one in the config file and the remote link has to match the one specified on the config file. Fors istance to clone a repo:
