@@ -18,7 +18,6 @@
     # Services
     ../../modules/system/services/docker.nix
     ../../modules/system/services/smb.nix
-    ../../modules/system/services/ssh.nix
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -47,21 +46,11 @@
     hostName = "sviluppo-laptop";
     networkmanager.enable = true;
 
-    # Hosts
-    hosts = {
-      "127.0.0.1" = [
-        "5.89.62.125"
-        "10.40.40.129"
-      ];
-    };
-
     # Firewall configuration
     firewall = {
       enable = true;
       allowedTCPPorts = [
-        80 # wordpress
-        443 # https
-        22 # ssh
+        2222 # ssh
       ];
     };
   };
@@ -85,6 +74,12 @@
         credentialsFile = "/home/acquisti/nixos/smb-secrets";
       };
     };
+  };
+
+  # Enable the OpenSSH daemon on port 2222
+  services.openssh = {
+    enable = true;
+    ports = [ 2222 ];
   };
 
   # Docker containers configuration specific to this host

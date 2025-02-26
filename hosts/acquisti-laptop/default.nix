@@ -18,6 +18,7 @@
     # Services
     ../../modules/system/services/docker.nix
     ../../modules/system/services/smb.nix
+    ../../modules/system/services/ssh.nix
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -48,9 +49,10 @@
     # Hosts
     hosts = {
       "127.0.0.1" = [
-        "madalu.controlliamo.com"
-        "10.40.40.130"
-        "192.168.1.16"
+        "5.89.62.125" # pubblico lavoro
+        "10.40.40.130" # riservato lavoro eth
+        "madalu.controlliamo.com" # dyndns casa
+        "192.168.1.16" # riservato casa wifi
       ];
     };
 
@@ -67,11 +69,9 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [
-        80
-        443
-        3001
-        3000
-        5678
+        22 # ssh
+        80 # wordpress
+        443 # https
       ];
       allowPing = true;
       logRefusedConnections = true;
