@@ -21,7 +21,7 @@
 
   # System-specific packages (additional to common ones)
   environment.systemPackages = with pkgs; [
-    ollama-cuda
+    # System-specific packages
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -76,6 +76,32 @@
         4672 # aMule Kad
       ];
     };
+  };
+
+  # ollama
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-cuda;
+  };
+  systemd.services.ollama = {
+    serviceConfig = {
+      SupplementaryGroups = [
+        "video"
+        "render"
+      ];
+      Environment = [
+        "NVIDIA_VISIBLE_DEVICES=all"
+        "CUDA_VISIBLE_DEVICES=0"
+        "LD_LIBRARY_PATH=/run/opengl-driver/lib"
+        "OLLAMA_DEBUG=1"
+      ];
+    };
+    after = [
+      "syslog.target"
+      "network.target"
+      "display-manager.service"
+    ];
+    wants = [ "display-manager.service" ];
   };
 
   # This value determines the NixOS release from which the default

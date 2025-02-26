@@ -24,5 +24,11 @@
   # (Opzionale) Pacchetto per il monitoraggio della GPU
   environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia
+    cudaPackages.cudatoolkit
   ];
+
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true; # Utile per applicazioni a 32 bit
+  };
 }
