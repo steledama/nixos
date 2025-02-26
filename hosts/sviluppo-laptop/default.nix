@@ -17,7 +17,6 @@
     ../../modules/system/hardware/touchpad.nix
     # Services
     ../../modules/system/services/docker.nix
-    ../../modules/system/services/smb.nix
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -52,27 +51,6 @@
       allowedTCPPorts = [
         2222 # ssh
       ];
-    };
-  };
-
-  # Windows network share configs
-  services.windowsShares = {
-    enable = true;
-    shares = {
-      scan = {
-        enable = true;
-        deviceAddress = "//10.40.40.98/scan";
-        username = "acquisti";
-        mountPoint = "/mnt/scan";
-        credentialsFile = "/home/sviluppo/nixos/smb-secrets";
-      };
-      manuali = {
-        enable = true;
-        deviceAddress = "//10.40.40.98/manuali";
-        username = "acquisti";
-        mountPoint = "/mnt/manuali";
-        credentialsFile = "/home/sviluppo/nixos/smb-secrets";
-      };
     };
   };
 
