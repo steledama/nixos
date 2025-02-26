@@ -16,6 +16,12 @@
     ../../modules/system/hardware/nvidia.nix
     # Services
     ../../modules/system/services/docker.nix
+    ../../modules/system/services/ssh.nix
+  ];
+
+  # System-specific packages (additional to common ones)
+  environment.systemPackages = with pkgs; [
+    ollama-cuda
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.

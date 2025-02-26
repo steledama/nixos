@@ -19,6 +19,11 @@
     ../../modules/system/services/docker.nix
   ];
 
+  # System-specific packages (additional to common ones)
+  environment.systemPackages = with pkgs; [
+    # Add system packages
+  ];
+
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.sviluppo = {
     isNormalUser = true;

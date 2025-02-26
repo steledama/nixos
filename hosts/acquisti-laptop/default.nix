@@ -21,6 +21,11 @@
     ../../modules/system/services/ssh.nix
   ];
 
+  # System-specific packages (additional to common ones)
+  environment.systemPackages = with pkgs; [
+    # Add system packages
+  ];
+
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.acquisti = {
     isNormalUser = true;
