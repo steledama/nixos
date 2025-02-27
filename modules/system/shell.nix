@@ -2,7 +2,6 @@
 {
   # Bash configuration
   programs.bash = {
-    enable = true;
     enableCompletion = true;
     # Other global configs
   };
