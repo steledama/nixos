@@ -142,7 +142,7 @@
           chars = "\u0001\u002d";
         }
 
-        # Copia e incolla
+        # Copy paste and clear
         {
           key = "V";
           mods = "Control";
@@ -152,6 +152,11 @@
           key = "C";
           mods = "Control";
           action = "Copy";
+        }
+        {
+          key = "L";
+          mods = "Control";
+          chars = "\u000c"; # clear (Ctrl+L)
         }
       ];
     };
