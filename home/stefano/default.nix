@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   # Import common configurations
@@ -7,17 +7,34 @@
     ../../modules/home/gnome-theme.nix
   ];
 
-  # User-specific information
-  home.username = "stefano";
-  home.homeDirectory = "/home/stefano";
-
-  # State version should be kept in the user's config
-  home.stateVersion = "23.11";
-
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
-    # amule # Peer-to-peer client for the eD2K and Kademlia networks
+    kitty
+    wezterm
+    tmux
+    ranger
   ];
 
-  # Any user-specific overrides or additional configurations can go here
+  # username
+  home.username = "stefano";
+  home.homeDirectory = "/home/${config.home.username}";
+
+  # dotfiles in ~/.config
+  xdg.configFile = {
+    "nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/nvim";
+    "kitty".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/kitty";
+    "ranger".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/ranger";
+    "wezterm".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/wezterm";
+    "tmux".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/tmux";
+  };
+
+  # dotfiles outside ~/.config
+  # home.file = {
+  #   ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/tmux/tmux.conf";
+  #   ".wezterm.lua".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/wezterm/wezterm.lua";
+  # };
+
+  home.stateVersion = "23.11";
 }

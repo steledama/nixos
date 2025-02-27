@@ -27,8 +27,8 @@
     cudaPackages.cudatoolkit
   ];
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true; # Utile per applicazioni a 32 bit
+    enable32Bit = true; # Utile per applicazioni a 32 bit
   };
 }

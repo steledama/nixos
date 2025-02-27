@@ -21,7 +21,7 @@
 
   # System-specific packages (additional to common ones)
   environment.systemPackages = with pkgs; [
-    # System-specific packages
+    amule # Peer-to-peer client for the eD2K and Kademlia networks
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.
