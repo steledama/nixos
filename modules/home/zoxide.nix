@@ -1,3 +1,5 @@
+# nixos/modules/home/zoxide.nix
+
 {
   config,
   lib,

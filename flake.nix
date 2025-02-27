@@ -1,3 +1,5 @@
+# nixos/flake.nix
+
 {
   description = "Nixos config flake";
 
@@ -6,6 +8,11 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Input per la configurazione di Neovim
+    nvim-config = {
+      url = "github:steledama/kickstart.nvim";
+      flake = false;
     };
   };
 

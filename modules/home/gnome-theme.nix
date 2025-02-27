@@ -1,3 +1,5 @@
+# nixos/modules/home/gnome-theme.nix
+
 { pkgs, ... }:
 
 {

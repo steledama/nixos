@@ -1,4 +1,5 @@
-# Common home configuration shared by all users
+# nixos/home/default.nix
+
 {
   config,
   lib,
@@ -10,6 +11,8 @@
   # Import common home modules
   imports = [
     ../modules/home/bash.nix
+    ../modules/home/zsh.nix
+    ../modules/home/starship.nix
   ];
 
   # Common packages for all users
@@ -33,20 +36,7 @@
     # System utilities
     filezilla
     neofetch
-    starship
   ];
-
-  # Starship config for all users
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
-    settings = {
-      add_newline = false;
-      command_timeout = 1000;
-      # others config
-    };
-  };
 
   # Common editor configuration
   home.sessionVariables = {

@@ -1,4 +1,5 @@
-# Configure Bash
+# nixos/modules/home/bash.nix
+
 {
   programs.bash = {
     enable = true;
@@ -8,8 +9,6 @@
     initExtra = ''
       # start with neofetch info
       # neofetch
-      # start with starship custom prompt
-      eval "$(starship init bash)"
       # add direnv hook
       eval "$(direnv hook bash)"
     '';

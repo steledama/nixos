@@ -1,40 +1,39 @@
-{ config, pkgs, ... }:
+# nixos/home/acquisti/default.nix
 
 {
-  # Import common configurations
+  config,
+  pkgs,
+  nvim-config,
+  ...
+}:
+
+{
   imports = [
     ../default.nix
-    ../../modules/home/syncthing.nix
     ../../modules/home/gnome-theme.nix
     ../../modules/home/zsh.nix
+    ../../modules/home/alacritty.nix
     ../../modules/home/tmux.nix
-    ../../modules/home/kitty.nix
     ../../modules/home/ranger.nix
-  ];
-
-  # User-specific packages (additional to common ones)
-  home.packages = with pkgs; [
-    anydesk # Remote desktop software
-    insomnia # API client
-    # keyboard driven workflow
-    kitty
-    wezterm
-    tmux
-    ranger
-    fzf
-    bat
-    ripgrep
-    eza
+    ../../modules/home/syncthing.nix
+    ../../modules/home/neovim.nix
   ];
 
   # username
   home.username = "acquisti";
   home.homeDirectory = "/home/${config.home.username}";
 
-  # dotfiles in ~/.config
-  xdg.configFile = {
-    "nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/nvim";
-  };
+  # User-specific packages (additional to common ones)
+  home.packages = with pkgs; [
+    anydesk # Remote desktop software
+    insomnia # API client
+
+    # keyboard driven workflow utilities
+    fzf
+    bat
+    ripgrep
+    eza
+  ];
 
   home.stateVersion = "23.11";
 }
