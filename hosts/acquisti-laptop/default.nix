@@ -35,6 +35,7 @@
       "wheel"
       "libvirtd"
     ];
+    shell = pkgs.zsh;
   };
 
   # HOME-MANAGER configuration specific to this host
