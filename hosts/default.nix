@@ -13,6 +13,7 @@
     ../modules/system/locale.nix
     ../modules/system/nix.nix
     ../modules/system/fonts.nix
+    ../modules/system/shell.nix
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
     ../modules/system/desktop/gnome.nix
@@ -21,6 +22,7 @@
   # Common system configurations
   nixpkgs.config.allowUnfree = true;
 
+  # Common system packages
   environment.systemPackages = with pkgs; [
     # Development tools
     git # Version control

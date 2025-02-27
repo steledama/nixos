@@ -36,6 +36,18 @@
     starship
   ];
 
+  # Starship config for all users
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+    settings = {
+      add_newline = false;
+      command_timeout = 1000;
+      # others config
+    };
+  };
+
   # Common editor configuration
   home.sessionVariables = {
     EDITOR = "nvim";

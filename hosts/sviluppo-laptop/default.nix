@@ -33,6 +33,8 @@
       "wheel"
       "libvirtd"
     ];
+    # default user shell
+    shell = pkgs.bash;
   };
 
   # HOME-MANAGER configuration specific to this host

@@ -1,14 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   programs.zsh = {
-    enable = true;
-    enableAutosuggestions = true;
-    enableSyntaxHighlighting = true;
+    # specifi user settings
     autocd = true;
-    dotDir = ".config/zsh";
-    
-    # Configura opzioni per la storia dei comandi
+
+    # command history
     history = {
       size = 10000;
       path = "${config.xdg.dataHome}/zsh/history";
@@ -18,49 +20,63 @@
       save = 10000;
       share = true;
     };
-    
-    # Aggiungi gli alias dalla tua configurazione attuale
+
+    # Added aliases
     shellAliases = {
-      # System aliases
+      # System
       shutdown = "sudo shutdown now";
       restart = "sudo reboot";
       suspend = "sudo pm-suspend";
       sleep = "pmset sleepnow";
       c = "clear";
       e = "exit";
-      
-      # Git aliases
+
+      # Git
       g = "git";
       ga = "git add";
+      gafzf = "git ls-files -m -o --exclude-standard | grep -v \"__pycache__\" | fzf -m --print0 | xargs -0 -o -t git add";
+      grmfzf = "git ls-files -m -o --exclude-standard | fzf -m --print0 | xargs -0 -o -t git rm";
+      grfzf = "git diff --name-only | fzf -m --print0 | xargs -0 -o -t git restore";
+      grsfzf = "git diff --name-only | fzf -m --print0 | xargs -0 -o -t git restore --staged";
       gf = "git fetch";
       gs = "git status";
       gss = "git status -s";
-      # ... altri alias da aliases.zsh
-      
+
       # Neovim
-      vi = "poetry_run_nvim";
       v = "poetry_run_nvim";
-      
+      vi = "poetry_run_nvim";
+
       # Folders
       doc = "$HOME/Documents";
       dow = "$HOME/Downloads";
-      
+
       # Ranger
       r = ". ranger";
-      
+
       # Better ls
       ls = "eza --all --icons=always";
-      
+
       # Lazygit
       lg = "lazygit";
     };
-    
+
     initExtra = ''
-      # Import custom zsh scripts
-      source ${./zsh/custom.zsh}
-      
-      # Funzioni da custom.zsh
-      # poetry_run_nvim function
+      # Pyenv
+      export PYENV_ROOT="$HOME/.pyenv"
+      export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init -)" # Initialize pyenv when a new shell spawns
+
+      # Poetry
+      export PATH="$HOME/.local/bin:$PATH"
+      export PIPENV_VENV_IN_PROJECT=1
+
+      # Homebrew se sei su macOS
+      if [ -f /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        export HOMEBREW_NO_AUTO_UPDATE=1
+      fi
+
+      # Funzione poetry_run_nvim
       function poetry_run_nvim() {
         if command -v poetry >/dev/null 2>&1 && [ -f "poetry.lock" ]; then
           poetry run nvim "$@"
@@ -68,7 +84,7 @@
           nvim "$@"
         fi
       }
-      
+
       # quick_commit function per git
       function quick_commit() {
         local branch_name ticket_id commit_message push_flag
@@ -79,71 +95,97 @@
 
         if [[ "$push_flag" == "push" ]]; then
           # Remove 'push' from the commit message
-          commit_message="$ticket_id: ${*:2}" # take all positional parameters starting from the second one
+          shift # Rimuove il primo argomento
+          commit_message="$ticket_id: $*" # Usa i parametri rimanenti
           git commit --no-verify -m "$commit_message" && git push
         else
           git commit --no-verify -m "$commit_message"
         fi
       }
-      
-      # Vi mode setup
+      alias gqc='quick_commit'
+      alias gqcp='quick_commit push'
+
+      # FZF setup
+      if [ -f "$HOME/.fzf.zsh" ]; then 
+        source "$HOME/.fzf.zsh"
+        
+        export FZF_CTRL_T_OPTS="
+          --preview 'bat -n --color=always {}'
+          --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+        export FZF_DEFAULT_COMMAND='rg --hidden -l ""' # Include hidden files
+        
+        bindkey "ç" fzf-cd-widget # Fix for ALT+C on Mac
+        
+        # fd - cd to selected directory
+        fd() {
+          local dir
+          dir=$(find ${"1:-."} -path '*/\.*' -prune \
+                          -o -type d -print 2> /dev/null | fzf +m) &&
+          cd "$dir"
+        }
+        
+        # fh - search in your command history and execute selected command
+        fh() {
+          eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+        }
+      fi
+
+      # Tmux auto-start
+      if which tmux >/dev/null 2>&1; then
+        # Check if the current environment is suitable for tmux
+        if [[ -z "$TMUX" && \
+              $TERM != "screen-256color" && \
+              $TERM != "screen" && \
+              -z "$VSCODE_INJECTION" && \
+              -z "$INSIDE_EMACS" && \
+              -z "$EMACS" && \
+              -z "$VIM" && \
+              -z "$INTELLIJ_ENVIRONMENT_READER" ]]; then
+          # Try to attach to the default tmux session, or create a new one if it doesn't exist
+          tmux attach -t default || tmux new -s default
+        fi
+      fi
+
+      # Vi mode
       bindkey -v
-      export KEYTIMEOUT=1
+      export KEYTIMEOUT=1 # Makes switching modes quicker
       export VI_MODE_SET_CURSOR=true 
 
       function zle-keymap-select {
-        if [[ ${KEYMAP} == vicmd ]]; then
-          echo -ne '\e[2 q' # block
+        if [[ "''${KEYMAP:-}" == vicmd ]]; then
+          echo -ne '\e[2 q' # block cursor
         else
-          echo -ne '\e[6 q' # beam
+          echo -ne '\e[6 q' # beam cursor
         fi
       }
       zle -N zle-keymap-select
-      
       zle-line-init() {
-        zle -K viins
+        zle -K viins # initiate 'vi insert' as keymap
         echo -ne '\e[6 q'
       }
       zle -N zle-line-init
-      echo -ne '\e[6 q'
+      echo -ne '\e[6 q' # Use beam shape cursor on startup
+
+      # Yank to the system clipboard
+      function vi-yank-xclip {
+        zle vi-yank
+        echo "$CUTBUFFER" | pbcopy -i
+      }
+      zle -N vi-yank-xclip
+      bindkey -M vicmd 'y' vi-yank-xclip
     '';
-    
-    plugins = [
-      {
-        name = "zsh-autosuggestions";
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-autosuggestions";
-          rev = "v0.7.0";
-          sha256 = "KLUYpUu4DHRumQZ3w59m9aTW6TBKMCXl2UcKi4uMd7w=";
-        };
-      }
-      {
-        name = "zsh-syntax-highlighting";
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-syntax-highlighting";
-          rev = "0.7.1";
-          sha256 = "gOG0NLlaJfotJfs+SUhGgLTNOnGLjoqnUp54V9aFJg8=";
-        };
-      }
-    ];
+
+    completionInit = ''
+      # Load Git completion scripts
+      zstyle ':completion:*:*:git:*' script ${config.xdg.configHome}/zsh/git-completion.bash
+      fpath=(${config.xdg.configHome}/zsh $fpath)
+      autoload -Uz compinit && compinit
+    '';
   };
-  
-  # Copia i file di configurazione git-completion
-  xdg.configFile = {
-    "zsh/git-completion.bash".source = ./zsh/git-completion.bash;
-    "zsh/git-completion.zsh".source = ./zsh/git-completion.zsh;
-  };
-  
-  # Installa starship per il prompt
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;
-    settings = {
-      # Configura starship come preferisci
-      add_newline = false;
-      command_timeout = 1000;
-    };
+
+  # Git completions
+  home.file = {
+    "${config.xdg.configHome}/zsh/git-completion.bash".source = ./zsh/git-completion.bash;
+    "${config.xdg.configHome}/zsh/git-completion.zsh".source = ./zsh/git-completion.zsh;
   };
 }

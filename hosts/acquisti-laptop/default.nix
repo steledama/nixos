@@ -35,6 +35,7 @@
       "wheel"
       "libvirtd"
     ];
+    # default user shell
     shell = pkgs.zsh;
   };
 
