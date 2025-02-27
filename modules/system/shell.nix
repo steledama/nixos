@@ -1,19 +1,15 @@
 # Configure system shells
 {
-  # Bash configuration
+  # Bash configuration at system level
   programs.bash = {
-    enableCompletion = true;
-    # Other global configs
+    completion.enable = true;
   };
 
-  # Zsh configuration
+  # Zsh configuration at system level
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
-    # Other global configs
   };
-
-  # Other shells
 }
