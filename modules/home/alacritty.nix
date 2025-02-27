@@ -19,7 +19,6 @@
         };
         decorations = "full";
         opacity = 1.0;
-        # dynamic_title = true;
       };
 
       # Scrolling
@@ -88,8 +87,61 @@
         unfocused_hollow = true;
       };
 
-      # Keybindings
-      key_bindings = [
+      # Shell
+      shell = {
+        program = "${pkgs.zsh}/bin/zsh";
+        args = [ "-l" ];
+      };
+
+      # Tutti i key bindings in un unico posto
+      keyboard.bindings = [
+        # Tmux navigation
+        {
+          key = "T";
+          mods = "Control|Shift";
+          action = "SpawnNewInstance";
+        }
+
+        # Scorciatoie per le sessioni tmux
+        {
+          key = "D";
+          mods = "Control|Shift";
+          chars = "\\x01\\x64";
+        }
+        {
+          key = "C";
+          mods = "Control|Shift";
+          chars = "\\x01\\x63";
+        }
+        {
+          key = "W";
+          mods = "Control|Shift";
+          chars = "\\x01\\x77";
+        }
+        {
+          key = "N";
+          mods = "Control|Shift";
+          chars = "\\x01\\x6e";
+        }
+        {
+          key = "P";
+          mods = "Control|Shift";
+          chars = "\\x01\\x70";
+        }
+
+        # Scorciatoie per split del pannello
+        {
+          key = "H";
+          mods = "Control|Shift";
+          chars = "\\x01\\x5c";
+        }
+        {
+          key = "V";
+          mods = "Control|Shift";
+          chars = "\\x01\\x2d";
+        }
+
+        # Copia e incolla
         {
           key = "V";
           mods = "Control";
@@ -101,73 +153,6 @@
           action = "Copy";
         }
       ];
-
-      # Shell
-      shell = {
-        program = "${pkgs.zsh}/bin/zsh";
-        args = [ "-l" ];
-      };
     };
-
-    # Shortcuts  for better Alacritty/Tmux integration
-    key_bindings = [
-      # Tmux navigation
-      {
-        key = "T";
-        mods = "Control|Shift";
-        action = "SpawnNewInstance";
-      } # Nuova istanza
-
-      # Scorciatoie per le sessioni tmux
-      {
-        key = "D";
-        mods = "Control|Shift";
-        chars = "\\x01\\x64";
-      } # Distacca sessione (tmux prefix + d)
-      {
-        key = "C";
-        mods = "Control|Shift";
-        chars = "\\x01\\x63";
-      } # Nuova finestra (tmux prefix + c)
-      {
-        key = "W";
-        mods = "Control|Shift";
-        chars = "\\x01\\x77";
-      } # Lista finestre (tmux prefix + w)
-      {
-        key = "N";
-        mods = "Control|Shift";
-        chars = "\\x01\\x6e";
-      } # Finestra successiva (tmux prefix + n)
-      {
-        key = "P";
-        mods = "Control|Shift";
-        chars = "\\x01\\x70";
-      } # Finestra precedente (tmux prefix + p)
-
-      # Scorciatoie per split del pannello
-      {
-        key = "H";
-        mods = "Control|Shift";
-        chars = "\\x01\\x5c";
-      } # Split orizzontale (tmux prefix + \)
-      {
-        key = "V";
-        mods = "Control|Shift";
-        chars = "\\x01\\x2d";
-      } # Split verticale (tmux prefix + -)
-
-      # Copia e incolla
-      {
-        key = "V";
-        mods = "Control";
-        action = "Paste";
-      }
-      {
-        key = "C";
-        mods = "Control";
-        action = "Copy";
-      }
-    ];
   };
 }

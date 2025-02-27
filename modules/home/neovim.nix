@@ -4,7 +4,7 @@
   config,
   lib,
   pkgs,
-  nvim-config,
+  neovim-config,
   ...
 }:
 
@@ -41,7 +41,7 @@
 
   # Crea il link simbolico alla configurazione esterna
   home.file.".config/nvim" = {
-    source = nvim-config;
+    source = neovim-config;
   };
 
   # Installa dipendenze addizionali specifiche per linguaggi

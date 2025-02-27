@@ -67,15 +67,15 @@
       git_status = {
         format = "([●](red)[$all_status$ahead_behind]($style))";
         conflicted = "≠";
-        ahead = "⇡${count}";
-        behind = "⇣${count}";
-        diverged = "⇕⇡${ahead_count}⇣${behind_count}";
-        untracked = "?${count}";
-        stashed = "\\$${count}";
-        modified = "!${count}";
-        staged = "+${count}";
-        renamed = "»${count}";
-        deleted = "✘${count}";
+        ahead = "⇡$count"; # Changed from ${count}
+        behind = "⇣$count"; # Changed from ${count}
+        diverged = "⇕⇡$ahead_count⇣$behind_count"; # Changed from ${ahead_count}${behind_count}
+        untracked = "?$count"; # Changed from ${count}
+        stashed = "\\$$count"; # Changed from ${count}
+        modified = "!$count"; # Changed from ${count}
+        staged = "+$count"; # Changed from ${count}
+        renamed = "»$count"; # Already fixed
+        deleted = "✘$count"; # Already fixed
       };
     };
   };

@@ -3,7 +3,7 @@
 {
   config,
   pkgs,
-  nvim-config,
+  neovim-config,
   ...
 }:
 
@@ -30,6 +30,12 @@
     bat
     ripgrep
     eza
+    # Ranger dependencies
+    file # For recognizing file types
+    highlight # For syntax highlighting
+    atool # For archive extraction
+    mediainfo # For media file information
+    poppler_utils # For PDF
   ];
 
   home.stateVersion = "23.11";

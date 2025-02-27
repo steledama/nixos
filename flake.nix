@@ -10,8 +10,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Input per la configurazione di Neovim
-    nvim-config = {
-      url = "github:steledama/kickstart.nvim";
+    neovim-config = {
+      url = "github:steledama/neovim-config";
       flake = false;
     };
   };
@@ -40,6 +40,9 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
+              home-manager.extraSpecialArgs = {
+                neovim-config = inputs.neovim-config;
+              };
             }
           ] ++ extraModules;
         };
