@@ -16,7 +16,6 @@
     ../../modules/home/alacritty.nix
     ../../modules/home/tmux.nix
     ../../modules/home/ranger.nix
-    ../../modules/home/neovim.nix
   ];
 
   # username

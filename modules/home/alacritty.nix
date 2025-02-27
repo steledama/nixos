@@ -87,10 +87,12 @@
         unfocused_hollow = true;
       };
 
-      # Shell
-      shell = {
-        program = "${pkgs.zsh}/bin/zsh";
-        args = [ "-l" ];
+      # Updated shell configuration to match latest Alacritty requirements
+      terminal = {
+        shell = {
+          program = "${pkgs.zsh}/bin/zsh";
+          args = [ "-l" ];
+        };
       };
 
       # Tutti i key bindings in un unico posto
@@ -106,39 +108,38 @@
         {
           key = "D";
           mods = "Control|Shift";
-          chars = "\\x01\\x64";
+          chars = "\u0001\u0064"; # Usa la notazione Unicode
         }
         {
           key = "C";
           mods = "Control|Shift";
-          chars = "\\x01\\x63";
+          chars = "\u0001\u0063";
         }
         {
           key = "W";
           mods = "Control|Shift";
-          chars = "\\x01\\x77";
+          chars = "\u0001\u0077";
         }
         {
           key = "N";
           mods = "Control|Shift";
-          chars = "\\x01\\x6e";
+          chars = "\u0001\u006e";
         }
         {
           key = "P";
           mods = "Control|Shift";
-          chars = "\\x01\\x70";
+          chars = "\u0001\u0070";
         }
-
         # Scorciatoie per split del pannello
         {
           key = "H";
           mods = "Control|Shift";
-          chars = "\\x01\\x5c";
+          chars = "\u0001\u005c";
         }
         {
           key = "V";
           mods = "Control|Shift";
-          chars = "\\x01\\x2d";
+          chars = "\u0001\u002d";
         }
 
         # Copia e incolla

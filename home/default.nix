@@ -13,6 +13,7 @@
     ../modules/home/bash.nix
     ../modules/home/zsh.nix
     ../modules/home/starship.nix
+    ../modules/home/neovim.nix
   ];
 
   # Common packages for all users

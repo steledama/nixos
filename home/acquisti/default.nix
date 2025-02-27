@@ -16,7 +16,6 @@
     ../../modules/home/tmux.nix
     ../../modules/home/ranger.nix
     ../../modules/home/syncthing.nix
-    ../../modules/home/neovim.nix
   ];
 
   # username

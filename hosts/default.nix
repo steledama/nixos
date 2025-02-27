@@ -32,9 +32,6 @@
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
 
-    # System editors
-    neovim # Terminal editor
-
     # System monitoring and diagnostics
     btop # Resource monitor (CPU, memory, disks, network, processes)
     iotop # I/O usage monitoring
@@ -50,5 +47,20 @@
     wget # HTTP/HTTPS/FTP file retrieval
     unzip # ZIP archive extraction
     tcpdump
+
+    # Strumenti essenziali
+    ripgrep
+    fd
+    gnumake
+    curl
+
+    # LSP e formatter
+    typescript-language-server
+    prettierd
+    lua-language-server
+    marksman # Markdown language server
+    eslint
+    pyright # Python LSP
+    black # Python formatter
   ];
 }
