@@ -1,7 +1,8 @@
 # Configure Bash
 {
   programs.bash = {
-    # Specific user bash configs
+    enable = true;
+    enableCompletion = true;
 
     # initialization
     initExtra = ''

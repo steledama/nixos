@@ -7,7 +7,10 @@
 
 {
   programs.zsh = {
-    # specifi user settings
+    enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    syntaxHighlighting.enable = true;
     autocd = true;
 
     # command history

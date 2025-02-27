@@ -21,8 +21,7 @@
       listen_on = "unix:/tmp/mykitty";
 
       # Window
-      hide_window_decorations = "titlebar-only";
-      macos_show_window_title_in = "none";
+      # hide_window_decorations = "titlebar-only"; hide window
       window_margin_width = "0 3 0 3";
 
       # Transparency

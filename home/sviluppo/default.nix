@@ -4,6 +4,7 @@
   # Import common configurations
   imports = [
     ../default.nix
+    ../../modules/home/bash.nix
   ];
 
   # User-specific information
