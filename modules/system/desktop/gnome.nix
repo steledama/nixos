@@ -3,19 +3,22 @@
 {
   services.xserver = {
     enable = true;
+
     # Keyboard
     xkb.layout = "it";
     xkb.variant = "";
+
     # Display manager GDM
     displayManager.gdm = {
       enable = true;
       wayland = true;
     };
+
     # Gnome desktop environment
     desktopManager.gnome.enable = true;
   };
 
-  # Pacchetti di sistema
+  # System gnome packages
   environment.systemPackages = (
     with pkgs;
     [
@@ -26,7 +29,7 @@
     ]
   );
 
-  # Specific gnome exclusiona
+  # Specific gnome exclusions
   environment.gnome.excludePackages = (
     with pkgs;
     [

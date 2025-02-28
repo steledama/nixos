@@ -14,6 +14,7 @@
     ../modules/system/nix.nix
     ../modules/system/fonts.nix
     ../modules/system/hardware/sound.nix
+    ../modules/system/hardware/caps.nix
     ../modules/system/services/print.nix
     ../modules/system/desktop/gnome.nix
   ];
