@@ -23,23 +23,23 @@
       share = true;
     };
 
-    # Alias essenziali
+    # Aliases
     shellAliases = {
-      # Navigazione
+      # navigation
       ".." = "cd ..";
       "..." = "cd ../..";
 
-      # Utility di sistema
+      # System utilities
       ll = "ls -l";
       la = "ls -a";
       lal = "ls -al";
       c = "clear";
       e = "exit";
 
-      # Comandi NixOS
+      # ixOS
       nrb = "sudo nixos-rebuild switch --flake .";
       nup = "nix flake update";
-      ngc = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d";
+      ngc = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot && sudo nvim /boot/loader/loader.conf";
 
       # Editor
       v = "nvim";
@@ -58,32 +58,33 @@
       tl = "tmux list-sessions";
       tn = "tmux new -s";
 
-      # Utilizzo di strumenti moderni
+      # Modern utilities
       ls = "eza --icons=always";
       cat = "bat";
       find = "fd";
       grep = "rg";
     };
 
-    # Configurazione base
+    # Init base config
     initExtra = ''
-      # Integrazione Starship
+      # Starship integration
       eval "$(starship init zsh)"
 
-      # Integrazione direnv
+      # Zoxide integration
+      eval "$(zoxide init bash)"
+
+      # direnv integration
       eval "$(direnv hook zsh)"
 
-      # Tmux auto-start (versione minimalista)
+      # Tmux auto-start
       if [[ -z "$TMUX" && "$TERM" != "screen"* ]]; then
         tmux attach || tmux new
       fi
 
-      # FZF base setup se installato
+      # FZF base setup
       if [ -f "$HOME/.fzf.zsh" ]; then 
         source "$HOME/.fzf.zsh"
       fi
     '';
   };
-
-  # Starship viene gestito dal modulo dedicato
 }
