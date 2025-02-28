@@ -18,14 +18,8 @@
     mouse = true;
     keyMode = "vi";
 
-    # Using custom prefix
-    prefix = "C-a";
-
     # Essential configuration
     extraConfig = ''
-      # Unbind default prefix
-      unbind C-b
-
       # Command prompt
       unbind :
       bind . command-prompt
