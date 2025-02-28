@@ -36,7 +36,7 @@
       c = "clear";
       e = "exit";
 
-      # ixOS
+      # NixOS
       nrb = "sudo nixos-rebuild switch --flake .";
       nup = "nix flake update";
       ngc = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot && sudo nvim /boot/loader/loader.conf";
@@ -65,15 +65,31 @@
       grep = "rg";
     };
 
+    # Configurazione del sistema di completamento
+    completionInit = ''
+      # Inizializzazione del sistema di completamento
+      autoload -Uz compinit && compinit
+
+      # Opzioni di completamento utili
+      zstyle ':completion:*' menu select
+      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+      zstyle ':completion:*' verbose true
+      zstyle ':completion:*:descriptions' format '%F{green}-- %d --%f'
+
+      # Binding del tab per il completamento
+      bindkey '^I' complete-word
+      bindkey '^[[Z' reverse-menu-complete
+    '';
+
     # Init base config
     initExtra = ''
       # Starship integration
       eval "$(starship init zsh)"
 
-      # Zoxide integration
-      eval "$(zoxide init bash)"
+      # Zoxide integration - zsh specific
+      eval "$(zoxide init zsh)"
 
-      # direnv integration
+      # direnv integration - zsh specific
       eval "$(direnv hook zsh)"
 
       # Tmux auto-start
@@ -87,4 +103,9 @@
       fi
     '';
   };
+
+  # Aggiungi i completamenti extra per Zsh
+  home.packages = with pkgs; [
+    zsh-completions
+  ];
 }

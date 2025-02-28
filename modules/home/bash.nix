@@ -25,7 +25,7 @@
       c = "clear";
       e = "exit";
 
-      # ixOS
+      # NixOS
       nrb = "sudo nixos-rebuild switch --flake .";
       nup = "nix flake update";
       ngc = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot && sudo nvim /boot/loader/loader.conf";
@@ -57,22 +57,22 @@
     # Init base config
     initExtra = ''
       # Starship integration
-      eval "$(starship init zsh)"
+      eval "$(starship init bash)"
 
-      # Zoxide integration
+      # Zoxide integration - bash specific
       eval "$(zoxide init bash)"
 
-      # direnv integration
-      eval "$(direnv hook zsh)"
+      # direnv integration - bash specific
+      eval "$(direnv hook bash)"
 
       # Tmux auto-start
-      if [[ -z "$TMUX" && "$TERM" != "screen"* ]]; then
+      if [ -z "$TMUX" ] && [ "$TERM" != "screen" ]; then
         tmux attach || tmux new
       fi
 
       # FZF base setup
-      if [ -f "$HOME/.fzf.zsh" ]; then 
-        source "$HOME/.fzf.zsh"
+      if [ -f "$HOME/.fzf.bash" ]; then 
+        source "$HOME/.fzf.bash"
       fi
     '';
   };
