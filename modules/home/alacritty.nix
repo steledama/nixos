@@ -1,4 +1,6 @@
 # nixos/modules/home/alacritty.nix
+# This module configures Alacritty terminal emulator with custom keybindings 
+# optimized for tmux workflow
 
 {
   config,
@@ -11,7 +13,7 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      # Configurazione di base
+      # Basic window configuration
       window = {
         padding = {
           x = 8;
@@ -21,13 +23,13 @@
         opacity = 1.0;
       };
 
-      # Scrolling
+      # Scrolling configuration
       scrolling = {
         history = 10000;
         multiplier = 3;
       };
 
-      # Font
+      # Font configuration
       font = {
         normal = {
           family = "JetBrainsMono Nerd Font";
@@ -44,7 +46,7 @@
         size = 13.0;
       };
 
-      # Colori (OneDark theme)
+      # Colors (OneDark theme)
       colors = {
         # Default colors
         primary = {
@@ -77,7 +79,7 @@
         };
       };
 
-      # Cursor
+      # Cursor configuration
       cursor = {
         style = {
           shape = "Block";
@@ -87,7 +89,7 @@
         unfocused_hollow = true;
       };
 
-      # Updated shell configuration to match latest Alacritty requirements
+      # Terminal shell configuration
       terminal = {
         shell = {
           program = "${pkgs.zsh}/bin/zsh";
@@ -95,68 +97,96 @@
         };
       };
 
-      # Tutti i key bindings in un unico posto
+      # Key bindings
       keyboard.bindings = [
-        # Tmux navigation
+        # ----- Terminal Management -----
+        # Ctrl+Shift+T: Open a new Alacritty instance
         {
           key = "T";
           mods = "Control|Shift";
           action = "SpawnNewInstance";
         }
 
-        # Scorciatoie per le sessioni tmux
+        # ----- Tmux Session Management -----
+        # Ctrl+Shift+D: Send Ctrl+Space then 'd' to tmux
+        # This detaches from the current tmux session
         {
           key = "D";
           mods = "Control|Shift";
-          chars = "\u0001\u0064"; # Usa la notazione Unicode
+          chars = "\u0001\u0064"; # Unicode for Ctrl+Space, d
         }
+        
+        # Ctrl+Shift+C: Send Ctrl+Space then 'c' to tmux
+        # This creates a new window in tmux
         {
           key = "C";
           mods = "Control|Shift";
-          chars = "\u0001\u0063";
+          chars = "\u0001\u0063"; # Unicode for Ctrl+Space, c
         }
+        
+        # Ctrl+Shift+W: Send Ctrl+Space then 'w' to tmux
+        # This shows the window list in tmux
         {
           key = "W";
           mods = "Control|Shift";
-          chars = "\u0001\u0077";
+          chars = "\u0001\u0077"; # Unicode for Ctrl+Space, w
         }
+        
+        # Ctrl+Shift+N: Send Ctrl+Space then 'n' to tmux
+        # This navigates to the next window in tmux
         {
           key = "N";
           mods = "Control|Shift";
-          chars = "\u0001\u006e";
+          chars = "\u0001\u006e"; # Unicode for Ctrl+Space, n
         }
+        
+        # Ctrl+Shift+P: Send Ctrl+Space then 'p' to tmux
+        # This navigates to the previous window in tmux
         {
           key = "P";
           mods = "Control|Shift";
-          chars = "\u0001\u0070";
+          chars = "\u0001\u0070"; # Unicode for Ctrl+Space, p
         }
-        # Scorciatoie per split del pannello
+        
+        # ----- Tmux Pane Management -----
+        # Ctrl+Shift+H: Send Ctrl+Space then '\' to tmux
+        # This splits the current pane horizontally
         {
           key = "H";
           mods = "Control|Shift";
-          chars = "\u0001\u005c";
+          chars = "\u0001\u005c"; # Unicode for Ctrl+Space, \
         }
+        
+        # Ctrl+Shift+V: Send Ctrl+Space then '-' to tmux
+        # This splits the current pane vertically
         {
           key = "V";
           mods = "Control|Shift";
-          chars = "\u0001\u002d";
+          chars = "\u0001\u002d"; # Unicode for Ctrl+Space, -
         }
 
-        # Copy paste and clear
+        # ----- Clipboard Operations -----
+        # Ctrl+V: Paste from clipboard
         {
           key = "V";
           mods = "Control";
           action = "Paste";
         }
+        
+        # Ctrl+C: Copy to clipboard
         {
           key = "C";
           mods = "Control";
           action = "Copy";
         }
+        
+        # ----- Terminal Operations -----
+        # Ctrl+L: Clear terminal screen
+        # Sends the form feed character (ASCII 12)
         {
           key = "L";
           mods = "Control";
-          chars = "\u000c"; # clear (Ctrl+L)
+          chars = "\u000c"; # Unicode for Ctrl+L (form feed)
         }
       ];
     };

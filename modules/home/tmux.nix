@@ -1,5 +1,4 @@
-# nixos/modules/home/tmux.nix
-
+# modules/home/tmux.nix
 {
   config,
   lib,
@@ -18,7 +17,7 @@
     keyMode = "vi";
     prefix = "C-Space";
 
-    # Configurazione minimalista
+    # Configurazione completa incluso il tema
     extraConfig = ''
       # Supporto true-color
       set -g default-terminal "screen-256color"
@@ -54,6 +53,15 @@
       set-window-option -g mode-keys vi
       bind-key -T copy-mode-vi 'v' send -X begin-selection 
       bind -T copy-mode-vi 'y' send-keys -X copy-pipe-and-cancel "pbcopy"
+
+      # Impostazioni tema minimalista
+      set -g status-style bg=default,fg=white
+      set -g status-left "#[fg=green,bold] #S "
+      set -g status-right "#[fg=white] %H:%M "
+      set -g window-status-current-format "#[fg=cyan,bold] #I:#W "
+      set -g window-status-format " #I:#W "
+      set -g pane-border-style "fg=colour240"
+      set -g pane-active-border-style "fg=cyan"
     '';
 
     # Plugin essenziale per la navigazione Neovim-Tmux
@@ -61,21 +69,4 @@
       vim-tmux-navigator
     ];
   };
-
-  # Tema minimalista per tmux
-  home.file.".config/tmux/minimal-theme.conf".text = ''
-    # Colori di base
-    set -g status-style bg=default,fg=white
-    set -g status-left "#[fg=green,bold] #S "
-    set -g status-right "#[fg=white] %H:%M "
-    set -g window-status-current-format "#[fg=cyan,bold] #I:#W "
-    set -g window-status-format " #I:#W "
-    set -g pane-border-style "fg=colour240"
-    set -g pane-active-border-style "fg=cyan"
-  '';
-
-  # Carica il tema
-  home.activation.tmuxTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    echo "source-file $HOME/.config/tmux/minimal-theme.conf" >> $HOME/.tmux.conf
-  '';
 }
