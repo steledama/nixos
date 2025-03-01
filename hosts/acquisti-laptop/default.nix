@@ -1,21 +1,14 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running 'nixos-help').
-
-{ pkgs, inputs, ... }:
-
+# nixos/hosts/acquisti-laptop/default.nix
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
-    # Hardware specific for this host
     ./hardware.nix
-    # Common configurations
     ../default.nix
-    # Kernel
-    ../../modules/system/zen.nix
-    # Hardware
     ../../modules/system/hardware/intel.nix
     ../../modules/system/hardware/touchpad.nix
-    # Services
     ../../modules/system/services/docker.nix
     ../../modules/system/services/smb.nix
     ../../modules/system/services/ssh.nix
@@ -35,6 +28,7 @@
       "wheel"
       "libvirtd"
     ];
+    shell = pkgs.zsh;
   };
 
   # HOME-MANAGER configuration specific to this host

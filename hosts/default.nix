@@ -1,14 +1,13 @@
-# Common configuration shared by all hosts
+# nixos/hosts/default.nix
 {
   config,
   lib,
   pkgs,
   ...
-}:
-
-{
+}: {
   # Import common system modules
   imports = [
+    ../modules/system/zen.nix
     ../modules/system/boot.nix
     ../modules/system/locale.nix
     ../modules/system/nix.nix
@@ -49,7 +48,7 @@
     unzip # ZIP archive extraction
     tcpdump
 
-    # Strumenti essenziali
+    # System tools
     ripgrep
     fd
     gnumake
@@ -63,5 +62,17 @@
     eslint
     pyright # Python LSP
     black # Python formatter
+
+    # keyboard driven workflow utilities
+    fzf
+    bat
+    eza
+
+    # Ranger dependencies
+    file # For recognizing file types
+    highlight # For syntax highlighting
+    atool # For archive extraction
+    mediainfo # For media file information
+    poppler_utils # For PDF
   ];
 }

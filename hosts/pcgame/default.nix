@@ -1,20 +1,13 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running 'nixos-help').
-
-{ pkgs, inputs, ... }:
-
+# nixos/hosts/pcgame/default.nix
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
-    # Hardware specific for this host
     ./hardware.nix
-    # Common configurations
     ../default.nix
-    # Kernel
-    ../../modules/system/zen.nix
-    # Hardware
     ../../modules/system/hardware/nvidia.nix
-    # Services
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
   ];
@@ -33,6 +26,7 @@
       "wheel"
       "libvirtd"
     ];
+    shell = pkgs.zsh;
   };
 
   # HOME-MANAGER configuration specific to this host
@@ -101,7 +95,7 @@
       "network.target"
       "display-manager.service"
     ];
-    wants = [ "display-manager.service" ];
+    wants = ["display-manager.service"];
   };
 
   # This value determines the NixOS release from which the default

@@ -1,13 +1,10 @@
 # nixos/home/default.nix
-
 {
   config,
   lib,
   pkgs,
   ...
-}:
-
-{
+}: {
   # Import common home modules
   imports = [
     ../modules/home/bash.nix

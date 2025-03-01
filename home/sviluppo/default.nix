@@ -1,13 +1,14 @@
 # nixos/home/sviluppo/default.nix
-
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Import common configurations
   imports = [
     ../default.nix
-    ../../modules/home/gnome-theme.nix
     ../../modules/home/bash.nix
+    ../../modules/home/gnome-theme.nix
   ];
 
   # username
@@ -18,8 +19,6 @@
   home.packages = with pkgs; [
     upscayl
   ];
-
-  # Any user-specific overrides or additional configurations can go here
 
   # State version should be kept in the user's config
   home.stateVersion = "23.11";
