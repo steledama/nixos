@@ -1,17 +1,13 @@
 # modules/system/shell.nix
-{ config, lib, pkgs, ... }:
-
 {
-  # Enable bash at system level
-  programs.bash = {
-    enable = true;
-    # Completion handled at user level
-  };
-
-  # Enable zsh at system level
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  # Enable zsh at system level (bash is enabled by default)
   programs.zsh = {
     enable = true;
-    # Completion handled at user level
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
   };
@@ -21,18 +17,18 @@
 
   # Shell-related packages at system level
   environment.systemPackages = with pkgs; [
-    starship    # Customizable prompt
-    zoxide      # Smarter cd command
-    direnv      # Environment manager
-    tmux        # Terminal multiplexer
-    fzf         # Fuzzy finder
-    bat         # Better cat
-    eza         # Better ls
-    fd          # Better find
-    ripgrep     # Better grep
+    starship # Customizable prompt
+    zoxide # Smarter cd command
+    direnv # Environment manager
+    tmux # Terminal multiplexer
+    fzf # Fuzzy finder
+    bat # Better cat
+    eza # Better ls
+    fd # Better find
+    ripgrep # Better grep
     zsh-completions
   ];
-  
+
   # Configure keyd for CapsLock to Ctrl+b (for tmux)
   services.keyd = {
     enable = true;
@@ -48,3 +44,4 @@
     };
   };
 }
+
