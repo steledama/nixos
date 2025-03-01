@@ -107,6 +107,15 @@
       historyLimit = 10000;
       mouse = true;
       keyMode = "vi";
+
+      # plugins
+      plugins = with pkgs.tmuxPlugins; [
+        resurrect  # Saves and restores tmux sessions
+        continuum  # Automatic saving of tmux environment
+        vim-tmux-navigator  # Seamless navigation between tmux panes and vim splits
+      ];
+
+      # extra
       extraConfig = ''
         # Command prompt
         unbind :
@@ -157,6 +166,17 @@
         # Pane borders
         set -g pane-border-style fg="#5c6370"
         set -g pane-active-border-style fg="#61afef"
+
+        # Resurrect configuration
+        set -g @resurrect-capture-pane-contents 'on'
+        set -g @resurrect-strategy-nvim 'session'
+        
+        # Continuum configuration
+        set -g @continuum-restore 'on'
+        set -g @continuum-save-interval '10' # Save every 10 minutes
+        
+        # Custom binding to force save tmux session
+        bind r run-shell "#{resurrect_dir}/save.sh"
       '';
     };
 
