@@ -28,8 +28,8 @@
     git # Version control
     lazygit # Git TUI frontend
     gcc # C compiler
-    nixd # Nix language server
-    nixfmt-rfc-style # Code formatter for nix
+    nil # Nix language server
+    alejandra # Code formatter for nix
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
 

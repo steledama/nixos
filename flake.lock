@@ -23,11 +23,11 @@
     "neovim-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1739976016,
-        "narHash": "sha256-dmKejIdWxaV1dhGwVmrvKkSRpSBe+///H21W2OSMXNQ=",
+        "lastModified": 1740787614,
+        "narHash": "sha256-RYS42KhKdVfVFcuI6tRMsUcVdcgVBg/LvVXDmIJzHVY=",
         "owner": "steledama",
         "repo": "neovim-config",
-        "rev": "34e7d29aa7b6e95cf09d62baf4c9082db5b129c0",
+        "rev": "cb51b857c329d90b8b843339fc54d124f7a6d85c",
         "type": "github"
       },
       "original": {

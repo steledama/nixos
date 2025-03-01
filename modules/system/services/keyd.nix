@@ -1,13 +1,16 @@
 # nixos/modules/services/keyd
-{ config, lib, pkgs, ... }:
-
 {
-  # Configurazione keyd per rimappare CapsLock a Ctrl+b
-    services.keyd = {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  # CapsLock to Ctrl+b remap
+  services.keyd = {
     enable = true;
     keyboards = {
       default = {
-        ids = [ "*" ];
+        ids = ["*"];
         settings = {
           main = {
             capslock = "C-b";
@@ -17,5 +20,3 @@
     };
   };
 }
-
-
