@@ -1,13 +1,10 @@
 # modules/home/tmux.nix
-
 {
   config,
   lib,
   pkgs,
   ...
-}:
-
-{
+}: {
   programs.tmux = {
     enable = true;
 
@@ -60,12 +57,23 @@
       bind-key -T copy-mode-vi v send-keys -X begin-selection
       bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
 
-      # Simple theme
-      set -g status-style bg=default,fg=white
+      # Move status bar to top
+      set -g status-position top
+
+      # Browser-like tab styling
+      set -g status-style bg="#282c34",fg="#abb2bf"
+      set -g window-status-style bg="#282c34",fg="#abb2bf"
+      set -g window-status-current-style bg="#61afef",fg="#282c34",bold
+
+      # Status bar format
       set -g status-left " #S "
       set -g status-right " %H:%M "
-      set -g window-status-current-format " #I:#W "
       set -g window-status-format " #I:#W "
+      set -g window-status-current-format " #I:#W "
+
+      # Set border colors
+      set -g pane-border-style fg="#5c6370"
+      set -g pane-active-border-style fg="#61afef"
     '';
   };
 }
