@@ -10,6 +10,7 @@
     ../../modules/system/hardware/intel.nix
     ../../modules/system/hardware/touchpad.nix
     ../../modules/system/services/docker.nix
+    ../../modules/system/services/ssh.nix
   ];
 
   # System-specific packages (additional to common ones)
@@ -36,6 +37,9 @@
     users = {
       sviluppo = import ../../home/sviluppo;
     };
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
   };
 
   # Basic network configuration

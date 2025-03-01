@@ -10,8 +10,8 @@
     ../../modules/system/hardware/intel.nix
     ../../modules/system/hardware/touchpad.nix
     ../../modules/system/services/docker.nix
-    ../../modules/system/services/smb.nix
     ../../modules/system/services/ssh.nix
+    ../../modules/system/services/smb.nix
   ];
 
   # System-specific packages (additional to common ones)
@@ -28,7 +28,8 @@
       "wheel"
       "libvirtd"
     ];
-    shell = pkgs.zsh;
+    # Default is zsh uncommet for bash shell
+    # shell = pkgs.bash;
   };
 
   # HOME-MANAGER configuration specific to this host
@@ -39,6 +40,9 @@
     users = {
       acquisti = import ../../home/acquisti;
     };
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
   };
 
   # Basic network configuration

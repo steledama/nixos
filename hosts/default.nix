@@ -11,9 +11,9 @@
     ../modules/system/boot.nix
     ../modules/system/locale.nix
     ../modules/system/nix.nix
+    ../modules/system/shell.nix
     ../modules/system/fonts.nix
     ../modules/system/hardware/sound.nix
-    ../modules/system/services/keyd.nix
     ../modules/system/services/print.nix
     ../modules/system/desktop/gnome.nix
   ];

@@ -7,10 +7,7 @@
 }: {
   # Import common home modules
   imports = [
-    ../modules/home/bash.nix
-    ../modules/home/zsh.nix
-    ../modules/home/starship.nix
-    ../modules/home/zoxide.nix
+    ../modules/home/shell-config.nix
     ../modules/home/neovim.nix
   ];
 

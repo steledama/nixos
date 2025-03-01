@@ -14,7 +14,7 @@
 
   # System-specific packages (additional to common ones)
   environment.systemPackages = with pkgs; [
-    amule # Peer-to-peer client for the eD2K and Kademlia networks
+    # Add system packages
   ];
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -26,7 +26,8 @@
       "wheel"
       "libvirtd"
     ];
-    shell = pkgs.zsh;
+    # Default is zsh uncommet for bash shell
+    # shell = pkgs.bash;
   };
 
   # HOME-MANAGER configuration specific to this host
@@ -37,7 +38,6 @@
     users = {
       stefano = import ../../home/stefano;
     };
-    # Existing configs backup
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
@@ -57,13 +57,11 @@
     # Firewall configuration
     firewall = {
       enable = true;
-
       # TCP Ports
       allowedTCPPorts = [
         4662 # aMule eD2K data
         4672 # aMule incoming connections
       ];
-
       # UDP Ports
       allowedUDPPorts = [
         4665 # aMule eD2K

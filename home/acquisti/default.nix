@@ -7,12 +7,10 @@
 }: {
   imports = [
     ../default.nix
-    ../../modules/home/zsh.nix
+    ../../modules/home/gnome-theme.nix
     ../../modules/home/alacritty.nix
-    ../../modules/home/tmux.nix
     ../../modules/home/ranger.nix
     ../../modules/home/syncthing.nix
-    ../../modules/home/gnome-theme.nix
   ];
 
   # username

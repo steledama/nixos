@@ -7,11 +7,9 @@
 }: {
   imports = [
     ../default.nix
-    ../../modules/home/zsh.nix
-    ../../modules/home/alacritty.nix
-    ../../modules/home/tmux.nix
-    ../../modules/home/ranger.nix
     ../../modules/home/gnome-theme.nix
+    ../../modules/home/alacritty.nix
+    ../../modules/home/ranger.nix
   ];
 
   # username
@@ -20,6 +18,7 @@
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
+    amule
   ];
 
   home.stateVersion = "23.11";
