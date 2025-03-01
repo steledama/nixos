@@ -1,14 +1,10 @@
 # nixos/modules/home/ranger.nix
-
 {
   config,
   lib,
   pkgs,
   ...
-}:
-
-{
-  # Configure ranger using Home Manager
+}: {
   programs.ranger = {
     enable = true;
 
@@ -40,21 +36,21 @@
 
       class extract(Command):
           """:extract <paths>
-          
+
           Extract archives using atool
           """
           def execute(self):
               import os
               from ranger.ext.shell_escape import shell_escape as esc
-              
+
               if not self.arg(1):
                   self.fm.notify("Please specify a file to extract", bad=True)
                   return
-                  
+
               files = [f.path for f in self.fm.thistab.get_selection()]
               if not files:
                   files = [self.fm.thisfile.path]
-                  
+
               self.fm.execute_command(["atool", "--extract"] + files)
     '';
   };

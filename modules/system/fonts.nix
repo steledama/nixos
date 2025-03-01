@@ -1,14 +1,11 @@
 # nixos/modules/system/fonts.nix
-
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   fonts = {
     packages = with pkgs; [
       # Basic system fonts
       noto-fonts
 
-      # Font per terminale e caratteri speciali
+      # Terminal fonts and special characters
       font-awesome
 
       # Nerd Fonts
@@ -16,16 +13,16 @@
       nerd-fonts.fira-code
     ];
 
-    # Abilita i font di sistema
+    # System fonts
     enableDefaultPackages = true;
 
-    # Configurazione dei font di default
+    # Default font config
     fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "JetBrainsMono Nerd Font Mono" ];
-        serif = [ "Noto Serif" ];
-        sansSerif = [ "Noto Sans" ];
+        monospace = ["JetBrainsMono Nerd Font Mono"];
+        serif = ["Noto Serif"];
+        sansSerif = ["Noto Sans"];
       };
     };
   };

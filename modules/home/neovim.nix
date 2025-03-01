@@ -1,14 +1,11 @@
 # nixos/modules/home/nvim.nix
-
 {
   config,
   lib,
   pkgs,
   neovim-config,
   ...
-}:
-
-{
+}: {
   programs.neovim = {
     enable = true;
     defaultEditor = true;

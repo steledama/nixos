@@ -1,5 +1,5 @@
-{ inputs, ... }:
-{
+# nixos/modules/system/nix.nix
+{inputs, ...}: {
   nix = {
     settings = {
       experimental-features = [
@@ -17,7 +17,7 @@
     };
     # Set nixpkgs path to match the one from flake inputs
     # This ensures consistency between flake and non-flake commands
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     # garbage collection automation
     gc = {
       automatic = true;

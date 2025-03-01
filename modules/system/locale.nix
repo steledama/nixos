@@ -1,3 +1,4 @@
+# nixos/modules/system/locale.nix
 {
   # Configure console keymap
   console.keyMap = "it";
@@ -20,4 +21,3 @@
     LC_TIME = "it_IT.UTF-8";
   };
 }
-

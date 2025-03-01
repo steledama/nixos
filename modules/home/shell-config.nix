@@ -1,7 +1,10 @@
 # modules/home/shell-config.nix
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Common shell aliases for both bash and zsh
   home.shellAliases = {
     # Navigation
@@ -54,7 +57,7 @@
       settings = {
         add_newline = false;
         command_timeout = 1000;
-        
+
         character = {
           success_symbol = "[➜](green)";
           error_symbol = "[✗](red)";
@@ -94,7 +97,7 @@
       enableZshIntegration = true;
       enableBashIntegration = true;
       options = [
-        "--cmd cd"  # Replace cd command
+        "--cmd cd" # Replace cd command
       ];
       enableFishIntegration = true;
     };
@@ -110,9 +113,9 @@
 
       # plugins
       plugins = with pkgs.tmuxPlugins; [
-        resurrect  # Saves and restores tmux sessions
-        continuum  # Automatic saving of tmux environment
-        vim-tmux-navigator  # Seamless navigation between tmux panes and vim splits
+        resurrect # Saves and restores tmux sessions
+        continuum # Automatic saving of tmux environment
+        # vim-tmux-navigator # Seamless navigation between tmux panes and vim splits
       ];
 
       # extra
@@ -137,6 +140,14 @@
         bind Tab next-window
         bind DC kill-pane
 
+        # Vi mode for copy operations
+        set-window-option -g mode-keys vi
+        bind-key -T copy-mode-vi v send-keys -X begin-selection
+        bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
+
+        # Custom binding to force save tmux session
+        bind r run-shell "#{resurrect_dir}/save.sh"
+
         # True-color support
         set -g default-terminal "screen-256color"
         set -ga terminal-overrides ",*256col*:Tc"
@@ -145,11 +156,6 @@
         set -g base-index 1
         set -g pane-base-index 1
         set -g set-clipboard on
-
-        # Vi mode for copy operations
-        set-window-option -g mode-keys vi
-        bind-key -T copy-mode-vi v send-keys -X begin-selection
-        bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
 
         # Status bar styling
         set -g status-position top
@@ -170,13 +176,10 @@
         # Resurrect configuration
         set -g @resurrect-capture-pane-contents 'on'
         set -g @resurrect-strategy-nvim 'session'
-        
+
         # Continuum configuration
         set -g @continuum-restore 'on'
         set -g @continuum-save-interval '10' # Save every 10 minutes
-        
-        # Custom binding to force save tmux session
-        bind r run-shell "#{resurrect_dir}/save.sh"
       '';
     };
 
@@ -187,7 +190,7 @@
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       autocd = true;
-      
+
       # History settings
       history = {
         size = 10000;
@@ -223,7 +226,7 @@
         fi
 
         # FZF integration
-        if [ -f "$HOME/.fzf.zsh" ]; then 
+        if [ -f "$HOME/.fzf.zsh" ]; then
           source "$HOME/.fzf.zsh"
         fi
       '';
@@ -233,7 +236,7 @@
     bash = {
       enable = true;
       enableCompletion = true;
-      
+
       initExtra = ''
         # Tool integrations
         eval "$(starship init bash)"
@@ -246,7 +249,7 @@
         fi
 
         # FZF integration
-        if [ -f "$HOME/.fzf.bash" ]; then 
+        if [ -f "$HOME/.fzf.bash" ]; then
           source "$HOME/.fzf.bash"
         fi
       '';

@@ -1,5 +1,4 @@
 # nixos/modules/home/syncthing.nix
-
 # to configure 127.0.0.1:8384
 {
   services = {

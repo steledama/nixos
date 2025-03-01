@@ -4,9 +4,7 @@
   lib,
   pkgs,
   ...
-}:
-
-{
+}: {
   programs.alacritty = {
     enable = true;
     settings = {
@@ -71,7 +69,7 @@
       terminal = {
         shell = {
           program = "${pkgs.zsh}/bin/zsh";
-          args = [ "-l" ];
+          args = ["-l"];
         };
       };
 
@@ -162,7 +160,7 @@
         ];
       };
 
-      # Cursor settimgs
+      # Cursor settings
       cursor = {
         style = {
           shape = "Block";
