@@ -3,10 +3,12 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   # Import common home modules
   imports = [
+    inputs.nixvim.homeManagerModules.nixvim
     ../modules/home/shell-config.nix
     ../modules/home/neovim.nix
   ];

@@ -31,6 +31,8 @@
     openssl # Cryptographic library that implements the SSL and TLS protocols
      # Base
     nodejs
+    rustup
+    cargo
     python3
     # Language server
     nil # Nix

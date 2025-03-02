@@ -9,19 +9,18 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Input per la configurazione di Neovim
-    neovim-config = {
-      url = "github:steledama/neovim-config";
-      flake = false;
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      ...
+    { self
+    , nixpkgs
+    , home-manager
+    , nixvim
+    , ...
     }@inputs:
     let
       system = "x86_64-linux";
@@ -40,9 +39,6 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
-              home-manager.extraSpecialArgs = {
-                neovim-config = inputs.neovim-config;
-              };
             }
           ] ++ extraModules;
         };
