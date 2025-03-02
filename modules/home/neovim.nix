@@ -13,8 +13,13 @@
     vimAlias = true;
   };
 
-  # Crea il link simbolico alla configurazione esterna
+  # Symbolic link to external config from repo
   home.file.".config/nvim" = {
     source = neovim-config;
   };
+
+  # Packages directly linked to neovim
+  home.packages = with pkgs; [
+    markdownlint-cli
+  ];
 }
