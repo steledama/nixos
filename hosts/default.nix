@@ -27,11 +27,28 @@
     git # Version control
     lazygit # Git TUI frontend
     gcc # C compiler
-    nil # Nix language server
-    alejandra # Code formatter for nix
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
-
+     # Base
+    nodejs
+    python3
+    # Language server
+    nil # Nix
+    lua-language-server # Lua
+    typescript-language-server # Js
+    pyright # python
+    # Formatter
+    prettierd        # JavaScript
+    stylua           # Lua
+    alejandra        # Nix
+    black            # Python
+    isort            # Python
+    # Linter
+    eslint           # JavaScript
+    lua54Packages.luacheck         # Lua
+    nixpkgs-fmt      # Nix (alternativa ad alejandra)
+    pylint           # Python
+    
     # System monitoring and diagnostics
     btop # Resource monitor (CPU, memory, disks, network, processes)
     iotop # I/O usage monitoring
@@ -49,30 +66,12 @@
     tcpdump
 
     # System tools
-    ripgrep
-    fd
     gnumake
     curl
-
-    # LSP e formatter
-    typescript-language-server
-    prettierd
-    lua-language-server
-    marksman # Markdown language server
-    eslint
-    pyright # Python LSP
-    black # Python formatter
-
-    # keyboard driven workflow utilities
+    ripgrep
+    fd
     fzf
     bat
     eza
-
-    # Ranger dependencies
-    file # For recognizing file types
-    highlight # For syntax highlighting
-    atool # For archive extraction
-    mediainfo # For media file information
-    poppler_utils # For PDF
   ];
 }

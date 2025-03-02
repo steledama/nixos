@@ -17,9 +17,4 @@
   home.file.".config/nvim" = {
     source = neovim-config;
   };
-
-  # Packages directly linked to neovim
-  home.packages = with pkgs; [
-    markdownlint-cli
-  ];
 }

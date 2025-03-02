@@ -54,4 +54,12 @@
               self.fm.execute_command(["atool", "--extract"] + files)
     '';
   };
+
+  home.packages = with pkgs; [
+    file # For recognizing file types
+    highlight # For syntax highlighting
+    atool # For archive extraction
+    mediainfo # For media file information
+    poppler_utils # For PDF
+    ];
 }
