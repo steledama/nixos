@@ -7,7 +7,6 @@
   # Import common configurations
   imports = [
     ../default.nix
-    ../../modules/home/gnome-theme.nix
   ];
 
   # username

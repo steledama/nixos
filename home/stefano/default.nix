@@ -7,9 +7,6 @@
 }: {
   imports = [
     ../default.nix
-    ../../modules/home/gnome-theme.nix
-    ../../modules/home/alacritty.nix
-    ../../modules/home/ranger.nix
   ];
 
   # username

@@ -10,7 +10,10 @@
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ../modules/home/shell-config.nix
+    ../modules/home/alacritty.nix
     ../modules/home/neovim.nix
+    ../modules/home/lf.nix
+    ../modules/home/gnome-theme.nix
   ];
 
   # Common packages for all users
