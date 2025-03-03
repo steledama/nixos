@@ -1,33 +1,24 @@
 # nixos/modules/home/neovim-keymaps.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ ... }: {
   keymaps = [
-    # Navigazione di base
+    # Esc with no highlight from internal search
     {
       mode = "n";
       key = "<Esc>";
       action = "<cmd>nohlsearch<CR>";
     }
 
-    # Keymap per Neo-tree
+    # Neo-tree toggle
     {
       mode = "n";
-      key = "<leader>e";
+      key = "\\";
       action = "<cmd>Neotree toggle<CR>";
-      options.desc = "Toggle file explorer";
-    }
-    {
-      mode = "n";
-      key = "<leader>o";
-      action = "<cmd>Neotree focus<CR>";
-      options.desc = "Focus file explorer";
+      options = {
+        desc = "Toggle file explorer";
+      };
     }
 
-    # Keymaps per telescope
+    # Telescope
     {
       mode = "n";
       key = "<leader>sf";
@@ -89,7 +80,7 @@
       options.desc = "[ ] Find existing buffers";
     }
 
-    # Navigazione finestre
+    # Neovim windows navigation
     {
       mode = "n";
       key = "<C-h>";
@@ -151,7 +142,7 @@
     {
       mode = "n";
       key = "<leader>f";
-      action = ''
+      action.__raw = ''
         function()
           require("conform").format({
             async = true,
@@ -162,7 +153,6 @@
       '';
       options = {
         desc = "Format buffer";
-        # Rimosso l'opzione 'lua = true' che non è supportata
       };
     }
   ];

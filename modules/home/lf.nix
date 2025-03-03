@@ -1,9 +1,6 @@
 # modules/home/lf.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ pkgs
+, ...
 }: {
   programs.lf = {
     enable = true;
@@ -51,7 +48,7 @@
       "." = "set hidden!";
       "`" = "mark-load";
       "\\'" = "mark-load";
-      "<enter>" = "open";
+      "<enter>" = "$$EDITOR $f"; # Usa neovim per aprire i file
 
       do = "dragon-out";
 
@@ -77,70 +74,72 @@
     };
 
     # Configurazione anteprima compatibile con Alacritty
-    extraConfig = let
-      previewer = pkgs.writeShellScriptBin "lf-preview" ''
-        file=$1
-        width=$2
-        height=$3
+    extraConfig =
+      let
+        previewer = pkgs.writeShellScriptBin "lf-preview" ''
+          file=$1
+          width=$2
+          height=$3
 
-        # Gestione delle immagini
-        case "$(${pkgs.file}/bin/file -Lb --mime-type "$file")" in
-            image/*)
-                # Utilizziamo ueberzug per le immagini se disponibile
-                if command -v ueberzug >/dev/null 2>&1; then
-                    ueberzug layer --silent --parse bash < <(
-                        printf "{"action": "add", "identifier": "preview", "path": "%s", "x": %d, "y": %d, "width": %d, "height": %d}\n" \
-                            "$file" "$4" "$5" "$width" "$height"
-                    ) || ${pkgs.catimg}/bin/catimg -w "$width" "$file"
-                else
-                    # Fallback su catimg se ueberzug non è disponibile
-                    ${pkgs.catimg}/bin/catimg -w "$width" "$file"
-                fi
-                ;;
-            text/*)
-                ${pkgs.bat}/bin/bat --color=always --style=plain "$file"
-                ;;
-            application/pdf)
-                ${pkgs.poppler_utils}/bin/pdftotext "$file" -
-                ;;
-            application/zip)
-                ${pkgs.unzip}/bin/unzip -l "$file"
-                ;;
-            audio/*)
-                ${pkgs.mediainfo}/bin/mediainfo "$file"
-                ;;
-            video/*)
-                ${pkgs.mediainfo}/bin/mediainfo "$file"
-                ;;
-            *)
-                ${pkgs.file}/bin/file -b "$file"
-                ;;
-        esac
+          # Gestione delle immagini
+          case "$(${pkgs.file}/bin/file -Lb --mime-type "$file")" in
+              image/*)
+                  # Utilizziamo ueberzug per le immagini se disponibile
+                  if command -v ueberzug >/dev/null 2>&1; then
+                      ueberzug layer --silent --parse bash < <(
+                          printf "{"action": "add", "identifier": "preview", "path": "%s", "x": %d, "y": %d, "width": %d, "height": %d}\n" \
+                              "$file" "$4" "$5" "$width" "$height"
+                      ) || ${pkgs.catimg}/bin/catimg -w "$width" "$file"
+                  else
+                      # Fallback su catimg se ueberzug non è disponibile
+                      ${pkgs.catimg}/bin/catimg -w "$width" "$file"
+                  fi
+                  ;;
+              text/*)
+                  ${pkgs.bat}/bin/bat --color=always --style=plain "$file"
+                  ;;
+              application/pdf)
+                  ${pkgs.poppler_utils}/bin/pdftotext "$file" -
+                  ;;
+              application/zip)
+                  ${pkgs.unzip}/bin/unzip -l "$file"
+                  ;;
+              audio/*)
+                  ${pkgs.mediainfo}/bin/mediainfo "$file"
+                  ;;
+              video/*)
+                  ${pkgs.mediainfo}/bin/mediainfo "$file"
+                  ;;
+              *)
+                  ${pkgs.file}/bin/file -b "$file"
+                  ;;
+          esac
+        '';
+
+        cleaner = pkgs.writeShellScriptBin "lf-cleaner" ''
+          # Se stiamo usando ueberzug, pulisci l'immagine visualizzata
+          if command -v ueberzug >/dev/null 2>&1; then
+            ueberzug layer --silent --parse bash < <(
+              printf '{"action": "remove", "identifier": "preview"}\n'
+            )
+          fi
+        '';
+      in
+      ''
+        set cleaner ${cleaner}/bin/lf-cleaner
+        set previewer ${previewer}/bin/lf-preview
+
+        # Dichiarazione esplicita del shell path
+        set shell ${pkgs.bash}/bin/bash
+        set shellopts '-eu'
+        set ifs "\n"
+        set scrolloff 10
+
+        # Usa il design colonne di Miller
+        set number
+        set relativenumber
+        set ratios 1:2:3
       '';
-
-      cleaner = pkgs.writeShellScriptBin "lf-cleaner" ''
-        # Se stiamo usando ueberzug, pulisci l'immagine visualizzata
-        if command -v ueberzug >/dev/null 2>&1; then
-          ueberzug layer --silent --parse bash < <(
-            printf '{"action": "remove", "identifier": "preview"}\n'
-          )
-        fi
-      '';
-    in ''
-      set cleaner ${cleaner}/bin/lf-cleaner
-      set previewer ${previewer}/bin/lf-preview
-
-      # Aggiungi qui ulteriori configurazioni personalizzate
-      set shell sh
-      set shellopts '-eu'
-      set ifs "\n"
-      set scrolloff 10
-
-      # Usa il design colonne di Miller
-      set number
-      set relativenumber
-      set ratios 1:2:3
-    '';
   };
 
   # Aggiungi dipendenze necessarie per lf
@@ -156,7 +155,7 @@
     ueberzug
   ];
 
-  # Crea la directory per le icone se necessario
+  # Icone personalizzate da paste.txt
   xdg.configFile."lf/icons".text = ''
     # file types (with matching order)
     ln
@@ -353,28 +352,6 @@
     *Makefile
     *CMakeLists.txt
 
-    # file patterns (vim-devicons) (patterns not supported in lf)
-    # .*jquery.*\.js$
-    # .*angular.*\.js$
-    # .*backbone.*\.js$
-    # .*require.*\.js$
-    # .*materialize.*\.js$
-    # .*materialize.*\.css$
-    # .*mootools.*\.js$
-    # .*vimrc.*
-    # Vagrantfile$
-
-    # file patterns (file name adaptations)
-    *jquery.min.js
-    *angular.min.js
-    *backbone.min.js
-    *require.min.js
-    *materialize.min.js
-    *materialize.min.css
-    *mootools.min.js
-    *vimrc
-    Vagrantfile
-
     # archives or compressed (extensions from dircolors defaults)
     *.tar
     *.tgz
@@ -502,3 +479,4 @@
     *.pdf
   '';
 }
+

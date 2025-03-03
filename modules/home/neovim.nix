@@ -1,12 +1,10 @@
 # nixos/module/home/neovim.nix
+{ ...
+}:
+let
+  keymapsModule = import ./neovim-keymaps.nix { };
+in
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
-  keymapsModule = import ./neovim-keymaps.nix {inherit config lib pkgs;};
-in {
   programs.nixvim.config = {
     enable = true;
     viAlias = true;
@@ -147,7 +145,7 @@ in {
           nil_ls = {
             enable = true;
             settings = {
-              formatting.command = ["nixpkgs-fmt"];
+              formatting.command = [ "nixpkgs-fmt" ];
             };
           };
 
@@ -156,7 +154,7 @@ in {
             enable = true;
             settings.Lua = {
               completion.callSnippet = "Replace";
-              diagnostics.globals = ["vim"];
+              diagnostics.globals = [ "vim" ];
             };
           };
         };
@@ -202,9 +200,9 @@ in {
             "<C-y>" = "cmp.mapping.confirm({ select = true })";
           };
           sources = [
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
         };
       };
@@ -225,11 +223,11 @@ in {
           };
           # Rinominato da formattersByFt a formatters_by_ft
           formatters_by_ft = {
-            lua = ["stylua"];
-            python = ["isort" "black"];
-            javascript = ["prettierd"];
-            typescript = ["prettierd"];
-            nix = ["nixpkgs-fmt"];
+            lua = [ "stylua" ];
+            python = [ "isort" "black" ];
+            javascript = [ "prettierd" ];
+            typescript = [ "prettierd" ];
+            nix = [ "nixpkgs-fmt" ];
           };
         };
       };

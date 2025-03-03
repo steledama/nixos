@@ -1,9 +1,7 @@
 # modules/home/shell-config.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   # Common shell aliases for both bash and zsh
   home.shellAliases = {
@@ -120,63 +118,71 @@
 
       # extra
       extraConfig = ''
-        # Command prompt
-        unbind :
-        bind . command-prompt
+                                	# Prefix from C-b to C-a
+                                	unbind C-b
+                                	set -g prefix C-a
+                                	bind C-a send-prefix
 
-        # Split horizontally
-        unbind %
-        bind - split-window -v -c "#{pane_current_path}"
+                                	# Command prompt
+                                	unbind :
+                                	bind . command-prompt
 
-        # Split vertically
-        unbind %
-        bind \\ split-window -h -c "#{pane_current_path}"
+        				# Session
+                			# prefix C-s to save session and Prefix C-r to restore
+        				# prefix s to show the sessions
 
-        # New window in current path
-        bind t new-window -c "#{pane_current_path}"
+                                	# Window
+                                	bind t new-window -c "#{pane_current_path}"
+                                	bind w kill-window
+                        		bind-key Right next-window
+                        		bind-key Left previous-window
+        				# prefix , to rename a window
+                			
+                                	# Pane
+                                	unbind %
+                                	bind - split-window -v -c "#{pane_current_path}"
+                                	# Split vertically
+                                	unbind %
+                                	bind \\ split-window -h -c "#{pane_current_path}"
+                                	bind DC kill-pane
 
-        # Window management
-        bind w kill-window
-        bind Tab next-window
-        bind DC kill-pane
+                                	# Vi mode for copy operations
+                                	set-window-option -g mode-keys vi
+                                	bind-key -T copy-mode-vi v send-keys -X begin-selection
+                                	bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
 
-        # Vi mode for copy operations
-        set-window-option -g mode-keys vi
-        bind-key -T copy-mode-vi v send-keys -X begin-selection
-        bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
+                                	# True-color support
+                                	set -g default-terminal "screen-256color"
+                                	set -ga terminal-overrides ",*256col*:Tc"
 
-        # True-color support
-        set -g default-terminal "screen-256color"
-        set -ga terminal-overrides ",*256col*:Tc"
+                                	# Base settings
+                                	set -g base-index 1
+                                	set -g pane-base-index 1
+                                	set -g set-clipboard on
 
-        # Base settings
-        set -g base-index 1
-        set -g pane-base-index 1
-        set -g set-clipboard on
+                                	# Status bar styling
+                                	set -g status-position top
+                                	set -g status-style bg="#282c34",fg="#abb2bf"
+                                	set -g window-status-style bg="#282c34",fg="#abb2bf"
+                                	set -g window-status-current-style bg="#61afef",fg="#282c34",bold
 
-        # Status bar styling
-        set -g status-position top
-        set -g status-style bg="#282c34",fg="#abb2bf"
-        set -g window-status-style bg="#282c34",fg="#abb2bf"
-        set -g window-status-current-style bg="#61afef",fg="#282c34",bold
+                                	# Status bar format
+                                	set -g status-left " #S "
+                                	set -g status-right " %H:%M "
+                                	set -g window-status-format " #I:#W "
+                                	set -g window-status-current-format " #I:#W "
 
-        # Status bar format
-        set -g status-left " #S "
-        set -g status-right " %H:%M "
-        set -g window-status-format " #I:#W "
-        set -g window-status-current-format " #I:#W "
+                                	# Pane borders
+                                	set -g pane-border-style fg="#5c6370"
+                                	set -g pane-active-border-style fg="#61afef"
 
-        # Pane borders
-        set -g pane-border-style fg="#5c6370"
-        set -g pane-active-border-style fg="#61afef"
+                                	# Resurrect configuration
+                                	set -g @resurrect-capture-pane-contents 'on'
+                                	set -g @resurrect-strategy-nvim 'session'
 
-        # Resurrect configuration
-        set -g @resurrect-capture-pane-contents 'on'
-        set -g @resurrect-strategy-nvim 'session'
-
-        # Continuum configuration
-        set -g @continuum-restore 'on'
-        set -g @continuum-save-interval '10' # Save every 10 minutes
+                                	# Continuum configuration
+                                	set -g @continuum-restore 'on'
+                                	set -g @continuum-save-interval '10' # Save every 10 minutes
       '';
     };
 

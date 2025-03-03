@@ -1,9 +1,6 @@
 # modules/system/shell.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ pkgs
+, ...
 }: {
   # Enable zsh at system level (bash is enabled by default)
   programs.zsh = {
@@ -34,10 +31,10 @@
     enable = true;
     keyboards = {
       default = {
-        ids = ["*"];
+        ids = [ "*" ];
         settings = {
           main = {
-            capslock = "C-b";
+            capslock = "C-a";
           };
         };
       };
