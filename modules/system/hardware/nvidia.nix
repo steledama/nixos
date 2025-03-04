@@ -35,15 +35,13 @@
     open = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.latest; # stable, latest, beta, production
+    package = config.boot.kernelPackages.nvidiaPackages.stable; # stable, latest, beta, production
   };
 
   # (Opzionale) Pacchetto per il monitoraggio della GPU
   environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia
     cudaPackages.cudatoolkit
-    cudaPackages.nvidia_driver
-    cudaPackages.tensorrt
   ];
 
 }
