@@ -1,8 +1,7 @@
 # nixos/hosts/acquisti-laptop/default.nix
-{
-  pkgs,
-  inputs,
-  ...
+{ pkgs
+, inputs
+, ...
 }: {
   imports = [
     ./hardware.nix
@@ -54,7 +53,6 @@
       "127.0.0.1" = [
         "5.89.62.125" # pubblico lavoro
         "10.40.40.130" # riservato lavoro eth
-        "madalu.controlliamo.com" # dyndns casa
         "192.168.1.16" # riservato casa wifi
       ];
     };
