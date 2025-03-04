@@ -2,40 +2,48 @@
 , pkgs
 , ...
 }: {
-  # Disabilita il driver open source "nouveau"
-  boot.blacklistedKernelModules = [ "nouveau" ];
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
-  # Abilita Xorg e imposta il driver Nvidia
+  # Load nvidia driver for Xorg and Wayland
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
   };
 
-  # Configurazione Nvidia
   hardware.nvidia = {
-    # Abilita il modesetting (passa nvidia-drm.modeset=1 al kernel)
+    # Modesetting is prequired
     modesetting.enable = true;
-    # Abilita nvidia-settings per verifiche e configurazioni grafiche
-    nvidiaSettings = true;
-    # Utilizza il pacchetto stabile dei driver Nvidia compatibile con il kernel in uso
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    # Impostato su false per evitare un carico aggiuntivo; abilitalo se noti tearing
-    forceFullCompositionPipeline = false;
 
-    # NUOVA CONFIGURAZIONE RICHIESTA
-    # Imposta su true per GPU Turing o successive (RTX series, GTX 16xx)
-    # Imposta su false per GPU più vecchie
-    open = true; # Cambia a false se hai una GPU più vecchia di RTX/GTX 16xx
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    # Enable this if you have graphical corruption issues or application crashes after waking
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+    # of just the bare essentials.
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+
+    # Enable the Nvidia settings menu accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    # GPU with Turing architecture (RTX 20-Series) or newer it is recommended by NVIDIA to use the open Drivers
+    open = true;
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.latest; # stable, latest, beta, production
   };
 
   # (Opzionale) Pacchetto per il monitoraggio della GPU
   environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia
     cudaPackages.cudatoolkit
+    cudaPackages.nvidia_driver
+    cudaPackages.tensorrt
   ];
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true; # Utile per applicazioni a 32 bit
-  };
 }
