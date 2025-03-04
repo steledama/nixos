@@ -118,71 +118,71 @@
 
       # extra
       extraConfig = ''
-                                	# Prefix from C-b to C-a
-                                	unbind C-b
-                                	set -g prefix C-a
-                                	bind C-a send-prefix
+                        # Prefix from C-b to C-a
+                        unbind C-b
+                        set -g prefix C-a
+                        bind C-a send-prefix
+                	# Command prompt
+                        unbind :
+                        bind . command-prompt
+        
+                	# Session
+                	# bind C-s to save session and Prefix C-r to restore
+                	# bind s to show the sessions
 
-                                	# Command prompt
-                                	unbind :
-                                	bind . command-prompt
+                        # Window
+                        bind t new-window -c "#{pane_current_path}"
+                        bind w kill-window
+                        bind Tab next-window
+                        bind S-Tab previous-window
+                	# bind , to rename a window
+        
+                	# Pane
+        		# Split horizontally
+                        unbind %
+                        bind - split-window -v -c "#{pane_current_path}"
+                	# Split vertically
+                        unbind %
+                        bind \\ split-window -h -c "#{pane_current_path}"
+                        bind DC kill-pane
 
-        				# Session
-                			# prefix C-s to save session and Prefix C-r to restore
-        				# prefix s to show the sessions
+                	# Vi mode for copy operations
+                	set-window-option -g mode-keys vi
+                        bind -T copy-mode-vi v send-keys -X begin-selection
+                        bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
 
-                                	# Window
-                                	bind t new-window -c "#{pane_current_path}"
-                                	bind w kill-window
-                        		bind-key Right next-window
-                        		bind-key Left previous-window
-        				# prefix , to rename a window
-                			
-                                	# Pane
-                                	unbind %
-                                	bind - split-window -v -c "#{pane_current_path}"
-                                	# Split vertically
-                                	unbind %
-                                	bind \\ split-window -h -c "#{pane_current_path}"
-                                	bind DC kill-pane
+                	# True-color support
+                        set -g default-terminal "screen-256color"
+                        set -ga terminal-overrides ",*256col*:Tc"
 
-                                	# Vi mode for copy operations
-                                	set-window-option -g mode-keys vi
-                                	bind-key -T copy-mode-vi v send-keys -X begin-selection
-                                	bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
+                	# Base settings
+                        set -g base-index 1
+                        set -g pane-base-index 1
+                        set -g set-clipboard on
 
-                                	# True-color support
-                                	set -g default-terminal "screen-256color"
-                                	set -ga terminal-overrides ",*256col*:Tc"
+                	# Status bar styling
+                        set -g status-position top
+                        set -g status-style bg="#282c34",fg="#abb2bf"
+                        set -g window-status-style bg="#282c34",fg="#abb2bf"
+                        set -g window-status-current-style bg="#61afef",fg="#282c34",bold
 
-                                	# Base settings
-                                	set -g base-index 1
-                                	set -g pane-base-index 1
-                                	set -g set-clipboard on
+                        # Status bar format
+                        set -g status-left " #S "
+                        set -g status-right " %H:%M "
+                        set -g window-status-format " #I:#W "
+                        set -g window-status-current-format " #I:#W "
 
-                                	# Status bar styling
-                                	set -g status-position top
-                                	set -g status-style bg="#282c34",fg="#abb2bf"
-                                	set -g window-status-style bg="#282c34",fg="#abb2bf"
-                                	set -g window-status-current-style bg="#61afef",fg="#282c34",bold
+                	# Pane borders
+                        set -g pane-border-style fg="#5c6370"
+                        set -g pane-active-border-style fg="#61afef"
 
-                                	# Status bar format
-                                	set -g status-left " #S "
-                                	set -g status-right " %H:%M "
-                                	set -g window-status-format " #I:#W "
-                                	set -g window-status-current-format " #I:#W "
+                	# Resurrect configuration
+                        set -g @resurrect-capture-pane-contents 'on'
+                        set -g @resurrect-strategy-nvim 'session'
 
-                                	# Pane borders
-                                	set -g pane-border-style fg="#5c6370"
-                                	set -g pane-active-border-style fg="#61afef"
-
-                                	# Resurrect configuration
-                                	set -g @resurrect-capture-pane-contents 'on'
-                                	set -g @resurrect-strategy-nvim 'session'
-
-                                	# Continuum configuration
-                                	set -g @continuum-restore 'on'
-                                	set -g @continuum-save-interval '10' # Save every 10 minutes
+                	# Continuum configuration
+                        set -g @continuum-restore 'on'
+                        set -g @continuum-save-interval '10' # Save every 10 minutes
       '';
     };
 
