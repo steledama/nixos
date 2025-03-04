@@ -1,6 +1,5 @@
 # nixos/hosts/pcgame/default.nix
-{ pkgs
-, inputs
+{ inputs
 , ...
 }: {
   imports = [
@@ -9,14 +8,15 @@
     ../../modules/system/hardware/nvidia.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
+    # ../../modules/system/services/ollama.nix
   ];
 
   # System-specific packages (additional to common ones)
-  environment.systemPackages = with pkgs; [
-    # Add system packages
-  ];
+  # environment.systemPackages = with pkgs; [
+  # Add system packages
+  # ];
 
-  # Define a user account. Don't forget to set a password with 'passwd'.
+  # User
   users.users.stefano = {
     isNormalUser = true;
     description = "stefano";
@@ -29,7 +29,7 @@
     # shell = pkgs.bash;
   };
 
-  # HOME-MANAGER configuration specific to this host
+  # HOME-MANAGER
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
@@ -42,13 +42,13 @@
     backupFileExtension = "backup";
   };
 
-  # Docker containers configuration specific to this host
+  # Docker
   virtualisation.dockerSetup = {
     enable = true;
     user = "stefano";
   };
 
-  # Basic network configuration
+  # Network
   networking = {
     hostName = "pcgame";
     networkmanager.enable = true;
@@ -66,27 +66,6 @@
         4665 # aMule eD2K
         4672 # aMule Kad
       ];
-    };
-  };
-
-  # ollama
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama-cuda;
-  };
-  systemd.services.ollama = {
-    serviceConfig = {
-      SupplementaryGroups = [
-        "video"
-        "render"
-      ];
-      Environment = [
-        "NVIDIA_VISIBLE_DEVICES=all"
-        "CUDA_VISIBLE_DEVICES=0"
-        "LD_LIBRARY_PATH=/run/opengl-driver/lib"
-        "OLLAMA_DEBUG=1"
-      ];
-      path = [ pkgs.cudaPackages.cudatoolkit ];
     };
   };
 
