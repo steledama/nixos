@@ -1,15 +1,14 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   # Disabilita il driver open source "nouveau"
-  boot.blacklistedKernelModules = ["nouveau"];
+  boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Abilita Xorg e imposta il driver Nvidia
   services.xserver = {
     enable = true;
-    videoDrivers = ["nvidia"];
+    videoDrivers = [ "nvidia" ];
   };
 
   # Configurazione Nvidia

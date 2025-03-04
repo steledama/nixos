@@ -1,8 +1,7 @@
 # nixos/hosts/pcgame/default.nix
-{
-  pkgs,
-  inputs,
-  ...
+{ pkgs
+, inputs
+, ...
 }: {
   imports = [
     ./hardware.nix
@@ -87,13 +86,8 @@
         "LD_LIBRARY_PATH=/run/opengl-driver/lib"
         "OLLAMA_DEBUG=1"
       ];
+      path = [ pkgs.cudaPackages.cudatoolkit ];
     };
-    after = [
-      "syslog.target"
-      "network.target"
-      "display-manager.service"
-    ];
-    wants = ["display-manager.service"];
   };
 
   # This value determines the NixOS release from which the default
