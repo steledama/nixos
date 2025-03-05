@@ -115,7 +115,7 @@
     }
     {
       mode = "n";
-      key = "<leader><S-tab>";
+      key = "<leader><tab>";
       action = "<cmd>BufferLineCyclePrev<CR>";
       options.desc = "Previous buffer";
     }

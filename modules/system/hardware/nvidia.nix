@@ -1,53 +1,55 @@
+# nixos/modules/system/hardware/nvidia.nix
+
 { config
 , pkgs
 , ...
 }: {
-  # Load nvidia driver for Xorg and Wayland
+  # Disable the open source nouveau driver
+  boot.blacklistedKernelModules = [ "nouveau" ];
+
+  # Load NVIDIA driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
   nixpkgs.config.nvidia.acceptLicense = true;
 
+  # Graphics and hardware support
   hardware = {
     graphics = {
       enable = true;
+      enable32Bit = true; # For 32-bit applications
     };
 
     enableRedistributableFirmware = true;
-    steam-hardware.enable = true;
 
+    # NVIDIA specific configuration
     nvidia = {
-      # Enable nvidia-persistenced daemon to keep GPU state persistent,
-      # which improves performance for AI workloads by preventing device reinitialization
-      nvidiaPersistenced = true;
-
-      # Modesetting is required.
+      # Enable modesetting for Wayland compatibility
       modesetting.enable = true;
 
-      # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-      # Enable this if you have graphical corruption issues or application crashes after waking
-      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
-      # of just the bare essentials.
-      powerManagement.enable = false;
-
-      # Fine-grained power management. Turns off GPU when not in use.
-      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-      powerManagement.finegrained = false;
-
-      # Use the NVidia open source kernel module (not to be confused with the
-      # independent third-party "nouveau" open source driver).
-      open = true;
-
-      # Enable the Nvidia settings menu,
-      # accessible via `nvidia-settings`.
+      # Enable NVIDIA settings utility
       nvidiaSettings = true;
 
-      # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      # Use the open kernel module for RTX/GTX 16xx or newer GPUs
+      # Set to false for older GPUs
+      open = true;
+
+      # Use the stable driver package
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+      # Force full composition pipeline - enable if you see screen tearing
+      forceFullCompositionPipeline = false;
+
+      # Power management options
+      powerManagement = {
+        enable = false; # Enable for better suspend/resume with modern GPUs
+        finegrained = false; # For Turing+ GPUs
+      };
     };
   };
-  # Extra packages nvidia related
+
+  # Add NVIDIA related packages
   environment.systemPackages = with pkgs; [
-    nvtopPackages.nvidia
-    cudaPackages.cudatoolkit
+    nvtopPackages.nvidia # GPU monitoring
+    cudaPackages.cudatoolkit # CUDA development tools
   ];
 }
+

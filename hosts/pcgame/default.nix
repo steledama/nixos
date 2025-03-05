@@ -1,14 +1,12 @@
 # nixos/hosts/pcgame/default.nix
-{ inputs
-, ...
-}: {
+{inputs, ...}: {
   imports = [
     ./hardware.nix
     ../default.nix
     ../../modules/system/hardware/nvidia.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
-    # ../../modules/system/services/ollama.nix
+    ../../modules/system/services/ollama-docker.nix
   ];
 
   # System-specific packages (additional to common ones)

@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.virtualisation.dockerSetup;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.virtualisation.dockerSetup;
+in {
   options.virtualisation.dockerSetup = {
     enable = lib.mkEnableOption "Docker setup";
     user = lib.mkOption {
@@ -15,13 +17,14 @@ in
   config = lib.mkIf cfg.enable {
     virtualisation.docker = {
       enable = true;
+      enableNvidia = true;
       # You can add more Docker-specific configurations here if needed
     };
 
     # Add the specified user to the docker group
-    users.users.${cfg.user}.extraGroups = [ "docker" ];
+    users.users.${cfg.user}.extraGroups = ["docker"];
 
     # Optionally, you can add Docker Compose
-    environment.systemPackages = [ pkgs.docker-compose ];
+    environment.systemPackages = [pkgs.docker-compose];
   };
 }
