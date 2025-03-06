@@ -6,7 +6,6 @@
     ../../modules/system/hardware/nvidia.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
-    # ../../modules/system/services/ollama-docker.nix
     ../../modules/system/services/ollama.nix
   ];
 
