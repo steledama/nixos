@@ -67,7 +67,7 @@ in
             "<space>" = "none";
             "o" = "open";
             "O" = "open_with_window_picker";
-            "H" = "toggle_hidden";
+            "<C-h>" = "toggle_hidden";
             "/" = "fuzzy_finder";
             "D" = "delete";
             "A" = "add_directory";

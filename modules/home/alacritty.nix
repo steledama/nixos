@@ -1,9 +1,6 @@
 # modules/home/alacritty.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ pkgs
+, ...
 }: {
   programs.alacritty = {
     enable = true;
@@ -69,7 +66,7 @@
       terminal = {
         shell = {
           program = "${pkgs.zsh}/bin/zsh";
-          args = ["-l"];
+          args = [ "-l" ];
         };
       };
 

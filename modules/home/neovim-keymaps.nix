@@ -80,28 +80,28 @@
       options.desc = "[ ] Find existing buffers";
     }
 
-    # Neovim windows navigation
+    # Arrows keys windows navigation
     {
       mode = "n";
-      key = "<C-h>";
+      key = "<C-Left>";
       action = "<C-w><C-h>";
       options.desc = "Move focus to the left window";
     }
     {
       mode = "n";
-      key = "<C-l>";
+      key = "<C-Right>";
       action = "<C-w><C-l>";
       options.desc = "Move focus to the right window";
     }
     {
       mode = "n";
-      key = "<C-j>";
+      key = "<C-Down>";
       action = "<C-w><C-j>";
       options.desc = "Move focus to the lower window";
     }
     {
       mode = "n";
-      key = "<C-k>";
+      key = "<C-Up>";
       action = "<C-w><C-k>";
       options.desc = "Move focus to the upper window";
     }
@@ -109,13 +109,13 @@
     # Navigazione buffers con bufferline
     {
       mode = "n";
-      key = "<leader><tab>";
+      key = "<leader><Tab>";
       action = "<cmd>BufferLineCycleNext<CR>";
       options.desc = "Next buffer";
     }
     {
       mode = "n";
-      key = "<leader><tab>";
+      key = "<leader><S-Tab>";
       action = "<cmd>BufferLineCyclePrev<CR>";
       options.desc = "Previous buffer";
     }
