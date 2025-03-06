@@ -1,5 +1,5 @@
 # nixos/modules/home/gnome-theme.nix
-{pkgs, ...}: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     # Packages for custom themes
     # catppuccin-gtk
@@ -20,6 +20,10 @@
       icon-theme = "Adwaita";
       # icon-theme = "Papirus-Dark";
       cursor-theme = "Adwaita";
+    };
+
+    "org/gnome/desktop/applications/terminal" = {
+      exec = "alacritty";
     };
   };
 }

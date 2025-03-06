@@ -8,6 +8,7 @@
     # Navigation
     ".." = "cd ..";
     "..." = "cd ../..";
+    "spf" = "superfile";
 
     # System utilities
     ll = "ls -l";
