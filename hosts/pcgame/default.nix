@@ -6,8 +6,11 @@
     ../../modules/system/hardware/nvidia.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
-    ../../modules/system/services/ollama-docker.nix
+    # ../../modules/system/services/ollama-docker.nix
+    ../../modules/system/services/ollama.nix
   ];
+
+  extraServices.ollama.enable = true;
 
   # System-specific packages (additional to common ones)
   # environment.systemPackages = with pkgs; [
@@ -44,6 +47,7 @@
   virtualisation.dockerSetup = {
     enable = true;
     user = "stefano";
+    enableNvidia = true;
   };
 
   # Network

@@ -1,3 +1,4 @@
+# modules/system/services/docker.nix
 {
   config,
   lib,
@@ -12,13 +13,20 @@ in {
       type = lib.types.str;
       description = "Username to add to the docker group";
     };
+    enableNvidia = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable NVIDIA support for Docker";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     virtualisation.docker = {
       enable = true;
-      enableNvidia = true;
-      # You can add more Docker-specific configurations here if needed
+    };
+
+    hardware.nvidia-container-toolkit = lib.mkIf cfg.enableNvidia {
+      enable = true;
     };
 
     # Add the specified user to the docker group
