@@ -1,9 +1,8 @@
 # nixos/hosts/default.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }: {
   # Import common system modules
   imports = [
@@ -29,7 +28,7 @@
     gcc # C compiler
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
-     # Base
+    # Base
     nodejs
     rustup
     cargo
@@ -40,17 +39,17 @@
     typescript-language-server # Js
     pyright # python
     # Formatter
-    prettierd        # JavaScript
-    stylua           # Lua
-    alejandra        # Nix
-    black            # Python
-    isort            # Python
+    prettierd # JavaScript
+    stylua # Lua
+    alejandra # Nix
+    black # Python
+    isort # Python
     # Linter
-    eslint           # JavaScript
-    lua54Packages.luacheck         # Lua
-    nixpkgs-fmt      # Nix (alternativa ad alejandra)
-    pylint           # Python
-    
+    eslint # JavaScript
+    lua54Packages.luacheck # Lua
+    nixpkgs-fmt # Nix (alternativa ad alejandra)
+    pylint # Python
+
     # System monitoring and diagnostics
     btop # Resource monitor (CPU, memory, disks, network, processes)
     iotop # I/O usage monitoring
@@ -65,15 +64,23 @@
     # Network and file utilities
     wget # HTTP/HTTPS/FTP file retrieval
     unzip # ZIP archive extraction
-    tcpdump
+    tcpdump # network sniffer
+    wl-clipboard # Command-line copy/paste utilities for Wayland
+    xclip # Tool to access the X clipboard from a console application
 
     # System tools
-    gnumake
-    curl
-    ripgrep
-    fd
-    fzf
-    bat
-    eza
+    gnumake # Tool to control the generation of non-source files from sources
+    curl # Command line tool for transferring files with URL syntax
+    ripgrep # Utility that combines the usability of The Silver Searcher with the raw speed of grep
+    fd # Simple, fast and user-friendly alternative to find
+    fzf # Command-line fuzzy finder written in Go
+    bat # Cat(1) clone with syntax highlighting and Git integration
+    eza # Modern, maintained replacement for ls
+
+    # shell
+    starship # Customizable prompt
+    zoxide # Smarter cd command
+    direnv # Environment manager
+    tmux # Terminal multiplexer
   ];
 }

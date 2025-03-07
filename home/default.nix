@@ -1,10 +1,9 @@
 # nixos/home/default.nix
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  ...
+{ config
+, lib
+, pkgs
+, inputs
+, ...
 }: {
   # Import common home modules
   imports = [
@@ -36,7 +35,7 @@
     # System utilities
     filezilla
     neofetch
-    superfile
+    yazi
   ];
 
   # Common editor configuration

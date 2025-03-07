@@ -28,14 +28,10 @@
       gnome-shell-extensions
     ]
   );
-
-  # Specific gnome exclusions
   environment.gnome.excludePackages = (
     with pkgs;
     [
-      gnome-photos
       gnome-tour
-      gedit
       epiphany
       geary
       totem
@@ -44,6 +40,7 @@
       iagno
       hitori
       atomix
+      gnome-console
     ]
   );
 }

@@ -9,20 +9,11 @@
     syntaxHighlighting.enable = true;
   };
 
-  # Set zsh as default shell for new users
+  # Set zsh as default shell and editor for new users
   users.defaultUserShell = pkgs.zsh;
 
   # Shell-related packages at system level
   environment.systemPackages = with pkgs; [
-    starship # Customizable prompt
-    zoxide # Smarter cd command
-    direnv # Environment manager
-    tmux # Terminal multiplexer
-    fzf # Fuzzy finder
-    bat # Better cat
-    eza # Better ls
-    fd # Better find
-    ripgrep # Better grep
     zsh-completions
   ];
 

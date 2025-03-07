@@ -13,8 +13,20 @@
         };
         decorations = "full";
         opacity = 1.0;
-      };
 
+        # Posizionamento e dimensioni
+        position = {
+          x = 0;
+          y = 40; # Compensazione per la barra Gnome
+        };
+
+        dimensions = {
+          columns = 120; # Numero di colonne di testo
+          lines = 35; # Numero di righe di testo
+        };
+
+        startup_mode = "Windowed";
+      };
       # Basic font configuration
       font = {
         normal = {
