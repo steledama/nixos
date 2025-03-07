@@ -1,10 +1,7 @@
 # nixos/module/home/neovim.nix
-{ ...
-}:
-let
-  keymapsModule = import ./neovim-keymaps.nix { };
-in
-{
+{...}: let
+  keymapsModule = import ./neovim-keymaps.nix {};
+in {
   programs.nixvim.config = {
     enable = true;
     viAlias = true;
@@ -47,7 +44,6 @@ in
     };
 
     plugins = {
-
       which-key = {
         enable = true;
         settings = {
@@ -67,35 +63,8 @@ in
               g = true;
             };
           };
-          win = {
-            border = "single";
-            position = "bottom";
-            margin = { top = 1; right = 0; bottom = 1; left = 0; };
-            padding = [ 1 2 ];
-          };
           show_help = true;
           show_keys = true;
-
-          # Group registrations
-          setup = {
-            __raw = ''
-              function()
-                local wk = require("which-key")
-                wk.register({
-                  ["<leader>"] = {
-                    s = { name = "+Search" },
-                    b = { name = "+Buffer" },
-                    c = { name = "+Code" },
-                    d = { name = "+Document" },
-                    w = { name = "+Workspace" },
-                  },
-                  g = { name = "+Go To" },
-                  ["["] = { name = "+Previous" },
-                  ["]"] = { name = "+Next" },
-                })
-              end
-            '';
-          };
         };
       };
 
@@ -190,28 +159,24 @@ in
         servers = {
           # JavaScript/TypeScript
           ts_ls.enable = true;
-
           # Python
           pyright.enable = true;
-
           # Nix
           nil_ls = {
             enable = true;
             settings = {
-              formatting.command = [ "nixpkgs-fmt" ];
+              formatting.command = ["nixpkgs-fmt"];
             };
           };
-
           # Lua
           lua_ls = {
             enable = true;
             settings.Lua = {
               completion.callSnippet = "Replace";
-              diagnostics.globals = [ "vim" ];
+              diagnostics.globals = ["vim"];
             };
           };
         };
-
         # LSP keymaps
         keymaps = {
           lspBuf = {
@@ -220,13 +185,11 @@ in
             "gD" = "declaration";
             "gr" = "references";
             "gI" = "implementation";
-
             # Informazioni
             "K" = "hover";
             "<leader>D" = "type_definition";
             "<leader>ds" = "document_symbol";
             "<leader>ws" = "workspace_symbol";
-
             # Azioni
             "<leader>rn" = "rename";
             "<leader>ca" = "code_action";
@@ -254,9 +217,9 @@ in
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "buffer";}
           ];
         };
       };
@@ -275,11 +238,11 @@ in
             '';
           };
           formatters_by_ft = {
-            lua = [ "stylua" ];
-            python = [ "isort" "black" ];
-            javascript = [ "prettierd" ];
-            typescript = [ "prettierd" ];
-            nix = [ "nixpkgs-fmt" ];
+            lua = ["stylua"];
+            python = ["isort" "black"];
+            javascript = ["prettierd"];
+            typescript = ["prettierd"];
+            nix = ["nixpkgs-fmt"];
           };
         };
       };
