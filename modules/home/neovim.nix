@@ -47,7 +47,58 @@ in
     };
 
     plugins = {
-      which-key.enable = true;
+
+      which-key = {
+        enable = true;
+        settings = {
+          plugins = {
+            marks = true;
+            registers = true;
+            spelling = {
+              enabled = true;
+            };
+            presets = {
+              operators = true;
+              motions = true;
+              text_objects = true;
+              windows = true;
+              nav = true;
+              z = true;
+              g = true;
+            };
+          };
+          win = {
+            border = "single";
+            position = "bottom";
+            margin = { top = 1; right = 0; bottom = 1; left = 0; };
+            padding = [ 1 2 ];
+          };
+          show_help = true;
+          show_keys = true;
+
+          # Group registrations
+          setup = {
+            __raw = ''
+              function()
+                local wk = require("which-key")
+                wk.register({
+                  ["<leader>"] = {
+                    s = { name = "+Search" },
+                    b = { name = "+Buffer" },
+                    c = { name = "+Code" },
+                    d = { name = "+Document" },
+                    w = { name = "+Workspace" },
+                  },
+                  g = { name = "+Go To" },
+                  ["["] = { name = "+Previous" },
+                  ["]"] = { name = "+Next" },
+                })
+              end
+            '';
+          };
+        };
+      };
+
       web-devicons.enable = true;
 
       telescope = {
@@ -63,6 +114,7 @@ in
         window = {
           position = "left";
           width = 30;
+          # NEO-TREE keymaps
           mappings = {
             "<space>" = "none";
             "o" = "open";
@@ -122,6 +174,7 @@ in
           # Incremental selection
           incremental_selection = {
             enable = true;
+            # INCREMENTAL keymaps
             keymaps = {
               init_selection = "<c-space>";
               node_incremental = "<c-space>";
@@ -191,13 +244,14 @@ in
       cmp = {
         enable = true;
         settings = {
+          # CMP keymaps
           mapping = {
-            "<C-n>" = "cmp.mapping.select_next_item()";
-            "<C-p>" = "cmp.mapping.select_prev_item()";
+            "<C-Down>" = "cmp.mapping.select_next_item()";
+            "<C-Up>" = "cmp.mapping.select_prev_item()";
             "<C-b>" = "cmp.mapping.scroll_docs(-4)";
             "<C-f>" = "cmp.mapping.scroll_docs(4)";
             "<C-Space>" = "cmp.mapping.complete()";
-            "<C-y>" = "cmp.mapping.confirm({ select = true })";
+            "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           sources = [
             { name = "nvim_lsp"; }
@@ -210,7 +264,6 @@ in
       conform-nvim = {
         enable = true;
         settings = {
-          # Configurazione che prima era in extraOptions
           format_on_save = {
             __raw = ''
               function()
@@ -221,7 +274,6 @@ in
               end
             '';
           };
-          # Rinominato da formattersByFt a formatters_by_ft
           formatters_by_ft = {
             lua = [ "stylua" ];
             python = [ "isort" "black" ];
@@ -281,7 +333,6 @@ in
 
       comment = {
         enable = true;
-        # comment-nvim non utilizza settings in nixvim
       };
 
       nvim-autopairs = {
@@ -321,9 +372,7 @@ in
 
     # Extra config conform.nvim format on save
     extraConfigLua = ''
-      -- Configurare conform.nvim per formato al salvataggio
       local conform = require("conform")
-
       -- Format on save
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*",
@@ -332,22 +381,22 @@ in
         end,
       })
 
-      -- Configurazione commenti
+      -- Comments
       require('Comment').setup({
         padding = true,
         sticky = true,
         ignore = "^$", -- ignora linee vuote
         toggler = {
-          line = "gcc",
-          block = "gbc"
+          line = "gll",
+          block = "gbb"
         },
         opleader = {
-          line = "gc",
+          line = "gl",
           block = "gb"
         }
       })
 
-      -- Configurazione autopairs
+      -- Autopairs
       require('nvim-autopairs').setup({
         check_ts = true,
         disable_filetype = {"TelescopePrompt"},
