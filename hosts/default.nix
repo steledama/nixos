@@ -1,7 +1,5 @@
 # nixos/hosts/default.nix
-{ config
-, lib
-, pkgs
+{ pkgs
 , ...
 }: {
   # Import common system modules
@@ -81,6 +79,5 @@
     starship # Customizable prompt
     zoxide # Smarter cd command
     direnv # Environment manager
-    tmux # Terminal multiplexer
   ];
 }

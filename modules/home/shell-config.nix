@@ -34,10 +34,13 @@
     gp = "git push";
     gl = "git pull";
 
-    # Tmux
-    ta = "tmux attach -t";
-    tl = "tmux list-sessions";
-    tn = "tmux new -s";
+    # WezTerm
+    w = "wezterm"; # comando base per avviare wezterm
+    wm = "wezterm cli list"; # lista le connessioni/sessioni (simile a tl)
+    ws = "wezterm cli split-pane"; # divide la finestra corrente
+
+    # Yazi
+    y = "yazi";
 
     # NixOS
     nrb = "sudo nixos-rebuild switch --flake .";
@@ -100,75 +103,6 @@
       enableFishIntegration = true;
     };
 
-    # tmux configuration
-    tmux = {
-      enable = true;
-      terminal = "screen-256color";
-      escapeTime = 0;
-      historyLimit = 10000;
-      mouse = true;
-      keyMode = "vi";
-
-      # plugins
-      plugins = with pkgs.tmuxPlugins; [
-        resurrect # Saves and restores tmux sessions
-        continuum # Automatic saving of tmux environment
-        # vim-tmux-navigator # Seamless navigation between tmux panes and vim splits
-      ];
-
-      # extra
-      extraConfig = ''
-                # Prefix from C-b to C-a
-                unbind C-b
-                set -g prefix C-a
-                bind C-a send-prefix
-                # Command prompt
-                unbind :
-                bind . command-prompt
-                # Window
-                bind t new-window -c "#{pane_current_path}"
-                bind w kill-window
-                bind Tab next-window
-                bind S-Tab previous-window
-                # Pane
-                unbind %
-                bind - split-window -v -c "#{pane_current_path}"
-                unbind %
-                bind \\ split-window -h -c "#{pane_current_path}"
-                bind DC kill-pane
-                # Vi mode for copy operations
-                set-window-option -g mode-keys vi
-                bind -T copy-mode-vi v send-keys -X begin-selection
-                bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
-                # True-color support
-                set -g default-terminal "screen-256color"
-                set -ga terminal-overrides ",*256col*:Tc"
-                # Base settings
-                set -g base-index 1
-                set -g pane-base-index 1
-                set -g set-clipboard on
-                # Status bar styling
-                set -g status-position top
-                set -g status-style bg="#282c34",fg="#abb2bf"
-                set -g window-status-style bg="#282c34",fg="#abb2bf"
-                set -g window-status-current-style bg="#61afef",fg="#282c34",bold
-                # Status bar format
-                set -g status-left " #S "
-                set -g status-right " %H:%M "
-                set -g window-status-format " #I:#W "
-                set -g window-status-current-format " #I:#W "
-        	# Pane borders
-                set -g pane-border-style fg="#5c6370"
-                set -g pane-active-border-style fg="#61afef"
-                # Resurrect configuration
-                set -g @resurrect-capture-pane-contents 'on'
-                set -g @resurrect-strategy-nvim 'session'
-                # Continuum configuration
-                set -g @continuum-restore 'on'
-                set -g @continuum-save-interval '10' # Save every 10 minutes
-      '';
-    };
-
     # zsh configuration
     zsh = {
       enable = true;
@@ -206,10 +140,7 @@
         eval "$(starship init zsh)"
         eval "$(zoxide init zsh --hook pwd)"
         eval "$(direnv hook zsh)"
-        # Tmux auto-start
-        if [[ -z "$TMUX" && "$TERM" != "screen"* ]]; then
-         tmux attach || tmux new
-        fi
+        
         # FZF integration
         if [ -f "$HOME/.fzf.zsh" ]; then
          source "$HOME/.fzf.zsh"
@@ -223,20 +154,18 @@
       enableCompletion = true;
 
       initExtra = ''
-                export EDITOR=nvim
-        	# Tool integrations
-                eval "$(starship init bash)"
-                eval "$(zoxide init bash --hook pwd)"
-                eval "$(direnv hook bash)"
-                # Tmux auto-start
-                if [ -z "$TMUX" ] && [ "$TERM" != "screen" ]; then
-                 tmux attach || tmux new
-                fi
-                # FZF integration
-                if [ -f "$HOME/.fzf.bash" ]; then
-                 source "$HOME/.fzf.bash"
-                fi
+        export EDITOR=nvim
+        # Tool integrations
+        eval "$(starship init bash)"
+        eval "$(zoxide init bash --hook pwd)"
+        eval "$(direnv hook bash)"
+        
+        # FZF integration
+        if [ -f "$HOME/.fzf.bash" ]; then
+         source "$HOME/.fzf.bash"
+        fi
       '';
     };
   };
 }
+

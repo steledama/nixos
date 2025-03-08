@@ -1,7 +1,5 @@
 # nixos/home/default.nix
-{ config
-, lib
-, pkgs
+{ pkgs
 , inputs
 , ...
 }: {
@@ -9,9 +7,10 @@
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ../modules/home/shell-config.nix
-    ../modules/home/alacritty.nix
+    ../modules/home/wezterm.nix
     ../modules/home/neovim.nix
     ../modules/home/gnome-theme.nix
+    ../modules/home/yazy.nix
   ];
 
   # Common packages for all users

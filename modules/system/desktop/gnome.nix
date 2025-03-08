@@ -26,6 +26,7 @@
       adwaita-icon-theme
       gnome-themes-extra
       gnome-shell-extensions
+      gnome-extension-manager
     ]
   );
   environment.gnome.excludePackages = (
