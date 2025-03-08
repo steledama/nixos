@@ -10,7 +10,7 @@
     ../modules/home/wezterm.nix
     ../modules/home/neovim.nix
     ../modules/home/gnome-theme.nix
-    ../modules/home/yazy.nix
+    ../modules/home/yazi.nix
   ];
 
   # Common packages for all users
