@@ -1,5 +1,5 @@
 # nixos/modules/home/wezterm.nix
-{pkgs, ...}: {
+{ ... }: {
   programs.wezterm = {
     enable = true;
     enableBashIntegration = true;
@@ -9,7 +9,7 @@
       local wezterm = require 'wezterm'
       local config = {}
 
-      -- Configurazione di base
+      -- Basic config
       config.font = wezterm.font 'JetBrainsMono Nerd Font'
       config.font_size = 13.0
       config.window_padding = {
@@ -19,11 +19,11 @@
         bottom = 8,
       }
 
-      -- Opacità e finestra
+      -- Opacity and window
       config.window_background_opacity = 1.0
       config.hide_tab_bar_if_only_one_tab = true
 
-      -- Colori OneDark (versione semplificata)
+      -- OneDark theme semplified
       config.colors = {
         foreground = '#abb2bf',
         background = '#282c34',
@@ -53,25 +53,23 @@
         },
       }
 
-      -- Shell predefinita
-      config.default_prog = { '${pkgs.zsh}/bin/zsh', '-l' }
-
-      -- Scorciatoie di base per multiplexing
+      -- Keymaps
       config.keys = {
         -- Clipboard
         { key = 'c', mods = 'CTRL', action = wezterm.action.CopyTo('Clipboard') },
         { key = 'v', mods = 'CTRL', action = wezterm.action.PasteFrom('Clipboard') },
 
-        -- Multiplexing base
-        { key = '\\', mods = 'CTRL|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-        { key = '-', mods = 'CTRL|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
-        { key = 'x', mods = 'CTRL|SHIFT', action = wezterm.action.CloseCurrentPane { confirm = true } },
+        -- Multiplexing
+        { key = '|', mods = 'CTRL|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+        { key = '_', mods = 'CTRL|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
 
-        -- Navigazione pannelli
-        { key = 'LeftArrow', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection('Left') },
-        { key = 'RightArrow', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection('Right') },
-        { key = 'UpArrow', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection('Up') },
-        { key = 'DownArrow', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection('Down') },
+        -- Navigation panes
+        { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection('Left') },
+        { key = 'RightArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection('Right') },
+        { key = 'UpArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection('Up') },
+        { key = 'DownArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection('Down') },
+        -- Close current pane
+        { key = 'Delete', mods = 'CTRL|SHIFT', action = wezterm.action.CloseCurrentPane { confirm = true } },
 
         -- Tab management
         { key = 't', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
@@ -79,11 +77,24 @@
         { key = 'Tab', mods = 'CTRL', action = wezterm.action.ActivateTabRelative(1) },
         { key = 'Tab', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTabRelative(-1) },
 
-        -- Zoom pannello
-        { key = 'z', mods = 'CTRL|SHIFT', action = wezterm.action.TogglePaneZoomState },
+        -- Tab navigation by number for Italian keyboard layout
+        { key = '!', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(0) },  -- Ctrl+Shift+1
+        { key = '"', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(1) },  -- Ctrl+Shift+2
+        { key = '£', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(2) },  -- Ctrl+Shift+3
+        { key = '$', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(3) },  -- Ctrl+Shift+4
+        { key = '%', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(4) },  -- Ctrl+Shift+5
+        { key = '&', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(5) },  -- Ctrl+Shift+6
+        { key = '/', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(6) },  -- Ctrl+Shift+7
+        { key = '(', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(7) },  -- Ctrl+Shift+8
+        { key = ')', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(8) },  -- Ctrl+Shift+9
+        { key = '=', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(9) },  -- Ctrl+Shift+0
+        -- Go to last tab
+        { key = 'l', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTab(-1)},
       }
+
       -- X11 not wayland
       config.enable_wayland = false
+
       return config
     '';
   };

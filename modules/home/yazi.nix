@@ -1,9 +1,9 @@
-# In home/default.nix o home/<user>/default.nix
+# nixos/modules/home/yazi.nix
 { ... }: {
   programs.yazi = {
     enable = true;
     enableBashIntegration = true;
-    enableZshIntegration = true; # se usi zsh
+    enableZshIntegration = true;
 
     settings = {
       manager = {
