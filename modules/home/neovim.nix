@@ -1,7 +1,9 @@
 # nixos/module/home/neovim.nix
-{...}: let
-  keymapsModule = import ./neovim-keymaps.nix {};
-in {
+{ ... }:
+let
+  keymapsModule = import ./neovim-keymaps.nix { };
+in
+{
   programs.nixvim.config = {
     enable = true;
     viAlias = true;
@@ -165,7 +167,7 @@ in {
           nil_ls = {
             enable = true;
             settings = {
-              formatting.command = ["nixpkgs-fmt"];
+              formatting.command = [ "nixpkgs-fmt" ];
             };
           };
           # Lua
@@ -173,7 +175,7 @@ in {
             enable = true;
             settings.Lua = {
               completion.callSnippet = "Replace";
-              diagnostics.globals = ["vim"];
+              diagnostics.globals = [ "vim" ];
             };
           };
         };
@@ -217,9 +219,9 @@ in {
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           sources = [
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
         };
       };
@@ -238,11 +240,11 @@ in {
             '';
           };
           formatters_by_ft = {
-            lua = ["stylua"];
-            python = ["isort" "black"];
-            javascript = ["prettierd"];
-            typescript = ["prettierd"];
-            nix = ["nixpkgs-fmt"];
+            lua = [ "stylua" ];
+            python = [ "isort" "black" ];
+            javascript = [ "prettierd" ];
+            typescript = [ "prettierd" ];
+            nix = [ "nixpkgs-fmt" ];
           };
         };
       };
@@ -350,8 +352,8 @@ in {
         sticky = true,
         ignore = "^$", -- ignora linee vuote
         toggler = {
-          line = "gll",
-          block = "gbb"
+          line = "gl",
+          block = "gb"
         },
         opleader = {
           line = "gl",
