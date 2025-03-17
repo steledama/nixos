@@ -1,9 +1,7 @@
 # nixos/module/home/neovim.nix
-{ ... }:
-let
-  keymapsModule = import ./neovim-keymaps.nix { };
-in
-{
+{...}: let
+  keymapsModule = import ./neovim-keymaps.nix {};
+in {
   programs.nixvim.config = {
     enable = true;
     viAlias = true;
@@ -72,20 +70,33 @@ in
 
       web-devicons.enable = true;
 
+      # Telescope keymaps
       telescope = {
         enable = true;
         extensions = {
           fzf-native.enable = true;
         };
+        keymaps = {
+          "<leader>sf" = "find_files";
+          "<leader>sg" = "live_grep";
+          "<leader>sh" = "help_tags";
+          "<leader>sk" = "keymaps";
+          "<leader>ss" = "builtin";
+          "<leader>sw" = "grep_string";
+          "<leader>sd" = "diagnostics";
+          "<leader>sr" = "resume";
+          "<leader>s." = "oldfiles";
+          "<leader><leader>" = "buffers";
+        };
       };
 
+      # Neo-tree keymaps
       neo-tree = {
         enable = true;
         closeIfLastWindow = true;
         window = {
           position = "left";
           width = 30;
-          # NEO-TREE keymaps
           mappings = {
             "<space>" = "none";
             "o" = "open";
@@ -145,7 +156,6 @@ in
           # Incremental selection
           incremental_selection = {
             enable = true;
-            # INCREMENTAL keymaps
             keymaps = {
               init_selection = "<c-space>";
               node_incremental = "<c-space>";
@@ -156,6 +166,7 @@ in
         };
       };
 
+      # LSP keymaps
       lsp = {
         enable = true;
         servers = {
@@ -167,7 +178,7 @@ in
           nil_ls = {
             enable = true;
             settings = {
-              formatting.command = [ "nixpkgs-fmt" ];
+              formatting.command = ["nixpkgs-fmt"];
             };
           };
           # Lua
@@ -175,28 +186,23 @@ in
             enable = true;
             settings.Lua = {
               completion.callSnippet = "Replace";
-              diagnostics.globals = [ "vim" ];
+              diagnostics.globals = ["vim"];
             };
           };
         };
-        # LSP keymaps
         keymaps = {
           lspBuf = {
-            # Navigazione
             "gd" = "definition";
             "gD" = "declaration";
             "gr" = "references";
             "gI" = "implementation";
-            # Informazioni
             "K" = "hover";
             "<leader>D" = "type_definition";
             "<leader>ds" = "document_symbol";
             "<leader>ws" = "workspace_symbol";
-            # Azioni
             "<leader>rn" = "rename";
             "<leader>ca" = "code_action";
           };
-
           diagnostic = {
             "<leader>q" = "setloclist";
             "[d" = "goto_prev";
@@ -206,7 +212,8 @@ in
         };
       };
 
-      cmp = {
+      # Comment keymaps
+      comment = {
         enable = true;
         settings = {
           # CMP keymaps
@@ -219,9 +226,9 @@ in
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "buffer";}
           ];
         };
       };
@@ -240,15 +247,16 @@ in
             '';
           };
           formatters_by_ft = {
-            lua = [ "stylua" ];
-            python = [ "isort" "black" ];
-            javascript = [ "prettierd" ];
-            typescript = [ "prettierd" ];
-            nix = [ "nixpkgs-fmt" ];
+            lua = ["stylua"];
+            python = ["isort" "black"];
+            javascript = ["prettierd"];
+            typescript = ["prettierd"];
+            nix = ["nixpkgs-fmt"];
           };
         };
       };
 
+      # Bufferline keymaps
       bufferline = {
         enable = true;
         settings = {
@@ -282,6 +290,50 @@ in
         };
       };
 
+      # CMP keymaps
+      cmp = {
+        enable = true;
+        settings = {
+          mapping = {
+            "<C-Down>" = "cmp.mapping.select_next_item()";
+            "<C-Up>" = "cmp.mapping.select_prev_item()";
+            "<C-b>" = "cmp.mapping.scroll_docs(-4)";
+            "<C-f>" = "cmp.mapping.scroll_docs(4)";
+            "<C-Space>" = "cmp.mapping.complete()";
+            "<CR>" = "cmp.mapping.confirm({ select = true })";
+          };
+          sources = [
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "buffer";}
+          ];
+        };
+      };
+
+      # Conform formatting
+      conform-nvim = {
+        enable = true;
+        settings = {
+          format_on_save = {
+            __raw = ''
+              function()
+                return {
+                  timeout_ms = 500,
+                  lsp_fallback = true,
+                }
+              end
+            '';
+          };
+          formatters_by_ft = {
+            lua = ["stylua"];
+            python = ["isort" "black"];
+            javascript = ["prettierd"];
+            typescript = ["prettierd"];
+            nix = ["nixpkgs-fmt"];
+          };
+        };
+      };
+
       indent-blankline = {
         enable = true;
         settings = {
@@ -296,19 +348,37 @@ in
         };
       };
 
-      comment = {
-        enable = true;
-      };
-
-      nvim-autopairs = {
-        enable = true;
-      };
+      nvim-autopairs.enable = true;
     };
 
-    # Keymaps imported form neovim-keymaps.nix
-    keymaps = keymapsModule.keymaps;
+    # Window navigation and other keymaps
+    extraConfigLua = ''
+      -- Arrow keys window navigation
+      vim.keymap.set('n', '<C-Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+      vim.keymap.set('n', '<C-Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+      vim.keymap.set('n', '<C-Down>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+      vim.keymap.set('n', '<C-Up>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+      -- Bufferline keymaps
+      vim.keymap.set('n', '<leader><Tab>', '<Cmd>BufferLineCycleNext<CR>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '<leader><S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', { desc = 'Previous buffer' })
+      vim.keymap.set('n', '<leader>bd', '<Cmd>bdelete<CR>', { desc = 'Close current buffer' })
+      vim.keymap.set('n', '<leader>bp', '<Cmd>BufferLinePick<CR>', { desc = 'Pick buffer' })
+      vim.keymap.set('n', '<leader>bs', '<Cmd>BufferLineSortByDirectory<CR>', { desc = 'Sort buffers by directory' })
+      -- Escape to clear search highlight
+      vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+      -- Neo-tree toggle
+      vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', { desc = 'Toggle file explorer' })
+      -- Formatting
+      vim.keymap.set('n', '<leader>f', function()
+        require("conform").format({
+          async = true,
+          lsp_fallback = true,
+          timeout_ms = 500,
+        })
+      end, { desc = 'Format buffer' })
+    '';
 
-    # Basic colorscheme
+    # Colorscheme
     colorschemes.tokyonight = {
       enable = true;
       settings.style = "night";
