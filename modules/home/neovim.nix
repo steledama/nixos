@@ -1,5 +1,5 @@
 # nixos/module/home/neovim.nix
-{...}: {
+{ ... }: {
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -95,29 +95,32 @@
           followCurrentFile.enabled = true;
           filteredItems = {
             hideDotfiles = false;
-            hideByName = ["node_modules" ".git"];
+            hideByName = [ "node_modules" ".git" ];
           };
         };
       };
 
+      # Simplified treesitter section
       treesitter = {
         enable = true;
+        nixGrammars = true; # Install all grammars from nixpkgs
       };
 
       lsp = {
         enable = true;
         servers = {
-          tsserver.enable = true;
+          # Fixed server names
+          ts_ls.enable = true;
           pyright.enable = true;
           nil_ls = {
             enable = true;
-            settings.formatting.command = ["nixpkgs-fmt"];
+            settings.formatting.command = [ "nixpkgs-fmt" ];
           };
-          lua-ls = {
+          lua_ls = {
             enable = true;
             settings.Lua = {
               completion.callSnippet = "Replace";
-              diagnostics.globals = ["vim"];
+              diagnostics.globals = [ "vim" ];
             };
           };
         };
@@ -135,9 +138,9 @@
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           sources = [
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
         };
       };
@@ -150,11 +153,11 @@
             lsp_fallback = true;
           };
           formatters_by_ft = {
-            lua = ["stylua"];
-            python = ["isort" "black"];
-            javascript = ["prettierd"];
-            typescript = ["prettierd"];
-            nix = ["nixpkgs-fmt"];
+            lua = [ "stylua" ];
+            python = [ "isort" "black" ];
+            javascript = [ "prettierd" ];
+            typescript = [ "prettierd" ];
+            nix = [ "nixpkgs-fmt" ];
           };
         };
       };
@@ -192,11 +195,15 @@
 
       indent-blankline = {
         enable = true;
-        indent.char = "│";
-        scope = {
-          enabled = true;
-          showStart = false;
-          showEnd = false;
+        settings = {
+          indent = {
+            char = "│";
+          };
+          scope = {
+            enabled = true;
+            show_start = false;
+            show_end = false;
+          };
         };
       };
 
@@ -359,7 +366,7 @@
 
     colorschemes.tokyonight = {
       enable = true;
-      style = "night";
+      settings.style = "night";
     };
 
     autoGroups = {
