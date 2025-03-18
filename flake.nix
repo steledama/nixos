@@ -1,5 +1,4 @@
 # nixos/flake.nix
-
 {
   description = "Nixos config flake";
 
@@ -15,24 +14,23 @@
     };
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , home-manager
-    , nixvim
-    , ...
-    }@inputs:
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    nixvim,
+    ...
+  } @ inputs: let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
 
-      # Helper function to create host configurations
-      mkHost =
-        hostname: extraModules:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs; };
-          modules = [
+    # Helper function to create host configurations
+    mkHost = hostname: extraModules:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {inherit inputs;};
+        modules =
+          [
             ./hosts/${hostname}
             home-manager.nixosModules.home-manager
             {
@@ -40,15 +38,14 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
             }
-          ] ++ extraModules;
-        };
-    in
-    {
-      # Host configurations
-      nixosConfigurations = {
-        pcgame = mkHost "pcgame" [ ];
-        acquisti-laptop = mkHost "acquisti-laptop" [ ];
-        sviluppo-laptop = mkHost "sviluppo-laptop" [ ];
+          ]
+          ++ extraModules;
       };
+  in {
+    # Host configurations
+    nixosConfigurations = {
+      pcgame = mkHost "pcgame" [];
+      acquisti-laptop = mkHost "acquisti-laptop" [];
     };
+  };
 }
