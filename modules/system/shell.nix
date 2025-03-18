@@ -17,19 +17,5 @@
     zsh-completions
   ];
 
-  # Configure keyd for CapsLock to Ctrl+b (for tmux)
-  services.keyd = {
-    enable = true;
-    keyboards = {
-      default = {
-        ids = [ "*" ];
-        settings = {
-          main = {
-            capslock = "C-a";
-          };
-        };
-      };
-    };
-  };
 }
 

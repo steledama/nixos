@@ -12,6 +12,7 @@
     ../modules/system/fonts.nix
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
+    ../modules/system/services/keyd.nix
     ../modules/system/desktop/gnome.nix
   ];
 
