@@ -130,8 +130,8 @@
         enable = true;
         settings = {
           mapping = {
-            "<C-Down>" = "cmp.mapping.select_next_item()";
-            "<C-Up>" = "cmp.mapping.select_prev_item()";
+            "<Tab>" = "cmp.mapping.select_next_item()";
+            "<S-Tab>" = "cmp.mapping.select_prev_item()";
             "<C-b>" = "cmp.mapping.scroll_docs(-4)";
             "<C-f>" = "cmp.mapping.scroll_docs(4)";
             "<C-Space>" = "cmp.mapping.complete()";
