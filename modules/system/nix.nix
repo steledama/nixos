@@ -1,5 +1,5 @@
 # nixos/modules/system/nix.nix
-{inputs, ...}: {
+{ inputs, ... }: {
   nix = {
     settings = {
       experimental-features = [
@@ -12,12 +12,12 @@
       # and helps with debugging builds
       keep-outputs = true;
       keep-derivations = true;
-      # Increase download buffer size to 50MB (default is 16MB)
-      download-buffer-size = 50 * 1024 * 1024;
+      # Download buffer size to 100MB (default is 16MB)
+      download-buffer-size = 100 * 1024 * 1024;
     };
     # Set nixpkgs path to match the one from flake inputs
     # This ensures consistency between flake and non-flake commands
-    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     # garbage collection automation
     gc = {
       automatic = true;
