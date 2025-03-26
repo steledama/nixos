@@ -10,6 +10,7 @@
   environment.systemPackages = with pkgs; [
     wofi # Launcher
     waybar # Status bar
+    hyprpaper # Wallpaper manager for Hyprland
 
     # XDG portals
     xdg-desktop-portal

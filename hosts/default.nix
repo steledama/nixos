@@ -55,9 +55,11 @@
     lsof # Tool to list open files
     pciutils # Tools for inspecting PCI devices (includes lspci)
 
-    # System management
+    # System management and utilities
     efibootmgr # EFI Boot Manager utility
     usbimager # OS image USB flasher
+    findutils # For find command
+    coreutils # For basic Unix utilities
 
     # Network and file
     wget # HTTP/HTTPS/FTP file retrieval
