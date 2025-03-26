@@ -43,6 +43,9 @@ with lib; let
     SUPER + SHIFT + 3 => Move Window to Workspace 3
     SUPER + SHIFT + 4 => Move Window to Workspace 4
     SUPER + SHIFT + 5 => Move Window to Workspace 5
+    SUPER + SHIFT + Left => Move Window to Previous Workspace
+    SUPER + SHIFT + Right => Move Window to Next Workspace
+
 
     SUPER + W => Change Wallpaper
     SUPER + F1 => Show This Help Menu
@@ -178,6 +181,8 @@ in {
         "SUPER SHIFT, 3, movetoworkspace, 3"
         "SUPER SHIFT, 4, movetoworkspace, 4"
         "SUPER SHIFT, 5, movetoworkspace, 5"
+        "SUPER SHIFT, Right, movetoworkspace, e+1"
+        "SUPER SHIFT, Left, movetoworkspace, e-1"
 
         # Random wallpaper shortcut
         "SUPER, W, exec, ${randomWallpaperScript}/bin/hyprland-random-wallpaper"
