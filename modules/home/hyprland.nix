@@ -1,21 +1,18 @@
 # modules/home/hyprland.nix
-{ config, pkgs, lib, ... }:
-
-with lib;
-let
-  # Define the shortcut menu script
-  hyprlandPackage = config.wayland.windowManager.hyprland.package or pkgs.hyprland;
-  
-  # Use a simple, consistent wallpaper directory
-  wallpaperDir = "~/wallpapers";
-  
-  # Create a custom script package for the shortcut menu - ultra simplified direct approach
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
+  # Custom script package for the shortcut menu - ultra simplified direct approach
   shortcutMenuScript = pkgs.writeShellScriptBin "hyprland-shortcut-menu" ''
     #!/usr/bin/env bash
-    
+
     # Extremely simplified approach to show Hyprland shortcuts
     # This simply shows the configuration itself, which is much more reliable
-    
+
     # Function to extract shortcuts from Hyprland config
     extract_shortcuts() {
       # Store direct references to our configured bindings - these are exactly what we defined in the Nix file
@@ -26,38 +23,38 @@ let
     SUPER + E => Open File Manager
     SUPER + Q => Close Active Window
     SUPER + Space => Toggle Floating Window
-    
+
     SUPER + Left => Focus Left
     SUPER + Right => Focus Right
     SUPER + Up => Focus Up
     SUPER + Down => Focus Down
-    
+
     SUPER + 1 => Switch to Workspace 1
     SUPER + 2 => Switch to Workspace 2
     SUPER + 3 => Switch to Workspace 3
     SUPER + 4 => Switch to Workspace 4
     SUPER + 5 => Switch to Workspace 5
-    
+
     SUPER + CTRL + Left => Previous Workspace
     SUPER + CTRL + Right => Next Workspace
-    
+
     SUPER + SHIFT + 1 => Move Window to Workspace 1
     SUPER + SHIFT + 2 => Move Window to Workspace 2
     SUPER + SHIFT + 3 => Move Window to Workspace 3
     SUPER + SHIFT + 4 => Move Window to Workspace 4
     SUPER + SHIFT + 5 => Move Window to Workspace 5
-    
+
     SUPER + W => Change Wallpaper
     SUPER + F1 => Show This Help Menu
     SUPER + SHIFT + E => Exit Hyprland
     EOF
     }
-    
+
     # Show the shortcuts menu
     extract_shortcuts | ${pkgs.wofi}/bin/wofi --dmenu --prompt "Hyprland Shortcuts" --width 800 --height 600 --cache-file /dev/null --insensitive
   '';
 
-  # Create a custom script package for the random wallpaper
+  # Script package for the random wallpaper
   randomWallpaperScript = pkgs.writeShellScriptBin "hyprland-random-wallpaper" ''
     #!/usr/bin/env bash
 
@@ -106,15 +103,7 @@ let
 
     echo "Set random wallpaper: $RANDOM_WALLPAPER"
   '';
-
-  # Create a default hyprpaper config
-  defaultHyprpaperConfig = pkgs.writeText "hyprpaper.conf" ''
-    preload = ~/wallpapers/default-wallpaper.jpg
-    # Set a default fallback wallpaper
-    wallpaper = ,~/wallpapers/default-wallpaper.jpg
-  '';
-in
-{
+in {
   # Hyprland configuration
   wayland.windowManager.hyprland = {
     enable = true;
@@ -161,7 +150,7 @@ in
         "SUPER, Return, exec, wezterm"
         "SUPER, R, exec, wofi --show drun"
         "SUPER, B, exec, firefox"
-        "SUPER, E, exec, nautilus"
+        "SUPER, E, exec, wezterm start -- yazi"
 
         # Window controls
         "SUPER, Q, killactive,"
@@ -203,9 +192,9 @@ in
   };
 
   # Add scripts to packages
-  home.packages = [ 
-    shortcutMenuScript 
-    randomWallpaperScript 
+  home.packages = [
+    shortcutMenuScript
+    randomWallpaperScript
     pkgs.hyprpaper
     pkgs.imagemagick # For fallback wallpaper creation
   ];
@@ -241,7 +230,7 @@ in
         "tray" = {
           spacing = 10;
         };
-        
+
         # Custom module for keyboard shortcuts menu
         "custom/keymap" = {
           format = "⌨";
@@ -275,13 +264,13 @@ in
       #clock, #tray, #custom-keymap {
         padding: 0 10px;
       }
-      
+
       /* Style for the keymap button */
       #custom-keymap {
         color: #61afef;
         font-size: 16px;
       }
-      
+
       /* Hover effect for better user feedback */
       #custom-keymap:hover {
         background-color: rgba(97, 175, 239, 0.2);
@@ -295,7 +284,7 @@ in
     mkdir -p $HOME/wallpapers
   '';
 
-  # Wofi configuration (needed for the shortcut menu)
+  # Wofi configuration (for the shortcut menu)
   programs.wofi = {
     enable = true;
     settings = {
