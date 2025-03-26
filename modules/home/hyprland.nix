@@ -81,6 +81,7 @@
   };
 
   # Scripts and configuration files
+  # Create necessary scripts and configuration files
   home.file = {
     # hyprpaper config
     ".config/hypr/hyprpaper.conf".text = ''
@@ -97,7 +98,7 @@
 
         # Directory containing wallpapers
         WALLPAPER_DIR="$HOME/Immagini/Wallpapers"
-        CONFIG_FILE="$HOME/.config/hypr/hyprpaper.conf"
+        TEMP_CONFIG="/tmp/hyprpaper.conf"
 
         # Create the directory if it doesn't exist
         mkdir -p "$WALLPAPER_DIR"
@@ -110,15 +111,26 @@
           exit 1
         fi
 
-        # Kill existing hyprpaper instance if running
-        killall hyprpaper 2>/dev/null
+        # Try to kill existing hyprpaper processes using pkill (which should be available)
+        # or fallback to killing by PID
+        if command -v pkill > /dev/null 2>&1; then
+          pkill -f hyprpaper
+        else
+          # Alternative approach using ps and kill
+          for pid in $(ps -ef | grep hyprpaper | grep -v grep | awk '{print $2}'); do
+            kill -9 $pid 2>/dev/null
+          done
+        fi
 
-        # Generate a new hyprpaper config with the random wallpaper
-        echo "preload = $RANDOM_WALLPAPER" > "$CONFIG_FILE"
-        echo "wallpaper = ,$RANDOM_WALLPAPER" >> "$CONFIG_FILE"
+        # Wait a moment for the process to terminate
+        sleep 1
 
-        # Start hyprpaper with the new config
-        hyprpaper &
+        # Generate a new hyprpaper config with the random wallpaper in a temporary location
+        echo "preload = $RANDOM_WALLPAPER" > "$TEMP_CONFIG"
+        echo "wallpaper = ,$RANDOM_WALLPAPER" >> "$TEMP_CONFIG"
+
+        # Start hyprpaper with the temporary config
+        hyprpaper --config "$TEMP_CONFIG" &
 
         echo "Set random wallpaper: $RANDOM_WALLPAPER"
       '';
