@@ -11,6 +11,8 @@
     wofi # Launcher
     waybar # Status bar
     hyprpaper # Wallpaper manager for Hyprland
+    grim # Screenshot
+    slurp # Area selection
 
     # XDG portals
     xdg-desktop-portal

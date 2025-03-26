@@ -79,6 +79,7 @@
     fzf # Command-line fuzzy finder written in Go
     bat # Cat(1) clone with syntax highlighting and Git integration
     eza # Modern, maintained replacement for ls
+    imagemagick # Software suite to create, edit, compose, or convert bitmap images
 
     # shell
     starship # Customizable prompt

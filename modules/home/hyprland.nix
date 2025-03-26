@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  # Custom script package for the shortcut menu - ultra simplified direct approach
+  # Script per il menu delle scorciatoie
   shortcutMenuScript = pkgs.writeShellScriptBin "hyprland-shortcut-menu" ''
     #!/usr/bin/env bash
 
@@ -60,7 +60,7 @@ with lib; let
     extract_shortcuts | ${pkgs.wofi}/bin/wofi --dmenu --prompt "Hyprland Shortcuts" --width 800 --height 600 --cache-file /dev/null --insensitive
   '';
 
-  # Script package for the random wallpaper
+  # Script per lo sfondo casuale
   randomWallpaperScript = pkgs.writeShellScriptBin "hyprland-random-wallpaper" ''
     #!/usr/bin/env bash
 
@@ -82,7 +82,7 @@ with lib; let
       echo "No wallpapers found in $WALLPAPER_DIR"
       # Create a default black wallpaper if none found
       TEMP_WALLPAPER="/tmp/default-wallpaper.png"
-      ${pkgs.imagemagick}/bin/convert -size 1920x1080 xc:black "$TEMP_WALLPAPER"
+      ${pkgs.imagemagick}/bin/convert -size 2560x1080 xc:black "$TEMP_WALLPAPER"
       RANDOM_WALLPAPER="$TEMP_WALLPAPER"
       echo "Created a default black wallpaper"
     fi
@@ -109,12 +109,78 @@ with lib; let
 
     echo "Set random wallpaper: $RANDOM_WALLPAPER"
   '';
+
+  # Script per l'avvio affidabile di waybar
+  waybarStartScript = pkgs.writeShellScriptBin "start-waybar" ''
+    #!/usr/bin/env bash
+
+    # Log delle operazioni
+    LOG_FILE="$HOME/.waybar-start.log"
+    echo "Script avviato: $(date)" > $LOG_FILE
+
+    # Termina le istanze esistenti di waybar
+    echo "Termino eventuali istanze di waybar..." >> $LOG_FILE
+    ${pkgs.procps}/bin/pkill waybar || true
+
+    # Attendi che Hyprland sia completamente inizializzato
+    echo "Attendo 3 secondi per l'inizializzazione..." >> $LOG_FILE
+    sleep 3
+
+    # Imposta le variabili di ambiente per il cursore
+    export XCURSOR_THEME=Adwaita
+    export XCURSOR_SIZE=24
+    echo "Variabili cursore: XCURSOR_THEME=$XCURSOR_THEME, XCURSOR_SIZE=$XCURSOR_SIZE" >> $LOG_FILE
+
+    # Imposta via gsettings (funziona meglio in alcuni casi)
+    gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+    gsettings set org.gnome.desktop.interface cursor-size 24
+
+    # Avvia waybar con percorso completo
+    echo "Avvio waybar..." >> $LOG_FILE
+    ${pkgs.waybar}/bin/waybar -l info >> $LOG_FILE 2>&1 &
+
+    # Verifica l'avvio
+    sleep 1
+    if pgrep -x waybar > /dev/null; then
+      echo "Waybar avviato con successo: $(date)" >> $LOG_FILE
+    else
+      echo "ERRORE: Waybar non è stato avviato: $(date)" >> $LOG_FILE
+      # Tentativo di riavvio con opzioni di debug
+      echo "Tentativo di riavvio con opzioni di debug..." >> $LOG_FILE
+      ${pkgs.waybar}/bin/waybar --log debug >> $LOG_FILE 2>&1 &
+    fi
+  '';
+
+  # Script per diagnosticare problemi con il cursore
+  cursorDebugScript = pkgs.writeShellScriptBin "debug-cursor" ''
+    #!/usr/bin/env bash
+
+    echo "=== Debug Cursore ==="
+    echo "Variabili di ambiente correnti:"
+    echo "XCURSOR_THEME=$XCURSOR_THEME"
+    echo "XCURSOR_SIZE=$XCURSOR_SIZE"
+
+    echo -e "\nTemi cursore disponibili:"
+    find /run/current-system/sw/share/icons -type d -name "cursors" | sort
+
+    echo -e "\nImpostazioni cursore GTK:"
+    gsettings get org.gnome.desktop.interface cursor-theme
+    gsettings get org.gnome.desktop.interface cursor-size
+
+    echo -e "\nApplico tema cursore Adwaita con dimensione 24 via gsettings:"
+    gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+    gsettings set org.gnome.desktop.interface cursor-size 24
+
+    echo -e "\nVerifica dopo l'applicazione:"
+    gsettings get org.gnome.desktop.interface cursor-theme
+    gsettings get org.gnome.desktop.interface cursor-size
+  '';
 in {
-  # Hyprland configuration
+  # Configurazione Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
-      # General minimal settings
+      # Impostazioni generali
       general = {
         gaps_in = 5;
         gaps_out = 10;
@@ -124,65 +190,110 @@ in {
         layout = "dwindle";
       };
 
-      # Input with Italian keyboard support
+      # Configurazione input con tastiera italiana
       input = {
         kb_layout = "it";
         follow_mouse = 1;
+        touchpad = {
+          natural_scroll = true;
+          disable_while_typing = true;
+        };
       };
 
-      # Animations
+      # Animazioni
       animations = {
         enabled = true;
+        animation = [
+          "windows, 1, 3, default"
+          "border, 1, 3, default"
+          "fade, 1, 3, default"
+          "workspaces, 1, 3, default"
+        ];
       };
 
-      # Window rules
+      # Decorazioni finestre
+      decoration = {
+        rounding = 10;
+      };
+
+      # Disposizione finestre
+      dwindle = {
+        pseudotile = true;
+        preserve_split = true;
+      };
+
+      # Regole finestre
       windowrulev2 = [
         "float,class:^(pavucontrol)$"
-        # Rules for the shortcuts menu window
         "float,title:^(Hyprland Shortcuts)$"
         "size 800 600,title:^(Hyprland Shortcuts)$"
         "center,title:^(Hyprland Shortcuts)$"
+        "float,class:^(nm-connection-editor)$"
+        "float,class:^(org.gnome.Calculator)$"
       ];
 
-      # Applications at startup
+      # Variabili d'ambiente
+      env = [
+        "XCURSOR_SIZE,24"
+        "XCURSOR_THEME,Adwaita"
+        "GDK_BACKEND,wayland,x11" # Miglior compatibilità per app GTK
+        "QT_QPA_PLATFORM,wayland;xcb" # Miglior compatibilità per app Qt
+      ];
+
+      # Invece, aggiungi una nuova sezione per le impostazioni del cursore
+      # È importante notare che queste impostazioni non sono nella sezione "general"
+      xwayland = {
+        force_zero_scaling = true;
+      };
+
+      # Aggiungi questa nuova sezione per le ombre delle finestre se le vuoi
+      # (opzionale, puoi rimuoverla se causa problemi)
+      misc = {
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+      };
+
+      # Applicazioni all'avvio
       exec-once = [
-        "waybar"
+        "${waybarStartScript}/bin/start-waybar"
         "${randomWallpaperScript}/bin/hyprland-random-wallpaper"
+        "gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'"
+        "gsettings set org.gnome.desktop.interface cursor-size 24"
       ];
 
-      # Shortcuts
+      # Scorciatoie
       bind = [
-        # Basic applications
+        # Applicazioni di base
         "SUPER, Return, exec, wezterm"
         "SUPER, R, exec, wofi --show drun"
         "SUPER, B, exec, firefox"
         "SUPER, E, exec, wezterm start -- yazi"
 
-        # Window controls
+        # Controlli finestre
         "SUPER, Q, killactive,"
         "SUPER, Space, togglefloating,"
 
-        # Focus navigation
+        # Navigazione focus
         "SUPER, Left, movefocus, l"
         "SUPER, Right, movefocus, r"
         "SUPER, Up, movefocus, u"
         "SUPER, Down, movefocus, d"
 
-        # Windows navigation
+        # Navigazione finestre
         "ALT, Tab, cyclenext,"
         "ALT_SHIFT, Tab, cyclenext, prev"
 
-        # Workspace navigation
+        # Navigazione workspace
         "SUPER, 1, workspace, 1"
         "SUPER, 2, workspace, 2"
         "SUPER, 3, workspace, 3"
         "SUPER, 4, workspace, 4"
         "SUPER, 5, workspace, 5"
-        # Additional workspace navigation
+        # Navigazione workspace aggiuntiva
         "SUPER CTRL, Right, workspace, e+1"
         "SUPER CTRL, Left, workspace, e-1"
 
-        # Move windows to workspace
+        # Spostamento finestre tra workspace
         "SUPER SHIFT, 1, movetoworkspace, 1"
         "SUPER SHIFT, 2, movetoworkspace, 2"
         "SUPER SHIFT, 3, movetoworkspace, 3"
@@ -191,11 +302,14 @@ in {
         "SUPER SHIFT, Right, movetoworkspace, e+1"
         "SUPER SHIFT, Left, movetoworkspace, e-1"
 
-        # Random wallpaper shortcut
+        # Scorciatoia per sfondo casuale
         "SUPER, W, exec, ${randomWallpaperScript}/bin/hyprland-random-wallpaper"
 
-        # Show keyboard shortcuts
+        # Mostra scorciatoie tastiera
         "SUPER, F1, exec, ${shortcutMenuScript}/bin/hyprland-shortcut-menu"
+
+        # Debug cursore
+        "SUPER SHIFT, C, exec, ${cursorDebugScript}/bin/debug-cursor"
 
         # Logout
         "SUPER SHIFT, E, exec, hyprctl dispatch exit"
@@ -203,24 +317,26 @@ in {
     };
   };
 
-  # Add scripts to packages
+  # Aggiungi script ai pacchetti
   home.packages = [
     shortcutMenuScript
     randomWallpaperScript
-    pkgs.hyprpaper
-    pkgs.imagemagick # For fallback wallpaper creation
+    waybarStartScript
+    cursorDebugScript
   ];
 
-  # Waybar configuration
+  # Configurazione Waybar
   programs.waybar = {
     enable = true;
+    systemd.enable = false; # Disabilita integrazione systemd, usiamo il nostro script
     settings = {
       mainBar = {
         layer = "top";
         position = "top";
+        height = 30;
         modules-left = ["hyprland/workspaces"];
         modules-center = ["clock"];
-        modules-right = ["custom/keymap" "tray"];
+        modules-right = ["custom/keymap" "pulseaudio" "network" "battery" "tray"];
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -243,16 +359,42 @@ in {
           spacing = 10;
         };
 
-        # Custom module for keyboard shortcuts menu
+        "network" = {
+          format-wifi = "  {essid}";
+          format-disconnected = "󰤭 ";
+          tooltip-format = "{ifname}: {ipaddr}/{cidr}";
+        };
+
+        "pulseaudio" = {
+          format = "{icon} {volume}%";
+          format-muted = "󰖁 ";
+          format-icons = {
+            default = ["󰕿" "󰖀" "󰕾"];
+          };
+          on-click = "pavucontrol";
+        };
+
+        "battery" = {
+          format = "{icon} {capacity}%";
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          format-charging = "󰂄 {capacity}%";
+          interval = 30;
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+        };
+
+        # Modulo personalizzato per le scorciatoie da tastiera
         "custom/keymap" = {
           format = "⌨";
-          tooltip = "Show Hyprland Shortcuts";
+          tooltip = "Scorciatoie Hyprland";
           on-click = "${shortcutMenuScript}/bin/hyprland-shortcut-menu";
         };
       };
     };
 
-    # Style configuration for Waybar
+    # Configurazione stile per Waybar
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font";
@@ -260,50 +402,90 @@ in {
       }
 
       window#waybar {
-        background-color: rgba(0, 0, 0, 0.8);
-        color: #ffffff;
+        background-color: rgba(40, 44, 52, 0.9);
+        color: #abb2bf;
+        border-bottom: 2px solid #61afef;
       }
 
       #workspaces button {
         padding: 0 5px;
-        color: #ffffff;
+        color: #abb2bf;
+        background-color: transparent;
+        border-bottom: 3px solid transparent;
       }
 
       #workspaces button.active {
-        background-color: rgba(0, 100, 200, 0.5);
+        background-color: rgba(97, 175, 239, 0.2);
+        border-bottom: 3px solid #61afef;
       }
 
-      #clock, #tray, #custom-keymap {
+      #clock, #battery, #pulseaudio, #network, #tray, #custom-keymap {
         padding: 0 10px;
+        margin: 0 4px;
       }
 
-      /* Style for the keymap button */
+      /* Stile per il pulsante della tastiera */
       #custom-keymap {
         color: #61afef;
         font-size: 16px;
       }
 
-      /* Hover effect for better user feedback */
-      #custom-keymap:hover {
+      /* Stile per la rete */
+      #network {
+        color: #98c379;
+      }
+
+      /* Stile per l'audio */
+      #pulseaudio {
+        color: #c678dd;
+      }
+
+      /* Stile per la batteria */
+      #battery {
+        color: #e5c07b;
+      }
+
+      #battery.warning {
+        color: #e5c07b;
+        animation: blink 1s infinite;
+      }
+
+      #battery.critical {
+        color: #e06c75;
+        animation: blink 0.5s infinite;
+      }
+
+      @keyframes blink {
+        to {
+          opacity: 0.5;
+        }
+      }
+
+      /* Effetto hover per un feedback migliore */
+      #custom-keymap:hover,
+      #pulseaudio:hover,
+      #network:hover {
         background-color: rgba(97, 175, 239, 0.2);
         border-radius: 5px;
       }
     '';
   };
 
-  # Create wallpapers directory during activation
+  # Crea directory wallpaper durante l'attivazione
   home.activation.createWallpaperDir = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/wallpapers
   '';
 
-  # Wofi configuration (for the shortcut menu)
+  # Configurazione Wofi (per il menu delle scorciatoie)
   programs.wofi = {
     enable = true;
     settings = {
       width = 500;
       height = 300;
       show = "drun";
-      prompt = "Search...";
+      prompt = "Cerca...";
+      hide_scroll = true;
+      matching = "fuzzy";
     };
     style = ''
       * {
@@ -312,9 +494,59 @@ in {
       }
 
       window {
-        background-color: rgba(0, 0, 0, 0.8);
-        color: #ffffff;
+        background-color: rgba(40, 44, 52, 0.9);
+        color: #abb2bf;
+        border: 2px solid #61afef;
+        border-radius: 10px;
+      }
+
+      #input {
+        border: 2px solid #61afef;
+        background-color: rgba(40, 44, 52, 0.8);
+        color: #abb2bf;
+        border-radius: 5px;
+        margin: 5px;
+        padding: 5px;
+      }
+
+      #entry {
+        padding: 5px;
+      }
+
+      #entry:selected {
+        background-color: rgba(97, 175, 239, 0.2);
+        border-left: 3px solid #61afef;
       }
     '';
+  };
+
+  # Configurazione per la gestione dei file
+  xdg.configFile = {
+    # Script per inizializzare le impostazioni del cursore all'avvio della sessione
+    "hypr/cursor-init.sh" = {
+      text = ''
+        #!/bin/sh
+        export XCURSOR_THEME=Adwaita
+        export XCURSOR_SIZE=24
+        gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+        gsettings set org.gnome.desktop.interface cursor-size 24
+      '';
+      executable = true;
+    };
+  };
+
+  # Impostazioni specifiche per il tema del cursore
+  home.sessionVariables = {
+    XCURSOR_THEME = "Adwaita";
+    XCURSOR_SIZE = "24";
+  };
+
+  # Configura GTK per supportare correttamente il tema del cursore
+  gtk = {
+    enable = true;
+    cursorTheme = {
+      name = "Adwaita";
+      size = 24;
+    };
   };
 }
