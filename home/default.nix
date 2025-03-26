@@ -1,7 +1,8 @@
 # nixos/home/default.nix
-{ pkgs
-, inputs
-, ...
+{
+  pkgs,
+  inputs,
+  ...
 }: {
   # Import common home modules
   imports = [
@@ -11,6 +12,7 @@
     ../modules/home/neovim.nix
     ../modules/home/gnome-theme.nix
     ../modules/home/yazi.nix
+    ../modules/home/hyprland.nix
   ];
 
   # Common packages for all users
@@ -18,23 +20,15 @@
     # Browsers
     firefox
     google-chrome
-
     # Office and productivity
     libreoffice
     thunderbird
     obsidian
-
     # Design tools
     gimp
     inkscape
-
     # Development
     vscode
-
-    # System utilities
-    filezilla
-    neofetch
-    yazi
   ];
 
   # Common editor configuration

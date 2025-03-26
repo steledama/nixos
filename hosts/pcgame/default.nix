@@ -1,5 +1,5 @@
 # nixos/hosts/pcgame/default.nix
-{inputs, ...}: {
+{ inputs, ... }: {
   imports = [
     ./hardware.nix
     ../default.nix

@@ -1,7 +1,5 @@
 # nixos/hosts/default.nix
-{ pkgs
-, ...
-}: {
+{pkgs, ...}: {
   # Import common system modules
   imports = [
     ../modules/system/zen.nix
@@ -14,6 +12,7 @@
     ../modules/system/services/print.nix
     ../modules/system/services/keyd.nix
     ../modules/system/desktop/gnome.nix
+    ../modules/system/desktop/hyprland.nix
   ];
 
   # Common system configurations
@@ -60,14 +59,16 @@
     efibootmgr # EFI Boot Manager utility
     usbimager # OS image USB flasher
 
-    # Network and file utilities
+    # Network and file
     wget # HTTP/HTTPS/FTP file retrieval
     unzip # ZIP archive extraction
     tcpdump # network sniffer
     wl-clipboard # Command-line copy/paste utilities for Wayland
     xclip # Tool to access the X clipboard from a console application
+    yazi # Terminal file manager
+    filezilla # ftp client
 
-    # System tools
+    # Tools
     gnumake # Tool to control the generation of non-source files from sources
     curl # Command line tool for transferring files with URL syntax
     ripgrep # Utility that combines the usability of The Silver Searcher with the raw speed of grep
@@ -80,5 +81,6 @@
     starship # Customizable prompt
     zoxide # Smarter cd command
     direnv # Environment manager
+    neofetch # Terminal system info
   ];
 }
