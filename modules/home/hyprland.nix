@@ -109,72 +109,6 @@ with lib; let
 
     echo "Set random wallpaper: $RANDOM_WALLPAPER"
   '';
-
-  # Script per l'avvio affidabile di waybar
-  waybarStartScript = pkgs.writeShellScriptBin "start-waybar" ''
-    #!/usr/bin/env bash
-
-    # Log delle operazioni
-    LOG_FILE="$HOME/.waybar-start.log"
-    echo "Script avviato: $(date)" > $LOG_FILE
-
-    # Termina le istanze esistenti di waybar
-    echo "Termino eventuali istanze di waybar..." >> $LOG_FILE
-    ${pkgs.procps}/bin/pkill waybar || true
-
-    # Attendi che Hyprland sia completamente inizializzato
-    echo "Attendo 3 secondi per l'inizializzazione..." >> $LOG_FILE
-    sleep 3
-
-    # Imposta le variabili di ambiente per il cursore
-    export XCURSOR_THEME=Adwaita
-    export XCURSOR_SIZE=24
-    echo "Variabili cursore: XCURSOR_THEME=$XCURSOR_THEME, XCURSOR_SIZE=$XCURSOR_SIZE" >> $LOG_FILE
-
-    # Imposta via gsettings (funziona meglio in alcuni casi)
-    gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
-    gsettings set org.gnome.desktop.interface cursor-size 24
-
-    # Avvia waybar con percorso completo
-    echo "Avvio waybar..." >> $LOG_FILE
-    ${pkgs.waybar}/bin/waybar -l info >> $LOG_FILE 2>&1 &
-
-    # Verifica l'avvio
-    sleep 1
-    if pgrep -x waybar > /dev/null; then
-      echo "Waybar avviato con successo: $(date)" >> $LOG_FILE
-    else
-      echo "ERRORE: Waybar non è stato avviato: $(date)" >> $LOG_FILE
-      # Tentativo di riavvio con opzioni di debug
-      echo "Tentativo di riavvio con opzioni di debug..." >> $LOG_FILE
-      ${pkgs.waybar}/bin/waybar --log debug >> $LOG_FILE 2>&1 &
-    fi
-  '';
-
-  # Script per diagnosticare problemi con il cursore
-  cursorDebugScript = pkgs.writeShellScriptBin "debug-cursor" ''
-    #!/usr/bin/env bash
-
-    echo "=== Debug Cursore ==="
-    echo "Variabili di ambiente correnti:"
-    echo "XCURSOR_THEME=$XCURSOR_THEME"
-    echo "XCURSOR_SIZE=$XCURSOR_SIZE"
-
-    echo -e "\nTemi cursore disponibili:"
-    find /run/current-system/sw/share/icons -type d -name "cursors" | sort
-
-    echo -e "\nImpostazioni cursore GTK:"
-    gsettings get org.gnome.desktop.interface cursor-theme
-    gsettings get org.gnome.desktop.interface cursor-size
-
-    echo -e "\nApplico tema cursore Adwaita con dimensione 24 via gsettings:"
-    gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
-    gsettings set org.gnome.desktop.interface cursor-size 24
-
-    echo -e "\nVerifica dopo l'applicazione:"
-    gsettings get org.gnome.desktop.interface cursor-theme
-    gsettings get org.gnome.desktop.interface cursor-size
-  '';
 in {
   # Configurazione Hyprland
   wayland.windowManager.hyprland = {
@@ -240,25 +174,20 @@ in {
         "QT_QPA_PLATFORM,wayland;xcb" # Miglior compatibilità per app Qt
       ];
 
-      # Invece, aggiungi una nuova sezione per le impostazioni del cursore
-      # È importante notare che queste impostazioni non sono nella sezione "general"
       xwayland = {
         force_zero_scaling = true;
       };
 
-      # Aggiungi questa nuova sezione per le ombre delle finestre se le vuoi
-      # (opzionale, puoi rimuoverla se causa problemi)
+      # ombre delle finestre
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
       };
 
-      # Applicazioni all'avvio
+      # Esegui all'avvio
       exec-once = [
-        "${waybarStartScript}/bin/start-waybar"
-        "${randomWallpaperScript}/bin/hyprland-random-wallpaper"
-        "gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'"
-        "gsettings set org.gnome.desktop.interface cursor-size 24"
+        "${randomWallpaperScript}/bin/hyprland-random-wallpaper" # Imposta lo sfondo
+        "waybar" # Avvia waybar
       ];
 
       # Scorciatoie
@@ -308,9 +237,6 @@ in {
         # Mostra scorciatoie tastiera
         "SUPER, F1, exec, ${shortcutMenuScript}/bin/hyprland-shortcut-menu"
 
-        # Debug cursore
-        "SUPER SHIFT, C, exec, ${cursorDebugScript}/bin/debug-cursor"
-
         # Logout
         "SUPER SHIFT, E, exec, hyprctl dispatch exit"
       ];
@@ -321,14 +247,13 @@ in {
   home.packages = [
     shortcutMenuScript
     randomWallpaperScript
-    waybarStartScript
-    cursorDebugScript
   ];
 
   # Configurazione Waybar
   programs.waybar = {
     enable = true;
-    systemd.enable = false; # Disabilita integrazione systemd, usiamo il nostro script
+    systemd.enable = true; # integrazione systemd
+    systemd.target = "hyprland-session.target"; # Assicura che si avvii con Hyprland
     settings = {
       mainBar = {
         layer = "top";
@@ -518,21 +443,6 @@ in {
         border-left: 3px solid #61afef;
       }
     '';
-  };
-
-  # Configurazione per la gestione dei file
-  xdg.configFile = {
-    # Script per inizializzare le impostazioni del cursore all'avvio della sessione
-    "hypr/cursor-init.sh" = {
-      text = ''
-        #!/bin/sh
-        export XCURSOR_THEME=Adwaita
-        export XCURSOR_SIZE=24
-        gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
-        gsettings set org.gnome.desktop.interface cursor-size 24
-      '';
-      executable = true;
-    };
   };
 
   # Impostazioni specifiche per il tema del cursore
