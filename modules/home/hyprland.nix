@@ -29,6 +29,9 @@ with lib; let
     SUPER + Up => Focus Up
     SUPER + Down => Focus Down
 
+    ALT + Tab => Switch to Next Window
+    ALT + Shift + Tab => Switch to Previous Window
+
     SUPER + 1 => Switch to Workspace 1
     SUPER + 2 => Switch to Workspace 2
     SUPER + 3 => Switch to Workspace 3
@@ -164,6 +167,10 @@ in {
         "SUPER, Right, movefocus, r"
         "SUPER, Up, movefocus, u"
         "SUPER, Down, movefocus, d"
+
+        # Windows navigation
+        "ALT, Tab, cyclenext,"
+        "ALT_SHIFT, Tab, cyclenext, prev"
 
         # Workspace navigation
         "SUPER, 1, workspace, 1"

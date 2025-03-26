@@ -10,7 +10,7 @@
     ../modules/home/shell-config.nix
     ../modules/home/wezterm.nix
     ../modules/home/neovim.nix
-    ../modules/home/gnome-theme.nix
+    ../modules/home/ui-theme.nix
     ../modules/home/yazi.nix
     ../modules/home/hyprland.nix
   ];
