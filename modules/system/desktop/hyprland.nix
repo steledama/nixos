@@ -13,6 +13,10 @@
     hyprpaper # Wallpaper manager for Hyprland
     grim # Screenshot
     slurp # Area selection
+    pavucontrol
+    pamixer
+    brightnessctl
+    nm-applet
 
     # XDG portals
     xdg-desktop-portal
