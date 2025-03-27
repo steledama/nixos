@@ -8,9 +8,6 @@
   imports = [
     ../default.nix
     ../../modules/home/syncthing.nix
-    ../../modules/home/hyprland/base.nix
-    ../../modules/home/hyprland/bluetooth.nix
-    ../../modules/home/hyprland/multimonitor.nix
   ];
 
   # username

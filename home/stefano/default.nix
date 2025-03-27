@@ -7,7 +7,6 @@
 }: {
   imports = [
     ../default.nix
-    ../../modules/home/hyprland/base.nix
   ];
 
   # username
