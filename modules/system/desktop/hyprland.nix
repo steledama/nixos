@@ -13,14 +13,14 @@
     hyprpaper # Wallpaper manager for Hyprland
     grim # Screenshot
     slurp # Area selection
-    pavucontrol
-    pamixer
-    brightnessctl
-    nm-applet
+    pavucontrol # PulseAudio Volume Control
+    pamixer # Pulseaudio command line mixer
+    brightnessctl # This program allows you read and control device brightness
+    networkmanagerapplet # NetworkManager control applet for GNOME
 
     # XDG portals
-    xdg-desktop-portal
-    xdg-desktop-portal-hyprland
+    xdg-desktop-portal # Desktop integration portals for sandboxed apps
+    xdg-desktop-portal-hyprland # xdg-desktop-portal backend for Hyprland
   ];
 
   # GNOME Keyring (for credentials)
