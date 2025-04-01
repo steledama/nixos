@@ -1,54 +1,29 @@
 # modules/system/desktop/hyprland.nix
-{ pkgs
-, ...
-}: {
-  # Enable Hyprland as main desktop environment
+{pkgs, ...}: {
+  # Enable Hyprland
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
 
-  # SDDM as display manager (works well with Wayland)
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-  };
-
-  # Install SDDM theme
+  # Specific hyprland packages
   environment.systemPackages = with pkgs; [
-    # Display manager theme
-    sddm-sugar-dark
-
-    # Core desktop components
     wofi # Launcher
     waybar # Status bar
     hyprpaper # Wallpaper manager for Hyprland
-    swww # Alternative wallpaper manager
 
-    # System utilities
     wl-clipboard # Clipboard manager
     dunst # Notification daemon
     libnotify # Notification library
 
-    # Screen utilities
     grim # Screenshot
     slurp # Area selection
-    wf-recorder # Screen recording
 
-    # Audio controls
     pavucontrol # PulseAudio Volume Control
     pamixer # Pulseaudio command line mixer
+    brightnessctl # This program allows you read and control device brightness
+    networkmanagerapplet # NetworkManager control applet for GNOME
 
-    # Display/monitor control
-    brightnessctl # Control screen brightness
-
-    # Network management
-    networkmanagerapplet # NetworkManager control applet
-
-    # Authentication and keyring
-    kdePackages.polkit-kde-agent-1 # Authentication agent
-
-    # General utilities
     wlogout # Logout menu
     swaylock # Screen locking
 
@@ -60,18 +35,8 @@
     # File management
     pcmanfm # Lightweight file manager
     gvfs # Virtual filesystem
-
-    # Theming support
-    qt6ct # Qt6 configuration tool
-    qt6.qtwayland
-    qt6.qtsvg
-    # Theme utilities
-    kdePackages.qtstyleplugin-kvantum # Engine di stile
-    kdePackages.breeze # Tema KDE moderno
-    papirus-icon-theme # Set di icone alternativo
   ];
 
-  # Ensure necessary services are enabled
   services = {
     # GNOME Keyring for credentials
     gnome.gnome-keyring.enable = true;
@@ -86,30 +51,9 @@
   # Enable polkit security framework
   security.polkit.enable = true;
 
-  # Set proper environment variables for Wayland
+  # Basic environment variables for Wayland
   environment.sessionVariables = {
-    # General Wayland configuration
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
-    QT_QPA_PLATFORM = "wayland;xcb";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    GDK_BACKEND = "wayland,x11";
-    SDL_VIDEODRIVER = "wayland";
-    CLUTTER_BACKEND = "wayland";
-
-    # Impostazioni specifiche per Qt6
-    QT_QPA_PLATFORMTHEME = "qt6ct";
-    QT_STYLE_OVERRIDE = "kvantum";
   };
-
-  services.xserver = {
-    enable = true;
-  };
-
-  services.displayManager = {
-    defaultSession = "hyprland";
-    sessionPackages = [ pkgs.hyprland ];
-  };
-  # For those who need to use X applications
-  programs.xwayland.enable = true;
 }

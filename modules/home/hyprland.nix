@@ -1,9 +1,9 @@
 # modules/home/hyprland.nix
-# Modulo unificato per Hyprland che include base, bluetooth e multimonitor
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 with lib; let
   # Script per il menu delle scorciatoie
@@ -55,7 +55,7 @@ with lib; let
       --height 600 \
       --cache-file /dev/null \
       --insensitive \
-      --style="window {opacity: 0.80; border-radius: 15px;} #outer-box {margin: 15px;} #input {margin: 8px; border-radius: 8px;} #entry {border-radius: 8px;}"
+      --style="window {opacity: 0.9; border-radius: 10px;} #outer-box {margin: 10px;} #input {margin: 5px; border-radius: 5px;} #entry {border-radius: 5px;}"
   '';
 
   # Script per lo sfondo casuale
@@ -219,8 +219,7 @@ with lib; let
       --margin-left 300 \
       --margin-right 300
   '';
-in
-{
+in {
   # Pacchetti necessari per tutti i componenti di Hyprland
   home.packages = with pkgs; [
     # Script creati appositamente
@@ -250,7 +249,7 @@ in
     enable = true;
     systemd.enable = true;
     # Disabilitiamo la sessione di waybar che viene avviata da systemd per evitare barre doppie
-    systemd.variables = [ "--systemd-activation" ];
+    systemd.variables = ["--systemd-activation"];
     settings = {
       # Impostazioni generali comuni
       general = {
@@ -350,9 +349,9 @@ in
       bind = [
         # Applicazioni di base
         "SUPER, Return, exec, wezterm"
-        "ALT, R, exec, wofi --show drun"
+        "SUPER, R, exec, wofi --show drun"
         "SUPER, B, exec, firefox"
-        "SUPER, E, exec, pcmanfm "
+        "SUPER, E, exec, wezterm start -- yazi"
 
         # Controlli finestre
         "SUPER, Q, killactive,"
@@ -502,110 +501,104 @@ in
   # Configurazione Waybar
   programs.waybar = {
     enable = true;
-    systemd.enable = false;
+    systemd.enable = false; # Disattivata per evitare la doppia barra
     settings = {
-      mainBar =
-        let
-          # Determina i moduli giusti in base alla configurazione
-          rightModules =
-            (if config.hardware.bluetooth.enable or false
-            then [ "custom/keymap" "bluetooth" ]
-            else [ "custom/keymap" ]) ++
-            [ "pulseaudio" "network" "battery" "custom/wlogout" "tray" ];
-        in
-        {
-          layer = "top";
-          position = "top";
-          height = 30;
-          modules-left = [ "hyprland/workspaces" ];
-          modules-center = [ "custom/datetime" ];
-          modules-right = rightModules; # Usa la variabile condizionale
-          "hyprland/workspaces" = {
-            format = "{icon}";
-            on-click = "activate";
-            sort-by-number = true;
-            format-icons = {
-              "1" = "1";
-              "2" = "2";
-              "3" = "3";
-              "4" = "4";
-              "5" = "5";
-              "6" = "6";
-              "7" = "7";
-              "8" = "8";
-              "9" = "9";
-              "urgent" = "•";
-              "active" = "•";
-              "default" = "•";
-            };
-            all-outputs = true;
-            active-only = false;
-          };
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 30;
+        # Rimuovere l'output specifico per consentire a waybar di apparire ovunque
+        modules-left = ["hyprland/workspaces"];
+        modules-center = ["custom/datetime"];
+        modules-right = ["custom/keymap" "bluetooth" "pulseaudio" "network" "battery" "custom/wlogout" "tray"];
 
-          # Modulo data e ora unificato
-          "custom/datetime" = {
-            exec = "LC_ALL=it_IT.UTF-8 date +'%A %d %B %H:%M'";
-            interval = 30;
-            format = "{}";
-            tooltip = false;
+        "hyprland/workspaces" = {
+          format = "{icon}";
+          on-click = "activate";
+          sort-by-number = true;
+          # Rimosso persistent-workspaces per avere configurazione dinamica
+          format-icons = {
+            "1" = "1";
+            "2" = "2";
+            "3" = "3";
+            "4" = "4";
+            "5" = "5";
+            "6" = "6";
+            "7" = "7";
+            "8" = "8";
+            "9" = "9";
+            "urgent" = "•";
+            "active" = "•";
+            "default" = "•";
           };
+          all-outputs = true;
+          active-only = false;
+        };
 
-          "tray" = {
-            spacing = 10;
+        # Modulo data e ora unificato
+        "custom/datetime" = {
+          exec = "LC_ALL=it_IT.UTF-8 date +'%A %d %B %H:%M'";
+          interval = 30;
+          format = "{}";
+          tooltip = false;
+        };
+
+        "tray" = {
+          spacing = 10;
+        };
+
+        "network" = {
+          format-wifi = "  {essid}";
+          format-disconnected = "󰤭 ";
+          tooltip-format = "{ifname}: {ipaddr}/{cidr}";
+        };
+
+        "pulseaudio" = {
+          format = "{icon} {volume}%";
+          format-muted = "󰖁 ";
+          format-icons = {
+            default = ["󰕿" "󰖀" "󰕾"];
           };
+          on-click = "pavucontrol";
+        };
 
-          "network" = {
-            format-wifi = "  {essid}";
-            format-disconnected = "󰤭 ";
-            tooltip-format = "{ifname}: {ipaddr}/{cidr}";
-          };
-
-          "pulseaudio" = {
-            format = "{icon} {volume}%";
-            format-muted = "󰖁 ";
-            format-icons = {
-              default = [ "󰕿" "󰖀" "󰕾" ];
-            };
-            on-click = "pavucontrol";
-          };
-
-          "battery" = {
-            format = "{icon} {capacity}%";
-            format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
-            format-charging = "󰂄 {capacity}%";
-            interval = 30;
-            states = {
-              warning = 30;
-              critical = 15;
-            };
-          };
-
-          # Configurazione del modulo bluetooth
-          "bluetooth" = {
-            format = " {status}";
-            format-connected = " {device_alias}";
-            format-connected-battery = " {device_alias} {device_battery_percentage}%";
-            tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
-            tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
-            tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
-            tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
-            on-click = "blueman-manager";
-          };
-
-          # Modulo personalizzato per le scorciatoie da tastiera
-          "custom/keymap" = {
-            format = "⌨";
-            tooltip = false;
-            on-click = "${shortcutMenuScript}/bin/hyprland-shortcut-menu";
-          };
-
-          # Modulo personalizzato per wlogout
-          "custom/wlogout" = {
-            format = "⏻";
-            tooltip = false;
-            on-click = "${wlogoutScript}/bin/hyprland-logout";
+        "battery" = {
+          format = "{icon} {capacity}%";
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          format-charging = "󰂄 {capacity}%";
+          interval = 30;
+          states = {
+            warning = 30;
+            critical = 15;
           };
         };
+
+        # Configurazione del modulo bluetooth
+        "bluetooth" = {
+          format = " {status}";
+          format-connected = " {device_alias}";
+          format-connected-battery = " {device_alias} {device_battery_percentage}%";
+          tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+          tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+          tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          on-click = "blueman-manager";
+        };
+
+        # Modulo personalizzato per le scorciatoie da tastiera
+        "custom/keymap" = {
+          format = "⌨";
+          tooltip = "Scorciatoie Hyprland";
+          on-click = "${shortcutMenuScript}/bin/hyprland-shortcut-menu";
+        };
+
+        # Modulo personalizzato per wlogout
+        "custom/wlogout" = {
+          format = "⏻";
+          tooltip = "Logout menu";
+          on-click = "${wlogoutScript}/bin/hyprland-logout";
+        };
+      };
     };
 
     # Stile CSS per Waybar

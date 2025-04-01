@@ -1,27 +1,8 @@
-{ pkgs, ... }:
-
-{
-  services.xserver = {
-    enable = true;
-
-    # Keyboard
-    xkb.layout = "it";
-    xkb.variant = "";
-
-    # Display manager GDM
-    displayManager.gdm = {
-      enable = true;
-      wayland = true;
-    };
-
-    # Gnome desktop environment
-    desktopManager.gnome.enable = true;
-  };
-
+{pkgs, ...}: {
+  services.xserver.desktopManager.gnome.enable = true;
   # System gnome packages
   environment.systemPackages = (
-    with pkgs;
-    [
+    with pkgs; [
       dconf-editor
       adwaita-icon-theme
       gnome-themes-extra
@@ -30,8 +11,7 @@
     ]
   );
   environment.gnome.excludePackages = (
-    with pkgs;
-    [
+    with pkgs; [
       gnome-tour
       epiphany
       geary

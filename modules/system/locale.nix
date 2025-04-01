@@ -2,6 +2,14 @@
 {
   # Configure console keymap
   console.keyMap = "it";
+
+  # Configura anche il layout della tastiera per X11
+  services.xserver = {
+    xkb.layout = "it";
+    xkb.variant = "";
+    xkb.options = "";
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Rome";
   # Hw clock
