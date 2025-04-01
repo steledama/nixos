@@ -168,7 +168,7 @@ with lib; let
           # Monitor esterno in alto, laptop in basso (centrato)
           # Configura il monitor esterno (2560x1080) in alto
           ${pkgs.hyprland}/bin/hyprctl keyword monitor "$EXTERNAL_MONITOR,2560x1080,0x0,1"
-          
+
           # Calcola l'offset per centrare il monitor del laptop (1920x1080) sotto il monitor esterno
           # (2560 - 1920) / 2 = 320 pixel di offset sul lato X
           ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1,1920x1080,320x1080,1"
@@ -208,7 +208,7 @@ with lib; let
   # Script per wlogout
   wlogoutScript = pkgs.writeShellScriptBin "hyprland-logout" ''
     #!/usr/bin/env bash
-    
+
     # Basic wlogout script with clean configuration
     ${pkgs.wlogout}/bin/wlogout \
       --protocol layer-shell \
@@ -228,19 +228,19 @@ in {
     randomWallpaperScript
     monitorConfigScript
     wlogoutScript
-    
+
     # Pacchetti per il multimonitor
     jq
     brightnessctl
     libnotify
-    
+
     # Pacchetti per il bluetooth
     blueman
     bluez-tools
-    
+
     # Wlogout
     wlogout
-    
+
     # Hyprpaper per gestione sfondi
     hyprpaper
   ];
@@ -352,7 +352,7 @@ in {
         "SUPER, Return, exec, wezterm"
         "SUPER, R, exec, wofi --show drun"
         "SUPER, B, exec, firefox"
-        "SUPER, E, exec, wezterm start -- yazi"
+        "SUPER, E, exec, pacmanfm "
 
         # Controlli finestre
         "SUPER, Q, killactive,"
@@ -626,7 +626,7 @@ in {
         border-bottom: 3px solid #61afef;
         font-weight: bold;
       }
-      
+
       /* Stile per i numeri dei workspace */
       #workspaces button {
         font-size: 14px;
