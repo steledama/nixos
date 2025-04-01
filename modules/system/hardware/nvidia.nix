@@ -1,14 +1,14 @@
 # nixos/modules/system/hardware/nvidia.nix
-
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }: {
   # Disable the open source nouveau driver
-  boot.blacklistedKernelModules = [ "nouveau" ];
+  boot.blacklistedKernelModules = ["nouveau"];
 
   # Load NVIDIA driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
   nixpkgs.config.nvidia.acceptLicense = true;
 
   # Graphics and hardware support
@@ -51,5 +51,9 @@
     nvtopPackages.nvidia # GPU monitoring
     cudaPackages.cudatoolkit # CUDA development tools
   ];
-}
 
+  # App Electron on NVIDIA
+  environment.sessionVariables = {
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+  };
+}

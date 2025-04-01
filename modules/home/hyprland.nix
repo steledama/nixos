@@ -351,7 +351,7 @@ in {
         "SUPER, Return, exec, wezterm"
         "SUPER, R, exec, wofi --show drun"
         "SUPER, B, exec, firefox"
-        "SUPER, E, exec, wezterm start -- yazi"
+        "SUPER, E, exec, pcmanfm"
 
         # Controlli finestre
         "SUPER, Q, killactive,"
@@ -501,16 +501,24 @@ in {
   # Configurazione Waybar
   programs.waybar = {
     enable = true;
-    systemd.enable = false; # Disattivata per evitare la doppia barra
+    systemd.enable = false;
     settings = {
-      mainBar = {
+      mainBar = let
+        # Determina i moduli giusti in base alla configurazione
+        rightModules =
+          (
+            if config.hardware.bluetooth.enable or false
+            then ["custom/keymap" "bluetooth"]
+            else ["custom/keymap"]
+          )
+          ++ ["pulseaudio" "network" "battery" "custom/wlogout" "tray"];
+      in {
         layer = "top";
         position = "top";
         height = 30;
-        # Rimuovere l'output specifico per consentire a waybar di apparire ovunque
         modules-left = ["hyprland/workspaces"];
         modules-center = ["custom/datetime"];
-        modules-right = ["custom/keymap" "bluetooth" "pulseaudio" "network" "battery" "custom/wlogout" "tray"];
+        modules-right = rightModules;
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -588,14 +596,14 @@ in {
         # Modulo personalizzato per le scorciatoie da tastiera
         "custom/keymap" = {
           format = "⌨";
-          tooltip = "Scorciatoie Hyprland";
+          tooltip = false;
           on-click = "${shortcutMenuScript}/bin/hyprland-shortcut-menu";
         };
 
         # Modulo personalizzato per wlogout
         "custom/wlogout" = {
           format = "⏻";
-          tooltip = "Logout menu";
+          tooltip = false;
           on-click = "${wlogoutScript}/bin/hyprland-logout";
         };
       };
