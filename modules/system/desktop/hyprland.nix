@@ -1,8 +1,6 @@
 # modules/system/desktop/hyprland.nix
-{
-  pkgs,
-  lib,
-  ...
+{ pkgs
+, ...
 }: {
   # Enable Hyprland as main desktop environment
   programs.hyprland = {
@@ -14,7 +12,6 @@
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    theme = "sugar-dark"; # Modern theme
   };
 
   # Install SDDM theme
@@ -67,6 +64,7 @@
     # Theming support
     qt6ct # Qt6 configuration tool
     qt6.qtwayland
+    qt6.qtsvg
     # Theme utilities
     kdePackages.qtstyleplugin-kvantum # Engine di stile
     kdePackages.breeze # Tema KDE moderno
@@ -102,23 +100,16 @@
     # Impostazioni specifiche per Qt6
     QT_QPA_PLATFORMTHEME = "qt6ct";
     QT_STYLE_OVERRIDE = "kvantum";
-
-    # Ensure proper cursor theme and size
-    XCURSOR_THEME = "Adwaita";
-    XCURSOR_SIZE = "24";
   };
 
-  # Add SDDM to the display manager options
   services.xserver = {
     enable = true;
-    displayManager = {
-      defaultSession = "hyprland";
-    };
   };
 
-  # Set default session to Hyprland
-  services.displayManager.sessionPackages = [pkgs.hyprland];
-
+  services.displayManager = {
+    defaultSession = "hyprland";
+    sessionPackages = [ pkgs.hyprland ];
+  };
   # For those who need to use X applications
   programs.xwayland.enable = true;
 }
