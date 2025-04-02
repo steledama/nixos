@@ -12,8 +12,8 @@
     ../modules/system/services/print.nix
     ../modules/system/services/gdm.nix
     ../modules/system/services/keyd.nix
-    # ../modules/system/desktop/gnome.nix
     ../modules/system/desktop/hyprland.nix
+    # ../modules/system/desktop/gnome.nix
   ];
 
   # Common system configurations

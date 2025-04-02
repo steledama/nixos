@@ -2,60 +2,142 @@
 {
   config,
   pkgs,
-  lib,
   ...
-}:
-with lib; let
-  # Script per il menu delle scorciatoie
-  shortcutMenuScript = pkgs.writeShellScriptBin "hyprland-shortcut-menu" ''
+}: let
+  # Colori OneDark
+  colors = {
+    background = "rgba(40, 44, 52, 0.97)";
+    foreground = "#abb2bf";
+    blue = "#61afef";
+    green = "#98c379";
+    yellow = "#e5c07b";
+    red = "#e06c75";
+    purple = "#c678dd";
+    cyan = "#56b6c2";
+    black = "#282c34";
+    brightBlack = "#545862";
+  };
+
+  # Stile Wofi centralizzato uniforme
+  wofiStyleConfig = ''
+    window {
+      opacity: 0.80;
+      border-radius: 10px;
+      background-color: ${colors.background};
+      color: ${colors.foreground};
+      font-family: 'JetBrainsMono Nerd Font';
+    }
+    #outer-box {
+      margin: 10px;
+    }
+    #inner-box {
+      background-color: transparent;
+      color: ${colors.foreground};
+    }
+    #input {
+      margin: 5px;
+      border-radius: 6px;
+      background-color: rgba(61, 66, 77, 0.8);
+      border: 1px solid ${colors.blue};
+      color: ${colors.foreground};
+      font-size: 110%;
+    }
+    #scroll {
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+    #text {
+      color: ${colors.foreground};
+      margin: 2px;
+      padding: 0;
+      font-size: 105%;  /* Dimensione font aumentata */
+      line-height: 115%; /* Interlinea diminuita */
+    }
+    #entry {
+      border-radius: 5px;
+      padding: 3px;
+      margin: 1px 0;
+      background-color: transparent;
+      min-height: 0;
+    }
+    #entry:selected {
+      background-color: rgba(97, 175, 239, 0.2);
+    }
+    * {
+      color: ${colors.foreground};
+    }
+  '';
+
+  # Lista di shortcuts in formato compatto
+  shortcutsText = ''
+    🔑 SHORTCUTS GUIDE
+    # HYPRLAND
+    ## Applicazioni
+    SUPER+Return → Terminale (WezTerm)  |  SUPER+R → Launcher (Wofi)
+    SUPER+B → Firefox                   |  SUPER+E → File Manager
+    ## Finestre
+    SUPER+Q → Chiudi Finestra     |  SUPER+Space → Finestra Fluttuante
+    SUPER+⬅⬆➡⬇ → Focus Direzione  |  ALT+Tab → Finestra Succ/Prec (+Shift)
+    ## Workspace
+    SUPER+1-9 → Vai al Workspace        |  SUPER+CTRL+⬅➡ → Workspace Prec/Succ
+    SUPER+SHIFT+1-9 → Sposta al Workspace  |  SUPER+SHIFT+⬅➡ → Sposta Prec/Succ
+    ## Sistema
+    SUPER+M → Configura Monitor  |  SUPER+W → Cambia Sfondo
+    SUPER+F1 → Menu Shortcuts    |  SUPER+Escape → Menu Logout
+
+    # WEZTERM
+    ## Pannelli e Divisione
+    CTRL+SHIFT+| → Divisione Orizz.     |  CTRL+SHIFT+_ → Divisione Vert.
+    CTRL+SHIFT+⬅⬆➡⬇ → Navigazione       |  CTRL+SHIFT+Del → Chiudi Pannello
+    ## Schede
+    CTRL+SHIFT+t → Nuova Scheda      |  CTRL+SHIFT+w → Chiudi Scheda
+    CTRL+Tab → Scheda Succ/Prec      |  CTRL+SHIFT+1-9 → Vai alla Scheda
+    CTRL+SHIFT+l → Ultima Scheda     |  CTRL+c → Copia/Interrompi
+
+    # NEOVIM
+    ## Navigazione Base
+    ESC → Esci Modalità     |  \\ → Gestore File (NeoTree)
+    CTRL+⬅⬆➡⬇ → Muovi Focus  |  LEADER+Tab/S-Tab → Buffer Succ/Prec
+    ## Ricerca (Telescope)
+    LEADER+sf → Cerca File       |  LEADER+sg → Ricerca Globale
+    LEADER+sh → Help             |  LEADER+sk → Shortcuts
+    LEADER+ss → Seleziona        |  LEADER+sw → Parola Corrente
+    LEADER+sd → Diagnostiche     |  LEADER+sr → Riprendi Ricerca
+    LEADER+s. → File Recenti     |  LEADER+LEADER → Buffer Esistenti
+    ## Buffer e Git
+    LEADER+bd → Chiudi Buffer    |  LEADER+bp → Scegli Buffer
+    LEADER+bs → Ordina Buffer    |  LEADER+f → Formatta Buffer
+    LEADER+hs → Stage Hunk       |  LEADER+hr → Reset Hunk
+    LEADER+hS → Stage Buffer     |  LEADER+hR → Reset Buffer
+    LEADER+hp → Anteprima Hunk   |  LEADER+hb → Blame Linea
+    gl → Commenta Linea          |  gb → Commenta Blocco
+  '';
+
+  # Script per il menu delle scorciatoie in formato testo
+  shortcutMenuScript = pkgs.writeShellScriptBin "shortcut-menu" ''
     #!/usr/bin/env bash
 
-    # Extremely simplified approach to show Hyprland shortcuts
-    # This simply shows the configuration itself, which is much more reliable
+    # Script per mostrare le scorciatoie con formattazione compatta
 
-    # Function to extract shortcuts from Hyprland config
-    extract_shortcuts() {
-      # Store direct references to our configured bindings - these are exactly what we defined in the Nix file
-      cat << EOF
-    SUPER + Return => Launch Terminal
-    SUPER + R => Open Application Launcher
-    SUPER + B => Launch Firefox
-    SUPER + E => Open File Manager
-    SUPER + Q => Close Active Window
-    SUPER + Space => Toggle Floating Window
+    # Crea un file temporaneo per le scorciatoie
+    TEMP_FILE=$(mktemp)
 
-    SUPER + Left => Focus Left
-    SUPER + Right => Focus Right
-    SUPER + Up => Focus Up
-    SUPER + Down => Focus Down
-
-    ALT + Tab => Switch to Next Window
-    ALT + Shift + Tab => Switch to Previous Window
-
-    SUPER + 1-9 => Switch to Workspace 1-9
-    SUPER + CTRL + Left => Previous Workspace
-    SUPER + CTRL + Right => Next Workspace
-
-    SUPER + SHIFT + 1-9 => Move Window to Workspace 1-9
-    SUPER + SHIFT + Left => Move Window to Previous Workspace
-    SUPER + SHIFT + Right => Move Window to Next Workspace
-
-    SUPER + M => Configure Monitors (Unified Workspace Mode)
-    SUPER + W => Change Wallpaper on External Monitor
-    SUPER + F1 => Show This Help Menu
-    SUPER + SHIFT + E => Exit Hyprland
+    # Popola il file con il contenuto delle scorciatoie
+    cat > "$TEMP_FILE" << 'EOF'
+    ${shortcutsText}
     EOF
-    }
 
-    # Show the shortcuts menu with transparency
-    extract_shortcuts | ${pkgs.wofi}/bin/wofi \
+    # Mostra il menu utilizzando lo stile centralizzato e le dimensioni standard definite in wofi/config
+    cat "$TEMP_FILE" | ${pkgs.wofi}/bin/wofi \
       --dmenu \
-      --prompt "Hyprland Shortcuts" \
-      --width 800 \
-      --height 600 \
+      --prompt "Shortcuts" \
       --cache-file /dev/null \
       --insensitive \
-      --style="window {opacity: 0.9; border-radius: 10px;} #outer-box {margin: 10px;} #input {margin: 5px; border-radius: 5px;} #entry {border-radius: 5px;}"
+      --no-actions
+
+    # Pulizia
+    rm -f "$TEMP_FILE"
   '';
 
   # Script per lo sfondo casuale
@@ -220,28 +302,12 @@ with lib; let
       --margin-right 300
   '';
 in {
-  # Pacchetti necessari per tutti i componenti di Hyprland
-  home.packages = with pkgs; [
-    # Script creati appositamente
+  # Custom scripts
+  home.packages = [
     shortcutMenuScript
     randomWallpaperScript
     monitorConfigScript
     wlogoutScript
-
-    # Pacchetti per il multimonitor
-    jq
-    brightnessctl
-    libnotify
-
-    # Pacchetti per il bluetooth
-    blueman
-    bluez-tools
-
-    # Wlogout
-    wlogout
-
-    # Hyprpaper per gestione sfondi
-    hyprpaper
   ];
 
   # Configurazione Hyprland
@@ -401,7 +467,7 @@ in {
         "SUPER, W, exec, ${randomWallpaperScript}/bin/hyprland-random-wallpaper"
 
         # Mostra scorciatoie tastiera
-        "SUPER, F1, exec, ${shortcutMenuScript}/bin/hyprland-shortcut-menu"
+        "SUPER, F1, exec, ${shortcutMenuScript}/bin/shortcut-menu"
 
         # Wlogout
         "SUPER, Escape, exec, ${wlogoutScript}/bin/hyprland-logout"
@@ -496,6 +562,23 @@ in {
     #reboot {
       background-image: image(url("/usr/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
     }
+  '';
+
+  # Configurazione wofi centralizzata (opzionale)
+  xdg.configFile."wofi/style.css".text = wofiStyleConfig;
+
+  # Configurazione globale di wofi
+  xdg.configFile."wofi/config".text = ''
+    width=700
+    height=900
+    prompt=Cerca
+    insensitive=true
+    hide_scroll=true
+    location=center
+    lines=15
+    always_parse_args=true
+    show_all=true
+    gtk_dark=true
   '';
 
   # Configurazione Waybar
@@ -597,7 +680,7 @@ in {
         "custom/keymap" = {
           format = "⌨";
           tooltip = false;
-          on-click = "${shortcutMenuScript}/bin/hyprland-shortcut-menu";
+          on-click = "${shortcutMenuScript}/bin/shortcut-menu";
         };
 
         # Modulo personalizzato per wlogout

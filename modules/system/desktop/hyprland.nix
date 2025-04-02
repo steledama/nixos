@@ -26,6 +26,8 @@
 
     wlogout # Logout menu
     swaylock # Screen locking
+    bluez-tools # bluetooth
+    jq # multimonitor
 
     # XDG portals
     xdg-desktop-portal # Desktop integration portals for sandboxed apps
