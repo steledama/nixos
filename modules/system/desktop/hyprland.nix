@@ -39,23 +39,37 @@
     gvfs # Virtual filesystem
   ];
 
+  # XDG portal config
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+    config = {
+      common.default = "gtk";
+      hyprland.default = ["gtk" "hyprland"];
+    };
+  };
+
+  # PCManFM as default file manager
+  xdg.mime.defaultApplications = {
+    "inode/directory" = "pcmanfm.desktop";
+  };
+
   services = {
     # GNOME Keyring for credentials
     gnome.gnome-keyring.enable = true;
-
     # UPower for power management
     upower.enable = true;
-
     # Bluetooth support
     blueman.enable = true;
   };
-
   # Enable polkit security framework
   security.polkit.enable = true;
-
   # Basic environment variables for Wayland
   environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
+    # Firefox on wayland
     MOZ_ENABLE_WAYLAND = "1";
   };
 }

@@ -51,9 +51,4 @@
     nvtopPackages.nvidia # GPU monitoring
     cudaPackages.cudatoolkit # CUDA development tools
   ];
-
-  # App Electron on NVIDIA
-  environment.sessionVariables = {
-    ELECTRON_OZONE_PLATFORM_HINT = "auto";
-  };
 }
