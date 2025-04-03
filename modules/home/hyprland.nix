@@ -1,9 +1,9 @@
 # modules/home/hyprland.nix
 {pkgs, ...}: let
-  colors = import ./hyprland/colors.nix;
   scripts = import ./hyprland/scripts.nix {inherit pkgs;};
   wofi = import ./hyprland/wofi.nix {inherit colors;};
   waybar = import ./hyprland/waybar.nix {inherit pkgs scripts colors;};
+  colors = import ./hyprland/colors.nix;
 in {
   # Packages required for Hyprland
   home.packages = with pkgs; [
