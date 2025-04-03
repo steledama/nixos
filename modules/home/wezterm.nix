@@ -80,8 +80,8 @@
               { key = 'Delete', mods = 'CTRL|SHIFT', action = wezterm.action.CloseCurrentPane { confirm = true } },
 
               -- Tab management
-              { key = 't', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
-              { key = 'w', mods = 'CTRL|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = true } },
+              { key = 't', mods = 'CTRL', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
+              { key = 'w', mods = 'CTRL', action = wezterm.action.CloseCurrentTab { confirm = true } },
               { key = 'Tab', mods = 'CTRL', action = wezterm.action.ActivateTabRelative(1) },
               { key = 'Tab', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTabRelative(-1) },
 
