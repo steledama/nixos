@@ -157,17 +157,6 @@ in {
     };
   };
 
-  # Basic Wlogout configuration
-  xdg.configFile."wlogout/config".text = ''
-    layout = horizontal
-    column_spacing = 20
-    row_spacing = 20
-    margin_top = 300
-    margin_bottom = 300
-    margin_left = 300
-    margin_right = 300
-  '';
-
   # Wofi configuration
   xdg.configFile."wofi/style.css".text = wofi.style;
   xdg.configFile."wofi/config".text = wofi.config;

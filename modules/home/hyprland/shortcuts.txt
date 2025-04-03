@@ -73,13 +73,25 @@
 - gl                → Comment Line
 - gb                → Comment Block
 
-### Git Integration
-- LEADER + hs       → Stage Hunk
-- LEADER + hr       → Reset Hunk
-- LEADER + hS       → Stage Buffer
-- LEADER + hR       → Reset Buffer
-- LEADER + hp       → Preview Hunk
-- LEADER + hb       → Blame Line
+### Neo-tree File Explorer
+
+- \             → Toggle File Tree
+- o             → Open File/Directory
+- O             → Open with Window Picker
+- a             → Add New File/Directory
+- D             → Delete File/Directory
+- c             → Copy File/Directory
+- m             → Move File/Directory
+- <C-h>         → Toggle Hidden Files
+
+### Completion (CMP)
+
+- TAB           → Select Next Suggestion
+- SHIFT + TAB   → Select Previous Suggestion
+- CTRL + Space  → Trigger Completion
+- CTRL + b      → Scroll Docs Up
+- CTRL + f      → Scroll Docs Down
+- ENTER         → Confirm Selection
 
 ## Special Notes
 - LEADER key is typically Space
