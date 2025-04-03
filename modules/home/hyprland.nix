@@ -87,13 +87,9 @@
     SUPER+F1 → Menu Shortcuts    |  SUPER+Escape → Menu Logout
 
     # WEZTERM
-    ## Pannelli e Divisione
-    CTRL+SHIFT+| → Divisione Orizz.     |  CTRL+SHIFT+_ → Divisione Vert.
-    CTRL+SHIFT+⬅⬆➡⬇ → Navigazione       |  CTRL+SHIFT+Del → Chiudi Pannello
-    ## Schede
-    CTRL+SHIFT+t → Nuova Scheda      |  CTRL+SHIFT+w → Chiudi Scheda
-    CTRL+Tab → Scheda Succ/Prec      |  CTRL+SHIFT+1-9 → Vai alla Scheda
-    CTRL+SHIFT+l → Ultima Scheda     |  CTRL+c → Copia/Interrompi
+    CTRL+t → Nuova Scheda         |  CTRL+w → Chiudi Scheda
+    CTRL+Tab → Scheda Successiva  |  CTRL+1-9 → Vai alla Scheda
+    CTRL+SHIFT+Tab → Precedente   |  CTRL+SHIFT+c → Copia
 
     # NEOVIM
     ## Navigazione Base
