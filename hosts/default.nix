@@ -62,6 +62,7 @@
     findutils # For find command
     coreutils # For basic Unix utilities
     psmisc # Set of small useful utilities that use the proc filesystem (killall)
+    zip # Compressor/archiver for creating and modifying zipfiles
 
     # Network and file
     wget # HTTP/HTTPS/FTP file retrieval
