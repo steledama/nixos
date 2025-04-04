@@ -1,67 +1,59 @@
 # modules/home/hyprland.nix
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   colors = import ./hyprland/colors.nix;
-  wofi = import ./hyprland/wofi.nix { inherit colors pkgs; };
+  wofi = import ./hyprland/wofi.nix {inherit colors pkgs;};
   waybar = import ./hyprland/waybar.nix {
     inherit pkgs colors;
     scripts = {
-      shortcutMenuScript = shortcutMenuScript;
-      randomWallpaperScript = randomWallpaperScript;
-      monitorConfigScript = monitorConfigScript;
+      shortcutScript = shortcutScript;
+      wallpaperScript = wallpaperScript;
+      monitorScript = monitorScript;
+      screenshotScript = screenshotScript;
     };
   };
 
-  monitorConfigScript = pkgs.writeShellScriptBin "hyprland-monitor-config" ''
-    ${builtins.readFile ./hyprland/monitor-config.sh}
+  # Leggi il contenuto del file shortcut.sh
+  shortcutShContent =
+    builtins.replaceStrings
+    ["__SHORTCUTS_CONTENT__"]
+    [builtins.readFile ./hyprland/shortcuts.md]
+    (builtins.readFile ./hyprland/shortcut.sh);
+
+  monitorScript = pkgs.writeShellScriptBin "hyprland-monitor" ''
+    ${builtins.readFile ./hyprland/monitor.sh}
   '';
 
-  randomWallpaperScript = pkgs.writeShellScriptBin "hyprland-random-wallpaper" ''
+  wallpaperScript = pkgs.writeShellScriptBin "hyprland-wallpaper" ''
     ${builtins.readFile ./hyprland/wallpaper.sh}
   '';
 
-  shortcutMenuScript = pkgs.writeShellScriptBin "shortcut-menu" ''
-    #!/usr/bin/env bash
-
-    # Script per mostrare le scorciatoie con formattazione compatta
-
-    # Crea un file temporaneo per le scorciatoie
-    TEMP_FILE=$(mktemp)
-
-    # Popola il file con il contenuto delle scorciatoie
-    cat > "$TEMP_FILE" << 'EOF'
-    ${builtins.readFile ./hyprland/shortcuts.md}
-    EOF
-
-    # Mostra il menu utilizzando lo stile centralizzato e le dimensioni standard definite in wofi/config
-    cat "$TEMP_FILE" | ${pkgs.wofi}/bin/wofi \
-      --dmenu \
-      --prompt "Shortcuts" \
-      --cache-file /dev/null \
-      --insensitive \
-      --no-actions
-
-    # Pulizia
-    rm -f "$TEMP_FILE"
+  # Script per screenshot con notifica
+  screenshotScript = pkgs.writeShellScriptBin "hyprland-screenshot" ''
+    ${builtins.readFile ./hyprland/screenshot.sh}
   '';
-in
-{
+
+  # Script per visualizzare i shortcuts
+  shortcutScript = pkgs.writeShellScriptBin "hyprland-shortcut" ''
+    ${shortcutShContent}
+  '';
+in {
   # Packages required for Hyprland
   home.packages = with pkgs; [
     # Wlogout per logout menu
     wlogout
 
     # Script personalizzati
-    shortcutMenuScript
-    randomWallpaperScript
-    monitorConfigScript
+    shortcutScript
+    wallpaperScript
+    monitorScript
+    screenshotScript
   ];
 
   # Hyprland Configuration
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
-    systemd.variables = [ "--systemd-activation" ];
+    systemd.variables = ["--systemd-activation"];
     settings = {
       # General settings
       general = {
@@ -126,7 +118,7 @@ in
 
       # Startup applications
       exec-once = [
-        "${randomWallpaperScript}/bin/hyprland-random-wallpaper"
+        "${wallpaperScript}/bin/hyprland-wallpaper"
         "${pkgs.waybar}/bin/waybar"
         "blueman-applet"
       ];
@@ -183,16 +175,21 @@ in
         "SUPER SHIFT, Left, movetoworkspace, e-1"
 
         # Monitor configuration
-        "SUPER, M, exec, ${monitorConfigScript}/bin/hyprland-monitor-config"
+        "SUPER, M, exec, ${monitorScript}/bin/hyprland-monitor"
 
         # Random wallpaper
-        "SUPER, W, exec, ${randomWallpaperScript}/bin/hyprland-random-wallpaper"
+        "SUPER, W, exec, ${wallpaperScript}/bin/hyprland-wallpaper"
 
         # Shortcuts menu
-        "SUPER, F1, exec, ${shortcutMenuScript}/bin/shortcut-menu"
+        "SUPER, F1, exec, ${shortcutScript}/bin/hyprland-shortcut"
 
         # Logout menu
         "SUPER, Escape, exec, ${pkgs.wlogout}/bin/wlogout"
+
+        # Screenshot shortcuts
+        ", Print, exec, ${screenshotScript}/bin/hyprland-screenshot full"
+        "SHIFT, Print, exec, ${screenshotScript}/bin/hyprland-screenshot area"
+        "ALT, Print, exec, ${screenshotScript}/bin/hyprland-screenshot window"
       ];
     };
   };
