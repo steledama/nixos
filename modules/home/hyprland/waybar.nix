@@ -11,7 +11,7 @@
       layer = "top";
       position = "top";
       height = 30;
-      modules-left = ["hyprland/workspaces"];
+      modules-left = ["custom/menu" "hyprland/workspaces"];
       modules-center = ["custom/datetime"];
       modules-right = ["custom/keymap" "pulseaudio" "network" "battery" "custom/wlogout" "tray"];
 
@@ -35,6 +35,12 @@
         };
         all-outputs = true;
         active-only = false;
+      };
+
+      "custom/menu" = {
+        format = "󰀻";
+        tooltip = "Menu Applicazioni";
+        on-click = "${pkgs.wofi}/bin/wofi --show drun";
       };
 
       "custom/datetime" = {
@@ -117,6 +123,20 @@
       padding: 0 8px;
       margin: 0 2px;
       transition: all 0.3s ease;
+    }
+
+    #custom-menu {
+      color: ${colors.blue};
+      font-size: 18px;
+      padding: 0 10px;
+      margin: 0 8px 0 4px;
+      background-color: rgba(97, 175, 239, 0.1);
+      border-radius: 5px;
+    }
+
+    #custom-menu:hover {
+      background-color: rgba(97, 175, 239, 0.3);
+      border-radius: 5px;
     }
 
     #clock, #battery, #pulseaudio, #network, #tray, #custom-keymap, #bluetooth, #custom-date, #custom-wlogout {
