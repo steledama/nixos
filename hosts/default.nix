@@ -1,5 +1,5 @@
 # nixos/hosts/default.nix
-{ pkgs, ... }: {
+{pkgs, ...}: {
   # Import common system modules
   imports = [
     ../modules/system/zen.nix
@@ -87,6 +87,7 @@
     starship # Customizable prompt
     zoxide # Smarter cd command
     direnv # Environment manager
+    neofetch # Fast, highly customizable system info script
 
     # icons
     gtk3
