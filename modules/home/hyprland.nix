@@ -29,7 +29,7 @@
 
     # Popola il file con il contenuto delle scorciatoie
     cat > "$TEMP_FILE" << 'EOF'
-    ${builtins.readFile ./hyprland/shortcuts.txt}
+    ${builtins.readFile ./hyprland/shortcuts.md}
     EOF
 
     # Mostra il menu utilizzando lo stile centralizzato e le dimensioni standard definite in wofi/config
