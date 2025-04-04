@@ -1,5 +1,5 @@
 # modules/home/hyprland/wofi.nix
-{colors}: {
+{ colors, pkgs, ... }: {
   # Configurazione di Wofi
   config = ''
     width=700
@@ -12,6 +12,12 @@
     always_parse_args=true
     show_all=true
     gtk_dark=true
+    show_icons=true
+    icon_theme=Adwaita
+    drun-display-format={name}
+    cache_file=/dev/null
+    allow_images=true
+    image_size=24
   '';
 
   # Stile di Wofi
@@ -45,16 +51,20 @@
     }
     #text {
       color: ${colors.foreground};
-      margin: 2px;
-      padding: 2px 0; /* Aggiungiamo padding verticale invece di line-height */
-      font-size: 105%;  /* Dimensione font aumentata */
+      margin: 2px 5px;
+      padding: 2px 0;
+      font-size: 105%;
+    }
+    #img {
+      margin-right: 8px;
+      margin-left: 2px;
     }
     #entry {
       border-radius: 5px;
       padding: 3px;
       margin: 1px 0;
       background-color: transparent;
-      min-height: 0;
+      min-height: 24px;
     }
     #entry:selected {
       background-color: rgba(97, 175, 239, 0.2);
@@ -64,3 +74,4 @@
     }
   '';
 }
+

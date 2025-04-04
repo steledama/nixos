@@ -1,7 +1,8 @@
 # modules/home/hyprland.nix
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   colors = import ./hyprland/colors.nix;
-  wofi = import ./hyprland/wofi.nix {inherit colors;};
+  wofi = import ./hyprland/wofi.nix { inherit colors pkgs; };
   waybar = import ./hyprland/waybar.nix {
     inherit pkgs colors;
     scripts = {
@@ -43,7 +44,8 @@
     # Pulizia
     rm -f "$TEMP_FILE"
   '';
-in {
+in
+{
   # Packages required for Hyprland
   home.packages = with pkgs; [
     # Wlogout per logout menu
@@ -59,7 +61,7 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
-    systemd.variables = ["--systemd-activation"];
+    systemd.variables = [ "--systemd-activation" ];
     settings = {
       # General settings
       general = {
