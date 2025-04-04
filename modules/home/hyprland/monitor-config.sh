@@ -52,24 +52,25 @@ laptop_only() {
 
 # Esterni primari (il laptop diventa secondario)
 external_primary() {
-  x_position=0
+  y_position=0
   has_external=false
   
+  # Prima configura i monitor esterni (sopra)
   for monitor in $MONITORS; do
     if [ "$monitor" != "$LAPTOP_MONITOR" ]; then
-      # Configura il monitor esterno
-      hyprctl keyword monitor "$monitor,preferred,${x_position}x0,1"
-      # Aggiorna la posizione X per il prossimo monitor
-      width=$(hyprctl monitors -j | jq -r ".[] | select(.name == \"$monitor\") | .width")
-      x_position=$((x_position + width))
+      # Configura il monitor esterno in posizione 0,0 (in alto)
+      hyprctl keyword monitor "$monitor,preferred,0x${y_position},1"
+      # Ottieni l'altezza del monitor esterno per posizionare il laptop sotto
+      height=$(hyprctl monitors -j | jq -r ".[] | select(.name == \"$monitor\") | .height")
+      y_position=$((y_position + height))
       has_external=true
     fi
   done
   
   if [ "$has_external" = true ]; then
-    # Posiziona il laptop a destra degli schermi esterni
-    hyprctl keyword monitor "$LAPTOP_MONITOR,preferred,${x_position}x0,1"
-    notify "Monitor esterni configurati come primari"
+    # Posiziona il laptop sotto lo schermo esterno
+    hyprctl keyword monitor "$LAPTOP_MONITOR,preferred,0x${y_position},1"
+    notify "Monitor esterni configurati come primari (sopra il laptop)"
   else
     laptop_only
   fi
@@ -94,14 +95,14 @@ external_only() {
   # Prima disabilita il laptop
   hyprctl keyword monitor "$LAPTOP_MONITOR,disable"
   
-  x_position=0
+  y_position=0
   for monitor in $MONITORS; do
     if [ "$monitor" != "$LAPTOP_MONITOR" ]; then
-      # Configura il monitor esterno
-      hyprctl keyword monitor "$monitor,preferred,${x_position}x0,1"
-      # Aggiorna la posizione X per il prossimo monitor
-      width=$(hyprctl monitors -j | jq -r ".[] | select(.name == \"$monitor\") | .width")
-      x_position=$((x_position + width))
+      # Configura il monitor esterno - se ne hai più di uno, li impila verticalmente
+      hyprctl keyword monitor "$monitor,preferred,0x${y_position},1"
+      # Aggiorna la posizione Y per il prossimo monitor (se ce ne sono più di uno)
+      height=$(hyprctl monitors -j | jq -r ".[] | select(.name == \"$monitor\") | .height")
+      y_position=$((y_position + height))
       has_external=true
     fi
   done
