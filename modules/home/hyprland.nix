@@ -133,7 +133,7 @@ in {
         "SUPER, R, exec, wofi --show drun"
         "SUPER, B, exec, google-chrome-stable"
         "SUPER, P, exec, firefox"
-        "SUPER, E, exec, pcmanfm"
+        "SUPER, E, exec, nautilus"
 
         # Window controls
         "SUPER, Q, killactive,"

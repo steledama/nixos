@@ -7,10 +7,10 @@
 - SUPER + F1 → Show Shortcuts Menu
 - SUPER + Escape → Logout Menu
 
-- SUPER + Return → Open Terminal (WezTerm)
+- SUPER + Return → Open Terminal
 - SUPER + R → Application Launcher
-- SUPER + B → Browser (Google Chrome)
-- SUPER + P → Alternative Browser (Firefox)
+- SUPER + B → Browser
+- SUPER + P → Private Browser
 - SUPER + E → File Manager
 - SUPER + Q → Close Active Window
 

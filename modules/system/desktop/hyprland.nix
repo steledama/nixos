@@ -35,7 +35,7 @@
     xdg-desktop-portal-gtk # GTK portal (for file dialogs)
 
     # File management
-    pcmanfm # Lightweight file manager
+    nautilus # Lightweight file manager
     gvfs # Virtual filesystem
   ];
 
@@ -50,11 +50,6 @@
       common.default = "gtk";
       hyprland.default = ["gtk" "hyprland"];
     };
-  };
-
-  # PCManFM as default file manager
-  xdg.mime.defaultApplications = {
-    "inode/directory" = "pcmanfm.desktop";
   };
 
   services = {
