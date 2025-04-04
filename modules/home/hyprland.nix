@@ -1,20 +1,58 @@
 # modules/home/hyprland.nix
 {pkgs, ...}: let
-  scripts = import ./hyprland/scripts.nix {inherit pkgs;};
-  wofi = import ./hyprland/wofi.nix {inherit colors;};
-  waybar = import ./hyprland/waybar.nix {inherit pkgs scripts colors;};
   colors = import ./hyprland/colors.nix;
+  wofi = import ./hyprland/wofi.nix {inherit colors;};
+  waybar = import ./hyprland/waybar.nix {
+    inherit pkgs colors;
+    scripts = {
+      shortcutMenuScript = shortcutMenuScript;
+      randomWallpaperScript = randomWallpaperScript;
+      monitorConfigScript = monitorConfigScript;
+    };
+  };
+
+  monitorConfigScript = pkgs.writeShellScriptBin "hyprland-monitor-config" ''
+    ${builtins.readFile ./hyprland/monitor-config.sh}
+  '';
+
+  randomWallpaperScript = pkgs.writeShellScriptBin "hyprland-random-wallpaper" ''
+    ${builtins.readFile ./hyprland/wallpaper.sh}
+  '';
+
+  shortcutMenuScript = pkgs.writeShellScriptBin "shortcut-menu" ''
+    #!/usr/bin/env bash
+
+    # Script per mostrare le scorciatoie con formattazione compatta
+
+    # Crea un file temporaneo per le scorciatoie
+    TEMP_FILE=$(mktemp)
+
+    # Popola il file con il contenuto delle scorciatoie
+    cat > "$TEMP_FILE" << 'EOF'
+    ${builtins.readFile ./hyprland/shortcuts.txt}
+    EOF
+
+    # Mostra il menu utilizzando lo stile centralizzato e le dimensioni standard definite in wofi/config
+    cat "$TEMP_FILE" | ${pkgs.wofi}/bin/wofi \
+      --dmenu \
+      --prompt "Shortcuts" \
+      --cache-file /dev/null \
+      --insensitive \
+      --no-actions
+
+    # Pulizia
+    rm -f "$TEMP_FILE"
+  '';
 in {
   # Packages required for Hyprland
   home.packages = with pkgs; [
-    # Wlogout for logout menu
+    # Wlogout per logout menu
     wlogout
 
-    # Custom scripts
-    scripts.shortcutMenuScript
-    scripts.randomWallpaperScript
-    scripts.monitorConfigScript
-    scripts.wlogoutScript
+    # Script personalizzati
+    shortcutMenuScript
+    randomWallpaperScript
+    monitorConfigScript
   ];
 
   # Hyprland Configuration
@@ -86,7 +124,7 @@ in {
 
       # Startup applications
       exec-once = [
-        "${scripts.randomWallpaperScript}/bin/hyprland-random-wallpaper"
+        "${randomWallpaperScript}/bin/hyprland-random-wallpaper"
         "${pkgs.waybar}/bin/waybar"
         "blueman-applet"
       ];
@@ -143,13 +181,13 @@ in {
         "SUPER SHIFT, Left, movetoworkspace, e-1"
 
         # Monitor configuration
-        "SUPER, M, exec, ${scripts.monitorConfigScript}/bin/hyprland-monitor-config"
+        "SUPER, M, exec, ${monitorConfigScript}/bin/hyprland-monitor-config"
 
         # Random wallpaper
-        "SUPER, W, exec, ${scripts.randomWallpaperScript}/bin/hyprland-random-wallpaper"
+        "SUPER, W, exec, ${randomWallpaperScript}/bin/hyprland-random-wallpaper"
 
         # Shortcuts menu
-        "SUPER, F1, exec, ${scripts.shortcutMenuScript}/bin/shortcut-menu"
+        "SUPER, F1, exec, ${shortcutMenuScript}/bin/shortcut-menu"
 
         # Logout menu
         "SUPER, Escape, exec, ${pkgs.wlogout}/bin/wlogout"

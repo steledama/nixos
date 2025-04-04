@@ -83,7 +83,7 @@
       "custom/wlogout" = {
         format = "⏻";
         tooltip = false;
-        on-click = "${scripts.wlogoutScript}/bin/hyprland-logout";
+        on-click = "${pkgs.wlogout}/bin/wlogout";
       };
     };
   };

@@ -46,9 +46,8 @@
     #text {
       color: ${colors.foreground};
       margin: 2px;
-      padding: 0;
+      padding: 2px 0; /* Aggiungiamo padding verticale invece di line-height */
       font-size: 105%;  /* Dimensione font aumentata */
-      line-height: 115%; /* Interlinea diminuita */
     }
     #entry {
       border-radius: 5px;
