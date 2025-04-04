@@ -3,7 +3,7 @@
 # Script per screenshot con notifica in Hyprland
 # Supporta screenshot intero, di area selezionata e della finestra attiva
 
-SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
+SCREENSHOTS_DIR="$HOME/Immagini/Schermate"
 mkdir -p "$SCREENSHOTS_DIR"
 
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)

@@ -77,7 +77,7 @@
       "custom/keymap" = {
         format = "⌨";
         tooltip = false;
-        on-click = "${scripts.shortcutMenuScript}/bin/shortcut-menu";
+        on-click = "${scripts.shortcutScript}/bin/hyprland-shortcut";
       };
 
       "custom/wlogout" = {

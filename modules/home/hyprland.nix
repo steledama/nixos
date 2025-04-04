@@ -12,11 +12,14 @@
     };
   };
 
-  # Leggi il contenuto del file shortcut.sh
+  # Contenuto delle scorciatoie
+  shortcutsContent = builtins.readFile ./hyprland/shortcuts.md;
+
+  # Script per lo shortcut menu con sostituzione del placeholder
   shortcutShContent =
     builtins.replaceStrings
     ["__SHORTCUTS_CONTENT__"]
-    [builtins.readFile ./hyprland/shortcuts.md]
+    [shortcutsContent]
     (builtins.readFile ./hyprland/shortcut.sh);
 
   monitorScript = pkgs.writeShellScriptBin "hyprland-monitor" ''
