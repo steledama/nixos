@@ -80,12 +80,11 @@
 ### Editing
 
 - LEADER + f → Format Buffer
-- gl → Comment Line
-- gb → Comment Block
+- gcc → Toggle current line comment
 
 ### Neo-tree File Explorer
 
-- \ → Toggle File Tree
+- CTRL + B → Toggle File Tree
 - o → Open File/Directory
 - O → Open with Window Picker
 - a → Add New File/Directory
@@ -96,11 +95,9 @@
 
 ### Completion (CMP)
 
-- TAB → Select Next Suggestion
-- SHIFT + TAB → Select Previous Suggestion
+- Down → Select Next Suggestion
+- Up + TAB → Select Previous Suggestion
 - CTRL + Space → Trigger Completion
-- CTRL + B → Scroll Docs Up
-- CTRL + F → Scroll Docs Down
 - ENTER → Confirm Selection
 
 ## Special Notes

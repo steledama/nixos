@@ -1,5 +1,5 @@
 # nixos/module/home/neovim.nix
-{...}: {
+{ ... }: {
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -48,7 +48,7 @@
           plugins = {
             marks = true;
             registers = true;
-            spelling = {enabled = true;};
+            spelling = { enabled = true; };
             presets = {
               operators = true;
               motions = true;
@@ -95,7 +95,7 @@
           followCurrentFile.enabled = true;
           filteredItems = {
             hideDotfiles = false;
-            hideByName = ["node_modules" ".git"];
+            hideByName = [ "node_modules" ".git" ];
           };
         };
       };
@@ -114,13 +114,13 @@
           pyright.enable = true;
           nil_ls = {
             enable = true;
-            settings.formatting.command = ["nixpkgs-fmt"];
+            settings.formatting.command = [ "nixpkgs-fmt" ];
           };
           lua_ls = {
             enable = true;
             settings.Lua = {
               completion.callSnippet = "Replace";
-              diagnostics.globals = ["vim"];
+              diagnostics.globals = [ "vim" ];
             };
           };
         };
@@ -130,17 +130,15 @@
         enable = true;
         settings = {
           mapping = {
-            "<Tab>" = "cmp.mapping.select_next_item()";
-            "<S-Tab>" = "cmp.mapping.select_prev_item()";
-            "<C-b>" = "cmp.mapping.scroll_docs(-4)";
-            "<C-f>" = "cmp.mapping.scroll_docs(4)";
+            "<Down>" = "cmp.mapping.select_next_item()";
+            "<Up>" = "cmp.mapping.select_prev_item()";
             "<C-Space>" = "cmp.mapping.complete()";
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           sources = [
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
         };
       };
@@ -153,11 +151,11 @@
             lsp_fallback = true;
           };
           formatters_by_ft = {
-            lua = ["stylua"];
-            python = ["isort" "black"];
-            javascript = ["prettierd"];
-            typescript = ["prettierd"];
-            nix = ["nixpkgs-fmt"];
+            lua = [ "stylua" ];
+            python = [ "isort" "black" ];
+            javascript = [ "prettierd" ];
+            typescript = [ "prettierd" ];
+            nix = [ "nixpkgs-fmt" ];
           };
         };
       };
@@ -389,27 +387,23 @@
     ];
 
     extraConfigLua = ''
-      -- Comments
-      require('Comment').setup({
-        padding = true,
-        sticky = true,
-        ignore = "^$", -- ignora linee vuote
-        toggler = {
-          line = "gll",
-          block = "gbb"
-        },
-        opleader = {
-          line = "gl",
-          block = "gb"
-        }
-      })
+             -- Comments
+            require('Comment').setup({
+              padding = true,
+              sticky = true,
+              ignore = "^$",
+      	mappings = {
+      	basic = false,
+      	extra = false
+      	}
+            })
 
-      -- Autopairs
-      require('nvim-autopairs').setup({
-        check_ts = true,
-        disable_filetype = {"TelescopePrompt"},
-        enable_check_bracket_line = true,
-      })
+            -- Autopairs
+            require('nvim-autopairs').setup({
+              check_ts = true,
+              disable_filetype = {"TelescopePrompt"},
+              enable_check_bracket_line = true,
+            })
     '';
   };
 }
