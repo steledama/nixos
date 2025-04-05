@@ -93,5 +93,8 @@
     gtk3
     hicolor-icon-theme
     adwaita-icon-theme
+
+    # customs
+    msty
   ];
 }

@@ -22,18 +22,27 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
 
-    # Helper function to create host configurations
+    overlays = [
+      (import ./overlays/msty.nix)
+    ];
+
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+      overlays = overlays;
+    };
+
     mkHost = hostname: extraModules:
       nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs pkgs;};
         modules =
           [
             ./hosts/${hostname}
             home-manager.nixosModules.home-manager
             {
+              nixpkgs.overlays = overlays;
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
@@ -42,7 +51,6 @@
           ++ extraModules;
       };
   in {
-    # Host configurations
     nixosConfigurations = {
       pcgame = mkHost "pcgame" [];
       acquisti-laptop = mkHost "acquisti-laptop" [];
