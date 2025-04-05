@@ -27,22 +27,18 @@
       (import ./overlays/msty.nix)
     ];
 
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-      overlays = overlays;
-    };
-
     mkHost = hostname: extraModules:
       nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs pkgs;};
+        specialArgs = {inherit inputs;};
         modules =
           [
             ./hosts/${hostname}
             home-manager.nixosModules.home-manager
             {
               nixpkgs.overlays = overlays;
+              nixpkgs.config.allowUnfree = true;
+
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
