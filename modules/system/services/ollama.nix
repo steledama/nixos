@@ -12,7 +12,7 @@ in {
   config = mkIf cfg.enable {
     services.ollama = {
       enable = true;
-      package = pkgs.ollama; # Semplificato per utilizzare la versione standard
+      package = pkgs.ollama;
       acceleration =
         if config.services.xserver.videoDrivers == ["amdgpu"]
         then "rocm"
@@ -20,6 +20,7 @@ in {
         then "cuda"
         else null;
       host = "[::]";
+      # port = 11434; # default is 11434
       openFirewall = true;
     };
     nixpkgs.config = {
