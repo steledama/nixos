@@ -1,5 +1,5 @@
 # nixos/hosts/default.nix
-{pkgs, ...}: {
+{ pkgs, ... }: {
   # Import common system modules
   imports = [
     ../modules/system/zen.nix
@@ -68,6 +68,7 @@
     wget # HTTP/HTTPS/FTP file retrieval
     unzip # ZIP archive extraction
     tcpdump # network sniffer
+    nmap # Free and open source utility for network discovery and security auditing
     wl-clipboard # Command-line copy/paste utilities for Wayland
     xclip # Tool to access the X clipboard from a console application
     yazi # Terminal file manager

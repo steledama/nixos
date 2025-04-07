@@ -1,5 +1,5 @@
 # nixos/hosts/pcgame/default.nix
-{inputs, ...}: {
+{ inputs, ... }: {
   imports = [
     ./hardware.nix
     ../default.nix
@@ -61,6 +61,7 @@
       allowedTCPPorts = [
         4662 # aMule eD2K data
         4672 # aMule incoming connections
+        11435 # msty ollama service for llm
       ];
       # UDP Ports
       allowedUDPPorts = [
