@@ -29,6 +29,8 @@
     inkscape
     # Development
     vscode
+    # Claude Desktop
+    inputs.claude-desktop.packages.${pkgs.system}.claude-desktop
   ];
 
   # Common editor configuration
