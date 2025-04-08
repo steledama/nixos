@@ -13,16 +13,18 @@ let
     };
   };
 
-  # Lock screen script
+  # Script per il lock screen
   lockScreenScript = pkgs.writeShellScriptBin "lock-screen" ''
     #!/usr/bin/env bash
-    ${pkgs.swaylock}/bin/swaylock "$@"
+    ${pkgs.hyprlock}/bin/hyprlock "$@"
   '';
 
-  # Wlogout config
-  wlogout = import ./hyprland/wlogout.nix {
-    inherit lockScreenScript;
-  };
+  # Configurazione di wlogout - utilizziamo una funzione che restituisce solo il layout
+  wlogoutLayout =
+    let
+      config = import ./hyprland/wlogout.nix { inherit lockScreenScript; };
+    in
+    config.layout;
 
   # Contenuto delle scorciatoie
   shortcutsContent = builtins.readFile ./hyprland/shortcuts.md;
@@ -51,12 +53,6 @@ let
   shortcutScript = pkgs.writeShellScriptBin "hyprland-shortcut" ''
     ${shortcutShContent}
   '';
-
-  # Script per il lock screen
-  lockScreenScript = pkgs.writeShellScriptBin "lock-screen" ''
-    #!/usr/bin/env bash
-    ${pkgs.swaylock}/bin/swaylock "$@"
-  '';
 in
 {
   # Import del modulo SwayNC
@@ -66,10 +62,11 @@ in
 
   # Packages required for Hyprland
   home.packages = with pkgs; [
-    # Wlogout per logout menu
+    # Basic tools for the environment
     wlogout
-    swaylock
+    hyprlock
     swayidle
+    libnotify
 
     # Script personalizzati
     shortcutScript
@@ -155,9 +152,6 @@ in
           passes = 3;
           new_optimizations = true;
         };
-        drop_shadow = true;
-        shadow_range = 15;
-        shadow_offset = "0 5";
       };
 
       # Window layout
@@ -274,7 +268,7 @@ in
   xdg.configFile."wofi/config".text = wofi.config;
 
   # Wlogout configuration
-  xdg.configFile."wlogout/layout".text = wlogout.layout;
+  xdg.configFile."wlogout/layout".text = wlogoutLayout;
 
   # Waybar configuration
   programs.waybar = waybar;
