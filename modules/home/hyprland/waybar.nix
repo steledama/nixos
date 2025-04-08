@@ -13,7 +13,7 @@
       height = 30;
       modules-left = ["custom/menu" "hyprland/workspaces"];
       modules-center = ["custom/datetime"];
-      modules-right = ["custom/keymap" "pulseaudio" "network" "battery" "custom/wlogout" "tray"];
+      modules-right = ["custom/notifications" "custom/keymap" "pulseaudio" "network" "battery" "custom/wlogout" "tray"];
 
       "hyprland/workspaces" = {
         format = "{icon}";
@@ -48,6 +48,13 @@
         interval = 30;
         format = "{}";
         tooltip = false;
+      };
+
+      "custom/notifications" = {
+        format = "󰂚";
+        tooltip = "Centro Notifiche";
+        on-click = "swaync-client -t -sw";
+        on-click-right = "swaync-client -C";
       };
 
       "tray" = {
@@ -139,9 +146,14 @@
       border-radius: 5px;
     }
 
-    #clock, #battery, #pulseaudio, #network, #tray, #custom-keymap, #bluetooth, #custom-date, #custom-wlogout {
+    #clock, #battery, #pulseaudio, #network, #tray, #custom-keymap, #bluetooth, #custom-date, #custom-wlogout, #custom-notifications {
       padding: 0 10px;
       margin: 0 4px;
+    }
+
+    #custom-notifications {
+      color: ${colors.green};
+      font-size: 16px;
     }
 
     #custom-datetime {
@@ -189,6 +201,7 @@
     }
 
     #custom-keymap:hover,
+    #custom-notifications:hover,
     #pulseaudio:hover,
     #network:hover,
     #bluetooth:hover,

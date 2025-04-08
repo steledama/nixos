@@ -40,6 +40,11 @@
     ${shortcutShContent}
   '';
 in {
+  # Import del modulo SwayNC
+  imports = [
+    ./hyprland/swaync.nix
+  ];
+
   # Packages required for Hyprland
   home.packages = with pkgs; [
     # Wlogout per logout menu
@@ -124,6 +129,7 @@ in {
         "${wallpaperScript}/bin/hyprland-wallpaper"
         "${pkgs.waybar}/bin/waybar"
         "blueman-applet"
+        "swaync" # Avvia SwayNC all'avvio
       ];
 
       # Keyboard shortcuts
@@ -134,6 +140,7 @@ in {
         "SUPER, B, exec, google-chrome-stable"
         "SUPER, P, exec, firefox"
         "SUPER, E, exec, nautilus"
+        "SUPER, N, exec, swaync-client -t -sw"
 
         # Window controls
         "SUPER, Q, killactive,"

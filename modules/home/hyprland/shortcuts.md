@@ -12,6 +12,7 @@
 - SUPER + B → Browser
 - SUPER + P → Private Browser
 - SUPER + E → File Manager
+- SUPER + N → Notification center
 - SUPER + Q → Close Active Window
 
 - SUPER + 1-9 → Switch to Workspace

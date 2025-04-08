@@ -11,11 +11,7 @@
     wofi # Launcher
     waybar # Status bar
     hyprpaper # Wallpaper manager for Hyprland
-
     wl-clipboard # Clipboard manager
-    dunst # Notification daemon
-    libnotify # Notification library
-
     grim # Screenshot
     slurp # Area selection
 
