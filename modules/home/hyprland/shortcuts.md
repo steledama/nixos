@@ -6,6 +6,8 @@
 - SUPER + W → Random Wallpaper
 - SUPER + F1 → Show Shortcuts Menu
 - SUPER + Escape → Logout Menu
+- SUPER + L → Lock Screen
+- SUPER + SHIFT + L → Lock and Suspend
 
 - SUPER + Return → Open Terminal
 - SUPER + R → Application Launcher

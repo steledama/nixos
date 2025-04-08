@@ -1,7 +1,8 @@
 # modules/home/hyprland.nix
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   colors = import ./hyprland/colors.nix;
-  wofi = import ./hyprland/wofi.nix {inherit colors pkgs;};
+  wofi = import ./hyprland/wofi.nix { inherit colors pkgs; };
   waybar = import ./hyprland/waybar.nix {
     inherit pkgs colors;
     scripts = {
@@ -12,15 +13,26 @@
     };
   };
 
+  # Lock screen script
+  lockScreenScript = pkgs.writeShellScriptBin "lock-screen" ''
+    #!/usr/bin/env bash
+    ${pkgs.swaylock}/bin/swaylock "$@"
+  '';
+
+  # Wlogout config
+  wlogout = import ./hyprland/wlogout.nix {
+    inherit lockScreenScript;
+  };
+
   # Contenuto delle scorciatoie
   shortcutsContent = builtins.readFile ./hyprland/shortcuts.md;
 
   # Script per lo shortcut menu con sostituzione del placeholder
   shortcutShContent =
     builtins.replaceStrings
-    ["__SHORTCUTS_CONTENT__"]
-    [shortcutsContent]
-    (builtins.readFile ./hyprland/shortcut.sh);
+      [ "__SHORTCUTS_CONTENT__" ]
+      [ shortcutsContent ]
+      (builtins.readFile ./hyprland/shortcut.sh);
 
   monitorScript = pkgs.writeShellScriptBin "hyprland-monitor" ''
     ${builtins.readFile ./hyprland/monitor.sh}
@@ -39,7 +51,14 @@
   shortcutScript = pkgs.writeShellScriptBin "hyprland-shortcut" ''
     ${shortcutShContent}
   '';
-in {
+
+  # Script per il lock screen
+  lockScreenScript = pkgs.writeShellScriptBin "lock-screen" ''
+    #!/usr/bin/env bash
+    ${pkgs.swaylock}/bin/swaylock "$@"
+  '';
+in
+{
   # Import del modulo SwayNC
   imports = [
     ./hyprland/swaync.nix
@@ -49,19 +68,51 @@ in {
   home.packages = with pkgs; [
     # Wlogout per logout menu
     wlogout
+    swaylock
+    swayidle
 
     # Script personalizzati
     shortcutScript
     wallpaperScript
     monitorScript
     screenshotScript
+    lockScreenScript
   ];
+
+  # Configurazione minima per swaylock
+  programs.swaylock = {
+    enable = true;
+    settings = {
+      color = "282c34";
+      show-failed-attempts = true;
+      ignore-empty-password = true;
+      indicator-caps-lock = true;
+      clock = true;
+    };
+  };
+
+  # Script per auto-lock
+  home.file.".config/hypr/auto-lock.sh" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      
+      # Termina eventuali istanze di swayidle in esecuzione
+      pkill swayidle
+      
+      # Avvia swayidle
+      ${pkgs.swayidle}/bin/swayidle -w \
+        timeout 570 'notify-send "Lo schermo verrà bloccato tra 30 secondi" --urgency=low' \
+        timeout 600 '${lockScreenScript}/bin/lock-screen' \
+        before-sleep '${lockScreenScript}/bin/lock-screen'
+    '';
+  };
 
   # Hyprland Configuration
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
-    systemd.variables = ["--systemd-activation"];
+    systemd.variables = [ "--systemd-activation" ];
     settings = {
       # General settings
       general = {
@@ -98,6 +149,15 @@ in {
       # Decorations
       decoration = {
         rounding = 10;
+        blur = {
+          enabled = true;
+          size = 5;
+          passes = 3;
+          new_optimizations = true;
+        };
+        drop_shadow = true;
+        shadow_range = 15;
+        shadow_offset = "0 5";
       };
 
       # Window layout
@@ -130,6 +190,7 @@ in {
         "${pkgs.waybar}/bin/waybar"
         "blueman-applet"
         "swaync" # Avvia SwayNC all'avvio
+        "$HOME/.config/hypr/auto-lock.sh" # Avvia auto-lock all'avvio
       ];
 
       # Keyboard shortcuts
@@ -196,6 +257,10 @@ in {
         # Logout menu
         "SUPER, Escape, exec, ${pkgs.wlogout}/bin/wlogout"
 
+        # Lock screen directly
+        "SUPER, L, exec, ${lockScreenScript}/bin/lock-screen"
+        "SUPER SHIFT, L, exec, ${lockScreenScript}/bin/lock-screen && systemctl suspend"
+
         # Screenshot shortcuts
         ", Print, exec, ${screenshotScript}/bin/hyprland-screenshot full"
         "SHIFT, Print, exec, ${screenshotScript}/bin/hyprland-screenshot area"
@@ -208,6 +273,10 @@ in {
   xdg.configFile."wofi/style.css".text = wofi.style;
   xdg.configFile."wofi/config".text = wofi.config;
 
+  # Wlogout configuration
+  xdg.configFile."wlogout/layout".text = wlogout.layout;
+
   # Waybar configuration
   programs.waybar = waybar;
 }
+
