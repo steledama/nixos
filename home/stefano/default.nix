@@ -18,12 +18,5 @@
     amule
   ];
 
-  # keyboard settings (for hyprland)
-  custom.keyboard = {
-    layout = "it";
-    variant = "";
-    options = "";
-  };
-
   home.stateVersion = "23.11";
 }

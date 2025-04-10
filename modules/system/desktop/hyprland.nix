@@ -1,9 +1,18 @@
 # modules/system/desktop/hyprland.nix
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   # Enable Hyprland
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    settings.input = {
+      kb_layout = config.hardware.keyboard.layout;
+      kb_variant = config.hardware.keyboard.variant;
+      kb_options = config.hardware.keyboard.options;
+    };
   };
 
   # Specific hyprland packages
