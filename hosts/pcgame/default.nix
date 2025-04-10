@@ -10,6 +10,14 @@
     # ../../modules/system/services/ollama.nix
   ];
 
+  # Italian keyboard layout
+  console.keyMap = "it";
+  services.xserver.xkb = {
+    layout = "it";
+    variant = "";
+    options = "";
+  };
+
   # extraServices.ollama.enable = true;
 
   # System-specific packages (additional to common ones)

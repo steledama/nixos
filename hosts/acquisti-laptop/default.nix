@@ -15,6 +15,14 @@
     ../../modules/system/services/smb.nix
   ];
 
+  # Norwegian keyboard layout for this specific host
+  console.keyMap = "no";
+  services.xserver.xkb = {
+    layout = "no";
+    variant = "";
+    options = "compose:ralt";
+  };
+
   # System-specific packages (additional to common ones)
   environment.systemPackages = with pkgs; [
     # Add system packages

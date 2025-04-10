@@ -7,6 +7,7 @@
     ../modules/system/nix.nix
     ../modules/system/shell.nix
     ../modules/system/fonts.nix
+    ../modules/system/locale-it.nix # change for your locale
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
     ../modules/system/services/keyd.nix
