@@ -8,10 +8,10 @@
     ../modules/system/nix.nix
     ../modules/system/shell.nix
     ../modules/system/fonts.nix
-    ../modules/system/services/greetd.nix
-    ../modules/system/services/keyd.nix
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
+    ../modules/system/services/keyd.nix
+    ../modules/system/services/gdm.nix
     ../modules/system/desktop/hyprland.nix
   ];
 
