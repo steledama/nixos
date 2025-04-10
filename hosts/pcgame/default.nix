@@ -3,7 +3,6 @@
   imports = [
     ./hardware.nix
     ../default.nix
-    ../../modules/system/locale-it.nix
     ../../modules/system/hardware/nvidia.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix

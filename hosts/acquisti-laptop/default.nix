@@ -7,7 +7,6 @@
   imports = [
     ./hardware.nix
     ../default.nix
-    ../../modules/system/locale-it.nix
     ../../modules/system/hardware/intel.nix
     ../../modules/system/hardware/touchpad.nix
     ../../modules/system/services/docker.nix
