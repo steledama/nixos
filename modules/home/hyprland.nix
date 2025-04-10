@@ -57,10 +57,9 @@
     ${shortcutShContent}
   '';
 in {
-  # Import related modules including the new keyboard config module
+  # Import related modules
   imports = [
     ./hyprland/swaync.nix
-    ./hyprland/keyboard-config.nix # Import the keyboard configuration module
   ];
 
   # Packages required for Hyprland
@@ -124,10 +123,9 @@ in {
         layout = "dwindle";
       };
 
-      # Input configuration - only touchpad and mouse settings
-      # Keyboard settings come from keyboard-config.nix module
+      # Input configuration
       input = {
-        # kb_layout setting will be set by keyboard-config.nix
+        # kb_layout setting will be set by modules/system/hardware/keyboard.nix
         follow_mouse = 1;
         touchpad = {
           natural_scroll = true;

@@ -15,9 +15,8 @@
     ../../modules/system/services/smb.nix
   ];
 
-  # Norwegian keyboard layout for this specific host
-  console.keyMap = "no";
-  services.xserver.xkb = {
+  # Norwegian keyboard layout
+  hardware.keyboard = {
     layout = "no";
     variant = "";
     options = "compose:ralt";

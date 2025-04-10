@@ -11,8 +11,7 @@
   ];
 
   # Italian keyboard layout
-  console.keyMap = "it";
-  services.xserver.xkb = {
+  hardware.keyboard = {
     layout = "it";
     variant = "";
     options = "";
