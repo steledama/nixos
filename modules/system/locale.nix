@@ -1,6 +1,4 @@
-# modules/system/locale-it.nix
-# Italian regional settings without keyboard configuration
-# Keyboard layout is configured at the host level for maximum flexibility
+# modules/system/locale.nix
 {
   # Time settings
   time = {

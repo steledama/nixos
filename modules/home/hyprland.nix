@@ -1,11 +1,6 @@
 # modules/home/hyprland.nix
-{
-  pkgs,
-  lib,
-  config,
-  ...
-} @ args: let
-  # Keyboard settings
+{pkgs, ...} @ args: let
+  # Keyboard default settings
   keyboardLayout =
     if args ? keyboardLayout
     then args.keyboardLayout
@@ -13,11 +8,12 @@
   keyboardVariant =
     if args ? keyboardVariant
     then args.keyboardVariant
-    else "";
+    else "intl";
   keyboardOptions =
     if args ? keyboardOptions
     then args.keyboardOptions
-    else "";
+    else "compose:ralt";
+
   # Colors for theming
   colors = import ./hyprland/colors.nix;
 
