@@ -8,11 +8,14 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    settings.input = {
-      kb_layout = config.hardware.keyboard.layout;
-      kb_variant = config.hardware.keyboard.variant;
-      kb_options = config.hardware.keyboard.options;
-    };
+  };
+
+  # Environment variables
+  environment.sessionVariables = {
+    # Firefox on wayland
+    MOZ_ENABLE_WAYLAND = "1";
+    # Tell Hyprland to use our global configuration
+    HYPRLAND_INSTANCE_SIGNATURE = "system";
   };
 
   # Specific hyprland packages
@@ -67,9 +70,4 @@
   };
   # Enable polkit security framework
   security.polkit.enable = true;
-  # Basic environment variables for Wayland
-  environment.sessionVariables = {
-    # Firefox on wayland
-    MOZ_ENABLE_WAYLAND = "1";
-  };
 }

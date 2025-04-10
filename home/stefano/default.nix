@@ -2,11 +2,18 @@
 {
   config,
   pkgs,
-  neovim-config,
+  lib,
   ...
 }: {
   imports = [
     ../default.nix
+    # Hyprland keyboard layout config
+    (import ../../modules/home/hyprland.nix {
+      inherit pkgs config lib;
+      keyboardLayout = "it";
+      keyboardVariant = "";
+      keyboardOptions = "";
+    })
   ];
 
   # username

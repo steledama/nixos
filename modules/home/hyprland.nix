@@ -1,5 +1,23 @@
 # modules/home/hyprland.nix
-{pkgs, ...}: let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+} @ args: let
+  # Keyboard settings
+  keyboardLayout =
+    if args ? keyboardLayout
+    then args.keyboardLayout
+    else "us";
+  keyboardVariant =
+    if args ? keyboardVariant
+    then args.keyboardVariant
+    else "";
+  keyboardOptions =
+    if args ? keyboardOptions
+    then args.keyboardOptions
+    else "";
   # Colors for theming
   colors = import ./hyprland/colors.nix;
 
@@ -125,7 +143,10 @@ in {
 
       # Input configuration
       input = {
-        # kb_layout setting will be set by modules/system/hardware/keyboard.nix
+        kb_layout = keyboardLayout;
+        kb_variant = keyboardVariant;
+        kb_options = keyboardOptions;
+
         follow_mouse = 1;
         touchpad = {
           natural_scroll = true;

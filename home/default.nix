@@ -12,7 +12,6 @@
     ../modules/home/neovim.nix
     ../modules/home/ui-theme.nix
     ../modules/home/yazi.nix
-    ../modules/home/hyprland.nix
   ];
 
   # Common packages for all users

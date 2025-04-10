@@ -2,10 +2,18 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   imports = [
     ../default.nix
+    # Hyprland keyboard layout config
+    (import ../../modules/home/hyprland.nix {
+      inherit pkgs config lib;
+      keyboardLayout = "no";
+      keyboardVariant = "";
+      keyboardOptions = "compose:ralt";
+    })
     ../../modules/home/syncthing.nix
   ];
   # username
