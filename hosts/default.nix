@@ -4,7 +4,6 @@
   imports = [
     ../modules/system/zen.nix
     ../modules/system/boot.nix
-    ../modules/system/locale.nix
     ../modules/system/nix.nix
     ../modules/system/shell.nix
     ../modules/system/fonts.nix

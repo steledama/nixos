@@ -1,22 +1,13 @@
-# nixos/modules/system/locale.nix
 {
-  # Configure console keymap
   console.keyMap = "it";
-
-  # Configura anche il layout della tastiera per X11
   services.xserver = {
     xkb.layout = "it";
     xkb.variant = "";
     xkb.options = "";
   };
-
-  # Set your time zone.
   time.timeZone = "Europe/Rome";
-  # Hw clock
   time.hardwareClockInLocalTime = true;
-  # Select internationalisation properties.
   i18n.defaultLocale = "it_IT.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "it_IT.UTF-8";
     LC_IDENTIFICATION = "it_IT.UTF-8";

@@ -81,8 +81,42 @@
 - CTRL + Space → Trigger Completion
 - ENTER → Confirm Selection
 
+## US International Keyboard - Special Characters
+
+Using US keyboard with international layout (altgr-intl) allows typing special characters needed for Italian text:
+
+### Accented Vowels (Using AltGr)
+- AltGr + a → á
+- AltGr + e → é
+- AltGr + i → í
+- AltGr + o → ó
+- AltGr + u → ú
+- AltGr + y → ý
+
+### Grave Accents (Using dead key)
+- AltGr + ` (backtick) then a → à
+- AltGr + ` then e → è
+- AltGr + ` then i → ì
+- AltGr + ` then o → ò
+- AltGr + ` then u → ù
+
+### Common Symbols
+- AltGr + 5 → €  (Euro symbol)
+- AltGr + = → ×  (Multiplication symbol)
+- AltGr + - → ÷  (Division symbol)
+- AltGr + ' then space → '  (Apostrophe)
+- AltGr + " then space → "  (Quotation mark)
+
+### Using Compose Key (also Right Alt)
+- AltGr + ' + e → é
+- AltGr + ` + e → è
+- AltGr + ^ + e → ê
+- AltGr + ~ + n → ñ
+- AltGr + " + a → ä
+
 ## Special Notes
 
 - LEADER key is typically Space
 - Many shortcuts are context-sensitive
 - Experiment and customize to fit your workflow
+- For additional special characters, refer to a comprehensive US International keyboard layout chart online
