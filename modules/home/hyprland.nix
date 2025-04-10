@@ -1,8 +1,12 @@
 # modules/home/hyprland.nix
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
+  # Colors for theming
   colors = import ./hyprland/colors.nix;
-  wofi = import ./hyprland/wofi.nix { inherit colors pkgs; };
+
+  # Wofi (application launcher) configuration
+  wofi = import ./hyprland/wofi.nix {inherit colors pkgs;};
+
+  # Waybar configuration with script references
   waybar = import ./hyprland/waybar.nix {
     inherit pkgs colors;
     scripts = {
@@ -13,51 +17,50 @@ let
     };
   };
 
-  # Script per il lock screen
+  # Lock screen script
   lockScreenScript = pkgs.writeShellScriptBin "lock-screen" ''
     #!/usr/bin/env bash
     ${pkgs.hyprlock}/bin/hyprlock "$@"
   '';
 
-  # Configurazione di wlogout - utilizziamo una funzione che restituisce solo il layout
-  wlogoutLayout =
-    let
-      config = import ./hyprland/wlogout.nix { inherit lockScreenScript; };
-    in
+  # Wlogout configuration (logout menu)
+  wlogoutLayout = let
+    config = import ./hyprland/wlogout.nix {inherit lockScreenScript;};
+  in
     config.layout;
 
-  # Contenuto delle scorciatoie
+  # Shortcuts menu content and script
   shortcutsContent = builtins.readFile ./hyprland/shortcuts.md;
-
-  # Script per lo shortcut menu con sostituzione del placeholder
   shortcutShContent =
     builtins.replaceStrings
-      [ "__SHORTCUTS_CONTENT__" ]
-      [ shortcutsContent ]
-      (builtins.readFile ./hyprland/shortcut.sh);
+    ["__SHORTCUTS_CONTENT__"]
+    [shortcutsContent]
+    (builtins.readFile ./hyprland/shortcut.sh);
 
+  # Monitor configuration script
   monitorScript = pkgs.writeShellScriptBin "hyprland-monitor" ''
     ${builtins.readFile ./hyprland/monitor.sh}
   '';
 
+  # Wallpaper script
   wallpaperScript = pkgs.writeShellScriptBin "hyprland-wallpaper" ''
     ${builtins.readFile ./hyprland/wallpaper.sh}
   '';
 
-  # Script per screenshot con notifica
+  # Screenshot script with notifications
   screenshotScript = pkgs.writeShellScriptBin "hyprland-screenshot" ''
     ${builtins.readFile ./hyprland/screenshot.sh}
   '';
 
-  # Script per visualizzare i shortcuts
+  # Shortcut display script
   shortcutScript = pkgs.writeShellScriptBin "hyprland-shortcut" ''
     ${shortcutShContent}
   '';
-in
-{
-  # Import del modulo SwayNC
+in {
+  # Import related modules including the new keyboard config module
   imports = [
     ./hyprland/swaync.nix
+    ./hyprland/keyboard-config.nix # Import the keyboard configuration module
   ];
 
   # Packages required for Hyprland
@@ -68,7 +71,7 @@ in
     swayidle
     libnotify
 
-    # Script personalizzati
+    # Custom scripts
     shortcutScript
     wallpaperScript
     monitorScript
@@ -76,7 +79,7 @@ in
     lockScreenScript
   ];
 
-  # Configurazione minima per swaylock
+  # Basic swaylock configuration
   programs.swaylock = {
     enable = true;
     settings = {
@@ -88,18 +91,18 @@ in
     };
   };
 
-  # Script per auto-lock
+  # Auto-lock script
   home.file.".config/hypr/auto-lock.sh" = {
     executable = true;
     text = ''
       #!/usr/bin/env bash
-      
-      # Termina eventuali istanze di swayidle in esecuzione
+
+      # Terminate any running swayidle instances
       pkill swayidle
-      
-      # Avvia swayidle
+
+      # Start swayidle
       ${pkgs.swayidle}/bin/swayidle -w \
-        timeout 570 'notify-send "Lo schermo verrà bloccato tra 30 secondi" --urgency=low' \
+        timeout 570 'notify-send "Screen will be locked in 30 seconds" --urgency=low' \
         timeout 600 '${lockScreenScript}/bin/lock-screen' \
         before-sleep '${lockScreenScript}/bin/lock-screen'
     '';
@@ -109,7 +112,7 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
-    systemd.variables = [ "--systemd-activation" ];
+    systemd.variables = ["--systemd-activation"];
     settings = {
       # General settings
       general = {
@@ -121,9 +124,10 @@ in
         layout = "dwindle";
       };
 
-      # Input configuration
+      # Input configuration - only touchpad and mouse settings
+      # Keyboard settings come from keyboard-config.nix module
       input = {
-        kb_layout = "it";
+        # kb_layout setting will be set by keyboard-config.nix
         follow_mouse = 1;
         touchpad = {
           natural_scroll = true;
@@ -183,8 +187,8 @@ in
         "${wallpaperScript}/bin/hyprland-wallpaper"
         "${pkgs.waybar}/bin/waybar"
         "blueman-applet"
-        "swaync" # Avvia SwayNC all'avvio
-        "$HOME/.config/hypr/auto-lock.sh" # Avvia auto-lock all'avvio
+        "swaync" # Start SwayNC at boot
+        "$HOME/.config/hypr/auto-lock.sh" # Start auto-lock at boot
       ];
 
       # Keyboard shortcuts
@@ -273,4 +277,3 @@ in
   # Waybar configuration
   programs.waybar = waybar;
 }
-
