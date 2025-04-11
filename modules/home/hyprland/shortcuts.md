@@ -1,32 +1,31 @@
-# 🔑 COMPREHENSIVE KEYBOARD SHORTCUTS GUIDE
+# 🔑 KEYBOARD SHORTCUTS GUIDE
 
 ## Hyprland
 
-- SUPER + M → Monitor Configuration
-- SUPER + W → Random Wallpaper
 - SUPER + F1 → Show Shortcuts Menu
+- SUPER + M → Monitor Configuration
 - SUPER + Escape → Logout Menu
 - SUPER + L → Lock Screen
 - SUPER + SHIFT + L → Lock and Suspend
 
-- SUPER + Return → Open Terminal
 - SUPER + R → Application Launcher
+- SUPER + Return → Open Terminal
 - SUPER + B → Browser
 - SUPER + P → Private Browser
 - SUPER + E → File Manager
 - SUPER + N → Notification center
+- SUPER + W → Random Wallpaper
 - SUPER + Q → Close Active Window
 
-- SUPER + 1-9 → Switch to Workspace
-- SUPER + CTRL + → → Next Workspace
-- SUPER + CTRL + ← → Previous Workspace
-
 - SUPER + ← → ↑ ↓ → Move Focus Between Windows
-- SUPER + SHIFT + ← → ↑ ↓ → Move Window
+- SUPER + ALT + ← → ↑ ↓ → Resize Active Window
 - ALT + Tab → Cycle Through Windows
 - ALT + SHIFT + Tab → Cycle in Reverse
+- SUPER + SHIFT + ← → ↑ ↓ → Move Window
 - SUPER + SHIFT + 1-9 → Move Window to Workspace
 - SUPER + SHIFT + → ← → Move Window Between Workspaces
+- SUPER + 1-9 → Switch to Workspace
+- SUPER + CTRL + ← → → Previous / Next Workspace
 
 - Print → Capture Full Screen
 - SHIFT + Print → Capture Selected Area
@@ -47,13 +46,11 @@
 - \ (Backslash) → Toggle File Tree
 - ESC → Exit Insert/Visual Mode
 - CTRL + ← → ↑ ↓ → Move Between Windows/Panes
-
 - LEADER + Tab → Next Buffer
 - LEADER + SHIFT + Tab → Previous Buffer
 - LEADER + bd → Delete Current Buffer
 - LEADER + bp → Pick Buffer
 - LEADER + bs → Sort Buffers
-
 - LEADER + sf → Find Files
 - LEADER + sg → Global Search
 - LEADER + sh → Help Search
@@ -63,10 +60,8 @@
 - LEADER + sr → Resume Last Search
 - LEADER + s. → Recent Files
 - LEADER + LEADER → Open Buffers
-
 - LEADER + f → Format Buffer
 - gcc → Toggle current line comment
-
 - CTRL + B → Toggle File Tree
 - o → Open File/Directory
 - O → Open with Window Picker
@@ -75,44 +70,10 @@
 - c → Copy File/Directory
 - m → Move File/Directory
 - CTRL + H → Toggle Hidden Files
-
 - Down → Select Next Suggestion
 - Up + TAB → Select Previous Suggestion
 - CTRL + Space → Trigger Completion
 - ENTER → Confirm Selection
-
-## US International Keyboard - Special Characters
-
-Using US keyboard with international layout (altgr-intl) allows typing special characters needed for Italian text:
-
-### Accented Vowels (Using AltGr)
-- AltGr + a → á
-- AltGr + e → é
-- AltGr + i → í
-- AltGr + o → ó
-- AltGr + u → ú
-- AltGr + y → ý
-
-### Grave Accents (Using dead key)
-- AltGr + ` (backtick) then a → à
-- AltGr + ` then e → è
-- AltGr + ` then i → ì
-- AltGr + ` then o → ò
-- AltGr + ` then u → ù
-
-### Common Symbols
-- AltGr + 5 → €  (Euro symbol)
-- AltGr + = → ×  (Multiplication symbol)
-- AltGr + - → ÷  (Division symbol)
-- AltGr + ' then space → '  (Apostrophe)
-- AltGr + " then space → "  (Quotation mark)
-
-### Using Compose Key (also Right Alt)
-- AltGr + ' + e → é
-- AltGr + ` + e → è
-- AltGr + ^ + e → ê
-- AltGr + ~ + n → ñ
-- AltGr + " + a → ä
 
 ## Special Notes
 

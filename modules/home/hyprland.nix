@@ -226,6 +226,18 @@ in {
         "SUPER, Up, movefocus, u"
         "SUPER, Down, movefocus, d"
 
+        # Window move
+        "SUPER SHIFT, Left, movewindow, l"
+        "SUPER SHIFT, Right, movewindow, r"
+        "SUPER SHIFT, Up, movewindow, u"
+        "SUPER SHIFT, Down, movewindow, d"
+
+        # Window resize
+        "SUPER ALT, Left, resizeactive, -20 0"
+        "SUPER ALT, Right, resizeactive, 20 0"
+        "SUPER ALT, Up, resizeactive, 0 -20"
+        "SUPER ALT, Down, resizeactive, 0 20"
+
         # Window navigation
         "ALT, Tab, cyclenext,"
         "ALT_SHIFT, Tab, cyclenext, prev"
