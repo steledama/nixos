@@ -12,7 +12,7 @@
   keyboardOptions =
     if args ? keyboardOptions
     then args.keyboardOptions
-    else "compose:ralt";
+    else "ralt:compose";
 
   # Colors for theming
   colors = import ./hyprland/colors.nix;

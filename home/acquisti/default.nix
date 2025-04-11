@@ -12,7 +12,7 @@
       inherit pkgs config lib;
       keyboardLayout = "no";
       keyboardVariant = "";
-      keyboardOptions = "compose:ralt";
+      keyboardOptions = "ralt:compose";
     })
     ../../modules/home/syncthing.nix
   ];

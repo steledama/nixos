@@ -28,7 +28,7 @@ in {
     # Additional keyboard options
     options = mkOption {
       type = types.str;
-      default = "compose:ralt";
+      default = "ralt:compose";
       description = "Keyboard options";
       example = "caps:escape";
     };
