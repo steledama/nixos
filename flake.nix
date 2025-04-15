@@ -59,6 +59,7 @@
     nixosConfigurations = {
       pcgame = mkHost "pcgame" [];
       acquisti-laptop = mkHost "acquisti-laptop" [];
+      minibook = mkHost "minibook" [];
     };
   };
 }
