@@ -16,17 +16,6 @@
     MESA_LOADER_DRIVER_OVERRIDE = "iris";
   };
 
-  # Enable touchscreen and input support through libinput
-  services.xserver.libinput = {
-    enable = true;
-    # Touchscreen configuration
-    touchpad = {
-      tapping = true;
-      naturalScrolling = true;
-      disableWhileTyping = true;
-    };
-  };
-
   # Add specific packages useful for the MiniBook
   environment.systemPackages = with pkgs; [
     # For screen rotation based on accelerometer

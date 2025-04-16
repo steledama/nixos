@@ -1,10 +1,12 @@
 {
+  # Enable touchscreen and input support through libinput
   services.libinput = {
-    # touchpad support
     enable = true;
-    # tap
-    touchpad.tapping = true;
-    # display manager: gnome login
+    # Touchscreen configuration
+    touchpad = {
+      tapping = true;
+      naturalScrolling = true;
+      disableWhileTyping = true;
+    };
   };
 }
-
