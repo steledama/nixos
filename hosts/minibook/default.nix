@@ -47,6 +47,9 @@
   # Basic network configuration
   networking = {
     hostName = "minibook";
+    networkmanager = {
+      enable = true;
+    };
   };
 
   # Docker containers configuration specific to this host

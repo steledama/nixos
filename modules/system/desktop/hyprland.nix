@@ -1,9 +1,5 @@
 # modules/system/desktop/hyprland.nix
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   # Enable Hyprland
   programs.hyprland = {
     enable = true;
@@ -14,8 +10,6 @@
   environment.sessionVariables = {
     # Firefox on wayland
     MOZ_ENABLE_WAYLAND = "1";
-    # Tell Hyprland to use our global configuration
-    HYPRLAND_INSTANCE_SIGNATURE = "system";
   };
 
   # Specific hyprland packages
