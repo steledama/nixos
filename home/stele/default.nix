@@ -9,6 +9,8 @@
     ../default.nix
     # Hyprland keyboard layout config
     ../../modules/home/hyprland.nix
+    # For MiniBook specific GNOME configuration
+    ../../modules/home/gnome-extensions.nix
   ];
   # username
   home.username = "stele";

@@ -9,6 +9,7 @@
     ../default.nix
     ../../modules/system/hardware/intel.nix
     ../../modules/system/hardware/touchpad.nix
+    ../../modules/system/hardware/minibook.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
   ];
