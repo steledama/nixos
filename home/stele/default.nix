@@ -13,8 +13,8 @@
   home.homeDirectory = "/home/${config.home.username}";
 
   # User-specific packages (additional to common ones)
-  home.packages = with pkgs; [
-  ];
+  # home.packages = with pkgs; [
+  # ];
 
   home.stateVersion = "23.11";
 }

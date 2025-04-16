@@ -2,14 +2,13 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }: {
   imports = [
     ../default.nix
-    # Hyprland keyboard layout config
+    # Hyprland with custom layout config
     (import ../../modules/home/hyprland.nix {
-      inherit pkgs config lib;
+      inherit pkgs;
       keyboardLayout = "it";
       keyboardVariant = "";
       keyboardOptions = "";
