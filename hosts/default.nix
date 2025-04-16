@@ -7,14 +7,11 @@
     ../modules/system/nix.nix
     ../modules/system/shell.nix
     ../modules/system/fonts.nix
-    ../modules/system/locale.nix
-    ../modules/system/hardware/keyboard.nix
+    ../modules/system/locale.nix # default it
+    ../modules/system/hardware/keyboard.nix # default layout us international
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
     ../modules/system/services/keyd.nix
-    ../modules/system/services/gdm.nix
-    ../modules/system/desktop/gnome.nix
-    ../modules/system/desktop/hyprland.nix
   ];
 
   # Common system configurations

@@ -12,58 +12,13 @@
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/smb.nix
+    ../../modules/system/services/gdm.nix
+    ../../modules/system/desktop/gnome.nix
   ];
 
-  # Norwegian keyboard layout
-  hardware.keyboard = {
-    layout = "no";
-    variant = "";
-    options = "compose:ralt";
-  };
-
-  # System-specific packages (additional to common ones)
-  environment.systemPackages = with pkgs; [
-    # Add system packages
-  ];
-
-  # Define a user account. Don't forget to set a password with 'passwd'.
-  users.users.acquisti = {
-    isNormalUser = true;
-    description = "acquisti";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "libvirtd"
-    ];
-    # Default is zsh uncommet for bash shell
-    # shell = pkgs.bash;
-  };
-
-  # HOME-MANAGER configuration specific to this host
-  home-manager = {
-    extraSpecialArgs = {
-      inherit inputs;
-    };
-    users = {
-      acquisti = import ../../home/acquisti;
-    };
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "backup";
-  };
-
-  # Basic network configuration
+  # Network configuration
   networking = {
     hostName = "acquisti-laptop";
-
-    # Hosts
-    hosts = {
-      "127.0.0.1" = [
-        "5.89.62.125" # pubblico lavoro
-        "10.40.40.130" # riservato lavoro eth
-        "192.168.1.16" # riservato casa wifi
-      ];
-    };
 
     networkmanager = {
       enable = true;
@@ -86,9 +41,55 @@
       logRefusedConnections = true;
       logRefusedPackets = true;
     };
+
+    hosts = {
+      "127.0.0.1" = [
+        "5.89.62.125" # work pubblic
+        "10.40.40.130" # work eth (reserved)
+        "192.168.1.16" # home wifi ((reserved))
+      ];
+    };
   };
 
-  # Windows network share configs
+  # Keyboard layout (default is us international)
+  hardware.keyboard = {
+    layout = "no"; # Norwegian layout
+    variant = "";
+    options = "compose:ralt";
+  };
+
+  # User
+  users.users.acquisti = {
+    isNormalUser = true;
+    description = "acquisti";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+    ];
+    # shell = pkgs.bash; # Default is zsh uncommet for bash shell
+  };
+
+  # Home manager
+  home-manager = {
+    extraSpecialArgs = {
+      inherit inputs;
+    };
+    users = {
+      acquisti = import ../../home/acquisti;
+    };
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
+  };
+
+  # Docker containers configuration specific to this host
+  virtualisation.dockerSetup = {
+    enable = true;
+    user = "acquisti";
+  };
+
+  # Windows network share
   services.windowsShares = {
     enable = true;
     shares = {
@@ -109,11 +110,10 @@
     };
   };
 
-  # Docker containers configuration specific to this host
-  virtualisation.dockerSetup = {
-    enable = true;
-    user = "acquisti";
-  };
+  # System-host-specific packages (additional to common ones)
+  # environment.systemPackages = with pkgs; [
+  # Add system packages
+  # ];
 
   system.stateVersion = "24.05";
 }

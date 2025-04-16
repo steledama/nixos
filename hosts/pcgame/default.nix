@@ -1,5 +1,9 @@
 # nixos/hosts/pcgame/default.nix
-{inputs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
     ./hardware.nix
     ../default.nix
@@ -7,21 +11,39 @@
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
     # ../../modules/system/services/ollama.nix
+    ../../modules/system/services/gdm.nix
+    ../../modules/system/desktop/gnome.nix
+    ../../modules/system/desktop/hyprland.nix
   ];
 
-  # Italian keyboard layout
+  # Network configuration
+  networking = {
+    hostName = "pcgame";
+    networkmanager.enable = true;
+
+    # Firewall
+    firewall = {
+      enable = true;
+      # TCP Ports
+      allowedTCPPorts = [
+        4662 # aMule eD2K data
+        4672 # aMule incoming connections
+        11435 # msty ollama service for llm
+      ];
+      # UDP Ports
+      allowedUDPPorts = [
+        4665 # aMule eD2K
+        4672 # aMule Kad
+      ];
+    };
+  };
+
+  # Keyboard layout (default is us international)
   hardware.keyboard = {
     layout = "it";
     variant = "";
     options = "";
   };
-
-  # extraServices.ollama.enable = true;
-
-  # System-specific packages (additional to common ones)
-  # environment.systemPackages = with pkgs; [
-  # Add system packages
-  # ];
 
   # User
   users.users.stefano = {
@@ -32,11 +54,10 @@
       "wheel"
       "libvirtd"
     ];
-    # Default is zsh uncommet for bash shell
-    # shell = pkgs.bash;
+    # shell = pkgs.bash; # Default is zsh uncommet for bash shell
   };
 
-  # HOME-MANAGER
+  # Home-manager
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
@@ -56,27 +77,12 @@
     enableNvidia = true;
   };
 
-  # Network
-  networking = {
-    hostName = "pcgame";
-    networkmanager.enable = true;
+  # extraServices.ollama.enable = true;
 
-    # Firewall configuration
-    firewall = {
-      enable = true;
-      # TCP Ports
-      allowedTCPPorts = [
-        4662 # aMule eD2K data
-        4672 # aMule incoming connections
-        11435 # msty ollama service for llm
-      ];
-      # UDP Ports
-      allowedUDPPorts = [
-        4665 # aMule eD2K
-        4672 # aMule Kad
-      ];
-    };
-  };
+  # System-host-specific packages (additional to common ones)
+  # environment.systemPackages = with pkgs; [
+  # Add system packages
+  # ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

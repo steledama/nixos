@@ -1,10 +1,13 @@
 # modules/system/hardware/minibook.nix
 # Specific hardware configuration for Chuwi MiniBook X
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Fix for screen orientation
-  boot.kernelParams = [ "video=DSI-1:panel_orientation=right_side_up" ];
+  boot.kernelParams = ["video=DSI-1:panel_orientation=right_side_up"];
 
   # Enable fractional scaling for the high resolution display
   # GNOME settings
@@ -13,34 +16,49 @@
     MESA_LOADER_DRIVER_OVERRIDE = "iris";
   };
 
-  # Enable touchscreen support
-  hardware.touchscreen.enable = true;
+  # Enable touchscreen and input support through libinput
+  services.xserver.libinput = {
+    enable = true;
+    # Touchscreen configuration
+    touchpad = {
+      tapping = true;
+      naturalScrolling = true;
+      disableWhileTyping = true;
+    };
+  };
 
   # Add specific packages useful for the MiniBook
   environment.systemPackages = with pkgs; [
     # For screen rotation based on accelerometer
     iio-sensor-proxy
-    
+
     # For battery management
     powertop
-    tlp
   ];
-
-  # Install GNOME extension for screen rotation (since tablet mode switch doesn't work yet)
-  # Note: This would need to be in the home-manager configuration
-  # home.packages = with pkgs; [
-  #   gnomeExtensions.screen-rotate
-  # ];
 
   # Better power management for Intel hardware
   services.thermald.enable = true;
-  services.tlp = {
+
+  # Power management
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+  };
+  # Disable power-profiles-daemon to avoid conflicts with auto-cpufreq
+  services.power-profiles-daemon.enable = false;
+
+  # Enable CPU frequency scaling
+  services.auto-cpufreq = {
     enable = true;
     settings = {
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      battery = {
+        governor = "powersave";
+        turbo = "never";
+      };
+      charger = {
+        governor = "performance";
+        turbo = "auto";
+      };
     };
   };
 

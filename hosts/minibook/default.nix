@@ -1,4 +1,4 @@
-# nixos/hosts/acquisti-laptop/default.nix
+# nixos/hosts/minibook/default.nix
 {
   pkgs,
   inputs,
@@ -12,14 +12,26 @@
     ../../modules/system/hardware/minibook.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
+    ../../modules/system/services/gdm.nix
+    ../../modules/system/desktop/gnome.nix
   ];
 
-  # System-specific packages (additional to common ones)
-  environment.systemPackages = with pkgs; [
-    # Add system packages
-  ];
+  # Network configuration
+  networking = {
+    hostName = "minibook";
+    networkmanager = {
+      enable = true;
+    };
+  };
 
-  # Define a user account. Don't forget to set a password with 'passwd'.
+  # Keyboard layout (default is us international)
+  # hardware.keyboard = {
+  #   layout = "it";
+  #   variant = "";
+  #   options = "";
+  # };
+
+  # User
   users.users.stele = {
     isNormalUser = true;
     description = "stele";
@@ -28,11 +40,10 @@
       "wheel"
       "libvirtd"
     ];
-    # Default is zsh uncommet for bash shell
-    # shell = pkgs.bash;
+    # shell = pkgs.bash; # Default is zsh uncommet for bash shell
   };
 
-  # HOME-MANAGER configuration specific to this host
+  # Home-manager
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
@@ -45,19 +56,16 @@
     backupFileExtension = "backup";
   };
 
-  # Basic network configuration
-  networking = {
-    hostName = "minibook";
-    networkmanager = {
-      enable = true;
-    };
-  };
-
-  # Docker containers configuration specific to this host
+  # Docker containers
   virtualisation.dockerSetup = {
     enable = true;
     user = "stele";
   };
+
+  # System-host-specific packages (additional to common ones)
+  # environment.systemPackages = with pkgs; [
+  # Add system packages
+  # ];
 
   system.stateVersion = "24.11";
 }
