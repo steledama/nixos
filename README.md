@@ -1,6 +1,6 @@
 # NixOS kickstart guide for beginners
 
-This repository contains my NixOS minimal Gnome configuration. The README serves as a step-by-step guide to the initial configuration and to understanding NixOS.
+This repository contains my NixOS configuration. The README serves as a step-by-step guide to the initial configuration and to understanding NixOS.
 
 It's not just about getting the work done; it aims to explain as simply as possible why NixOS is so powerful and how it operates. The goal is not only to share my configuration method but also to empower readers to create their own ways to enjoy NixOS.
 
