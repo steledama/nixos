@@ -1,5 +1,5 @@
 # modules/home/waybar.nix
-# Common Waybar configuration that can be used by both Hyprland and Niri
+# Configurazione Waybar comune che può essere usata sia da Hyprland che da Niri
 {
   pkgs,
   scripts,
@@ -28,7 +28,7 @@
 
       "custom/menu" = {
         format = "󰀻";
-        tooltip = "Application Menu";
+        tooltip = "Menu Applicazioni";
         on-click = "${pkgs.wofi}/bin/wofi --show drun";
       };
 
@@ -41,7 +41,7 @@
 
       "custom/notifications" = {
         format = "󰂚";
-        tooltip = "Notification Center";
+        tooltip = "Centro Notifiche";
         on-click = "swaync-client -t -sw";
         on-click-right = "swaync-client -C";
       };
@@ -148,7 +148,7 @@
     #custom-datetime {
       font-weight: bold;
       color: ${colors.yellow};
-      min-width: 250px; /* Minimum width to prevent shifting */
+      min-width: 250px; /* Larghezza minima per evitare spostamenti */
     }
 
     #custom-keymap {
@@ -199,3 +199,4 @@
       border-radius: 5px;
     }
   '';
+}

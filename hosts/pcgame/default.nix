@@ -14,7 +14,7 @@
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
     ../../modules/system/desktop/hyprland.nix
-    ../../modules/system/desktop/niri.nix
+    # ../../modules/system/desktop/niri.nix
   ];
 
   # Network configuration
