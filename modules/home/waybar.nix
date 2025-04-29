@@ -1,4 +1,5 @@
-# modules/home/hyprland/waybar.nix
+# modules/home/waybar.nix
+# Common Waybar configuration that can be used by both Hyprland and Niri
 {
   pkgs,
   scripts,
@@ -11,35 +12,23 @@
       layer = "top";
       position = "top";
       height = 30;
-      modules-left = ["custom/menu" "hyprland/workspaces"];
+      modules-left = ["custom/menu" "custom/workspaces"];
       modules-center = ["custom/datetime"];
       modules-right = ["custom/notifications" "custom/keymap" "pulseaudio" "network" "battery" "custom/wlogout" "tray"];
 
-      "hyprland/workspaces" = {
+      "custom/workspaces" = {
         format = "{icon}";
-        on-click = "activate";
-        sort-by-number = true;
-        format-icons = {
-          "1" = "1";
-          "2" = "2";
-          "3" = "3";
-          "4" = "4";
-          "5" = "5";
-          "6" = "6";
-          "7" = "7";
-          "8" = "8";
-          "9" = "9";
-          "urgent" = "•";
-          "active" = "•";
-          "default" = "•";
-        };
-        all-outputs = true;
-        active-only = false;
+        exec = "${pkgs.coreutils}/bin/seq 1 9 | ${pkgs.jq}/bin/jq -R -s 'split(\"\\n\") | map(select(. != \"\")) | map({\"text\": ., \"tooltip\": (\"Workspace \" + .), \"class\": \"workspace-\" + .})'";
+        return-type = "json";
+        interval = 1;
+        on-click = "sleep 0.1 && ${pkgs.coreutils}/bin/echo 'workspace-clicked' > /tmp/waybar-workspace-click";
+        on-scroll-up = "${pkgs.coreutils}/bin/echo 'workspace-next' > /tmp/waybar-workspace-scroll";
+        on-scroll-down = "${pkgs.coreutils}/bin/echo 'workspace-prev' > /tmp/waybar-workspace-scroll";
       };
 
       "custom/menu" = {
         format = "󰀻";
-        tooltip = "Menu Applicazioni";
+        tooltip = "Application Menu";
         on-click = "${pkgs.wofi}/bin/wofi --show drun";
       };
 
@@ -52,7 +41,7 @@
 
       "custom/notifications" = {
         format = "󰂚";
-        tooltip = "Centro Notifiche";
+        tooltip = "Notification Center";
         on-click = "swaync-client -t -sw";
         on-click-right = "swaync-client -C";
       };
@@ -90,7 +79,7 @@
       "custom/keymap" = {
         format = "⌨";
         tooltip = false;
-        on-click = "${scripts.shortcutScript}/bin/hyprland-shortcut";
+        on-click = "${scripts.shortcutScript}/bin/niri-shortcut";
       };
 
       "custom/wlogout" = {
@@ -112,20 +101,20 @@
       color: ${colors.foreground};
     }
 
-    #workspaces button {
+    #custom-workspaces button {
       padding: 0 5px;
       color: ${colors.foreground};
       background-color: transparent;
       border-bottom: 3px solid transparent;
     }
 
-    #workspaces button.active {
+    #custom-workspaces button.active {
       background-color: rgba(97, 175, 239, 0.2);
       border-bottom: 3px solid ${colors.blue};
       font-weight: bold;
     }
 
-    #workspaces button {
+    #custom-workspaces button {
       font-size: 14px;
       padding: 0 8px;
       margin: 0 2px;
@@ -159,7 +148,7 @@
     #custom-datetime {
       font-weight: bold;
       color: ${colors.yellow};
-      min-width: 250px; /* Larghezza minima per evitare spostamenti */
+      min-width: 250px; /* Minimum width to prevent shifting */
     }
 
     #custom-keymap {
@@ -210,4 +199,3 @@
       border-radius: 5px;
     }
   '';
-}

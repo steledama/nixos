@@ -126,6 +126,43 @@
         "type": "github"
       }
     },
+    "niri": {
+      "inputs": {
+        "nix-filter": "nix-filter",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1745913113,
+        "narHash": "sha256-/Iph65fWHox7tVyfzw0+AGyCqL2FGuHSt+xjFUsxbOk=",
+        "owner": "YaLTeR",
+        "repo": "niri",
+        "rev": "5f117c61dc4dd91564e02b32836e98dd0e648246",
+        "type": "github"
+      },
+      "original": {
+        "owner": "YaLTeR",
+        "repo": "niri",
+        "type": "github"
+      }
+    },
+    "nix-filter": {
+      "locked": {
+        "lastModified": 1731533336,
+        "narHash": "sha256-oRam5PS1vcrr5UPgALW0eo1m/5/pls27Z/pabHNy2Ms=",
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "rev": "f7653272fd234696ae94229839a99b73c9ab7de0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1745794561,
@@ -191,8 +228,30 @@
       "inputs": {
         "claude-desktop": "claude-desktop",
         "home-manager": "home-manager",
+        "niri": "niri",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "niri",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1742697269,
+        "narHash": "sha256-Lpp0XyAtIl1oGJzNmTiTGLhTkcUjwSkEb0gOiNzYFGM=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "01973c84732f9275c50c5f075dd1f54cc04b3316",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "systems": {

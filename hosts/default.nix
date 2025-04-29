@@ -8,7 +8,7 @@
     ../modules/system/shell.nix
     ../modules/system/fonts.nix
     ../modules/system/locale.nix # default it
-    ../modules/system/hardware/keyboard.nix # default layout us international
+    ../modules/system/hardware/keyboard.nix # default us international
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
     ../modules/system/services/keyd.nix

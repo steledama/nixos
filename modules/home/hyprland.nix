@@ -15,13 +15,13 @@
     else "ralt:compose";
 
   # Colors for theming
-  colors = import ./hyprland/colors.nix;
+  colors = import ./colors.nix;
 
   # Wofi (application launcher) configuration
-  wofi = import ./hyprland/wofi.nix {inherit colors pkgs;};
+  wofi = import ./wofi.nix {inherit colors pkgs;};
 
   # Waybar configuration with script references
-  waybar = import ./hyprland/waybar.nix {
+  waybar = import ./waybar.nix {
     inherit pkgs colors;
     scripts = {
       shortcutScript = shortcutScript;
@@ -39,31 +39,31 @@
 
   # Wlogout configuration (logout menu)
   wlogoutLayout = let
-    config = import ./hyprland/wlogout.nix {inherit lockScreenScript;};
+    config = import ./wlogout.nix {inherit lockScreenScript;};
   in
     config.layout;
 
   # Shortcuts menu content and script
-  shortcutsContent = builtins.readFile ./hyprland/shortcuts.md;
+  shortcutsContent = builtins.readFile ./shortcuts-hyprland.md;
   shortcutShContent =
     builtins.replaceStrings
     ["__SHORTCUTS_CONTENT__"]
     [shortcutsContent]
-    (builtins.readFile ./hyprland/shortcut.sh);
+    (builtins.readFile ./shortcuts.sh);
 
   # Monitor configuration script
   monitorScript = pkgs.writeShellScriptBin "hyprland-monitor" ''
-    ${builtins.readFile ./hyprland/monitor.sh}
+    ${builtins.readFile ./monitor.sh}
   '';
 
   # Wallpaper script
   wallpaperScript = pkgs.writeShellScriptBin "hyprland-wallpaper" ''
-    ${builtins.readFile ./hyprland/wallpaper.sh}
+    ${builtins.readFile ./wallpaper.sh}
   '';
 
   # Screenshot script with notifications
   screenshotScript = pkgs.writeShellScriptBin "hyprland-screenshot" ''
-    ${builtins.readFile ./hyprland/screenshot.sh}
+    ${builtins.readFile ./screenshot.sh}
   '';
 
   # Shortcut display script
@@ -73,7 +73,7 @@
 in {
   # Import related modules
   imports = [
-    ./hyprland/swaync.nix
+    ./swaync.nix
   ];
 
   # Packages required for Hyprland

@@ -20,6 +20,11 @@
       url = "github:k3d3/claude-desktop-linux-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # niri (include Niri's repository for latest features)
+    niri = {
+      url = "github:YaLTeR/niri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -28,6 +33,7 @@
     home-manager,
     nixvim,
     claude-desktop,
+    niri,
     ...
   } @ inputs: let
     system = "x86_64-linux";

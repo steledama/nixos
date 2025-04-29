@@ -13,6 +13,13 @@
       keyboardVariant = "";
       keyboardOptions = "";
     })
+    # Niri with custom layout config
+    (import ../../modules/home/niri.nix {
+      inherit pkgs;
+      keyboardLayout = "it";
+      keyboardVariant = "";
+      keyboardOptions = "";
+    })
   ];
 
   # username

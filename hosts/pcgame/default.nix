@@ -10,10 +10,11 @@
     ../../modules/system/hardware/nvidia.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
-    # ../../modules/system/services/ollama.nix
+    ../../modules/system/services/ollama.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
     ../../modules/system/desktop/hyprland.nix
+    ../../modules/system/desktop/niri.nix
   ];
 
   # Network configuration
@@ -77,7 +78,7 @@
     enableNvidia = true;
   };
 
-  # extraServices.ollama.enable = true;
+  extraServices.ollama.enable = true;
 
   # System-host-specific packages (additional to common ones)
   # environment.systemPackages = with pkgs; [
