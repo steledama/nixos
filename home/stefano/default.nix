@@ -1,25 +1,24 @@
-# nixos/home/stefano/default.nix
+# home/stefano/default.nix
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
     ../default.nix
-    # Hyprland with custom layout config
+    # Importa il modulo config di Niri (non il modulo niri)
+    inputs.niri.homeModules.config
+
+    # Hyprland config
     (import ../../modules/home/hyprland.nix {
       inherit pkgs;
       keyboardLayout = "it";
       keyboardVariant = "";
       keyboardOptions = "";
     })
-    # Niri with custom layout config
-    (import ../../modules/home/niri.nix {
-      inherit pkgs;
-      keyboardLayout = "it";
-      keyboardVariant = "";
-      keyboardOptions = "";
-    })
+    # Niri
+    ./niri.nix
   ];
 
   # username

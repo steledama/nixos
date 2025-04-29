@@ -14,8 +14,13 @@
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
     ../../modules/system/desktop/hyprland.nix
-    # ../../modules/system/desktop/niri.nix
   ];
+
+  # Abilita Niri a livello di sistema
+  programs.niri = {
+    enable = true;
+    # Non impostare package qui, lascia che lo faccia il modulo
+  };
 
   # Network configuration
   networking = {
