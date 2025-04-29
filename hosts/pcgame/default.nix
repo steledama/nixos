@@ -1,9 +1,5 @@
 # nixos/hosts/pcgame/default.nix
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     ./hardware.nix
     ../default.nix
@@ -16,11 +12,8 @@
     ../../modules/system/desktop/hyprland.nix
   ];
 
-  # Abilita Niri a livello di sistema
-  programs.niri = {
-    enable = true;
-    # Non impostare package qui, lascia che lo faccia il modulo
-  };
+  # Abilita Niri a livello di sistema (solo abilitazione, nessuna configurazione)
+  programs.niri.enable = true;
 
   # Network configuration
   networking = {

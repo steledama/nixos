@@ -39,7 +39,27 @@
 
     overlays = [
       (import ./overlays/msty.nix)
-      niri.overlays.niri # Aggiungi sempre l'overlay di Niri
+      # Includi l'overlay di Niri per tutti gli host
+      niri.overlays.niri
+    ];
+
+    # Moduli di base per tutti gli host
+    baseModules = [
+      home-manager.nixosModules.home-manager
+      # Includi il modulo NixOS di Niri per tutti gli host
+      niri.nixosModules.niri
+      {
+        nixpkgs.overlays = overlays;
+        nixpkgs.config.allowUnfree = true;
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.backupFileExtension = "backup";
+        home-manager.extraSpecialArgs = {inherit inputs;};
+
+        # Niri è disponibile ma non attivato di default
+        # Utilizziamo mkDefault per permettere sovrascritture
+        programs.niri.enable = nixpkgs.lib.mkDefault false;
+      }
     ];
 
     mkHost = hostname: extraModules:
@@ -49,26 +69,12 @@
         modules =
           [
             ./hosts/${hostname}
-            home-manager.nixosModules.home-manager
-            {
-              nixpkgs.overlays = overlays;
-              nixpkgs.config.allowUnfree = true;
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-
-              # Passa gli inputs a home-manager
-              home-manager.extraSpecialArgs = {inherit inputs;};
-            }
           ]
-          ++ extraModules;
+          ++ baseModules ++ extraModules;
       };
   in {
     nixosConfigurations = {
-      pcgame = mkHost "pcgame" [
-        # Aggiungi il modulo NixOS di Niri
-        niri.nixosModules.niri
-      ];
+      pcgame = mkHost "pcgame" [];
       acquisti-laptop = mkHost "acquisti-laptop" [];
       minibook = mkHost "minibook" [];
     };
