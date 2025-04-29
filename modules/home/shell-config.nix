@@ -134,7 +134,7 @@
         compdef _zoxide_z z
       '';
 
-      initExtra = ''
+      initContent = ''
         export EDITOR=nvim
         # Tool integrations
         eval "$(starship init zsh)"
