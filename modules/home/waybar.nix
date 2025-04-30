@@ -1,9 +1,11 @@
-# modules/home/waybar.nixe
+# modules/home/waybar-config.nix
+# Shared Waybar configuration for both Niri and Hyprland
+{ 
+  pkgs, 
+  colors 
+}:
+
 {
-  pkgs,
-  scripts,
-  colors,
-}: {
   enable = true;
   systemd.enable = false;
   settings = {
@@ -11,59 +13,61 @@
       layer = "top";
       position = "top";
       height = 30;
-      modules-left = ["custom/menu" "custom/workspaces"];
+      margin = "5 5 0 5";
+      spacing = 4;
+      
+      modules-left = ["custom/menu" "network"];
       modules-center = ["custom/datetime"];
-      modules-right = ["custom/notifications" "custom/keymap" "pulseaudio" "network" "battery" "custom/wlogout" "tray"];
+      modules-right = ["custom/notifications" "pulseaudio" "battery" "custom/wlogout" "tray"];
 
-      "custom/workspaces" = {
-        format = "{icon}";
-        exec = "${pkgs.coreutils}/bin/seq 1 9 | ${pkgs.jq}/bin/jq -R -s 'split(\"\\n\") | map(select(. != \"\")) | map({\"text\": ., \"tooltip\": (\"Workspace \" + .), \"class\": \"workspace-\" + .})'";
-        return-type = "json";
-        interval = 1;
-        on-click = "sleep 0.1 && ${pkgs.coreutils}/bin/echo 'workspace-clicked' > /tmp/waybar-workspace-click";
-        on-scroll-up = "${pkgs.coreutils}/bin/echo 'workspace-next' > /tmp/waybar-workspace-scroll";
-        on-scroll-down = "${pkgs.coreutils}/bin/echo 'workspace-prev' > /tmp/waybar-workspace-scroll";
-      };
-
+      # Menu button
       "custom/menu" = {
         format = "󰀻";
-        tooltip = "Menu Applicazioni";
+        tooltip = "Application Menu";
         on-click = "fuzzel";
       };
 
+      # Date and time
       "custom/datetime" = {
-        exec = "LC_ALL=it_IT.UTF-8 date +'%A %d %B %H:%M'";
+        exec = "date +'%A, %B %d  %H:%M'";
         interval = 30;
         format = "{}";
         tooltip = false;
       };
 
+      # Notification center
       "custom/notifications" = {
         format = "󰂚";
-        tooltip = "Centro Notifiche";
+        tooltip = "Notifications";
         on-click = "swaync-client -t -sw";
         on-click-right = "swaync-client -C";
       };
 
+      # System tray
       "tray" = {
         spacing = 10;
       };
 
+      # Network status
       "network" = {
         format-wifi = "  {essid}";
-        format-disconnected = "󰤭 ";
+        format-ethernet = "󰈀 Connected";
+        format-disconnected = "󰤭 Disconnected";
         tooltip-format = "{ifname}: {ipaddr}/{cidr}";
+        on-click = "nm-connection-editor";
       };
 
+      # Audio control
       "pulseaudio" = {
         format = "{icon} {volume}%";
-        format-muted = "󰖁 ";
+        format-muted = "󰖁 Muted";
         format-icons = {
           default = ["󰕿" "󰖀" "󰕾"];
         };
         on-click = "pavucontrol";
       };
 
+      # Battery status
       "battery" = {
         format = "{icon} {capacity}%";
         format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
@@ -75,9 +79,10 @@
         };
       };
 
+      # Logout button
       "custom/wlogout" = {
         format = "⏻";
-        tooltip = false;
+        tooltip = "Session";
         on-click = "wlogout";
       };
     };
@@ -92,26 +97,7 @@
     window#waybar {
       background-color: rgba(40, 44, 52, 0.9);
       color: ${colors.foreground};
-    }
-
-    #custom-workspaces button {
-      padding: 0 5px;
-      color: ${colors.foreground};
-      background-color: transparent;
-      border-bottom: 3px solid transparent;
-    }
-
-    #custom-workspaces button.active {
-      background-color: rgba(97, 175, 239, 0.2);
-      border-bottom: 3px solid ${colors.blue};
-      font-weight: bold;
-    }
-
-    #custom-workspaces button {
-      font-size: 14px;
-      padding: 0 8px;
-      margin: 0 2px;
-      transition: all 0.3s ease;
+      border-radius: 10px;
     }
 
     #custom-menu {
@@ -128,7 +114,7 @@
       border-radius: 5px;
     }
 
-    #clock, #battery, #pulseaudio, #network, #tray, #custom-keymap, #bluetooth, #custom-date, #custom-wlogout, #custom-notifications {
+    #clock, #battery, #pulseaudio, #network, #tray, #custom-keymap, #bluetooth, #custom-datetime, #custom-wlogout, #custom-notifications {
       padding: 0 10px;
       margin: 0 4px;
     }
@@ -141,7 +127,7 @@
     #custom-datetime {
       font-weight: bold;
       color: ${colors.yellow};
-      min-width: 250px; /* Larghezza minima per evitare spostamenti */
+      min-width: 250px; /* Minimum width to prevent shifting */
     }
 
     #custom-wlogout {

@@ -7,8 +7,14 @@
 }: {
   imports = [
     ../default.nix
-    ./niri.nix
-    # Hyprland with custom layout config
+    # Niri
+    (import ../../modules/home/niri.nix {
+      inherit pkgs;
+      keyboardLayout = "it";
+      keyboardVariant = "";
+      keyboardOptions = "";
+    })
+    # Hyprland
     (import ../../modules/home/hyprland.nix {
       inherit pkgs;
       keyboardLayout = "it";

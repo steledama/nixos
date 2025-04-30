@@ -1,32 +1,30 @@
 # modules/home/hyprland.nix
-# Home-manager configuration for Hyprland
-{pkgs, ...} @ args: let
-  # Keyboard default settings
-  keyboardLayout =
-    if args ? keyboardLayout
-    then args.keyboardLayout
-    else "us";
-  keyboardVariant =
-    if args ? keyboardVariant
-    then args.keyboardVariant
-    else "intl";
-  keyboardOptions =
-    if args ? keyboardOptions
-    then args.keyboardOptions
-    else "ralt:compose";
+# Home-manager configuration for Hyprland using common Wayland components
+{ pkgs, ... } @ args:
 
+let
+  # Keyboard settings from args or defaults
+  keyboardLayout = if args ? keyboardLayout then args.keyboardLayout else "us";
+  keyboardVariant = if args ? keyboardVariant then args.keyboardVariant else "intl";
+  keyboardOptions = if args ? keyboardOptions then args.keyboardOptions else "ralt:compose";
+  
   # Colors for theming
   colors = import ./colors.nix;
-
-  # Waybar configuration with script references
-  waybar = import ./waybar.nix {
-    inherit pkgs colors;
-  };
 in {
-  # Import related modules
+  # Import common Wayland WM configuration
   imports = [
-    ./swaync.nix
+    ./wayland-wm.nix
   ];
+
+  # Enable common Wayland configuration with keyboard settings
+  wayland-wm = {
+    enable = true;
+    keyboard = {
+      layout = keyboardLayout;
+      variant = keyboardVariant;
+      options = keyboardOptions;
+    };
+  };
 
   # Hyprland Configuration
   wayland.windowManager.hyprland = {
@@ -39,6 +37,8 @@ in {
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
+        "col.active_border" = "rgba(${colors.blue}ee)";
+        "col.inactive_border" = "rgba(${colors.brightBlack}aa)";
         layout = "dwindle";
       };
 
@@ -59,6 +59,14 @@ in {
       # Animations
       animations = {
         enabled = true;
+        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        animation = [
+          "windows, 1, 7, myBezier"
+          "windowsOut, 1, 7, default, popin 80%"
+          "border, 1, 10, default"
+          "fade, 1, 7, default"
+          "workspaces, 1, 6, default"
+        ];
       };
 
       # Decorations
@@ -70,12 +78,17 @@ in {
           passes = 3;
           new_optimizations = true;
         };
+        drop_shadow = true;
+        shadow_range = 15;
+        shadow_render_power = 3;
+        "col.shadow" = "rgba(0000001a)";
       };
 
       # Window layout
       dwindle = {
         pseudotile = true;
         preserve_split = true;
+        force_split = 2;
       };
 
       # Miscellaneous configurations
@@ -85,12 +98,22 @@ in {
         mouse_move_enables_dpms = true;
         key_press_enables_dpms = true;
         enable_swallow = true;
+        swallow_regex = "^(Alacritty)$";
       };
 
-      # Startup applications
+      # Startup applications - using common utilities from wayland-wm module
       exec-once = [
         "waybar"
         "swaync"
+      ];
+
+      # Window rules
+      windowrule = [
+        "float,^(pavucontrol)$"
+        "float,^(nm-connection-editor)$"
+        "float,^(wlogout)$"
+        "float,title:^(Picture-in-Picture)$"
+        "pin,title:^(Picture-in-Picture)$"
       ];
 
       # Keyboard shortcuts
@@ -105,28 +128,43 @@ in {
         # Window controls
         "SUPER, Q, killactive,"
         "SUPER, Space, togglefloating,"
+        "SUPER, F, fullscreen,"
+        "SUPER, P, pseudo,"
+        "SUPER, J, togglesplit,"
 
         # Window focus navigation
         "SUPER, Left, movefocus, l"
         "SUPER, Right, movefocus, r"
         "SUPER, Up, movefocus, u"
         "SUPER, Down, movefocus, d"
+        "SUPER, H, movefocus, l"
+        "SUPER, L, movefocus, r"
+        "SUPER, K, movefocus, u"
+        "SUPER, J, movefocus, d"
 
         # Window move
         "SUPER SHIFT, Left, movewindow, l"
         "SUPER SHIFT, Right, movewindow, r"
         "SUPER SHIFT, Up, movewindow, u"
         "SUPER SHIFT, Down, movewindow, d"
+        "SUPER SHIFT, H, movewindow, l"
+        "SUPER SHIFT, L, movewindow, r"
+        "SUPER SHIFT, K, movewindow, u"
+        "SUPER SHIFT, J, movewindow, d"
 
         # Window resize
         "SUPER ALT, Left, resizeactive, -20 0"
         "SUPER ALT, Right, resizeactive, 20 0"
         "SUPER ALT, Up, resizeactive, 0 -20"
         "SUPER ALT, Down, resizeactive, 0 20"
+        "SUPER ALT, H, resizeactive, -20 0"
+        "SUPER ALT, L, resizeactive, 20 0"
+        "SUPER ALT, K, resizeactive, 0 -20"
+        "SUPER ALT, J, resizeactive, 0 20"
 
-        # Window navigation
+        # Window/application navigation
         "ALT, Tab, cyclenext,"
-        "ALT_SHIFT, Tab, cyclenext, prev"
+        "ALT SHIFT, Tab, cyclenext, prev"
 
         # Workspace navigation (numbers 1-9)
         "SUPER, 1, workspace, 1"
@@ -142,6 +180,8 @@ in {
         # Additional workspace navigation
         "SUPER CTRL, Right, workspace, e+1"
         "SUPER CTRL, Left, workspace, e-1"
+        "SUPER, Page_Down, workspace, e+1"
+        "SUPER, Page_Up, workspace, e-1"
 
         # Moving windows between workspaces
         "SUPER SHIFT, 1, movetoworkspace, 1"
@@ -155,25 +195,23 @@ in {
         "SUPER SHIFT, 9, movetoworkspace, 9"
         "SUPER SHIFT, Right, movetoworkspace, e+1"
         "SUPER SHIFT, Left, movetoworkspace, e-1"
+        "SUPER SHIFT, Page_Down, movetoworkspace, e+1"
+        "SUPER SHIFT, Page_Up, movetoworkspace, e-1"
 
-        # Logout menu
+        # Screenshots
+        "SUPER SHIFT, S, exec, grim -g \"$(slurp)\" - | wl-copy"
+        ", Print, exec, grim - | wl-copy"
+        "SHIFT, Print, exec, grim -g \"$(slurp)\" - | wl-copy"
+
+        # Logout menu (using common wlogout from wayland-wm module)
         "SUPER, Escape, exec, wlogout"
+      ];
+
+      # Mouse bindings
+      bindm = [
+        "SUPER, mouse:272, movewindow"
+        "SUPER, mouse:273, resizewindow"
       ];
     };
   };
-
-  # Basic swaylock configuration
-  programs.swaylock = {
-    enable = true;
-    settings = {
-      color = "282c34";
-      show-failed-attempts = true;
-      ignore-empty-password = true;
-      indicator-caps-lock = true;
-      clock = true;
-    };
-  };
-
-  # Waybar configuration
-  programs.waybar = waybar;
 }
