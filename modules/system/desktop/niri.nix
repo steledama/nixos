@@ -1,6 +1,5 @@
 # modules/system/desktop/niri.nix
-# Niri window manager configuration for NixOS
-# This module extends wayland-wm.nix with Niri-specific configuration
+# Minimal Niri window manager configuration that uses the default shortcuts
 {
   pkgs,
   lib,
@@ -12,10 +11,10 @@
     ./wayland-wm.nix
   ];
 
-  # Enable the Niri window manager
+  # Enable the Niri window manager with unstable version
   programs.niri = {
     enable = true;
-    # Specify the unstable version
+    # Use the unstable version for the latest features
     package = pkgs.niri-unstable;
   };
 
@@ -29,21 +28,14 @@
     config.niri.default = ["gtk" "wlr"];
   };
 
-  # Niri-specific system packages
-  environment.systemPackages = with pkgs; [
-    # Additional tools specifically useful with Niri
-    xwayland-satellite-unstable # Improved XWayland support
-  ];
-
-  # GDM (GNOME Display Manager) configuration
+  # Register Niri with the display manager
   services.displayManager.sessionPackages = [pkgs.niri-unstable];
 
   # Set default Wayland session if not already set
   services.displayManager.defaultSession = lib.mkDefault "niri";
 
-  # Make sure Niri is available as a system-wide session
+  # Environment variables for proper Wayland/Niri integration
   environment.sessionVariables = {
-    # Proper Wayland integration for Niri
     XDG_CURRENT_DESKTOP = "niri";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "niri";

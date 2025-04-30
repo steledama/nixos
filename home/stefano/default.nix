@@ -7,16 +7,7 @@
 }: {
   imports = [
     ../default.nix
-    # Window managers configuration
-    # You can enable any of these - Niri is currently set as primary
-    # (import ../../modules/home/hyprland.nix {
-    #   inherit pkgs;
-    #   keyboardLayout = "it";
-    #   keyboardVariant = "";
-    #   keyboardOptions = "";
-    # })
-
-    # Import the Niri configuration with explicit parameters
+    # Import Niri with minimal configuration to use default shortcuts
     (import ../../modules/home/niri.nix config pkgs)
   ];
 
@@ -26,8 +17,17 @@
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
+    # Terminal
+    alacritty # Default terminal used by Niri
+
+    # Application launcher
+    fuzzel # Default launcher used by Niri
+
+    # Utilities
+    swaylock # Used by Niri for screen locking
+
+    # Your existing packages
     amule
-    # Add any additional packages specific to this user
   ];
 
   home.stateVersion = "23.11";
