@@ -45,7 +45,7 @@
     config.layout;
 
   # Shortcuts menu content and script
-  shortcutsContent = builtins.readFile ./shortcuts-hyprland.md;
+  shortcutsContent = builtins.readFile ./shortcuts.md;
   shortcutShContent =
     builtins.replaceStrings
     ["__SHORTCUTS_CONTENT__"]

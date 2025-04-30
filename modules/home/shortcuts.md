@@ -1,6 +1,6 @@
 # 🔑 KEYBOARD SHORTCUTS GUIDE
 
-## Hyprland
+## Hyprland - Niri
 
 - SUPER + F1 → Show Shortcuts Menu
 - SUPER + M → Monitor Configuration

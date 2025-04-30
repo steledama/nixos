@@ -28,6 +28,7 @@
     inkscape
     # Development
     vscode
+    windsurf
     # Claude Desktop
     inputs.claude-desktop.packages.${pkgs.system}.claude-desktop
   ];
