@@ -8,6 +8,13 @@
   imports = [
     ../default.nix
     ./niri.nix
+    # Hyprland with custom layout config
+    (import ../../modules/home/hyprland.nix {
+      inherit pkgs;
+      keyboardLayout = "it";
+      keyboardVariant = "";
+      keyboardOptions = "";
+    })
   ];
 
   # username

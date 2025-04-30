@@ -1,5 +1,4 @@
 # nixos/flake.nix
-# Updates to ensure correct overlay for niri-unstable
 {
   description = "Nixos config flake";
   inputs = {
@@ -34,7 +33,6 @@
 
     overlays = [
       (import ./overlays/msty.nix)
-      # Include the Niri overlay for all hosts
       niri.overlays.niri
     ];
 

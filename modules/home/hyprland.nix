@@ -162,6 +162,18 @@ in {
     };
   };
 
+  # Basic swaylock configuration
+  programs.swaylock = {
+    enable = true;
+    settings = {
+      color = "282c34";
+      show-failed-attempts = true;
+      ignore-empty-password = true;
+      indicator-caps-lock = true;
+      clock = true;
+    };
+  };
+
   # Waybar configuration
   programs.waybar = waybar;
 }
