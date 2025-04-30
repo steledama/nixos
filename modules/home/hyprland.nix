@@ -1,4 +1,5 @@
 # modules/home/hyprland.nix
+# Home-manager configuration for Hyprland
 {pkgs, ...} @ args: let
   # Keyboard default settings
   keyboardLayout =
@@ -52,22 +53,22 @@
     (builtins.readFile ./shortcuts.sh);
 
   # Monitor configuration script
-  monitorScript = pkgs.writeShellScriptBin "hyprland-monitor" ''
+  monitorScript = pkgs.writeShellScriptBin "monitor" ''
     ${builtins.readFile ./monitor.sh}
   '';
 
   # Wallpaper script
-  wallpaperScript = pkgs.writeShellScriptBin "hyprland-wallpaper" ''
+  wallpaperScript = pkgs.writeShellScriptBin "wallpaper" ''
     ${builtins.readFile ./wallpaper.sh}
   '';
 
   # Screenshot script with notifications
-  screenshotScript = pkgs.writeShellScriptBin "hyprland-screenshot" ''
+  screenshotScript = pkgs.writeShellScriptBin "screenshot" ''
     ${builtins.readFile ./screenshot.sh}
   '';
 
   # Shortcut display script
-  shortcutScript = pkgs.writeShellScriptBin "hyprland-shortcut" ''
+  shortcutScript = pkgs.writeShellScriptBin "shortcut" ''
     ${shortcutShContent}
   '';
 in {
@@ -78,18 +79,16 @@ in {
 
   # Packages required for Hyprland
   home.packages = with pkgs; [
-    # Basic tools for the environment
-    wlogout
-    hyprlock
-    swayidle
-    libnotify
-
     # Custom scripts
     shortcutScript
     wallpaperScript
     monitorScript
     screenshotScript
     lockScreenScript
+
+    # Additional packages
+    hyprlock
+    swayidle
   ];
 
   # Basic swaylock configuration
@@ -179,14 +178,6 @@ in {
         preserve_split = true;
       };
 
-      # Environment variables
-      env = [
-        "XCURSOR_SIZE,24"
-        "XCURSOR_THEME,Adwaita"
-        "GDK_BACKEND,wayland,x11"
-        "QT_QPA_PLATFORM,wayland;xcb"
-      ];
-
       # Miscellaneous configurations
       misc = {
         disable_hyprland_logo = true;
@@ -199,7 +190,7 @@ in {
 
       # Startup applications
       exec-once = [
-        "${wallpaperScript}/bin/hyprland-wallpaper"
+        "${wallpaperScript}/bin/wallpaper"
         "${pkgs.waybar}/bin/waybar"
         "blueman-applet"
         "swaync" # Start SwayNC at boot
@@ -271,13 +262,13 @@ in {
         "SUPER SHIFT, Left, movetoworkspace, e-1"
 
         # Monitor configuration
-        "SUPER, M, exec, ${monitorScript}/bin/hyprland-monitor"
+        "SUPER, M, exec, ${monitorScript}/bin/monitor"
 
         # Random wallpaper
-        "SUPER, W, exec, ${wallpaperScript}/bin/hyprland-wallpaper"
+        "SUPER, W, exec, ${wallpaperScript}/bin/wallpaper"
 
         # Shortcuts menu
-        "SUPER, F1, exec, ${shortcutScript}/bin/hyprland-shortcut"
+        "SUPER, F1, exec, ${shortcutScript}/bin/shortcut"
 
         # Logout menu
         "SUPER, Escape, exec, ${pkgs.wlogout}/bin/wlogout"
@@ -287,9 +278,9 @@ in {
         "SUPER SHIFT, L, exec, ${lockScreenScript}/bin/lock-screen && systemctl suspend"
 
         # Screenshot shortcuts
-        ", Print, exec, ${screenshotScript}/bin/hyprland-screenshot full"
-        "SHIFT, Print, exec, ${screenshotScript}/bin/hyprland-screenshot area"
-        "ALT, Print, exec, ${screenshotScript}/bin/hyprland-screenshot window"
+        ", Print, exec, ${screenshotScript}/bin/screenshot full"
+        "SHIFT, Print, exec, ${screenshotScript}/bin/screenshot area"
+        "ALT, Print, exec, ${screenshotScript}/bin/screenshot window"
       ];
     };
   };

@@ -79,7 +79,7 @@
       "custom/keymap" = {
         format = "⌨";
         tooltip = false;
-        on-click = "${scripts.shortcutScript}/bin/niri-shortcut";
+        on-click = "${scripts.shortcutScript}/bin/shortcut";
       };
 
       "custom/wlogout" = {
