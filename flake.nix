@@ -15,11 +15,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # claude-desktop
-    claude-desktop = {
-      url = "github:k3d3/claude-desktop-linux-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # niri
     niri = {
       url = "github:sodiboo/niri-flake";
@@ -32,7 +27,6 @@
     nixpkgs,
     home-manager,
     nixvim,
-    claude-desktop,
     niri,
     ...
   } @ inputs: let
