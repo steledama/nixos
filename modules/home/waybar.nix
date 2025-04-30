@@ -1,11 +1,6 @@
 # modules/home/waybar-config.nix
 # Shared Waybar configuration for both Niri and Hyprland
-{ 
-  pkgs, 
-  colors 
-}:
-
-{
+{pkgs}: {
   enable = true;
   systemd.enable = false;
   settings = {
@@ -15,7 +10,7 @@
       height = 30;
       margin = "5 5 0 5";
       spacing = 4;
-      
+
       modules-left = ["custom/menu" "network"];
       modules-center = ["custom/datetime"];
       modules-right = ["custom/notifications" "pulseaudio" "battery" "custom/wlogout" "tray"];
@@ -96,12 +91,10 @@
 
     window#waybar {
       background-color: rgba(40, 44, 52, 0.9);
-      color: ${colors.foreground};
       border-radius: 10px;
     }
 
     #custom-menu {
-      color: ${colors.blue};
       font-size: 18px;
       padding: 0 10px;
       margin: 0 8px 0 4px;
@@ -120,40 +113,32 @@
     }
 
     #custom-notifications {
-      color: ${colors.green};
       font-size: 16px;
     }
 
     #custom-datetime {
       font-weight: bold;
-      color: ${colors.yellow};
       min-width: 250px; /* Minimum width to prevent shifting */
     }
 
     #custom-wlogout {
-      color: ${colors.red};
       font-size: 16px;
     }
 
     #network {
-      color: ${colors.green};
     }
 
     #pulseaudio {
-      color: ${colors.purple};
     }
 
     #battery {
-      color: ${colors.yellow};
     }
 
     #battery.warning {
-      color: ${colors.yellow};
       animation: blink 1s infinite;
     }
 
     #battery.critical {
-      color: ${colors.red};
       animation: blink 0.5s infinite;
     }
 

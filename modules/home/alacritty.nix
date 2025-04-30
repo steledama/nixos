@@ -1,32 +1,8 @@
 # modules/home/alacritty.nix
-{ pkgs
-, ...
-}: {
+{pkgs, ...}: {
   programs.alacritty = {
     enable = true;
     settings = {
-      # Basic window configuration
-      window = {
-        padding = {
-          x = 8;
-          y = 8;
-        };
-        decorations = "full";
-        opacity = 1.0;
-
-        # Posizionamento e dimensioni
-        position = {
-          x = 0;
-          y = 40; # Compensazione per la barra Gnome
-        };
-
-        dimensions = {
-          columns = 120; # Numero di colonne di testo
-          lines = 35; # Numero di righe di testo
-        };
-
-        startup_mode = "Windowed";
-      };
       # Basic font configuration
       font = {
         normal = {
@@ -44,41 +20,11 @@
         size = 13.0;
       };
 
-      # Simplified OneDark theme
-      colors = {
-        primary = {
-          background = "#282c34";
-          foreground = "#abb2bf";
-        };
-
-        normal = {
-          black = "#282c34";
-          red = "#e06c75";
-          green = "#98c379";
-          yellow = "#e5c07b";
-          blue = "#61afef";
-          magenta = "#c678dd";
-          cyan = "#56b6c2";
-          white = "#abb2bf";
-        };
-
-        bright = {
-          black = "#545862";
-          red = "#e06c75";
-          green = "#98c379";
-          yellow = "#e5c07b";
-          blue = "#61afef";
-          magenta = "#c678dd";
-          cyan = "#56b6c2";
-          white = "#c8ccd4";
-        };
-      };
-
       # Shell configuration - usando terminal.shell
       terminal = {
         shell = {
           program = "${pkgs.zsh}/bin/zsh";
-          args = [ "-l" ];
+          args = ["-l"];
         };
       };
 
