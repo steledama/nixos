@@ -1,82 +1,88 @@
 # modules/system/desktop/wayland-wm.nix
-# Common base configuration for Wayland window managers like Hyprland and Niri
-# This module provides shared utilities and configurations needed by most Wayland WMs
-{pkgs, ...}: {
-  # Environment variables common to Wayland compositors
-  environment.sessionVariables = {
-    # Firefox on Wayland
-    MOZ_ENABLE_WAYLAND = "1";
-    # Qt apps on Wayland
-    QT_QPA_PLATFORM = "wayland;xcb";
-    # GTK apps on Wayland
-    GDK_BACKEND = "wayland,x11";
-    # SDL apps on Wayland
-    SDL_VIDEODRIVER = "wayland";
-    # Java apps on Wayland
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-  };
+# System-level configuration for Wayland window managers
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: 
 
-  # Common packages for Wayland window managers
-  environment.systemPackages = with pkgs; [
-    # App launchers and menus
-    fuzzel # Application launcher
-    wlogout # Logout menu
-
-    # Status bars
-    waybar # Status bar for Wayland
-
-    # Desktop utilities
-    wl-clipboard # Clipboard management
-    libnotify # Desktop notifications
-    grim # Screenshot utility
-    slurp # Area selection for screenshots
-
-    # Media control
-    pavucontrol # PulseAudio volume control
-    pamixer # Command-line audio mixer
-    brightnessctl # Display brightness control
-
-    # System utilities
-    networkmanagerapplet # NetworkManager control applet
-    bluez-tools # Bluetooth management tools
-    swaylock # Screen locking
-    swayidle # Idle management
-    swaybg # Wallpaper manager
-
-    # JSON processing (for scripts)
-    jq # JSON processor
-
-    # XDG portals for desktop integration
-    xdg-desktop-portal # Desktop integration portals for sandboxed apps
-    xdg-desktop-portal-gtk # GTK portal backend (for file dialogs)
-
-    # File management
-    nautilus # File manager
-    gvfs # Virtual filesystem
-  ];
-
-  # XDG portal configuration
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
-    config = {
-      common.default = "gtk";
+let
+  cfg = config.wayland-wm;
+in {
+  options.wayland-wm = {
+    enable = lib.mkEnableOption "Enable Wayland window managers";
+    
+    enableHyprland = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to enable Hyprland at the system level";
+    };
+    
+    enableNiri = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to enable Niri at the system level";
     };
   };
 
-  services = {
-    # GNOME Keyring for credentials
-    gnome.gnome-keyring.enable = true;
+  config = lib.mkIf cfg.enable {
+    # Ensure XDG Portal is set up correctly
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-wlr
+      ] ++ lib.optional cfg.enableHyprland pkgs.xdg-desktop-portal-hyprland;
+    };
 
-    # UPower for power management
-    upower.enable = true;
+    # Enable the WMs at the system level if requested
+    programs = {
+      hyprland = lib.mkIf cfg.enableHyprland {
+        enable = true;
+        xwayland.enable = true;
+      };
+      
+      niri = lib.mkIf cfg.enableNiri {
+        enable = true;
+        package = pkgs.niri-unstable;
+      };
+    };
 
-    # Bluetooth support
-    blueman.enable = true;
+    # Common packages needed by Wayland WMs
+    environment.systemPackages = with pkgs; [
+      # Core Wayland utilities
+      wl-clipboard
+      wlr-randr
+      wayland-utils
+      
+      # Notification system
+      libnotify
+      
+      # Screenshot and screen recording
+      grim
+      slurp
+      
+      # Brightness and volume control
+      pamixer
+      brightnessctl
+    ];
+
+    # Ensure polkit is available for authentication dialogs
+    security.polkit.enable = true;
+    
+    # Services needed by Wayland compositors
+    services = {
+      # Required for XDG desktop integration
+      dbus.enable = true;
+      
+      # Optional services that most Wayland setups need
+      pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+      };
+    };
   };
-
-  # Enable polkit security framework (required by many desktop apps)
-  security.polkit.enable = true;
 }
