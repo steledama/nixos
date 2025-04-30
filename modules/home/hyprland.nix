@@ -1,30 +1,19 @@
 # modules/home/hyprland.nix
 # Home-manager configuration for Hyprland using common Wayland components
-{ pkgs, ... } @ args:
-
-let
-  # Keyboard settings from args or defaults
-  keyboardLayout = if args ? keyboardLayout then args.keyboardLayout else "us";
-  keyboardVariant = if args ? keyboardVariant then args.keyboardVariant else "intl";
-  keyboardOptions = if args ? keyboardOptions then args.keyboardOptions else "ralt:compose";
-  
-  # Colors for theming
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  # Get keyboard settings from wayland-wm configuration
+  cfg = config.wayland-wm;
   colors = import ./colors.nix;
 in {
   # Import common Wayland WM configuration
   imports = [
-    ./wayland-wm.nix
+    ./wm.nix
   ];
-
-  # Enable common Wayland configuration with keyboard settings
-  wayland-wm = {
-    enable = true;
-    keyboard = {
-      layout = keyboardLayout;
-      variant = keyboardVariant;
-      options = keyboardOptions;
-    };
-  };
 
   # Hyprland Configuration
   wayland.windowManager.hyprland = {
@@ -44,9 +33,9 @@ in {
 
       # Input configuration
       input = {
-        kb_layout = keyboardLayout;
-        kb_variant = keyboardVariant;
-        kb_options = keyboardOptions;
+        kb_layout = cfg.keyboard.layout;
+        kb_variant = cfg.keyboard.variant;
+        kb_options = cfg.keyboard.options;
 
         follow_mouse = 1;
         touchpad = {

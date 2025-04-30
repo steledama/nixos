@@ -5,37 +5,14 @@
   lib,
   pkgs,
   ...
-} @ args: let
-  # Get keyboard settings from args or use defaults
-  keyboardLayout =
-    if args ? keyboardLayout
-    then args.keyboardLayout
-    else "us";
-  keyboardVariant =
-    if args ? keyboardVariant
-    then args.keyboardVariant
-    else "intl";
-  keyboardOptions =
-    if args ? keyboardOptions
-    then args.keyboardOptions
-    else "ralt:compose";
-
-  colors = import ./colors.nix;
+}: let
+  # Get keyboard settings from wayland-wm configuration
+  cfg = config.wm;
 in {
   # Import common Wayland WM configuration
   imports = [
-    ./wayland-wm.nix
+    ./wm.nix
   ];
-
-  # Enable common Wayland configuration with keyboard settings
-  wayland-wm = {
-    enable = true;
-    keyboard = {
-      layout = keyboardLayout;
-      variant = keyboardVariant;
-      options = keyboardOptions;
-    };
-  };
 
   # Custom Niri configuration file
   xdg.configFile."niri/config.kdl".source =
@@ -48,9 +25,9 @@ in {
         input {
             keyboard {
                 xkb {
-                    layout "${keyboardLayout}"
-                    variant "${keyboardVariant}"
-                    options "${keyboardOptions}"
+                    layout "${cfg.keyboard.layout}"
+                    variant "${cfg.keyboard.variant}"
+                    options "${cfg.keyboard.options}"
                 }
             }
 

@@ -7,25 +7,24 @@
 }: {
   imports = [
     ../default.nix
-    # Niri
-    (import ../../modules/home/niri.nix {
-      inherit pkgs;
-      keyboardLayout = "it";
-      keyboardVariant = "";
-      keyboardOptions = "";
-    })
-    # Hyprland
-    (import ../../modules/home/hyprland.nix {
-      inherit pkgs;
-      keyboardLayout = "it";
-      keyboardVariant = "";
-      keyboardOptions = "";
-    })
+    # Import Niri and Hyprland modules directly
+    ../../modules/home/niri.nix
+    ../../modules/home/hyprland.nix
   ];
 
   # username
   home.username = "stefano";
   home.homeDirectory = "/home/${config.home.username}";
+
+  # Setup keyboard configuration for Wayland WMs
+  wayland-wm = {
+    enable = true;
+    keyboard = {
+      layout = "it";
+      variant = "";
+      options = "";
+    };
+  };
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
