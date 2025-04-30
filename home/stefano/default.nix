@@ -7,8 +7,8 @@
 }: {
   imports = [
     ../default.nix
-    # Import Niri with minimal configuration to use default shortcuts
-    (import ../../modules/home/niri.nix config pkgs)
+    # Import Niri with default original configuration
+    ./niri.nix
   ];
 
   # username
