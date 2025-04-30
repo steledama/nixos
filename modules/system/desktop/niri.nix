@@ -41,13 +41,4 @@
     XDG_SESSION_DESKTOP = "niri";
     NIXOS_OZONE_WL = "1";
   };
-
-  # Additional packages needed for Niri
-  environment.systemPackages = with pkgs; [
-    # Default applications referenced in the config
-    alacritty # Default terminal
-    fuzzel # Default launcher
-    swaylock # Screen locker
-    waybar # Status bar
-  ];
 }

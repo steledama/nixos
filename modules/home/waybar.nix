@@ -1,5 +1,4 @@
-# modules/home/waybar.nix
-# Configurazione Waybar comune che può essere usata sia da Hyprland che da Niri
+# modules/home/waybar.nixe
 {
   pkgs,
   scripts,
@@ -29,7 +28,7 @@
       "custom/menu" = {
         format = "󰀻";
         tooltip = "Menu Applicazioni";
-        on-click = "${pkgs.wofi}/bin/wofi --show drun";
+        on-click = "fuzzel";
       };
 
       "custom/datetime" = {
@@ -76,16 +75,10 @@
         };
       };
 
-      "custom/keymap" = {
-        format = "⌨";
-        tooltip = false;
-        on-click = "${scripts.shortcutScript}/bin/shortcut";
-      };
-
       "custom/wlogout" = {
         format = "⏻";
         tooltip = false;
-        on-click = "${pkgs.wlogout}/bin/wlogout";
+        on-click = "wlogout";
       };
     };
   };
@@ -151,11 +144,6 @@
       min-width: 250px; /* Larghezza minima per evitare spostamenti */
     }
 
-    #custom-keymap {
-      color: ${colors.blue};
-      font-size: 16px;
-    }
-
     #custom-wlogout {
       color: ${colors.red};
       font-size: 16px;
@@ -189,7 +177,6 @@
       }
     }
 
-    #custom-keymap:hover,
     #custom-notifications:hover,
     #pulseaudio:hover,
     #network:hover,

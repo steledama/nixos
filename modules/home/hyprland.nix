@@ -18,107 +18,15 @@
   # Colors for theming
   colors = import ./colors.nix;
 
-  # Wofi (application launcher) configuration
-  wofi = import ./wofi.nix {inherit colors pkgs;};
-
   # Waybar configuration with script references
   waybar = import ./waybar.nix {
     inherit pkgs colors;
-    scripts = {
-      shortcutScript = shortcutScript;
-      wallpaperScript = wallpaperScript;
-      monitorScript = monitorScript;
-      screenshotScript = screenshotScript;
-    };
   };
-
-  # Lock screen script
-  lockScreenScript = pkgs.writeShellScriptBin "lock-screen" ''
-    #!/usr/bin/env bash
-    ${pkgs.hyprlock}/bin/hyprlock "$@"
-  '';
-
-  # Wlogout configuration (logout menu)
-  wlogoutLayout = let
-    config = import ./wlogout.nix {inherit lockScreenScript;};
-  in
-    config.layout;
-
-  # Shortcuts menu content and script
-  shortcutsContent = builtins.readFile ./shortcuts.md;
-  shortcutShContent =
-    builtins.replaceStrings
-    ["__SHORTCUTS_CONTENT__"]
-    [shortcutsContent]
-    (builtins.readFile ./shortcuts.sh);
-
-  # Monitor configuration script
-  monitorScript = pkgs.writeShellScriptBin "monitor" ''
-    ${builtins.readFile ./monitor.sh}
-  '';
-
-  # Wallpaper script
-  wallpaperScript = pkgs.writeShellScriptBin "wallpaper" ''
-    ${builtins.readFile ./wallpaper.sh}
-  '';
-
-  # Screenshot script with notifications
-  screenshotScript = pkgs.writeShellScriptBin "screenshot" ''
-    ${builtins.readFile ./screenshot.sh}
-  '';
-
-  # Shortcut display script
-  shortcutScript = pkgs.writeShellScriptBin "shortcut" ''
-    ${shortcutShContent}
-  '';
 in {
   # Import related modules
   imports = [
     ./swaync.nix
   ];
-
-  # Packages required for Hyprland
-  home.packages = with pkgs; [
-    # Custom scripts
-    shortcutScript
-    wallpaperScript
-    monitorScript
-    screenshotScript
-    lockScreenScript
-
-    # Additional packages
-    hyprlock
-    swayidle
-  ];
-
-  # Basic swaylock configuration
-  programs.swaylock = {
-    enable = true;
-    settings = {
-      color = "282c34";
-      show-failed-attempts = true;
-      ignore-empty-password = true;
-      indicator-caps-lock = true;
-      clock = true;
-    };
-  };
-
-  # Auto-lock script
-  home.file.".config/hypr/auto-lock.sh" = {
-    executable = true;
-    text = ''
-      #!/usr/bin/env bash
-
-      # Terminate any running swayidle instances
-      pkill swayidle
-
-      # Start swayidle
-      ${pkgs.swayidle}/bin/swayidle -w \
-        timeout 570 'notify-send "Screen will be locked in 30 seconds" --urgency=low' \
-        timeout 600 '${lockScreenScript}/bin/lock-screen' \
-        before-sleep '${lockScreenScript}/bin/lock-screen'
-    '';
-  };
 
   # Hyprland Configuration
   wayland.windowManager.hyprland = {
@@ -131,8 +39,6 @@ in {
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee)";
-        "col.inactive_border" = "rgba(595959aa)";
         layout = "dwindle";
       };
 
@@ -153,12 +59,6 @@ in {
       # Animations
       animations = {
         enabled = true;
-        animation = [
-          "windows, 1, 3, default"
-          "border, 1, 3, default"
-          "fade, 1, 3, default"
-          "workspaces, 1, 3, default"
-        ];
       };
 
       # Decorations
@@ -185,25 +85,20 @@ in {
         mouse_move_enables_dpms = true;
         key_press_enables_dpms = true;
         enable_swallow = true;
-        swallow_regex = "^(wezterm)$";
       };
 
       # Startup applications
       exec-once = [
-        "${wallpaperScript}/bin/wallpaper"
-        "${pkgs.waybar}/bin/waybar"
-        "blueman-applet"
-        "swaync" # Start SwayNC at boot
-        "$HOME/.config/hypr/auto-lock.sh" # Start auto-lock at boot
+        "waybar"
+        "swaync"
       ];
 
       # Keyboard shortcuts
       bind = [
         # Basic applications
-        "SUPER, Return, exec, wezterm"
-        "SUPER, R, exec, wofi --show drun"
-        "SUPER, B, exec, google-chrome-stable"
-        "SUPER, P, exec, firefox"
+        "SUPER, T, exec, alacritty"
+        "SUPER, D, exec, fuzzel"
+        "SUPER, B, exec, firefox"
         "SUPER, E, exec, nautilus"
         "SUPER, N, exec, swaync-client -t -sw"
 
@@ -261,36 +156,11 @@ in {
         "SUPER SHIFT, Right, movetoworkspace, e+1"
         "SUPER SHIFT, Left, movetoworkspace, e-1"
 
-        # Monitor configuration
-        "SUPER, M, exec, ${monitorScript}/bin/monitor"
-
-        # Random wallpaper
-        "SUPER, W, exec, ${wallpaperScript}/bin/wallpaper"
-
-        # Shortcuts menu
-        "SUPER, F1, exec, ${shortcutScript}/bin/shortcut"
-
         # Logout menu
-        "SUPER, Escape, exec, ${pkgs.wlogout}/bin/wlogout"
-
-        # Lock screen directly
-        "SUPER, L, exec, ${lockScreenScript}/bin/lock-screen"
-        "SUPER SHIFT, L, exec, ${lockScreenScript}/bin/lock-screen && systemctl suspend"
-
-        # Screenshot shortcuts
-        ", Print, exec, ${screenshotScript}/bin/screenshot full"
-        "SHIFT, Print, exec, ${screenshotScript}/bin/screenshot area"
-        "ALT, Print, exec, ${screenshotScript}/bin/screenshot window"
+        "SUPER, Escape, exec, wlogout"
       ];
     };
   };
-
-  # Wofi configuration
-  xdg.configFile."wofi/style.css".text = wofi.style;
-  xdg.configFile."wofi/config".text = wofi.config;
-
-  # Wlogout configuration
-  xdg.configFile."wlogout/layout".text = wlogoutLayout;
 
   # Waybar configuration
   programs.waybar = waybar;

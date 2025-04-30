@@ -1,8 +1,5 @@
 # modules/home/shell-config.nix
-{ config
-, pkgs
-, ...
-}: {
+{config, ...}: {
   # Common shell aliases for both bash and zsh
   home.shellAliases = {
     # Navigation
@@ -33,11 +30,6 @@
     gc = "git commit";
     gp = "git push";
     gl = "git pull";
-
-    # WezTerm
-    w = "wezterm"; # comando base per avviare wezterm
-    wm = "wezterm cli list"; # lista le connessioni/sessioni (simile a tl)
-    ws = "wezterm cli split-pane"; # divide la finestra corrente
 
     # Yazi
     y = "yazi";
@@ -140,7 +132,7 @@
         eval "$(starship init zsh)"
         eval "$(zoxide init zsh --hook pwd)"
         eval "$(direnv hook zsh)"
-        
+
         # FZF integration
         if [ -f "$HOME/.fzf.zsh" ]; then
          source "$HOME/.fzf.zsh"
@@ -159,7 +151,7 @@
         eval "$(starship init bash)"
         eval "$(zoxide init bash --hook pwd)"
         eval "$(direnv hook bash)"
-        
+
         # FZF integration
         if [ -f "$HOME/.fzf.bash" ]; then
          source "$HOME/.fzf.bash"
@@ -168,4 +160,3 @@
     };
   };
 }
-

@@ -19,7 +19,7 @@
   # Common packages for Wayland window managers
   environment.systemPackages = with pkgs; [
     # App launchers and menus
-    wofi # Application launcher
+    fuzzel # Application launcher
     wlogout # Logout menu
 
     # Status bars
@@ -41,8 +41,6 @@
     bluez-tools # Bluetooth management tools
     swaylock # Screen locking
     swayidle # Idle management
-
-    # Wallpaper utilities
     swaybg # Wallpaper manager
 
     # JSON processing (for scripts)
@@ -65,6 +63,18 @@
     ];
     config = {
       common.default = "gtk";
+    };
+  };
+
+  # Basic swaylock configuration
+  programs.swaylock = {
+    enable = true;
+    settings = {
+      color = "282c34";
+      show-failed-attempts = true;
+      ignore-empty-password = true;
+      indicator-caps-lock = true;
+      clock = true;
     };
   };
 

@@ -1,7 +1,5 @@
-# modules/home/hyprland/swaync.nix
-{ config, pkgs, lib, ... }:
-
-{
+# modules/home/swaync.nix
+{pkgs, ...}: {
   # Installa SwayNC
   home.packages = with pkgs; [
     swaynotificationcenter
@@ -13,7 +11,7 @@
     # Configurazione principale di SwayNC
     "swaync/config.json".text = builtins.toJSON {
       "$schema" = "/etc/xdg/swaync/configSchema.json";
-      
+
       # Opzioni di base del centro notifiche
       "positionX" = "right";
       "positionY" = "top";
@@ -22,14 +20,14 @@
       "timeout-low" = 5;
       "timeout-critical" = 0;
       "notification-window-width" = 400;
-      
+
       # Widget del centro notifiche
       "widgets" = [
         "title"
         "notifications"
         "buttons-grid"
       ];
-      
+
       # Pulsanti rapidi
       "widgets-config" = {
         "buttons-grid" = {

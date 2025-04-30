@@ -7,7 +7,6 @@
 }: {
   imports = [
     ../default.nix
-    # Import Niri with default original configuration
     ./niri.nix
   ];
 
@@ -17,16 +16,6 @@
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
-    # Terminal
-    alacritty # Default terminal used by Niri
-
-    # Application launcher
-    fuzzel # Default launcher used by Niri
-
-    # Utilities
-    swaylock # Used by Niri for screen locking
-
-    # Your existing packages
     amule
   ];
 
