@@ -9,7 +9,6 @@
     ../../modules/system/services/ollama.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
-    ../../modules/system/desktop/hyprland.nix
     # ../../modules/system/desktop/hyprland.nix
     ../../modules/system/desktop/niri.nix
   ];

@@ -7,19 +7,17 @@
 }: {
   imports = [
     ../default.nix
-    # Hyprland config
-    (import ../../modules/home/hyprland.nix {
-      inherit pkgs;
-      keyboardLayout = "it";
-      keyboardVariant = "";
-      keyboardOptions = "";
-    })
-    (import ../../modules/home/niri.nix {
-      inherit pkgs;
-      keyboardLayout = "it";
-      keyboardVariant = "";
-      keyboardOptions = "";
-    })
+    # Window managers configuration
+    # You can enable any of these - Niri is currently set as primary
+    # (import ../../modules/home/hyprland.nix {
+    #   inherit pkgs;
+    #   keyboardLayout = "it";
+    #   keyboardVariant = "";
+    #   keyboardOptions = "";
+    # })
+
+    # Import the Niri configuration with explicit parameters
+    (import ../../modules/home/niri.nix config pkgs)
   ];
 
   # username
@@ -29,6 +27,7 @@
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
     amule
+    # Add any additional packages specific to this user
   ];
 
   home.stateVersion = "23.11";

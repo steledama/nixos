@@ -1,4 +1,5 @@
 # nixos/flake.nix
+# Updates to ensure correct overlay for niri-unstable
 {
   description = "Nixos config flake";
   inputs = {
@@ -39,14 +40,14 @@
 
     overlays = [
       (import ./overlays/msty.nix)
-      # Includi l'overlay di Niri per tutti gli host
+      # Include the Niri overlay for all hosts
       niri.overlays.niri
     ];
 
-    # Moduli di base per tutti gli host
+    # Base modules for all hosts
     baseModules = [
       home-manager.nixosModules.home-manager
-      # Includi il modulo NixOS di Niri per tutti gli host
+      # Include the Niri NixOS module
       niri.nixosModules.niri
       {
         nixpkgs.overlays = overlays;
@@ -56,8 +57,7 @@
         home-manager.backupFileExtension = "backup";
         home-manager.extraSpecialArgs = {inherit inputs;};
 
-        # Niri è disponibile ma non attivato di default
-        # Utilizziamo mkDefault per permettere sovrascritture
+        # Niri is available but not activated by default
         programs.niri.enable = nixpkgs.lib.mkDefault false;
       }
     ];

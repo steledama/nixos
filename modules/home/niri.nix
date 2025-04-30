@@ -1,79 +1,68 @@
 # modules/home/niri.nix
-# Home-manager configuration for Niri window manager
-{pkgs, ...} @ args: let
-  # Keyboard default settings
-  keyboardLayout =
-    if args ? keyboardLayout
-    then args.keyboardLayout
-    else "us";
-  keyboardVariant =
-    if args ? keyboardVariant
-    then args.keyboardVariant
-    else "intl";
-  keyboardOptions =
-    if args ? keyboardOptions
-    then args.keyboardOptions
-    else "ralt:compose";
+# Explicit function declaration for Niri window manager configuration
+config: pkgs: let
+  # Basic variables
+  keyboardLayout = "us";
+  keyboardVariant = "intl";
 
   # Colors for theming
   colors = import ./colors.nix;
 
-  # Wofi (application launcher) configuration
+  # Import Wofi configuration from the shared module
   wofi = import ./wofi.nix {inherit colors pkgs;};
 
-  # Waybar configuration with script references
-  waybar = import ./waybar.nix {
-    inherit pkgs colors;
-    scripts = {
-      shortcutScript = shortcutScript;
-      wallpaperScript = wallpaperScript;
-    };
-  };
+  # Simple scripts
+  shortcutScript = pkgs.writeShellScriptBin "shortcut" ''
+    #!/usr/bin/env bash
+    cat ${./shortcuts.md} | ${pkgs.wofi}/bin/wofi --dmenu --prompt "Shortcuts"
+  '';
 
-  # Lock screen script
+  wallpaperScript = pkgs.writeShellScriptBin "wallpaper" ''
+    #!/usr/bin/env bash
+    WALLPAPER_DIR="$HOME/wallpapers"
+    mkdir -p "$WALLPAPER_DIR"
+    RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
+    pkill swaybg 2>/dev/null
+    swaybg -i "$RANDOM_WALLPAPER" -m fill &
+  '';
+
+  screenshotScript = pkgs.writeShellScriptBin "screenshot" ''
+    #!/usr/bin/env bash
+    SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
+    mkdir -p "$SCREENSHOTS_DIR"
+    TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+    FILENAME="$SCREENSHOTS_DIR/screenshot_$TIMESTAMP.png"
+
+    case "$1" in
+      "full") grim "$FILENAME" ;;
+      "area") grim -g "$(slurp)" "$FILENAME" ;;
+      *) grim "$FILENAME" ;;
+    esac
+    wl-copy < "$FILENAME"
+  '';
+
   lockScreenScript = pkgs.writeShellScriptBin "lock-screen" ''
     #!/usr/bin/env bash
-    ${pkgs.swaylock}/bin/swaylock -f "$@"
-  '';
-
-  # Wlogout configuration (logout menu)
-  wlogoutLayout = let
-    config = import ./wlogout.nix {inherit lockScreenScript;};
-  in
-    config.layout;
-
-  # Shortcuts menu content and script
-  shortcutsContent = builtins.readFile ./shortcuts.md;
-  shortcutShContent =
-    builtins.replaceStrings
-    ["__SHORTCUTS_CONTENT__"]
-    [shortcutsContent]
-    (builtins.readFile ./shortcuts.sh);
-
-  # Wallpaper script for Niri (using the same script as Hyprland)
-  wallpaperScript = pkgs.writeShellScriptBin "wallpaper" ''
-    ${builtins.readFile ./wallpaper.sh}
-  '';
-
-  # Shortcut display script
-  shortcutScript = pkgs.writeShellScriptBin "shortcut" ''
-    ${shortcutShContent}
+    ${pkgs.swaylock}/bin/swaylock -f
   '';
 in {
-  # Import related modules
-  imports = [
-    ./swaync.nix
-  ];
-
-  # Packages required for Niri (similar to Hyprland, but with Niri-specific tools)
+  # Packages required for Niri
   home.packages = with pkgs; [
     # Custom scripts
     shortcutScript
     wallpaperScript
+    screenshotScript
+    lockScreenScript
 
-    # Additional packages specific for Niri
-    swaybg # Wallpaper setter for Wayland
+    # Core dependencies
+    swaybg
+    swaylock
     swayidle
+    wl-clipboard
+    slurp
+    grim
+    jq
+    wlogout
   ];
 
   # Basic swaylock configuration
@@ -81,75 +70,61 @@ in {
     enable = true;
     settings = {
       color = "282c34";
-      show-failed-attempts = true;
-      ignore-empty-password = true;
-      indicator-caps-lock = true;
       clock = true;
     };
   };
 
-  # Auto-lock script
-  home.file.".config/niri/auto-lock.sh" = {
-    executable = true;
+  # Custom Niri configuration file
+  xdg.configFile."niri/config.kdl" = {
     text = ''
-      #!/usr/bin/env bash
-
-      # Terminate any running swayidle instances
-      pkill swayidle
-
-      # Start swayidle
-      ${pkgs.swayidle}/bin/swayidle -w \
-        timeout 570 'notify-send "Screen will be locked in 30 seconds" --urgency=low' \
-        timeout 600 '${lockScreenScript}/bin/lock-screen' \
-        before-sleep '${lockScreenScript}/bin/lock-screen'
+      {
+        "input": {
+          "keyboard": {
+            "xkb": {
+              "layout": "${keyboardLayout}",
+              "variant": "${keyboardVariant}"
+            }
+          },
+          "touchpad": {
+            "tap": true,
+            "natural-scroll": true
+          }
+        },
+        "layout": {
+          "gaps": 8,
+          "border": {
+            "width": 2,
+            "active": {
+              "color": "${colors.blue}"
+            },
+            "inactive": {
+              "color": "${colors.brightBlack}"
+            }
+          }
+        },
+        "binds": {
+          "Mod+Return": {
+            "action": {
+              "spawn": ["wezterm"]
+            }
+          },
+          "Mod+Q": {
+            "action": {
+              "close-window": {}
+            }
+          },
+          "Mod+Space": {
+            "action": {
+              "toggle-window-floating": {}
+            }
+          },
+          "Print": {
+            "action": {
+              "spawn": ["${screenshotScript}/bin/screenshot", "full"]
+            }
+          }
+        }
+      }
     '';
   };
-
-  # Niri configuration
-  programs.niri = {
-    settings = {
-      # Input configuration
-      input.keyboard.xkb = {
-        layout = keyboardLayout;
-        variant = keyboardVariant;
-        options = keyboardOptions;
-      };
-
-      # Set up touchpad if available
-      input.touchpad = {
-        natural-scroll = true;
-        tap = true;
-        drag-lock = true;
-      };
-
-      # Window layout preferences
-      layout = {
-        # Enable window gaps
-        gaps = 8;
-      };
-
-      # Environment variables
-      environment = {
-        "MOZ_ENABLE_WAYLAND" = "1";
-        "QT_QPA_PLATFORM" = "wayland;xcb";
-        "GDK_BACKEND" = "wayland,x11";
-        "SDL_VIDEODRIVER" = "wayland";
-        "_JAVA_AWT_WM_NONREPARENTING" = "1";
-        "XDG_CURRENT_DESKTOP" = "niri";
-        "XDG_SESSION_TYPE" = "wayland";
-        "XDG_SESSION_DESKTOP" = "niri";
-        "NIXOS_OZONE_WL" = "1";
-      };
-    };
-  };
-
-  # Wofi configuration
-  xdg.configFile."wofi/style.css".text = wofi.style;
-  xdg.configFile."wofi/config".text = wofi.config;
-
-  # Wlogout configuration
-  xdg.configFile."wlogout/layout".text = wlogoutLayout;
-
-  # Waybar configuration
-  programs.waybar = waybar;
 }
