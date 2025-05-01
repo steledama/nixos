@@ -6,20 +6,6 @@
   lib,
   ...
 }: let
-  # Modern and elegant color palette for wayland
-  colors = {
-    background = "#1a1b26";
-    foreground = "#c0caf5";
-    black = "#15161e";
-    red = "#f7768e";
-    green = "#9ece6a";
-    yellow = "#e0af68";
-    blue = "#7aa2f7";
-    purple = "#bb9af7";
-    cyan = "#7dcfff";
-    white = "#a9b1d6";
-    transparent = "#00000000";
-  };
   # Get configuration with defaults
   cfg = config.wayland-wm;
 in {
@@ -98,7 +84,7 @@ in {
       };
     };
 
-    # Waybar configuration (defined inline instead of importing)
+    # Waybar configuration
     programs.waybar = {
       enable = true;
       systemd.enable = false;
@@ -190,101 +176,101 @@ in {
         }
 
         window#waybar {
-          background-color: ${colors.background}cc;
+          background-color: rgba(26, 27, 38, 0.8);
           border-radius: 12px;
-          border: 2px solid ${colors.blue}33;
-          box-shadow: 0 2px 6px ${colors.black}80;
+          border: 2px solid rgba(122, 162, 247, 0.2);
+          box-shadow: 0 2px 6px rgba(21, 22, 30, 0.5);
         }
 
         #custom-menu {
           font-size: 18px;
-          color: ${colors.blue};
+          color: #7aa2f7;
           padding: 0 12px;
           margin: 4px 8px 4px 4px;
           border-radius: 10px;
         }
 
         #custom-menu:hover {
-          background-color: ${colors.blue}22;
+          background-color: rgba(122, 162, 247, 0.13);
         }
 
         #custom-datetime {
-          color: ${colors.foreground};
+          color: #c0caf5;
           font-weight: bold;
           font-size: 14.5px;
           min-width: 250px;
-          text-shadow: 0 1px 2px ${colors.black}40;
+          text-shadow: 0 1px 2px rgba(21, 22, 30, 0.25);
         }
 
         #custom-notifications {
           font-size: 16px;
-          color: ${colors.yellow};
+          color: #e0af68;
           margin-right: 6px;
           border-radius: 8px;
           padding: 0 10px;
         }
 
         #custom-notifications:hover {
-          background-color: ${colors.yellow}22;
+          background-color: rgba(224, 175, 104, 0.13);
         }
 
         #custom-wlogout {
           font-size: 16px;
-          color: ${colors.red};
+          color: #f7768e;
           margin: 0 2px 0 6px;
           border-radius: 8px;
           padding: 0 10px;
         }
 
         #custom-wlogout:hover {
-          background-color: ${colors.red}22;
+          background-color: rgba(247, 118, 142, 0.13);
         }
 
         #network {
-          color: ${colors.cyan};
+          color: #7dcfff;
           border-radius: 8px;
           padding: 0 12px;
         }
 
         #network:hover {
-          background-color: ${colors.cyan}22;
+          background-color: rgba(125, 207, 255, 0.13);
         }
 
         #network.disconnected {
-          color: ${colors.red};
+          color: #f7768e;
         }
 
         #pulseaudio {
-          color: ${colors.green};
+          color: #9ece6a;
           border-radius: 8px;
           padding: 0 12px;
         }
 
         #pulseaudio:hover {
-          background-color: ${colors.green}22;
+          background-color: rgba(158, 206, 106, 0.13);
         }
 
         #pulseaudio.muted {
-          color: ${colors.red};
+          color: #f7768e;
         }
 
         #battery {
-          color: ${colors.purple};
+          color: #bb9af7;
           border-radius: 8px;
           padding: 0 12px;
         }
 
         #battery:hover {
-          background-color: ${colors.purple}22;
+          background-color: rgba(187, 154, 247, 0.13);
         }
 
         #battery.warning {
-          color: ${colors.yellow};
+          color: #e0af68;
           animation: pulse 1.5s infinite;
         }
 
         #battery.critical {
-          color: ${colors.red};
+          color: #f7768e;
           animation: pulse 0.8s infinite;
         }
 
@@ -322,13 +308,6 @@ in {
         #battery, #network, #pulseaudio, #custom-notifications {
           margin-left: 5px;
           margin-right: 5px;
-        }
-
-        #battery:after,
-        #network:after,
-        #pulseaudio:after,
-        #custom-notifications:after {
-          content: "";
         }
       '';
     };
