@@ -12,7 +12,7 @@ in {
   options.wayland-wm = {
     enable = lib.mkEnableOption "Enable common Wayland WM configuration";
 
-    # window managers options
+    # Windows managers options
     enableHyprland = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -50,28 +50,20 @@ in {
   config = lib.mkIf cfg.enable {
     # Common packages for Wayland WMs
     home.packages = with pkgs; [
-      # App launchers
-      fuzzel
-
-      # System utilities
-      wl-clipboard
-      pamixer
-      brightnessctl
-      grim
-      slurp
-
-      # Logout menu
-      wlogout
-
-      # Lock screen utils
-      swaylock
-
-      # Notification center - solo il pacchetto, nessuna configurazione personalizzata
-      swaynotificationcenter
-      libnotify
+      fuzzel # Wayland-native application launcher
+      wl-clipboard # Command-line copy/paste utilities for Wayland
+      pamixer # Pulseaudio command line mixer
+      brightnessctl # read and control device brightness
+      grim # Grab images from a Wayland compositor
+      slurp # Select a region in a Wayland compositor
+      waypaper # GUI wallpaper setter for Wayland-based window managers
+      wlogout # Wayland based logout menu
+      swaylock # Screen locker for Wayland
+      swaynotificationcenter # Simple notification daemon with a GUI
+      libnotify # Library that sends desktop notifications to a notification daemon
     ];
 
-    # SwayLock configuration
+    # SwayLock
     programs.swaylock = {
       enable = true;
       settings = {
@@ -84,7 +76,7 @@ in {
       };
     };
 
-    # Waybar configuration
+    # Waybar
     programs.waybar = {
       enable = true;
       systemd.enable = false;
@@ -96,9 +88,9 @@ in {
           margin = "5 5 0 5";
           spacing = 4;
 
-          modules-left = ["custom/menu" "network"];
+          modules-left = ["custom/menu"];
           modules-center = ["custom/datetime"];
-          modules-right = ["custom/notifications" "pulseaudio" "battery" "custom/wlogout" "tray"];
+          modules-right = ["custom/notifications" "network" "pulseaudio" "battery" "custom/wlogout" "tray"];
 
           # Menu button
           "custom/menu" = {
@@ -312,7 +304,7 @@ in {
       '';
     };
 
-    # Enable Hyprland if requested
+    # Hyprland
     wayland.windowManager.hyprland = lib.mkIf cfg.enableHyprland {
       enable = true;
       systemd.enable = true;
@@ -462,7 +454,7 @@ in {
       };
     };
 
-    # Add Niri configuration if enabled
+    # Niri
     xdg.configFile."niri/config.kdl".text = lib.mkIf cfg.enableNiri ''
       input {
           keyboard {
@@ -515,7 +507,7 @@ in {
           Mod+A {
               spawn "fuzzel"
           }
-          Mod+L {
+          Mod+Alt+L {
               spawn "swaylock"
           }
           Mod+N {
@@ -538,6 +530,12 @@ in {
           }
           Mod+BackSpace {
               close-window
+          }
+          Alt+Tab {
+              focus-column-right
+          }
+          Alt+Shift+Tab {
+              focus-column-left
           }
           Mod+Left {
               focus-column-left
@@ -839,7 +837,7 @@ in {
           Mod+Escape allow-inhibiting=false {
               toggle-keyboard-shortcuts-inhibit
           }
-          Mod+Shift+E {
+          Mod+Alt+E {
               quit
           }
           Ctrl+Alt+Delete {
