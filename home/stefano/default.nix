@@ -7,6 +7,8 @@
   imports = [
     ../default.nix
     ../../modules/home/wm.nix
+    ../../modules/home/hyprland.nix
+    ../../modules/home/niri.nix
   ];
 
   # User
@@ -16,8 +18,6 @@
   # Setup WMs with keyboard configuration
   wayland-wm = {
     enable = true;
-    enableHyprland = true;
-    enableNiri = true;
     keyboard = {
       layout = "it";
       variant = "";

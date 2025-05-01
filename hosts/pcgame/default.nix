@@ -9,7 +9,9 @@
     ../../modules/system/services/ollama.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
-    ../../modules/system/desktop/wayland-wm.nix
+    ../../modules/system/desktop/wm.nix
+    ../../modules/system/desktop/niri.nix
+    ../../modules/system/desktop/hyprland.nix
   ];
 
   # Network
@@ -61,20 +63,15 @@
     enableNvidia = true;
   };
 
-  # Windows managers
-  wayland-wm = {
-    enable = true;
-    enableHyprland = true;
-    enableNiri = true;
-  };
-  programs.niri.enable = true;
-
   # Keyboard layout (default is us international)
   hardware.keyboard = {
     layout = "it";
     variant = "";
     options = "";
   };
+
+  # Wm
+  wayland-wm.enable = true;
 
   # ollama
   extraServices.ollama.enable = true;

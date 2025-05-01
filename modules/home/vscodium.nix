@@ -174,13 +174,13 @@
     php
   ];
 }
-# alejandra
-# eslint
-# italian language
-# markdownlint
-# nix ide
-# prettier
-# rainbow csv
-# version lens
-# xml tools
+# alejandra - kamadorueda
+# eslint - dbaeumer
+# italian language pack - ms-ceintl
+# markdownlint - davidanson
+# nix ide - jnoortheen
+# prettier - esbenp
+# rainbow csv - mechatroner
+# version lens - pflannery
+# xml - red hat
 

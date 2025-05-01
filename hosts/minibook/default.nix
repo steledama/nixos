@@ -14,7 +14,8 @@
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
-    ../../modules/system/desktop/wayland-wm.nix
+    ../../modules/system/desktop/wm.nix
+    ../../modules/system/desktop/niri.nix
   ];
 
   # Network
@@ -55,13 +56,8 @@
     user = "stele";
   };
 
-  # Windows managers
-  wayland-wm = {
-    enable = true;
-    enableHyprland = false;
-    enableNiri = true;
-  };
-  programs.niri.enable = true;
+  # Wm
+  wayland-wm.enable = true;
 
   # System-host-specific packages (additional to common ones)
   # environment.systemPackages = with pkgs; [

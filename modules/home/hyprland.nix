@@ -1,18 +1,22 @@
 # modules/home/hyprland.nix
-# Home-manager configuration for Hyprland using common Wayland components
+# Hyprland-specific configuration
 {
   config,
-  lib,
   pkgs,
+  lib,
   ...
 }: let
-  # Get keyboard settings from wayland-wm configuration
   cfg = config.wayland-wm;
-  colors = import ./colors.nix;
 in {
-  # Configuration condizionale dalla definizione wayland-wm
-  config = lib.mkIf (cfg.enable) {
-    # Hyprland Configuration
+  # Make sure the base is enabled
+  config = lib.mkIf cfg.enable {
+    # Hyprland-specific packages
+    home.packages = with pkgs; [
+      grim # Screenshot utility
+      slurp # Screen area selection
+    ];
+
+    # Hyprland configuration
     wayland.windowManager.hyprland = {
       enable = true;
       systemd.enable = true;
@@ -23,8 +27,6 @@ in {
           gaps_in = 5;
           gaps_out = 10;
           border_size = 2;
-          "col.active_border" = "rgba(${colors.blue}ee)";
-          "col.inactive_border" = "rgba(${colors.brightBlack}aa)";
           layout = "dwindle";
         };
 
@@ -42,34 +44,6 @@ in {
           };
         };
 
-        # Animations
-        animations = {
-          enabled = true;
-          bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-          animation = [
-            "windows, 1, 7, myBezier"
-            "windowsOut, 1, 7, default, popin 80%"
-            "border, 1, 10, default"
-            "fade, 1, 7, default"
-            "workspaces, 1, 6, default"
-          ];
-        };
-
-        # Decorations
-        decoration = {
-          rounding = 10;
-          blur = {
-            enabled = true;
-            size = 5;
-            passes = 3;
-            new_optimizations = true;
-          };
-          drop_shadow = true;
-          shadow_range = 15;
-          shadow_render_power = 3;
-          "col.shadow" = "rgba(0000001a)";
-        };
-
         # Window layout
         dwindle = {
           pseudotile = true;
@@ -77,7 +51,7 @@ in {
           force_split = 2;
         };
 
-        # Miscellaneous configurations
+        # Other Hyprland-specific configurations
         misc = {
           disable_hyprland_logo = true;
           disable_splash_rendering = true;
@@ -91,15 +65,6 @@ in {
         exec-once = [
           "waybar"
           "swaync"
-        ];
-
-        # Window rules
-        windowrule = [
-          "float,^(pavucontrol)$"
-          "float,^(nm-connection-editor)$"
-          "float,^(wlogout)$"
-          "float,title:^(Picture-in-Picture)$"
-          "pin,title:^(Picture-in-Picture)$"
         ];
 
         # Keyboard shortcuts

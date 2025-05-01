@@ -8,16 +8,15 @@
   imports = [
     ../default.nix
     ../../modules/home/wm.nix
+    ../../modules/home/niri.nix
   ];
   # User
   home.username = "stele";
   home.homeDirectory = "/home/${config.home.username}";
 
-  # Setup WMs with keyboard configuration
+  # Setup WMs (default us keyboard)
   wayland-wm = {
     enable = true;
-    enableHyprland = false;
-    enableNiri = true;
   };
 
   # User-specific packages (additional to common ones)

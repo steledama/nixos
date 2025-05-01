@@ -8,6 +8,7 @@
     ../default.nix
     ../../modules/home/syncthing.nix
     ../../modules/home/wm.nix
+    ../../modules/home/niri.nix
   ];
   # username
   home.username = "acquisti";
@@ -16,8 +17,6 @@
   # Setup WMs with keyboard configuration
   wayland-wm = {
     enable = true;
-    enableHyprland = false;
-    enableNiri = true;
     keyboard = {
       layout = "no";
       variant = "";
