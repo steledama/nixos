@@ -2,7 +2,6 @@
 # Niri-specific configuration
 {
   config,
-  pkgs,
   lib,
   ...
 }: let
@@ -11,7 +10,7 @@ in {
   # Make sure the base is enabled
   config = lib.mkIf cfg.enable {
     # Niri configuration
-    xdg.configFile."niri/config.kdl".text = lib.mkIf cfg.enableNiri ''
+    xdg.configFile."niri/config.kdl".text = ''
       input {
           keyboard {
               xkb {
