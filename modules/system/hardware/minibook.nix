@@ -32,6 +32,17 @@
   powerManagement = {
     enable = true;
     powertop.enable = true;
+
+    # Disable USB autosuspend
+    powerUpCommands = ''
+      # Disable USB autosuspend globally
+      echo -1 > /sys/module/usbcore/parameters/autosuspend
+
+      # Find and disable autosuspend for all USB devices
+      for usbdev in /sys/bus/usb/devices/*/power/control; do
+        echo on > $usbdev
+      done
+    '';
   };
   # Disable power-profiles-daemon to avoid conflicts with auto-cpufreq
   services.power-profiles-daemon.enable = false;

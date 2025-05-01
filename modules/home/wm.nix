@@ -509,13 +509,13 @@ in {
           Mod+Shift+S {
               show-hotkey-overlay
           }
-          Mod+T {
+          Mod+Return {
               spawn "alacritty"
           }
-          Mod+D {
+          Mod+A {
               spawn "fuzzel"
           }
-          Super+Alt+L {
+          Super+L {
               spawn "swaylock"
           }
           Mod+N {
