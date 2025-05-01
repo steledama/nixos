@@ -41,6 +41,7 @@ in {
       pamixer # Pulseaudio command line mixer
       brightnessctl # read and control device brightness
       waypaper # GUI wallpaper setter for Wayland-based window managers
+      swaybg # Wallpaper tool for Wayland compositors
       wlogout # Wayland based logout menu
       swaylock # Screen locker for Wayland
       swaynotificationcenter # Simple notification daemon with a GUI
