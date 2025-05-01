@@ -2,7 +2,6 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }: {
   imports = [
@@ -10,16 +9,15 @@
     ../../modules/home/wm.nix
   ];
 
-  # username
+  # User
   home.username = "stefano";
   home.homeDirectory = "/home/${config.home.username}";
 
-  # Setup keyboard configuration for Wayland WMs 
-  # e attivazione di entrambi i window manager
+  # Setup WMs with keyboard configuration
   wayland-wm = {
     enable = true;
-    enableHyprland = true; # Abilita Hyprland
-    enableNiri = true;     # Abilita Niri
+    enableHyprland = true;
+    enableNiri = true;
     keyboard = {
       layout = "it";
       variant = "";

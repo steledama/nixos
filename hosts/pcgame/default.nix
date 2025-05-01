@@ -12,33 +12,22 @@
     ../../modules/system/desktop/wayland-wm.nix
   ];
 
-  # Network configuration
+  # Network
   networking = {
     hostName = "pcgame";
     networkmanager.enable = true;
-
-    # Firewall
     firewall = {
       enable = true;
-      # TCP Ports
       allowedTCPPorts = [
         4662 # aMule eD2K data
         4672 # aMule incoming connections
         11435 # msty ollama service for llm
       ];
-      # UDP Ports
       allowedUDPPorts = [
         4665 # aMule eD2K
         4672 # aMule Kad
       ];
     };
-  };
-
-  # Keyboard layout (default is us international)
-  hardware.keyboard = {
-    layout = "it";
-    variant = "";
-    options = "";
   };
 
   # User
@@ -53,7 +42,6 @@
     # shell = pkgs.bash; # Default is zsh uncommet for bash shell
   };
 
-  # Home-manager
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
@@ -66,22 +54,30 @@
     backupFileExtension = "backup";
   };
 
-  # Docker
+  # Docker containers
   virtualisation.dockerSetup = {
     enable = true;
     user = "stefano";
     enableNvidia = true;
   };
 
-  extraServices.ollama.enable = true;
-
+  # Windows managers
   wayland-wm = {
     enable = true;
     enableHyprland = true;
     enableNiri = true;
   };
-
   programs.niri.enable = true;
+
+  # Keyboard layout (default is us international)
+  hardware.keyboard = {
+    layout = "it";
+    variant = "";
+    options = "";
+  };
+
+  # ollama
+  extraServices.ollama.enable = true;
 
   # System-host-specific packages (additional to common ones)
   # environment.systemPackages = with pkgs; [

@@ -14,12 +14,12 @@
     ../../modules/system/services/smb.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
+    ../../modules/system/desktop/wayland-wm.nix
   ];
 
-  # Network configuration
+  # Network
   networking = {
     hostName = "acquisti-laptop";
-
     networkmanager = {
       enable = true;
       settings = {
@@ -29,7 +29,6 @@
         };
       };
     };
-
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -41,7 +40,6 @@
       logRefusedConnections = true;
       logRefusedPackets = true;
     };
-
     hosts = {
       "127.0.0.1" = [
         "5.89.62.125" # work pubblic
@@ -49,13 +47,6 @@
         "192.168.1.16" # home wifi ((reserved))
       ];
     };
-  };
-
-  # Keyboard layout (default is us international)
-  hardware.keyboard = {
-    layout = "no"; # Norwegian layout
-    variant = "";
-    options = "compose:ralt";
   };
 
   # User
@@ -70,7 +61,6 @@
     # shell = pkgs.bash; # Default is zsh uncommet for bash shell
   };
 
-  # Home manager
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
@@ -83,11 +73,19 @@
     backupFileExtension = "backup";
   };
 
-  # Docker containers configuration specific to this host
+  # Docker containers
   virtualisation.dockerSetup = {
     enable = true;
     user = "acquisti";
   };
+
+  # Windows managers
+  wayland-wm = {
+    enable = true;
+    enableHyprland = false;
+    enableNiri = true;
+  };
+  programs.niri.enable = true;
 
   # Windows network share
   services.windowsShares = {
@@ -108,6 +106,13 @@
         credentialsFile = "/home/acquisti/nixos/smb-secrets";
       };
     };
+  };
+
+  # Keyboard layout
+  hardware.keyboard = {
+    layout = "no"; # Norwegian layout
+    variant = "";
+    options = "compose:ralt";
   };
 
   # System-host-specific packages (additional to common ones)

@@ -7,14 +7,22 @@
 }: {
   imports = [
     ../default.nix
+    ../../modules/home/wm.nix
   ];
-  # username
+  # User
   home.username = "stele";
   home.homeDirectory = "/home/${config.home.username}";
 
+  # Setup WMs with keyboard configuration
+  wayland-wm = {
+    enable = true;
+    enableHyprland = false;
+    enableNiri = true;
+  };
+
   # User-specific packages (additional to common ones)
-  # home.packages = with pkgs; [
-  # ];
+  home.packages = with pkgs; [
+  ];
 
   home.stateVersion = "23.11";
 }

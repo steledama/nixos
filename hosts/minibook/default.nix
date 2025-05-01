@@ -14,22 +14,16 @@
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
+    ../../modules/system/desktop/wayland-wm.nix
   ];
 
-  # Network configuration
+  # Network
   networking = {
     hostName = "minibook";
     networkmanager = {
       enable = true;
     };
   };
-
-  # Keyboard layout (default is us international)
-  # hardware.keyboard = {
-  #   layout = "it";
-  #   variant = "";
-  #   options = "";
-  # };
 
   # User
   users.users.stele = {
@@ -43,7 +37,6 @@
     # shell = pkgs.bash; # Default is zsh uncommet for bash shell
   };
 
-  # Home-manager
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
@@ -61,6 +54,14 @@
     enable = true;
     user = "stele";
   };
+
+  # Windows managers
+  wayland-wm = {
+    enable = true;
+    enableHyprland = false;
+    enableNiri = true;
+  };
+  programs.niri.enable = true;
 
   # System-host-specific packages (additional to common ones)
   # environment.systemPackages = with pkgs; [
