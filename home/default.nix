@@ -12,6 +12,7 @@
     ../modules/home/alacritty.nix
     ../modules/home/ui-theme.nix
     ../modules/home/yazi.nix
+    ../modules/home/vscodium.nix
   ];
 
   # Common packages for all users
@@ -26,8 +27,6 @@
     # Design tools
     gimp
     inkscape
-    # Development
-    vscode
   ];
 
   # Common editor configuration

@@ -109,7 +109,7 @@ in {
 
           # Date and time
           "custom/datetime" = {
-            exec = "date +'%A, %B %d  %H:%M'";
+            exec = "date +'%A %-d %B %H:%M'";
             interval = 30;
             format = "{}";
             tooltip = false;
@@ -509,13 +509,13 @@ in {
           Mod+Shift+S {
               show-hotkey-overlay
           }
-          Mod+Return {
+          Mod+M {
               spawn "alacritty"
           }
           Mod+A {
               spawn "fuzzel"
           }
-          Super+L {
+          Mod+L {
               spawn "swaylock"
           }
           Mod+N {

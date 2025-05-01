@@ -27,6 +27,22 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+
+      environment.sessionVariables = {
+    # Abilita il backend Wayland per Electron
+    NIXOS_OZONE_WL = "1";
+    # Per applicazioni Electron più vecchie
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    # Per applicazioni che richiedono accelerazione hardware
+    ELECTRON_ENABLE_LOGGING = "1";  # Per il debug
+    # Compatibilità con NVIDIA (anche se non hai NVIDIA, può aiutare in alcuni casi)
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    # Variabili per strumenti di debug
+    LIBGL_DEBUG = "verbose";
+  };
+  
     # Ensure XDG Portal is set up correctly
     xdg.portal = {
       enable = true;
