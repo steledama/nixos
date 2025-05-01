@@ -26,6 +26,12 @@ in {
           mouse {}
           trackpoint {}
       }
+      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: color: ''
+          output "${name}" {
+            background-color "${color}"
+          }
+        '')
+        cfg.wallpaper.outputColors)}
       layout {
           gaps 16
           center-focused-column "never"

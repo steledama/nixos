@@ -31,6 +31,22 @@ in {
         description = "Keyboard options";
       };
     };
+
+    # Wallpaper
+    wallpaper = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable wallpaper configuration";
+      };
+
+      # This is a map of output name -> color
+      outputColors = lib.mkOption {
+        type = lib.types.attrsOf lib.types.str;
+        default = {"DP-3" = "#003366";};
+        description = "Map of output names to background colors";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -40,8 +56,6 @@ in {
       wl-clipboard # Command-line copy/paste utilities for Wayland
       pamixer # Pulseaudio command line mixer
       brightnessctl # read and control device brightness
-      waypaper # GUI wallpaper setter for Wayland-based window managers
-      swaybg # Wallpaper tool for Wayland compositors
       wlogout # Wayland based logout menu
       swaylock # Screen locker for Wayland
       swaynotificationcenter # Simple notification daemon with a GUI
