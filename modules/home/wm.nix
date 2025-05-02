@@ -12,19 +12,18 @@
         default = "us";
         description = "Keyboard layout";
       };
-
       variant = lib.mkOption {
         type = lib.types.str;
         default = "intl";
         description = "Keyboard variant";
       };
-
       options = lib.mkOption {
         type = lib.types.str;
         default = "ralt:compose";
         description = "Keyboard options";
       };
     };
+
     wallpaper = {
       path = lib.mkOption {
         type = lib.types.str;
@@ -37,6 +36,7 @@
         description = "Image view mode";
       };
     };
+
     screenshots = {
       path = lib.mkOption {
         type = lib.types.str;
@@ -56,19 +56,6 @@
       libnotify # Library that sends desktop notifications to a notification daemon
       fuzzel # Wayland-native application launcher
     ];
-
-    # SwayLock
-    # programs.swaylock = {
-    #   enable = true;
-    #   settings = {
-    #     clock = true;
-    #     show-failed-attempts = true;
-    #     ignore-empty-password = true;
-    #     indicator-caps-lock = true;
-    #     indicator-radius = 100;
-    #     indicator-thickness = 7;
-    #   };
-    # };
 
     # Waybar
     programs.waybar = {
