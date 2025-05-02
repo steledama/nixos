@@ -22,6 +22,10 @@
       variant = "";
       options = "";
     };
+    wallpaper = {
+      imagePath = "$HOME/Immagini/wallpaper.jpg";
+      mode = "fill";
+    };
   };
 
   # User-specific packages (additional to common ones)

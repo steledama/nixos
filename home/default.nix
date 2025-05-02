@@ -10,7 +10,6 @@
     ../modules/home/shell-config.nix
     ../modules/home/neovim.nix
     ../modules/home/alacritty.nix
-    ../modules/home/ui-theme.nix
     ../modules/home/yazi.nix
     ../modules/home/vscodium.nix
   ];

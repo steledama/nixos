@@ -10,18 +10,6 @@
 in {
   options.wayland-wm = {
     enable = lib.mkEnableOption "Enable Wayland window managers";
-
-    enableHyprland = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to enable Hyprland at the system level";
-    };
-
-    enableNiri = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to enable Niri at the system level";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -38,44 +26,19 @@ in {
     # Ensure XDG Portal is set up correctly
     xdg.portal = {
       enable = true;
-      extraPortals = with pkgs;
-        [
-          xdg-desktop-portal-gtk
-          xdg-desktop-portal-wlr
-        ]
-        ++ lib.optional cfg.enableHyprland pkgs.xdg-desktop-portal-hyprland;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-wlr
+      ];
     };
 
-    # Enable the WMs at the system level if requested
-    programs = {
-      hyprland = lib.mkIf cfg.enableHyprland {
-        enable = true;
-        xwayland.enable = true;
-      };
-
-      niri = lib.mkIf cfg.enableNiri {
-        enable = true;
-        package = pkgs.niri-unstable;
-      };
-    };
-
-    # Common packages needed by Wayland WMs
+    # Common packages needed by Wayland WMs at system level
     environment.systemPackages = with pkgs; [
-      # Core Wayland utilities
-      wl-clipboard
-      wlr-randr
-      wayland-utils
-
-      # Notification system
-      libnotify
-
-      # Screenshot and screen recording
-      grim
-      slurp
-
-      # Brightness and volume control
-      pamixer
-      brightnessctl
+      wlr-randr # CLI for configuring displays on Wayland
+      wayland-utils # Wayland utilities (wayland-info)
+      wl-clipboard # Command-line copy/paste utilities for Wayland
+      pamixer # Pulseaudio command line mixer
+      brightnessctl # read and control device brightness
     ];
 
     # Ensure polkit is available for authentication dialogs

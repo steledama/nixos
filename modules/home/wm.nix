@@ -39,41 +39,42 @@ in {
         default = true;
         description = "Enable wallpaper configuration";
       };
-
-      # This is a map of output name -> color
-      outputColors = lib.mkOption {
-        type = lib.types.attrsOf lib.types.str;
-        default = {"DP-3" = "#003366";};
-        description = "Map of output names to background colors";
+      imagePath = lib.mkOption {
+        type = lib.types.str;
+        default = "$HOME/Pictures/wallpaper.jpg";
+        description = "Image path for wallpaper";
+      };
+      mode = lib.mkOption {
+        type = lib.types.enum ["stretch" "fill" "fit" "center" "tile"];
+        default = "fill";
+        description = "Image view mode";
       };
     };
   };
 
   config = lib.mkIf cfg.enable {
-    # Common packages for Wayland WMs
+    # Common packages for Wayland WMs at user level
     home.packages = with pkgs; [
-      fuzzel # Wayland-native application launcher
-      wl-clipboard # Command-line copy/paste utilities for Wayland
-      pamixer # Pulseaudio command line mixer
-      brightnessctl # read and control device brightness
-      wlogout # Wayland based logout menu
+      swaybg # Wallpaper tool for Wayland compositors
       swaylock # Screen locker for Wayland
-      swaynotificationcenter # Simple notification daemon with a GUI
+      wlogout # Wayland based logout menu
+      swaynotificationcenter # Simple notification daemon with a GUI (swaync)
       libnotify # Library that sends desktop notifications to a notification daemon
+      fuzzel # Wayland-native application launcher
     ];
 
     # SwayLock
-    programs.swaylock = {
-      enable = true;
-      settings = {
-        clock = true;
-        show-failed-attempts = true;
-        ignore-empty-password = true;
-        indicator-caps-lock = true;
-        indicator-radius = 100;
-        indicator-thickness = 7;
-      };
-    };
+    # programs.swaylock = {
+    #   enable = true;
+    #   settings = {
+    #     clock = true;
+    #     show-failed-attempts = true;
+    #     ignore-empty-password = true;
+    #     indicator-caps-lock = true;
+    #     indicator-radius = 100;
+    #     indicator-thickness = 7;
+    #   };
+    # };
 
     # Waybar
     programs.waybar = {
