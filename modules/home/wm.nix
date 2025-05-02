@@ -26,15 +26,22 @@
       };
     };
     wallpaper = {
-      imagePath = lib.mkOption {
+      path = lib.mkOption {
         type = lib.types.str;
-        default = "$HOME/Pictures/wallpaper.jpg";
+        default = "~/Pictures/wallpaper.jpg";
         description = "Image path for wallpaper";
       };
       mode = lib.mkOption {
         type = lib.types.enum ["stretch" "fill" "fit" "center" "tile"];
         default = "fill";
         description = "Image view mode";
+      };
+    };
+    screenshots = {
+      path = lib.mkOption {
+        type = lib.types.str;
+        default = "~/Pictures/Screenshot from %Y-%m-%d %H-%M-%S.png";
+        description = "Path template for saving screenshots";
       };
     };
   };

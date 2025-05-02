@@ -16,8 +16,11 @@
   # Setup WMs (default us keyboard)
   wm = {
     wallpaper = {
-      imagePath = "$HOME/Immagini/wallpaper.jpg";
+      path = "~/Immagini/wallpaper.jpg";
       mode = "fill";
+    };
+    screenshots = {
+      path = "~/Immagini/Screenshot from %Y-%m-%d %H-%M-%S.png";
     };
   };
 

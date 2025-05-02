@@ -23,8 +23,11 @@
       options = "";
     };
     wallpaper = {
-      imagePath = "$HOME/Immagini/wallpaper.jpg";
+      path = "~/Immagini/wallpaper.jpg";
       mode = "fill";
+    };
+    screenshots = {
+      path = "~/Immagini/Screenshot-%Y%m%d-%H%M%S.png";
     };
   };
 

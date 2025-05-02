@@ -51,8 +51,8 @@ in {
       }
       spawn-at-startup "waybar"
       spawn-at-startup "swaync"
-      spawn-at-startup "swaybg" "-m" "${cfg.wallpaper.mode}" "-i" "${cfg.wallpaper.imagePath}"
-      screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+      spawn-at-startup "swaybg" "-m" "${cfg.wallpaper.mode}" "-i" "${cfg.wallpaper.path}"
+      screenshot-path "${cfg.screenshots.path}"
       binds {
           Mod+Shift+S {
               show-hotkey-overlay
