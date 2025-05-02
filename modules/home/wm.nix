@@ -1,17 +1,11 @@
 # modules/home/wm.nix
 # Common configuration for all Wayland window managers
 {
-  config,
   pkgs,
   lib,
   ...
-}: let
-  cfg = config.wayland-wm;
-in {
-  options.wayland-wm = {
-    enable = lib.mkEnableOption "Enable common Wayland WM configuration";
-
-    # Keyboard layout
+}: {
+  options.wm = {
     keyboard = {
       layout = lib.mkOption {
         type = lib.types.str;
@@ -31,14 +25,7 @@ in {
         description = "Keyboard options";
       };
     };
-
-    # Wallpaper
     wallpaper = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Enable wallpaper configuration";
-      };
       imagePath = lib.mkOption {
         type = lib.types.str;
         default = "$HOME/Pictures/wallpaper.jpg";
@@ -52,7 +39,7 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
     # Common packages for Wayland WMs at user level
     home.packages = with pkgs; [
       swaybg # Wallpaper tool for Wayland compositors

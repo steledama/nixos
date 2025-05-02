@@ -14,8 +14,7 @@
   home.homeDirectory = "/home/${config.home.username}";
 
   # Setup WMs (default us keyboard)
-  wayland-wm = {
-    enable = true;
+  wm = {
     wallpaper = {
       imagePath = "$HOME/Immagini/wallpaper.jpg";
       mode = "fill";

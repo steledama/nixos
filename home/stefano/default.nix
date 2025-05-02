@@ -16,8 +16,7 @@
   home.homeDirectory = "/home/${config.home.username}";
 
   # Setup WMs
-  wayland-wm = {
-    enable = true;
+  wm = {
     keyboard = {
       layout = "it";
       variant = "";

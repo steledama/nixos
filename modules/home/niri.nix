@@ -5,10 +5,10 @@
   lib,
   ...
 }: let
-  cfg = config.wayland-wm;
+  cfg = config.wm;
 in {
   # Make sure the base is enabled
-  config = lib.mkIf cfg.enable {
+  config = {
     # Niri configuration
     xdg.configFile."niri/config.kdl".text = ''
       input {

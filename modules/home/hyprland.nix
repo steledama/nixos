@@ -6,10 +6,10 @@
   lib,
   ...
 }: let
-  cfg = config.wayland-wm;
+  cfg = config.wm;
 in {
   # Make sure the base is enabled
-  config = lib.mkIf cfg.enable {
+  config = {
     # Hyprland-specific packages
     home.packages = with pkgs; [
       grim # Screenshot utility

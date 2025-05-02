@@ -74,9 +74,6 @@
     options = "";
   };
 
-  # Wm
-  wayland-wm.enable = true;
-
   # ollama
   extraServices.ollama.enable = true;
 

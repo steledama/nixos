@@ -14,9 +14,8 @@
   home.username = "acquisti";
   home.homeDirectory = "/home/${config.home.username}";
 
-  # Setup WMs with keyboard configuration
-  wayland-wm = {
-    enable = true;
+  # Setup WMs
+  wm = {
     keyboard = {
       layout = "no";
       variant = "";

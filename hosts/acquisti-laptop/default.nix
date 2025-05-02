@@ -108,9 +108,6 @@
     options = "compose:ralt";
   };
 
-  # Wm
-  wayland-wm.enable = true;
-
   # System-host-specific packages (additional to common ones)
   # environment.systemPackages = with pkgs; [
   # Add system packages
