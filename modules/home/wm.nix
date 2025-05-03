@@ -40,7 +40,7 @@
     screenshots = {
       path = lib.mkOption {
         type = lib.types.str;
-        default = "~/Pictures/Screenshot from %Y-%m-%d %H-%M-%S.png";
+        default = "~/Pictures/Screenshot-%Y-%m-%d %H-%M-%S.png";
         description = "Path template for saving screenshots";
       };
     };
@@ -55,7 +55,48 @@
       swaynotificationcenter # Simple notification daemon with a GUI (swaync)
       libnotify # Library that sends desktop notifications to a notification daemon
       fuzzel # Wayland-native application launcher
+      (import ../../pkgs/screen-locker.nix {inherit pkgs;}) # Custom lock screen script
     ];
+
+    # Configurazione base di wlogout - estremamente minimalista
+    xdg.configFile."wlogout/layout".text = ''
+      {
+          "label" : "lock",
+          "action" : "screen-locker",
+          "text" : "Lock",
+          "keybind" : "l"
+      }
+      {
+          "label" : "hibernate",
+          "action" : "systemctl hibernate",
+          "text" : "Hibernate",
+          "keybind" : "h"
+      }
+      {
+          "label" : "logout",
+          "action" : "loginctl terminate-user $USER",
+          "text" : "Logout",
+          "keybind" : "e"
+      }
+      {
+          "label" : "shutdown",
+          "action" : "systemctl poweroff",
+          "text" : "Shutdown",
+          "keybind" : "s"
+      }
+      {
+          "label" : "suspend",
+          "action" : "systemctl suspend",
+          "text" : "Suspend",
+          "keybind" : "u"
+      }
+      {
+          "label" : "reboot",
+          "action" : "systemctl reboot",
+          "text" : "Reboot",
+          "keybind" : "r"
+      }
+    '';
 
     # Waybar
     programs.waybar = {

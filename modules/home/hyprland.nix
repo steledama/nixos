@@ -1,5 +1,4 @@
 # modules/home/hyprland.nix
-# Hyprland-specific configuration
 {
   config,
   pkgs,
@@ -10,12 +9,6 @@
 in {
   # Make sure the base is enabled
   config = {
-    # Hyprland-specific packages
-    home.packages = with pkgs; [
-      grim # Screenshot utility
-      slurp # Screen area selection
-    ];
-
     # Hyprland configuration
     wayland.windowManager.hyprland = {
       enable = true;
@@ -65,16 +58,23 @@ in {
         exec-once = [
           "waybar"
           "swaync"
+          "swaybg -m ${cfg.wallpaper.mode} -i ${cfg.wallpaper.path}"
         ];
 
         # Keyboard shortcuts
         bind = [
           # Basic applications
           "SUPER, T, exec, alacritty"
-          "SUPER, D, exec, fuzzel"
+          "SUPER, A, exec, fuzzel"
           "SUPER, B, exec, firefox"
           "SUPER, E, exec, nautilus"
           "SUPER, N, exec, swaync-client -t -sw"
+
+          # Lock screen - nuovo comando
+          "SUPER, L, exec, screen-locker"
+
+          # Logout menu - nuovo comando
+          "SUPER, Escape, exec, wlogout"
 
           # Window controls
           "SUPER, Q, killactive,"
@@ -154,8 +154,8 @@ in {
           ", Print, exec, grim - | wl-copy"
           "SHIFT, Print, exec, grim -g \"$(slurp)\" - | wl-copy"
 
-          # Logout menu
-          "SUPER, Escape, exec, wlogout"
+          # Spegni monitor
+          "SUPER SHIFT, P, exec, hyprctl dispatch dpms off"
         ];
 
         # Mouse bindings
