@@ -24,7 +24,13 @@
   environment.systemPackages = with pkgs; [
     wlr-randr # Wayland display configuration
     wayland-utils # Diagnostic utility for Wayland
+    light # Backlight control utility
+    brightnessctl # Alternative backlight utility
+    acpilight # Alternative for xbacklight (works on more hardware)
   ];
+
+  # Backlight
+  hardware.acpilight.enable = true;
 
   # Common services
   security.polkit.enable = true;
@@ -37,4 +43,13 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+
+  # udev rules for Backlight
+  services.udev.extraRules = ''
+    # Allow members of the video group to control brightness
+    SUBSYSTEM=="backlight", ACTION=="add", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
+    SUBSYSTEM=="backlight", ACTION=="add", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
+    SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/leds/%k/brightness"
+    SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
+  '';
 }

@@ -103,6 +103,12 @@ in {
         "XF86AudioLowerVolume" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
         "XF86AudioMute" { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
 
+        // Brightness controls
+        "XF86MonBrightnessUp" { spawn "brightnessctl" "set" "5%+"; }
+        "XF86MonBrightnessDown" { spawn "brightnessctl" "set" "5%-"; }
+        "Shift+XF86MonBrightnessUp" { spawn "brightnessctl" "set" "1%+"; }
+        "Shift+XF86MonBrightnessDown" { spawn "brightnessctl" "set" "1%-"; }
+
         // Window management
         "Mod+BackSpace" { close-window; }
         "Alt+Tab" { focus-column-right; }
@@ -186,6 +192,8 @@ in {
         "Ctrl+Print" { screenshot-screen; }
         "Alt+Print" { screenshot-window; }
 
+
+
         // System
         "Mod+Shift+P" { power-off-monitors; }
         "Mod+Alt+E" { quit; }
@@ -220,10 +228,9 @@ in {
       executable = true;
     };
 
-    # Make sure swaybg is installed
+    # Make sure niri is installed
     home.packages = with pkgs; [
       niri
-      swaybg
     ];
   };
 }

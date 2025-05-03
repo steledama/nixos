@@ -34,6 +34,7 @@
       "networkmanager"
       "wheel"
       "libvirtd"
+      "video"
     ];
     # shell = pkgs.bash; # Default is zsh uncommet for bash shell
   };
