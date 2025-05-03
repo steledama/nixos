@@ -22,10 +22,24 @@
       variant = "";
       options = "";
     };
-    wallpaper = {
-      path = "~/Immagini/wallpaper.jpg";
-      mode = "fill";
-    };
+    monitors = [
+      {
+        name = "eDP-1"; # run 'wlr-randr' for yours display names
+        mode = {
+          width = 2560;
+          height = 1080;
+        };
+        position = {
+          x = 0;
+          y = 0;
+        };
+        scale = 1.0;
+        wallpaper = {
+          path = "~/Immagini/wallpaper.jpg";
+          mode = "fill";
+        };
+      }
+    ];
     screenshots = {
       path = "~/Immagini/Schermate/Screenshot-%Y%m%d-%H%M%S.png";
     };

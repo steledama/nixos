@@ -24,17 +24,101 @@
       };
     };
 
-    wallpaper = {
-      path = lib.mkOption {
-        type = lib.types.str;
-        default = "~/Pictures/wallpaper.jpg";
-        description = "Image path for wallpaper";
-      };
-      mode = lib.mkOption {
-        type = lib.types.enum ["stretch" "fill" "fit" "center" "tile"];
-        default = "fill";
-        description = "Image view mode";
-      };
+    # Monitors configuration
+    monitors = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          name = lib.mkOption {
+            type = lib.types.str;
+            description = "Monitor name/identifier (e.g., 'DP-2', 'DSI-1' run 'wlr-randr' for yours display names)";
+          };
+          mode = lib.mkOption {
+            type = lib.types.submodule {
+              options = {
+                width = lib.mkOption {
+                  type = lib.types.int;
+                  description = "Width in pixels";
+                };
+                height = lib.mkOption {
+                  type = lib.types.int;
+                  description = "Height in pixels";
+                };
+              };
+            };
+            default = null;
+            description = "Monitor resolution";
+          };
+          position = lib.mkOption {
+            type = lib.types.submodule {
+              options = {
+                x = lib.mkOption {
+                  type = lib.types.int;
+                  default = 0;
+                  description = "X position of the monitor";
+                };
+                y = lib.mkOption {
+                  type = lib.types.int;
+                  default = 0;
+                  description = "Y position of the monitor";
+                };
+              };
+            };
+            default = {
+              x = 0;
+              y = 0;
+            };
+            description = "Monitor position coordinates";
+          };
+          scale = lib.mkOption {
+            type = lib.types.float;
+            default = 1.0;
+            description = "Monitor scale factor";
+          };
+          transform = lib.mkOption {
+            type = lib.types.enum [
+              "normal"
+              "90"
+              "180"
+              "270"
+              "flipped"
+              "flipped-90"
+              "flipped-180"
+              "flipped-270"
+              ""
+            ];
+            default = "normal";
+            description = "Monitor transform/rotation (e.g., '90', '270')";
+          };
+          wallpaper = lib.mkOption {
+            type = lib.types.submodule {
+              options = {
+                path = lib.mkOption {
+                  type = lib.types.str;
+                  default = "~/Pictures/wallpaper.jpg";
+                  description = "Path to wallpaper image for this monitor";
+                };
+                mode = lib.mkOption {
+                  type = lib.types.enum ["stretch" "fill" "fit" "center" "tile"];
+                  default = "fill";
+                  description = "Wallpaper display mode";
+                };
+              };
+            };
+            default = {};
+            description = "Wallpaper configuration for this monitor";
+          };
+        };
+      });
+      default = [
+        {
+          name = "default";
+          wallpaper = {
+            path = "~/Pictures/wallpaper.jpg";
+            mode = "fill";
+          };
+        }
+      ];
+      description = "List of monitor configurations including wallpapers";
     };
 
     screenshots = {
