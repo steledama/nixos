@@ -20,7 +20,7 @@
       mode = "fill";
     };
     screenshots = {
-      path = "~/Immagini/Screenshot from %Y-%m-%d %H-%M-%S.png";
+      path = "~/Immagini/Schermate/Screenshot-%Y%m%d-%H%M%S.png";
     };
   };
 
