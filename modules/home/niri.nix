@@ -26,6 +26,7 @@ in {
           mouse {}
           trackpoint {}
       }
+
       layout {
           gaps 16
           center-focused-column "never"
@@ -49,21 +50,12 @@ in {
               on
           }
       }
-      output "DP-2" {
-         mode "1920x1080"
-         position x=0 y=0
-         scale 1.0
-      }
-      output "DSI-1" {
-         mode "1200x1920"
-         position x=0 y=1080
-         scale 1.5
-         transform "270"
-      }
+
       spawn-at-startup "waybar"
       spawn-at-startup "swaync"
       spawn-at-startup "swaybg" "-m" "${cfg.wallpaper.mode}" "-i" "${cfg.wallpaper.path}"
       screenshot-path "${cfg.screenshots.path}"
+
       binds {
           Mod+Shift+S {
               show-hotkey-overlay
