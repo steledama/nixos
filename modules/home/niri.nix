@@ -82,7 +82,7 @@ in {
       // Spawn programs at startup
       spawn-at-startup "waybar"
       spawn-at-startup "swaync"
-      
+
       // Run autostart script which will set the wallpaper
       spawn-at-startup "${config.home.homeDirectory}/.config/niri/autostart.sh"
 
@@ -197,18 +197,23 @@ in {
     home.file.".config/niri/autostart.sh" = {
       text = ''
         #!/bin/sh
-        
+
         # Wait a bit for Niri to fully initialize
         sleep 3
-        
+
         # Kill any existing swaybg instances
         pkill -f swaybg || true
-        
-        # Set the wallpaper for each monitor
-        ${lib.concatMapStrings (monitor: ''
-        ${pkgs.swaybg}/bin/swaybg -m ${monitor.wallpaper.mode} -i ${monitor.wallpaper.path} ${if monitor.name != "default" then "-o ${monitor.name}" else ""} &
-        '') cfg.monitors}
-        
+
+        # Set all wallpapers with a single swaybg instance and multiple outputs
+        ${pkgs.swaybg}/bin/swaybg \
+        ${lib.concatStringsSep " \\\n  " (map (
+            monitor:
+              if monitor.name != "default"
+              then "-o ${monitor.name} -m ${monitor.wallpaper.mode} -i ${monitor.wallpaper.path}"
+              else ""
+          )
+          cfg.monitors)} &
+
         # Keep the script running to prevent its child processes from being terminated
         wait
       '';
