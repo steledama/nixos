@@ -24,7 +24,7 @@
     };
     monitors = [
       {
-        name = "eDP-1"; # run 'wlr-randr' for yours display names
+        name = "DP-3";
         mode = {
           width = 2560;
           height = 1080;
@@ -34,6 +34,7 @@
           y = 0;
         };
         scale = 1.0;
+        transform = "normal";
         wallpaper = {
           path = "~/Immagini/wallpaper.jpg";
           mode = "fill";

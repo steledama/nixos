@@ -1,4 +1,4 @@
-# modules/home/niri.nix - Correzione finale
+# modules/home/niri.nix
 {
   config,
   lib,
@@ -82,20 +82,9 @@ in {
       // Spawn programs at startup
       spawn-at-startup "waybar"
       spawn-at-startup "swaync"
-      ${lib.concatStringsSep "\n" (map (
-          monitor:
-            if monitor.name != "default"
-            then ''
-              spawn-at-startup "swaybg" "-m" "${monitor.wallpaper.mode}" "-i" "${monitor.wallpaper.path}" "-o" "${monitor.name}"
-            ''
-            else ''
-              spawn-at-startup "swaybg" "-m" "${monitor.wallpaper.mode}" "-i" "${monitor.wallpaper.path}"
-            ''
-        ) (
-          if builtins.length (builtins.filter (m: m.name != "default") cfg.monitors) > 0
-          then builtins.filter (m: m.name != "default") cfg.monitors
-          else [(builtins.head cfg.monitors)]
-        ))}
+      
+      // Run autostart script which will set the wallpaper
+      spawn-at-startup "${config.home.homeDirectory}/.config/niri/autostart.sh"
 
       // Key bindings
       binds {
@@ -204,9 +193,32 @@ in {
       }
     '';
 
-    # Ensure Niri is installed
+    # Create the autostart script
+    home.file.".config/niri/autostart.sh" = {
+      text = ''
+        #!/bin/sh
+        
+        # Wait a bit for Niri to fully initialize
+        sleep 3
+        
+        # Kill any existing swaybg instances
+        pkill -f swaybg || true
+        
+        # Set the wallpaper for each monitor
+        ${lib.concatMapStrings (monitor: ''
+        ${pkgs.swaybg}/bin/swaybg -m ${monitor.wallpaper.mode} -i ${monitor.wallpaper.path} ${if monitor.name != "default" then "-o ${monitor.name}" else ""} &
+        '') cfg.monitors}
+        
+        # Keep the script running to prevent its child processes from being terminated
+        wait
+      '';
+      executable = true;
+    };
+
+    # Make sure swaybg is installed
     home.packages = with pkgs; [
       niri
+      swaybg
     ];
   };
 }

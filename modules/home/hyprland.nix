@@ -58,7 +58,9 @@ in {
         exec-once = [
           "waybar"
           "swaync"
-          "swaybg -m ${cfg.wallpaper.mode} -i ${cfg.wallpaper.path}"
+          # Use the first monitor's wallpaper settings
+          "${lib.optionalString (builtins.length cfg.monitors > 0) 
+            "swaybg -m ${(builtins.elemAt cfg.monitors 0).wallpaper.mode} -i ${(builtins.elemAt cfg.monitors 0).wallpaper.path}"}"
         ];
 
         # Keyboard shortcuts
@@ -70,10 +72,10 @@ in {
           "SUPER, E, exec, nautilus"
           "SUPER, N, exec, swaync-client -t -sw"
 
-          # Lock screen - nuovo comando
+          # Lock screen
           "SUPER, L, exec, screen-locker"
 
-          # Logout menu - nuovo comando
+          # Logout menu
           "SUPER, Escape, exec, wlogout"
 
           # Window controls
@@ -154,7 +156,7 @@ in {
           ", Print, exec, grim - | wl-copy"
           "SHIFT, Print, exec, grim -g \"$(slurp)\" - | wl-copy"
 
-          # Spegni monitor
+          # Turn off monitor
           "SUPER SHIFT, P, exec, hyprctl dispatch dpms off"
         ];
 
