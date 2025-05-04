@@ -92,22 +92,22 @@ in {
         "Mod+Shift+S" { show-hotkey-overlay; }
 
         // Applications
-        "Mod+M" { spawn "alacritty"; }
-        "Mod+A" { spawn "fuzzel"; }
-        "Mod+N" { spawn "swaync-client" "-t" "-sw"; }
-        "Mod+L" { spawn "screen-locker"; }
-        "Mod+Escape" { spawn "wlogout"; }
+        "Mod+M" hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
+        "Mod+A" hotkey-overlay-title="Application Launcher" { spawn "fuzzel"; }
+        "Mod+N" hotkey-overlay-title="Toggle Notifications" { spawn "swaync-client" "-t" "-sw"; }
+        "Mod+L" hotkey-overlay-title="Lock Screen" { spawn "screen-locker"; }
+        "Mod+Escape" hotkey-overlay-title="Logout Menu" { spawn "wlogout"; }
 
         // Audio controls
-        "XF86AudioRaiseVolume" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
-        "XF86AudioLowerVolume" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
-        "XF86AudioMute" { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+        "XF86AudioRaiseVolume" hotkey-overlay-title="Volume Up" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
+        "XF86AudioLowerVolume" hotkey-overlay-title="Volume Down" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+        "XF86AudioMute" hotkey-overlay-title="Toggle Mute" { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
 
         // Brightness controls
-        "XF86MonBrightnessUp" { spawn "brightnessctl" "set" "5%+"; }
-        "XF86MonBrightnessDown" { spawn "brightnessctl" "set" "5%-"; }
-        "Shift+XF86MonBrightnessUp" { spawn "brightnessctl" "set" "1%+"; }
-        "Shift+XF86MonBrightnessDown" { spawn "brightnessctl" "set" "1%-"; }
+        "XF86MonBrightnessUp" hotkey-overlay-title="Brightness Up" { spawn "brightnessctl" "set" "5%+"; }
+        "XF86MonBrightnessDown" hotkey-overlay-title="Brightness Down" { spawn "brightnessctl" "set" "5%-"; }
+        "Shift+XF86MonBrightnessUp" hotkey-overlay-title="Brightness Fine Up" { spawn "brightnessctl" "set" "1%+"; }
+        "Shift+XF86MonBrightnessDown" hotkey-overlay-title="Brightness Fine Down" { spawn "brightnessctl" "set" "1%-"; }
 
         // Window management
         "Mod+BackSpace" { close-window; }
@@ -188,14 +188,12 @@ in {
         "Mod+Space" { toggle-column-tabbed-display; }
 
         // Screenshots
-        "Print" { screenshot; }
-        "Ctrl+Print" { screenshot-screen; }
-        "Alt+Print" { screenshot-window; }
-
-
+        "Print" hotkey-overlay-title="Interactive Screenshot" { screenshot; }
+        "Ctrl+Print" hotkey-overlay-title="Screenshot Current Screen" { screenshot-screen; }
+        "Alt+Print" hotkey-overlay-title="Screenshot Current Window" { screenshot-window; }
 
         // System
-        "Mod+Shift+P" { power-off-monitors; }
+        "Mod+Shift+P" hotkey-overlay-title="Power Off Monitors" { power-off-monitors; }
         "Mod+Alt+E" { quit; }
         "Ctrl+Alt+Delete" { quit; }
       }

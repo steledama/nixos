@@ -1,7 +1,6 @@
 # modules/home/hyprland.nix
 {
   config,
-  pkgs,
   lib,
   ...
 }: let
@@ -59,61 +58,53 @@ in {
           "waybar"
           "swaync"
           # Use the first monitor's wallpaper settings
-          "${lib.optionalString (builtins.length cfg.monitors > 0) 
+          "${lib.optionalString (builtins.length cfg.monitors > 0)
             "swaybg -m ${(builtins.elemAt cfg.monitors 0).wallpaper.mode} -i ${(builtins.elemAt cfg.monitors 0).wallpaper.path}"}"
         ];
 
         # Keyboard shortcuts
         bind = [
-          # Basic applications
-          "SUPER, T, exec, alacritty"
+          # Basic applications - Matched with Niri
+          "SUPER, M, exec, alacritty"
           "SUPER, A, exec, fuzzel"
-          "SUPER, B, exec, firefox"
-          "SUPER, E, exec, nautilus"
           "SUPER, N, exec, swaync-client -t -sw"
-
-          # Lock screen
           "SUPER, L, exec, screen-locker"
-
-          # Logout menu
           "SUPER, Escape, exec, wlogout"
 
+          # Additional applications
+          "SUPER, B, exec, firefox"
+          "SUPER, E, exec, nautilus"
+
           # Window controls
-          "SUPER, Q, killactive,"
+          "SUPER, BackSpace, killactive,"
           "SUPER, Space, togglefloating,"
           "SUPER, F, fullscreen,"
-          "SUPER, P, pseudo,"
-          "SUPER, J, togglesplit,"
+          "SUPER SHIFT, F, fullscreen, 1"
+          "SUPER, V, togglefloating,"
 
-          # Window focus navigation
+          # Window focus navigation - Arrow keys
           "SUPER, Left, movefocus, l"
           "SUPER, Right, movefocus, r"
           "SUPER, Up, movefocus, u"
           "SUPER, Down, movefocus, d"
-          "SUPER, H, movefocus, l"
-          "SUPER, L, movefocus, r"
-          "SUPER, K, movefocus, u"
-          "SUPER, J, movefocus, d"
 
-          # Window move
-          "SUPER SHIFT, Left, movewindow, l"
-          "SUPER SHIFT, Right, movewindow, r"
-          "SUPER SHIFT, Up, movewindow, u"
-          "SUPER SHIFT, Down, movewindow, d"
-          "SUPER SHIFT, H, movewindow, l"
-          "SUPER SHIFT, L, movewindow, r"
-          "SUPER SHIFT, K, movewindow, u"
-          "SUPER SHIFT, J, movewindow, d"
+          # Window movement - Controls + Arrow Keys
+          "SUPER CTRL, Left, movewindow, l"
+          "SUPER CTRL, Right, movewindow, r"
+          "SUPER CTRL, Up, movewindow, u"
+          "SUPER CTRL, Down, movewindow, d"
 
-          # Window resize
-          "SUPER ALT, Left, resizeactive, -20 0"
-          "SUPER ALT, Right, resizeactive, 20 0"
-          "SUPER ALT, Up, resizeactive, 0 -20"
-          "SUPER ALT, Down, resizeactive, 0 20"
-          "SUPER ALT, H, resizeactive, -20 0"
-          "SUPER ALT, L, resizeactive, 20 0"
-          "SUPER ALT, K, resizeactive, 0 -20"
-          "SUPER ALT, J, resizeactive, 0 20"
+          # Monitor control - Shift + Arrow Keys
+          "SUPER SHIFT, Left, focusmonitor, l"
+          "SUPER SHIFT, Right, focusmonitor, r"
+          "SUPER SHIFT, Up, focusmonitor, u"
+          "SUPER SHIFT, Down, focusmonitor, d"
+
+          # Move to monitor - Shift + Ctrl + Arrow Keys
+          "SUPER SHIFT CTRL, Left, movecurrentworkspacetomonitor, l"
+          "SUPER SHIFT CTRL, Right, movecurrentworkspacetomonitor, r"
+          "SUPER SHIFT CTRL, Up, movecurrentworkspacetomonitor, u"
+          "SUPER SHIFT CTRL, Down, movecurrentworkspacetomonitor, d"
 
           # Window/application navigation
           "ALT, Tab, cyclenext,"
@@ -131,33 +122,64 @@ in {
           "SUPER, 9, workspace, 9"
 
           # Additional workspace navigation
-          "SUPER CTRL, Right, workspace, e+1"
-          "SUPER CTRL, Left, workspace, e-1"
           "SUPER, Page_Down, workspace, e+1"
           "SUPER, Page_Up, workspace, e-1"
 
-          # Moving windows between workspaces
-          "SUPER SHIFT, 1, movetoworkspace, 1"
-          "SUPER SHIFT, 2, movetoworkspace, 2"
-          "SUPER SHIFT, 3, movetoworkspace, 3"
-          "SUPER SHIFT, 4, movetoworkspace, 4"
-          "SUPER SHIFT, 5, movetoworkspace, 5"
-          "SUPER SHIFT, 6, movetoworkspace, 6"
-          "SUPER SHIFT, 7, movetoworkspace, 7"
-          "SUPER SHIFT, 8, movetoworkspace, 8"
-          "SUPER SHIFT, 9, movetoworkspace, 9"
-          "SUPER SHIFT, Right, movetoworkspace, e+1"
-          "SUPER SHIFT, Left, movetoworkspace, e-1"
-          "SUPER SHIFT, Page_Down, movetoworkspace, e+1"
-          "SUPER SHIFT, Page_Up, movetoworkspace, e-1"
+          # Moving windows between workspaces - Ctrl + Number
+          "SUPER CTRL, 1, movetoworkspace, 1"
+          "SUPER CTRL, 2, movetoworkspace, 2"
+          "SUPER CTRL, 3, movetoworkspace, 3"
+          "SUPER CTRL, 4, movetoworkspace, 4"
+          "SUPER CTRL, 5, movetoworkspace, 5"
+          "SUPER CTRL, 6, movetoworkspace, 6"
+          "SUPER CTRL, 7, movetoworkspace, 7"
+          "SUPER CTRL, 8, movetoworkspace, 8"
+          "SUPER CTRL, 9, movetoworkspace, 9"
+
+          # Move to workspace with Page Up/Down
+          "SUPER CTRL, Page_Down, movetoworkspace, e+1"
+          "SUPER CTRL, Page_Up, movetoworkspace, e-1"
+
+          # Window resize
+          "SUPER ALT, Left, resizeactive, -20 0"
+          "SUPER ALT, Right, resizeactive, 20 0"
+          "SUPER ALT, Up, resizeactive, 0 -20"
+          "SUPER ALT, Down, resizeactive, 0 20"
+
+          # Size adjustments
+          "SUPER, minus, splitratio, -0.1"
+          "SUPER, equal, splitratio, 0.1"
 
           # Screenshots
-          "SUPER SHIFT, S, exec, grim -g \"$(slurp)\" - | wl-copy"
-          ", Print, exec, grim - | wl-copy"
-          "SHIFT, Print, exec, grim -g \"$(slurp)\" - | wl-copy"
+          "PRINT, exec, grim - | wl-copy"
+          "CTRL PRINT, exec, grim -o $(hyprctl activemonitor -j | jq -r '.name') - | wl-copy" # Screenshot current screen
+          "ALT PRINT, exec, grim -g \"$(hyprctl activewindow -j | jq -r '\"0,\(.at[1]),\(.size[0]),\(.size[1])\"')\" - | wl-copy" # Screenshot current window
+          "SUPER SHIFT, S, exec, grim -g \"$(slurp)\" - | wl-copy" # Interactive screenshot selection
 
           # Turn off monitor
           "SUPER SHIFT, P, exec, hyprctl dispatch dpms off"
+
+          # System
+          "SUPER ALT, E, exit,"
+          "CTRL ALT, Delete, exit,"
+        ];
+
+        # Media keys
+        bindel = [
+          # Volume controls
+          "XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"
+          "XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"
+          "XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+
+          # Brightness controls
+          "XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+          "XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+        ];
+
+        bindle = [
+          # Fine-grained brightness controls with Shift
+          "SHIFT XF86MonBrightnessUp, exec, brightnessctl set 1%+"
+          "SHIFT XF86MonBrightnessDown, exec, brightnessctl set 1%-"
         ];
 
         # Mouse bindings
