@@ -55,6 +55,7 @@ in {
         exec-once = [
           "waybar"
           "swaync"
+          "nm-applet --indicator"
           # Use the first monitor's wallpaper settings
           "${lib.optionalString (builtins.length cfg.monitors > 0)
             "swaybg -m ${(builtins.elemAt cfg.monitors 0).wallpaper.mode} -i ${(builtins.elemAt cfg.monitors 0).wallpaper.path}"}"
