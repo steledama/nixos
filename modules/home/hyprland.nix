@@ -90,10 +90,10 @@ in {
           "ALT SHIFT, Tab, cyclenext, prev"
 
           # Mod + Arrow Keys - Window focus
-          "SUPER, Left, focuswindow, l"
-          "SUPER, Right, focuswindow, r"
-          "SUPER, Up, focuswindow, u"
-          "SUPER, Down, focuswindow, d"
+          "SUPER, Left, movefocus, l"
+          "SUPER, Right, movefocus, r"
+          "SUPER, Up, movefocus, u"
+          "SUPER, Down, movefocus, d"
 
           # Mod + Number - Workspace focus
           "SUPER, 1, workspace, 1"
