@@ -89,14 +89,100 @@ in {
       // Key bindings
       binds {
         // Hotkey overlay
-        "Mod+Shift+S" { show-hotkey-overlay; }
+        "Mod+F1" { show-hotkey-overlay; }
 
-        // Applications
-        "Mod+M" hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
-        "Mod+A" hotkey-overlay-title="Application Launcher" { spawn "fuzzel"; }
-        "Mod+N" hotkey-overlay-title="Toggle Notifications" { spawn "swaync-client" "-t" "-sw"; }
+        // System
+        "Mod+Shift+P" hotkey-overlay-title="Power Off Monitors" { power-off-monitors; }
         "Mod+L" hotkey-overlay-title="Lock Screen" { spawn "screen-locker"; }
         "Mod+Escape" hotkey-overlay-title="Logout Menu" { spawn "wlogout"; }
+        "Ctrl+Alt+Delete" { quit; }
+
+        // Applications
+        "Mod+A" hotkey-overlay-title="Application Launcher" { spawn "fuzzel"; }
+        "Mod+B" hotkey-overlay-title="Open Browser" { spawn "firefox"; }
+        "Mod+E" hotkey-overlay-title="File explorer" { spawn "nautilus"; }
+        "Mod+M" hotkey-overlay-title="Mail client" { spawn "thunderbird"; }
+        "Mod+N" hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
+
+        // Window size
+        "Mod+BackSpace" { close-window; }
+        "Mod+Shift+F" { fullscreen-window; }
+        "Mod+F" { maximize-column; }
+        "Mod+R" { switch-preset-column-width; }
+        "Mod+C" { center-column; }
+        "Mod+Minus" { set-column-width "-10%"; }
+        "Mod+Equal" { set-column-width "+10%"; }
+        "Mod+Shift+Minus" { set-window-height "-10%"; }
+        "Mod+Shift+Equal" { set-window-height "+10%"; }
+        "Mod+V" { toggle-window-floating; }
+
+        // Alt - Window focus
+        "Alt+Tab" { focus-column-right-or-first; }
+        "Alt+Shift+Tab" { focus-column-left-or-last; }
+        "Alt+BackSpace" { focus-window-previous; }
+
+        // Arrow Keys - Column/Window focus
+        "Mod+Left" { focus-column-left; }
+        "Mod+Right" { focus-column-right; }
+        "Mod+Up" { focus-window-up; }
+        "Mod+Down" { focus-window-down; }
+
+        // Shift + Arrow Keys - Monitor focus
+        "Mod+Shift+Left" { focus-monitor-left; }
+        "Mod+Shift+Down" { focus-monitor-down; }
+        "Mod+Shift+Up" { focus-monitor-up; }
+        "Mod+Shift+Right" { focus-monitor-right; }
+
+        // Ctrl + Arrow Keys - Column/Window movement
+        "Mod+Ctrl+Left" { move-column-left; }
+        "Mod+Ctrl+Right" { move-column-right; }
+        "Mod+Ctrl+Down" { move-window-down; }
+        "Mod+Ctrl+Up" { move-window-up; }
+
+        // Ctrl + Shift + Arrow Keys - Column movement - Monitor
+        "Mod+Shift+Ctrl+Left" { move-column-to-monitor-left; }
+        "Mod+Shift+Ctrl+Down" { move-column-to-monitor-down; }
+        "Mod+Shift+Ctrl+Up" { move-column-to-monitor-up; }
+        "Mod+Shift+Ctrl+Right" { move-column-to-monitor-right; }
+
+        // Number - Workspace focus
+        ${lib.concatStringsSep "\n  " (builtins.genList (
+          i: let
+            num = i + 1;
+          in ''
+            "Mod+${toString num}" { focus-workspace ${toString num}; }''
+        )
+        9)}
+
+        // Ctrl + Number - Column movement - Workspaces
+        ${lib.concatStringsSep "\n  " (builtins.genList (
+          i: let
+            num = i + 1;
+          in ''
+            "Mod+Ctrl+${toString num}" { move-column-to-workspace ${toString num}; }''
+        )
+        9)}
+
+        // Window movement - Others
+        "Mod+BracketLeft" { consume-or-expel-window-left; }
+        "Mod+BracketRight" { consume-or-expel-window-right; }
+        "Mod+Comma" { consume-window-into-column; }
+        "Mod+Period" { expel-window-from-column; }
+        "Mod+Space" { toggle-column-tabbed-display; }
+        "Mod+Shift+V" { switch-focus-between-floating-and-tiling; }
+
+        // Page Up/Down - Workspace focus
+        "Mod+Page_Down" { focus-workspace-down; }
+        "Mod+Page_Up" { focus-workspace-up; }
+
+        // Ctrl + Page Up/Down - Column movement - Workspaces
+        "Mod+Ctrl+Page_Down" { move-column-to-workspace-down; }
+        "Mod+Ctrl+Page_Up" { move-column-to-workspace-up; }
+
+        // Screenshots
+        "Print" hotkey-overlay-title="Interactive Screenshot" { screenshot; }
+        "Shift+Print" hotkey-overlay-title="Screenshot Current Screen" { screenshot-screen; }
+        "Alt+Print" hotkey-overlay-title="Screenshot Current Window" { screenshot-window; }
 
         // Audio controls
         "XF86AudioRaiseVolume" hotkey-overlay-title="Volume Up" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
@@ -108,94 +194,6 @@ in {
         "XF86MonBrightnessDown" hotkey-overlay-title="Brightness Down" { spawn "brightnessctl" "set" "5%-"; }
         "Shift+XF86MonBrightnessUp" hotkey-overlay-title="Brightness Fine Up" { spawn "brightnessctl" "set" "1%+"; }
         "Shift+XF86MonBrightnessDown" hotkey-overlay-title="Brightness Fine Down" { spawn "brightnessctl" "set" "1%-"; }
-
-        // Window management
-        "Mod+BackSpace" { close-window; }
-        "Alt+Tab" { focus-column-right; }
-        "Alt+Shift+Tab" { focus-column-left; }
-
-        // Direction-based navigation
-        "Mod+Left" { focus-column-left; }
-        "Mod+Down" { focus-window-down; }
-        "Mod+Up" { focus-window-up; }
-        "Mod+Right" { focus-column-right; }
-
-        // Window movement
-        "Mod+Ctrl+Left" { move-column-left; }
-        "Mod+Ctrl+Down" { move-window-down; }
-        "Mod+Ctrl+Up" { move-window-up; }
-        "Mod+Ctrl+Right" { move-column-right; }
-
-        // Monitor focus
-        "Mod+Shift+Left" { focus-monitor-left; }
-        "Mod+Shift+Down" { focus-monitor-down; }
-        "Mod+Shift+Up" { focus-monitor-up; }
-        "Mod+Shift+Right" { focus-monitor-right; }
-
-        // Move to monitor
-        "Mod+Shift+Ctrl+Left" { move-column-to-monitor-left; }
-        "Mod+Shift+Ctrl+Down" { move-column-to-monitor-down; }
-        "Mod+Shift+Ctrl+Up" { move-column-to-monitor-up; }
-        "Mod+Shift+Ctrl+Right" { move-column-to-monitor-right; }
-
-        // Workspace navigation
-        "Mod+Page_Down" { focus-workspace-down; }
-        "Mod+Page_Up" { focus-workspace-up; }
-
-        // Move to workspace
-        "Mod+Ctrl+Page_Down" { move-column-to-workspace-down; }
-        "Mod+Ctrl+Page_Up" { move-column-to-workspace-up; }
-
-        // Workspace focus (1-9)
-        ${lib.concatStringsSep "\n  " (builtins.genList (
-          i: let
-            num = i + 1;
-          in ''
-            "Mod+${toString num}" { focus-workspace ${toString num}; }''
-        )
-        9)}
-
-        // Move to workspace (1-9)
-        ${lib.concatStringsSep "\n  " (builtins.genList (
-          i: let
-            num = i + 1;
-          in ''
-            "Mod+Ctrl+${toString num}" { move-column-to-workspace ${toString num}; }''
-        )
-        9)}
-
-        // Consume/Expel window management
-        "Mod+BracketLeft" { consume-or-expel-window-left; }
-        "Mod+BracketRight" { consume-or-expel-window-right; }
-
-        // Column operations
-        "Mod+Comma" { consume-window-into-column; }
-        "Mod+Period" { expel-window-from-column; }
-        "Mod+R" { switch-preset-column-width; }
-        "Mod+F" { maximize-column; }
-        "Mod+Shift+F" { fullscreen-window; }
-        "Mod+C" { center-column; }
-
-        // Size adjustments
-        "Mod+Minus" { set-column-width "-10%"; }
-        "Mod+Equal" { set-column-width "+10%"; }
-        "Mod+Shift+Minus" { set-window-height "-10%"; }
-        "Mod+Shift+Equal" { set-window-height "+10%"; }
-
-        // Window modes
-        "Mod+V" { toggle-window-floating; }
-        "Mod+Shift+V" { switch-focus-between-floating-and-tiling; }
-        "Mod+Space" { toggle-column-tabbed-display; }
-
-        // Screenshots
-        "Print" hotkey-overlay-title="Interactive Screenshot" { screenshot; }
-        "Ctrl+Print" hotkey-overlay-title="Screenshot Current Screen" { screenshot-screen; }
-        "Alt+Print" hotkey-overlay-title="Screenshot Current Window" { screenshot-window; }
-
-        // System
-        "Mod+Shift+P" hotkey-overlay-title="Power Off Monitors" { power-off-monitors; }
-        "Mod+Alt+E" { quit; }
-        "Ctrl+Alt+Delete" { quit; }
       }
     '';
 

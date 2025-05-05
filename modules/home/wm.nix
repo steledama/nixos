@@ -139,6 +139,8 @@
       swaynotificationcenter # Simple notification daemon with a GUI (swaync)
       libnotify # Library that sends desktop notifications to a notification daemon
       fuzzel # Wayland-native application launcher
+      networkmanagerapplet # NetworkManager control applet
+      pavucontrol # PulseAudio Volume Control
       (import ../../pkgs/screen-locker.nix {inherit pkgs;}) # Custom lock screen script
     ];
 
@@ -183,6 +185,7 @@
     '';
 
     # Waybar
+    # Waybar
     programs.waybar = {
       enable = true;
       systemd.enable = false;
@@ -201,7 +204,7 @@
           # Menu button
           "custom/menu" = {
             format = "󰀻";
-            tooltip = "Application Menu";
+            tooltip = false; # Disabled tooltip as it was redundant
             on-click = "fuzzel";
           };
 
@@ -216,7 +219,7 @@
           # Notification center
           "custom/notifications" = {
             format = "󰂚";
-            tooltip = "Notifications";
+            tooltip = false; # Disabled tooltip as it was redundant
             on-click = "swaync-client -t -sw";
             on-click-right = "swaync-client -C";
           };
@@ -232,7 +235,7 @@
             format-ethernet = "󰈀 Connected";
             format-disconnected = "󰤭 Disconnected";
             tooltip-format = "{ifname}: {ipaddr}/{cidr}";
-            on-click = "nm-connection-editor";
+            on-click = "nm-connection-editor"; # This should work if network-manager-applet is installed
           };
 
           # Audio control
@@ -242,7 +245,9 @@
             format-icons = {
               default = ["󰕿" "󰖀" "󰕾"];
             };
-            on-click = "pavucontrol";
+            on-click = "pavucontrol"; # This is a valid GUI mixer
+            on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+";
+            on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-";
           };
 
           # Battery status
@@ -255,12 +260,13 @@
               warning = 30;
               critical = 15;
             };
+            tooltip-format = "{capacity}% - {time} remaining"; # Battery time remaining info
           };
 
           # Logout button
           "custom/wlogout" = {
             format = "⏻";
-            tooltip = "Session";
+            tooltip = false; # Disabled tooltip as it was redundant
             on-click = "wlogout";
           };
         };
@@ -356,10 +362,6 @@
           color: #bb9af7;
           border-radius: 8px;
           padding: 0 12px;
-        }
-
-        #battery:hover {
-          background-color: rgba(187, 154, 247, 0.13);
         }
 
         #battery.warning {
