@@ -121,31 +121,13 @@ in {
         "Alt+Shift+Tab" { focus-column-left-or-last; }
         "Alt+BackSpace" { focus-window-previous; }
 
-        // Arrow Keys - Column/Window focus
+        // Mod + Arrow Keys - Column/Window focus
         "Mod+Left" { focus-column-left; }
         "Mod+Right" { focus-column-right; }
         "Mod+Up" { focus-window-up; }
         "Mod+Down" { focus-window-down; }
 
-        // Shift + Arrow Keys - Monitor focus
-        "Mod+Shift+Left" { focus-monitor-left; }
-        "Mod+Shift+Down" { focus-monitor-down; }
-        "Mod+Shift+Up" { focus-monitor-up; }
-        "Mod+Shift+Right" { focus-monitor-right; }
-
-        // Ctrl + Arrow Keys - Column/Window movement
-        "Mod+Ctrl+Left" { move-column-left; }
-        "Mod+Ctrl+Right" { move-column-right; }
-        "Mod+Ctrl+Down" { move-window-down; }
-        "Mod+Ctrl+Up" { move-window-up; }
-
-        // Ctrl + Shift + Arrow Keys - Column movement - Monitor
-        "Mod+Shift+Ctrl+Left" { move-column-to-monitor-left; }
-        "Mod+Shift+Ctrl+Down" { move-column-to-monitor-down; }
-        "Mod+Shift+Ctrl+Up" { move-column-to-monitor-up; }
-        "Mod+Shift+Ctrl+Right" { move-column-to-monitor-right; }
-
-        // Number - Workspace focus
+        // Mod + Number - Workspace focus
         ${lib.concatStringsSep "\n  " (builtins.genList (
           i: let
             num = i + 1;
@@ -154,7 +136,25 @@ in {
         )
         9)}
 
-        // Ctrl + Number - Column movement - Workspaces
+        // Mod + Ctrl + Arrow Keys - Move Column/Window within workspace
+        "Mod+Ctrl+Left" { move-column-left; }
+        "Mod+Ctrl+Right" { move-column-right; }
+        "Mod+Ctrl+Down" { move-window-down; }
+        "Mod+Ctrl+Up" { move-window-up; }
+
+        // Mod + Shift + Arrow Keys - Monitor focus
+        "Mod+Shift+Left" { focus-monitor-left; }
+        "Mod+Shift+Down" { focus-monitor-down; }
+        "Mod+Shift+Up" { focus-monitor-up; }
+        "Mod+Shift+Right" { focus-monitor-right; }
+
+        // Mod + Ctrl + Shift + Arrow Keys - Move column to Monitor
+        "Mod+Shift+Ctrl+Left" { move-column-to-monitor-left; }
+        "Mod+Shift+Ctrl+Down" { move-column-to-monitor-down; }
+        "Mod+Shift+Ctrl+Up" { move-column-to-monitor-up; }
+        "Mod+Shift+Ctrl+Right" { move-column-to-monitor-right; }
+
+        // Mod + Ctrl + Number - Column movement - Workspaces
         ${lib.concatStringsSep "\n  " (builtins.genList (
           i: let
             num = i + 1;
@@ -171,11 +171,11 @@ in {
         "Mod+Space" { toggle-column-tabbed-display; }
         "Mod+Shift+V" { switch-focus-between-floating-and-tiling; }
 
-        // Page Up/Down - Workspace focus
+        // Mod + Page Up/Down - Workspace focus
         "Mod+Page_Down" { focus-workspace-down; }
         "Mod+Page_Up" { focus-workspace-up; }
 
-        // Ctrl + Page Up/Down - Column movement - Workspaces
+        // Mod + Ctrl + Page Up/Down - Move column to workspaces
         "Mod+Ctrl+Page_Down" { move-column-to-workspace-down; }
         "Mod+Ctrl+Page_Up" { move-column-to-workspace-up; }
 
