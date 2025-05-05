@@ -3,6 +3,7 @@
   imports = [
     ../default.nix
     ../../modules/home/wm.nix
+    ../../modules/home/waybar.nix
     ../../modules/home/niri.nix
   ];
   # User
