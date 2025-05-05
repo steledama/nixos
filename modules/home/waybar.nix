@@ -149,6 +149,10 @@
         padding: 0 12px;
       }
 
+      #battery:hover {
+        background-color: rgba(187, 154, 247, 0.13);
+      }
+
       #battery.warning {
         color: #e0af68;
         animation: pulse 1.5s infinite;
@@ -163,10 +167,19 @@
         color: #7dcfff;
         border-radius: 8px;
         padding: 0 12px;
+        margin-left: 4px;
       }
 
       #tray:hover {
         background-color: rgba(125, 207, 255, 0.13);
+      }
+
+      #tray > .passive {
+        -gtk-icon-effect: dim;
+      }
+
+      #tray > .needs-attention {
+        -gtk-icon-effect: highlight;
       }
 
       #custom-wlogout {
@@ -185,19 +198,6 @@
         0% { opacity: 1; }
         50% { opacity: 0.6; }
         100% { opacity: 1; }
-      }
-
-      #tray {
-        margin-left: 4px;
-        padding: 0 10px;
-      }
-
-      #tray > .passive {
-        -gtk-icon-effect: dim;
-      }
-
-      #tray > .needs-attention {
-        -gtk-icon-effect: highlight;
       }
 
       /* Button hover effects */
