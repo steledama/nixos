@@ -15,7 +15,7 @@
     monitors = [
       # External monitor
       {
-        name = "DP-2"; # run 'wlr-randr' for yours display names
+        name = "DP-1"; # run 'wlr-randr' for yours display names
         mode = {
           width = 1920;
           height = 1080;
