@@ -86,7 +86,7 @@ in {
       // Run autostart script which will set the wallpaper
       spawn-at-startup "${config.home.homeDirectory}/.config/niri/autostart.sh"
 
-      // Key bindings
+      // Key bindings (to find a key name use 'wev', run 'niri msg action' to get a full list of actions)
       binds {
         // Hotkey overlay
         "Mod+F1" { show-hotkey-overlay; }

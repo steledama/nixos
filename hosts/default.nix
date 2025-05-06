@@ -53,6 +53,7 @@
     lm_sensors # Hardware sensors reading
     lsof # Tool to list open files
     pciutils # Tools for inspecting PCI devices (includes lspci)
+    wev # Wayland event viewer
 
     # System management and utilities
     efibootmgr # EFI Boot Manager utility
