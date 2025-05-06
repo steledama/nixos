@@ -25,9 +25,9 @@
     monitors = [
       # External monitor
       {
-        name = "DP-2"; # run 'wlr-randr' for yours display names
+        name = "DP-1"; # run 'wlr-randr' for yours display names
         mode = {
-          width = 1920;
+          width = 2560;
           height = 1080;
         };
         position = {
@@ -43,17 +43,17 @@
       }
       # Internal monitor (rotated)
       {
-        name = "DSI-1"; # run 'wlr-randr' for yours display names
+        name = "eDP-1"; # run 'wlr-randr' for yours display names
         mode = {
-          width = 1200;
-          height = 1920;
+          width = 1920;
+          height = 1080;
         };
         position = {
           x = 0;
           y = 1080;
         };
-        scale = 1.5;
-        transform = "270";
+        scale = 1.0;
+        transform = "normal";
         wallpaper = {
           path = "~/Immagini/wallpaper-int.jpg";
           mode = "fill";
