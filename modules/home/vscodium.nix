@@ -67,6 +67,8 @@
           "editor.formatOnSave" = true;
           "editor.defaultFormatter" = "bmewburn.vscode-intelephense-client";
         };
+        "php.validate.executablePath" = "${pkgs.php}/bin/php";
+
         "intelephense.stubs" = [
           "apache"
           "bcmath"
@@ -174,6 +176,7 @@
     php
   ];
 }
+# Extensions da installare manualmente:
 # alejandra - kamadorueda
 # eslint - dbaeumer
 # italian language pack - ms-ceintl
@@ -183,4 +186,6 @@
 # rainbow csv - mechatroner
 # version lens - pflannery
 # xml - red hat
+# PHP Intelephense - bmewburn.vscode-intelephense-client
+# PHP CS Fixer - junstyle.php-cs-fixer
 
