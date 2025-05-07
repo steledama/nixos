@@ -11,5 +11,5 @@
   xdg.portal.config.niri.default = ["gtk" "wlr"];
 
   # Register with display manager
-  services.displayManager.sessionPackages = [pkgs.niri-unstable];
+  services.displayManager.sessionPackages = [pkgs.niri-stable];
 }

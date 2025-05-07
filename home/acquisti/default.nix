@@ -1,8 +1,7 @@
 # nixos/home/acquisti/default.nix
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   imports = [
     ../default.nix
@@ -52,7 +51,7 @@
           x = 0;
           y = 1080;
         };
-        scale = 1.0;
+        scale = 1.25;
         transform = "normal";
         wallpaper = {
           path = "~/Immagini/wallpaper-int.jpg";
