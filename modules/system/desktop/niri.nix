@@ -4,7 +4,7 @@
   # Niri a livello di sistema
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable;
+    package = pkgs.niri-stable;
   };
 
   # XDG portal configuration for Niri
