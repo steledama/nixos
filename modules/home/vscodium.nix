@@ -1,6 +1,6 @@
 # modules/home/vscodium.nix
 # VSCodium configuration with basic settings while allowing manual extension management
-{pkgs, ...}: {
+{ pkgs, ... }: {
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
@@ -57,8 +57,10 @@
               "enable" = true;
             };
             "formatting" = {
-              "command" = ["alejandra"];
+              "command" = [ "alejandra" ];
             };
+            # Enable automatic archiving of flake inputs
+            "autoArchive" = true;
           };
         };
 
@@ -176,7 +178,7 @@
     php
   ];
 }
-# Extensions da installare manualmente:
+# Extensions to install manually:
 # alejandra - kamadorueda
 # eslint - dbaeumer
 # italian language pack - ms-ceintl
@@ -187,5 +189,3 @@
 # version lens - pflannery
 # xml - red hat
 # PHP Intelephense - bmewburn.vscode-intelephense-client
-# PHP CS Fixer - junstyle.php-cs-fixer
-
