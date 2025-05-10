@@ -1,5 +1,9 @@
 # nixos/home/stele/default.nix
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     ../default.nix
     ../../modules/home/wm.nix
@@ -55,8 +59,9 @@
     };
   };
 
-  # User-specific packages (additional to common ones)
+  # User-specific packages
   # home.packages = with pkgs; [
+  # packagename
   # ];
 
   home.stateVersion = "23.11";

@@ -1,7 +1,8 @@
 # nixos/home/acquisti/default.nix
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }: {
   imports = [
     ../default.nix
@@ -64,10 +65,10 @@
     };
   };
 
-  # User-specific packages (additional to common ones)
-  home.packages = with pkgs; [
-    anydesk # Remote desktop software
-  ];
+  # User-specific packages
+  # home.packages = with pkgs; [
+  #   packagename
+  # ];
 
   home.stateVersion = "23.11";
 }

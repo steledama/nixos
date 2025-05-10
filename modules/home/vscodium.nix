@@ -1,6 +1,6 @@
 # modules/home/vscodium.nix
 # VSCodium configuration with basic settings while allowing manual extension management
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
@@ -57,7 +57,7 @@
               "enable" = true;
             };
             "formatting" = {
-              "command" = [ "alejandra" ];
+              "command" = ["alejandra"];
             };
             # Enable automatic archiving of flake inputs
             "autoArchive" = true;
@@ -184,8 +184,9 @@
 # italian language pack - ms-ceintl
 # markdownlint - davidanson
 # nix ide - jnoortheen
+# PHP Intelephense - bmewburn.vscode-intelephense-client
 # prettier - esbenp
 # rainbow csv - mechatroner
 # version lens - pflannery
 # xml - red hat
-# PHP Intelephense - bmewburn.vscode-intelephense-client
+

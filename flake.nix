@@ -48,7 +48,6 @@
         home-manager.useUserPackages = true;
         home-manager.backupFileExtension = "backup";
         home-manager.extraSpecialArgs = {inherit inputs;};
-
         # Niri is available but not activated by default
         programs.niri.enable = nixpkgs.lib.mkDefault false;
       }
