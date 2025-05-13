@@ -23,6 +23,11 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.docker = {
       enable = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+        flags = ["--all" "--volumes"];
+      };
     };
 
     hardware.nvidia-container-toolkit = lib.mkIf cfg.enableNvidia {
