@@ -26,6 +26,12 @@ in {
         }
       }
 
+      // Cursor configuration
+      cursor {
+        xcursor-theme "Adwaita"
+        xcursor-size 24
+      }
+
       ${lib.concatStringsSep "\n" (map (
           monitor:
             if monitor.name != "default"

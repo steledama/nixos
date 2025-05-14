@@ -10,6 +10,9 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     WLR_NO_HARDWARE_CURSORS = "1";
     LIBGL_DEBUG = "verbose";
+    # cursor
+    XCURSOR_SIZE = "24";
+    XCURSOR_THEME = "Adwaita";
   };
 
   # XDG Portal
@@ -27,6 +30,7 @@
     light # Backlight control utility
     brightnessctl # Alternative backlight utility
     acpilight # Alternative for xbacklight (works on more hardware)
+    xorg.xcursorthemes
   ];
 
   # Backlight
