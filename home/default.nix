@@ -26,6 +26,8 @@
     # Design tools
     gimp
     inkscape
+    # editor
+    zed-editor
   ];
 
   # Common editor configuration
