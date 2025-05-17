@@ -17,17 +17,15 @@
   # Common packages for all users
   home.packages = with pkgs; [
     # Browsers
-    firefox
-    google-chrome
-    # Office and productivity
-    libreoffice
-    thunderbird
-    obsidian
-    # Design tools
-    gimp
-    inkscape
-    # editor
-    zed-editor
+    firefox # web browser
+    google-chrome # web browser by google
+    libreoffice # productivity suite
+    thunderbird # email client
+    obsidian # knowledge base
+    gimp # image manipulation program
+    inkscape # vector graphics editor
+    zed-editor # code editor
+    ghostty # terminal emulator
   ];
 
   # Common editor configuration

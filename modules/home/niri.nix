@@ -1,12 +1,13 @@
 # modules/home/niri.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, ...
+}:
+let
   cfg = config.wm;
-in {
+in
+{
   config = {
     # Generate config.kdl with proper KDL syntax
     xdg.configFile."niri/config.kdl".text = ''
@@ -108,7 +109,7 @@ in {
         "Mod+B" hotkey-overlay-title="Open Browser" { spawn "firefox"; }
         "Mod+E" hotkey-overlay-title="File explorer" { spawn "nautilus"; }
         "Mod+M" hotkey-overlay-title="Mail client" { spawn "thunderbird"; }
-        "Mod+N" hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
+        "Mod+N" hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
 
         // Window size
         "Mod+BackSpace" { close-window; }
