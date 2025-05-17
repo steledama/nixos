@@ -1,17 +1,16 @@
 # modules/home/hyprland.nix
-{ config
-, lib
-, ...
-}:
-let
-  cfg = config.wm;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.wm;
+in {
   config = {
     wayland.windowManager.hyprland = {
       enable = true;
       systemd.enable = true;
-      systemd.variables = [ "--systemd-activation" ];
+      systemd.variables = ["--systemd-activation"];
       settings = {
         # General settings
         general = {
@@ -78,7 +77,7 @@ in
           "SUPER, B, exec, firefox"
           "SUPER, E, exec, nautilus"
           "SUPER, M, exec, thunderbird"
-          "SUPER, N, exec, ghostty"
+          "SUPER, X, exec, ghostty"
 
           # Window size
           "SUPER, BackSpace, killactive,"
