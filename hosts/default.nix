@@ -32,6 +32,7 @@
     python3
     # Language server
     nil # Nix
+    nixd # Nix
     lua-language-server # Lua
     typescript-language-server # Js
     pyright # python
