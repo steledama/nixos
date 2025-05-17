@@ -1,17 +1,22 @@
 # modules/system/services/xdg-portals.nix
+# Configuration for XDG Desktop Portals across different desktop environments
 {pkgs, ...}: {
-  services.dbus.enable = true;
+  # Enable PID namespaces which are required by some portal implementations
+  security = {
+    allowUserNamespaces = true;
+    apparmor.enable = false; # Can interfere with some portals
+  };
 
-  environment.systemPackages = with pkgs; [
-    xdg-utils
-    xdg-desktop-portal
-  ];
+  # Allow unprivileged user namespaces needed for portal sandboxing
+  boot.kernel.sysctl = {
+    "kernel.unprivileged_userns_clone" = 1;
+  };
 
-  # Configurazione completa di XDG Portal
+  # Main XDG portal configuration
   xdg.portal = {
     enable = true;
 
-    # Installa tutti i portali necessari
+    # Install all necessary portal backends
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
       xdg-desktop-portal-gnome
@@ -19,26 +24,68 @@
       xdg-desktop-portal-hyprland
     ];
 
-    # Configurazione specifica per ogni ambiente desktop
+    # Configure portal implementations by desktop environment
     config = {
-      # Configurazione per GNOME
+      # Default fallback configuration
+      common = {
+        default = ["gtk"];
+      };
+
+      # GNOME-specific portal configuration
       gnome = {
         default = ["gnome" "gtk"];
         "org.freedesktop.impl.portal.FileChooser" = ["gnome" "gtk"];
         "org.freedesktop.impl.portal.OpenURI" = ["gnome"];
+        "org.freedesktop.impl.portal.Screenshot" = ["gnome"];
+        "org.freedesktop.impl.portal.ScreenCast" = ["gnome"];
       };
 
-      # Configurazione per Niri (mantenendo quella che già hai)
-      niri.default = ["gtk" "wlr"];
+      # Hyprland-specific portal configuration
+      hyprland.default = ["hyprland" "gtk"];
 
-      # Configurazione per Hyprland
-      hyprland.default = ["gtk" "hyprland"];
+      # Niri-specific portal configuration
+      niri.default = ["wlr" "gtk"];
     };
   };
 
-  # Assicurati che le variabili di sessione corrette siano impostate
-  environment.variables = {
-    # Forza le applicazioni GTK ad usare il portale
+  # Enable D-Bus service and ensure all portal implementations are registered
+  services.dbus = {
+    enable = true;
+    packages = with pkgs; [
+      xdg-desktop-portal
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-hyprland
+    ];
+  };
+
+  # Enable PolicyKit for permission handling
+  security.polkit.enable = true;
+
+  # Install required system packages
+  environment.systemPackages = with pkgs; [
+    # Core XDG utilities
+    xdg-utils
+    xdg-desktop-portal
+
+    # Portal implementations
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-gnome
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-hyprland
+
+    # GNOME integration
+    gnome-settings-daemon
+  ];
+
+  # Set environment variables for proper portal usage
+  environment.sessionVariables = {
+    # Force GTK applications to use portals
     GTK_USE_PORTAL = "1";
+
+    # Firefox-specific settings for better integration
+    MOZ_DBUS_REMOTE = "1";
+    MOZ_USE_XINPUT2 = "1";
   };
 }
