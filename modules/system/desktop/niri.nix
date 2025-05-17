@@ -7,9 +7,6 @@
     package = pkgs.niri-stable;
   };
 
-  # XDG portal configuration for Niri
-  xdg.portal.config.niri.default = ["gtk" "wlr"];
-
   # Register with display manager
   services.displayManager.sessionPackages = [pkgs.niri-stable];
 }

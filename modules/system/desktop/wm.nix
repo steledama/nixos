@@ -15,15 +15,6 @@
     XCURSOR_THEME = "Adwaita";
   };
 
-  # XDG Portal
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-wlr
-    ];
-  };
-
   environment.systemPackages = with pkgs; [
     wlr-randr # Wayland display configuration
     wayland-utils # Diagnostic utility for Wayland
