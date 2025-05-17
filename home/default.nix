@@ -12,6 +12,7 @@
     ../modules/home/alacritty.nix
     ../modules/home/yazi.nix
     ../modules/home/vscodium.nix
+    ../modules/home/zed.nix
   ];
 
   # Common packages for all users
