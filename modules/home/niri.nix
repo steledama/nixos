@@ -107,8 +107,8 @@ in {
         "Mod+A" hotkey-overlay-title="Application Launcher" { spawn "fuzzel"; }
         "Mod+B" hotkey-overlay-title="Open Browser" { spawn "firefox"; }
         "Mod+E" hotkey-overlay-title="File explorer" { spawn "nautilus"; }
+        "Mod+G" hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
         "Mod+M" hotkey-overlay-title="Mail client" { spawn "thunderbird"; }
-        "Mod+X" hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
 
         // Window size
         "Mod+BackSpace" { close-window; }

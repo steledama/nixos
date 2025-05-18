@@ -76,8 +76,8 @@ in {
           "SUPER, A, exec, fuzzel"
           "SUPER, B, exec, firefox"
           "SUPER, E, exec, nautilus"
+          "SUPER, G, exec, ghostty"
           "SUPER, M, exec, thunderbird"
-          "SUPER, X, exec, ghostty"
 
           # Window size
           "SUPER, BackSpace, killactive,"
