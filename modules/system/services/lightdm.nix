@@ -1,13 +1,16 @@
-# modules/system/services/lightdm.nix
+# modules/system/services/gdm.nix
 {pkgs, ...}: {
-  services.xserver.displayManager.lightdm = {
+  services.xserver = {
     enable = true;
-    background = "#000000";
-    greeters.gtk = {
+    displayManager.lightdm = {
       enable = true;
-      theme = {
-        name = "Adwaita-dark";
-        package = pkgs.gnome.gnome-themes-extra;
+      background = "#000000";
+      greeters.gtk = {
+        enable = true;
+        theme = {
+          name = "Adwaita-dark";
+          package = pkgs.gnome-themes-extra;
+        };
       };
     };
   };
