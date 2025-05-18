@@ -1,9 +1,5 @@
 # nixos/home/acquisti/default.nix
-{
-  config,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   imports = [
     ../default.nix
     ../../modules/home/syncthing.nix

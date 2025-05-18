@@ -100,7 +100,6 @@
     adwaita-icon-theme
 
     # customs
-    msty
     evince
   ];
 }

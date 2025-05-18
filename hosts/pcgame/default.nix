@@ -26,7 +26,6 @@
       allowedTCPPorts = [
         4662 # aMule eD2K data
         4672 # aMule incoming connections
-        11435 # msty ollama service for llm
       ];
       allowedUDPPorts = [
         4665 # aMule eD2K

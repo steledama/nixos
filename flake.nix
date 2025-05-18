@@ -33,9 +33,7 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-
     overlays = [
-      (import ./overlays/msty.nix)
       niri.overlays.niri
     ];
 
