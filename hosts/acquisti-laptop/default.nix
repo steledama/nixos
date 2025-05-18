@@ -1,9 +1,5 @@
 # nixos/hosts/acquisti-laptop/default.nix
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     ./hardware.nix
     ../default.nix

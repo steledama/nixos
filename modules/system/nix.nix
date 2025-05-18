@@ -25,4 +25,13 @@
       options = "--delete-older-than 7d";
     };
   };
+
+  # Configuration to limit coredumps
+  systemd.coredump = {
+    enable = true; # Keep the service enabled
+    extraConfig = ''
+      Storage=none     # Do not store coredumps
+      ProcessSizeMax=0 # Do not process coredumps of any size
+    '';
+  };
 }
