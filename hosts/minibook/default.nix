@@ -12,7 +12,6 @@
     ../../modules/system/hardware/minibook.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
-    ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
     ../../modules/system/desktop/wm.nix
     ../../modules/system/desktop/niri.nix
