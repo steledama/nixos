@@ -1,9 +1,5 @@
 # nixos/home/stele/default.nix
-{
-  config,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   imports = [
     ../default.nix
     ../../modules/home/wm.nix

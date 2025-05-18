@@ -1,11 +1,11 @@
 # modules/system/services/gdm.nix
-# Questo file configura il display manager GDM
+# This file configures the GDM display manager
 {
   # X server
   services.xserver = {
     enable = true;
 
-    # Display manager GDM
+    # GDM display manager
     displayManager.gdm = {
       enable = true;
       wayland = true;

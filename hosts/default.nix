@@ -13,7 +13,8 @@
     ../modules/system/services/print.nix
     ../modules/system/services/keyd.nix
     ../modules/system/services/xdg-portals.nix
-    ../modules/system/services/lightdm.nix
+    # ../modules/system/services/lightdm.nix
+    ../modules/system/services/gdm.nix
   ];
 
   # Common system configurations

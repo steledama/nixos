@@ -1,36 +1,31 @@
-{ pkgs, ... }:
-
-{
-  # wine
-  #######
-
-  # Abilita Steam
+{pkgs, ...}: {
+  # Enable Steam
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true; # Apre le porte per Steam Remote Play
-    dedicatedServer.openFirewall = true; # Apre le porte per i server dedicati Steam
+    remotePlay.openFirewall = true; # Opens ports for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Opens ports for Steam dedicated servers
   };
 
-  # Installa Lutris, Heroic, Bottles e altri strumenti per il gaming
+  # Install Lutris, Heroic, Bottles and other gaming tools
   environment.systemPackages = with pkgs; [
     lutris
     heroic
     winetricks
     protontricks
-    protonup-qt # per gestire le versioni di protonGE
+    protonup-qt # for managing protonGE versions
     gamemode # Feral GameMode
     wine
   ];
 
-  # Abilita il supporto 32-bit (necessario per molti giochi)
+  # Enable 32-bit support (necessary for many games)
   hardware.graphics.enable32Bit = true;
 
-  # Ottimizzazioni per il gaming
+  # Gaming optimizations
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
     "vm.vfs_cache_pressure" = 50;
   };
 
-  # Abilita GameMode
+  # Enable GameMode
   programs.gamemode.enable = true;
 }

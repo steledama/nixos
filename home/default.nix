@@ -9,9 +9,7 @@
     inputs.nixvim.homeManagerModules.nixvim
     ../modules/home/shell-config.nix
     ../modules/home/neovim.nix
-    ../modules/home/alacritty.nix
     ../modules/home/yazi.nix
-    ../modules/home/vscodium.nix
   ];
 
   # Common packages for all users
@@ -22,7 +20,6 @@
     libreoffice # productivity suite
     thunderbird # email client
     obsidian # knowledge base
-    gimp # image manipulation program
     inkscape # vector graphics editor
     zed-editor # code editor
     ghostty # terminal emulator
