@@ -43,7 +43,7 @@
     };
     useGlobalPkgs = true;
     useUserPackages = true;
-    backupFileExtension = "backup";
+    backupFileExtension = "";
   };
 
   # Docker containers

@@ -7,7 +7,7 @@
 
     # Home Manager
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -47,7 +47,7 @@
         nixpkgs.config.allowUnfree = true;
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.backupFileExtension = "backup";
+        home-manager.backupFileExtension = "";
         home-manager.extraSpecialArgs = {inherit inputs;};
         # Niri is available but not activated by default
         programs.niri.enable = nixpkgs.lib.mkDefault false;
