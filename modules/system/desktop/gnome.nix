@@ -1,16 +1,35 @@
 # modules/system/desktop/gnome.nix
 {pkgs, ...}: {
   services.xserver.desktopManager.gnome.enable = true;
-
-  # Core packages only
-  environment.systemPackages = with pkgs; [
-    gnome-tweaks
-    gnome-terminal
-    gtk3
-    gsettings-desktop-schemas
-    gnome-online-accounts
-    gnome-online-accounts-gtk
-  ];
+  # System gnome packages
+  environment.systemPackages = (
+    with pkgs; [
+      dconf-editor
+      adwaita-icon-theme
+      gnome-themes-extra
+      gnome-shell-extensions
+      gnome-extension-manager
+      gnome-tweaks
+      gtk3
+      gsettings-desktop-schemas
+      gnome-online-accounts
+      gnome-online-accounts-gtk
+    ]
+  );
+  environment.gnome.excludePackages = (
+    with pkgs; [
+      gnome-tour
+      epiphany
+      geary
+      totem
+      gnome-music
+      tali
+      iagno
+      hitori
+      atomix
+      gnome-console
+    ]
+  );
 
   # Enable GVFS for file access
   services.gvfs.enable = true;
