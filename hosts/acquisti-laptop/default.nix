@@ -31,6 +31,8 @@
         22 # ssh
         80 # wordpress
         443 # https
+        3000 # baserow frontend
+        8000 # baserow backend
       ];
       allowPing = true;
       logRefusedConnections = true;
