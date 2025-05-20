@@ -10,6 +10,7 @@
     ../modules/home/shell-config.nix
     ../modules/home/neovim.nix
     ../modules/home/yazi.nix
+    ../modules/home/zed.nix
   ];
 
   # Common packages for all users
@@ -21,7 +22,6 @@
     thunderbird # email client
     obsidian # knowledge base
     inkscape # vector graphics editor
-    zed-editor # code editor
     ghostty # terminal emulator
   ];
 

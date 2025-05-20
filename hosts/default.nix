@@ -29,10 +29,10 @@
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
     # Base
-    nodejs
-    rustup
-    cargo
-    python3
+    nodejs # Event-driven I/O framework for the V8 JavaScript engine
+    rustup # Rust toolchain installer
+    cargo # Downloads your Rust project's dependencies and builds your project
+    python3 # High-level dynamically-typed programming language
     # Language server
     nil # Nix
     nixd # Nix
@@ -95,11 +95,11 @@
     neofetch # Fast, highly customizable system info script
 
     # icons
-    gtk3
-    hicolor-icon-theme
+    gtk3 # Multi-platform toolkit for creating graphical user interfaces
+    hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
     adwaita-icon-theme
 
     # customs
-    evince
+    evince # GNOME's document viewer
   ];
 }
