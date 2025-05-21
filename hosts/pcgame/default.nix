@@ -22,6 +22,8 @@
       allowedTCPPorts = [
         4662 # aMule eD2K data
         4672 # aMule incoming connections
+        11343 # ollama
+        3080 # librechat
       ];
       allowedUDPPorts = [
         4665 # aMule eD2K
