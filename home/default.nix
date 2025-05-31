@@ -17,6 +17,7 @@
   home.packages = with pkgs; [
     # Browsers
     firefox # web browser
+    zen-browser # alternative browser
     google-chrome # web browser by google
     libreoffice # productivity suite
     thunderbird # email client

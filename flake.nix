@@ -22,6 +22,12 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # zen browser
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -30,6 +36,7 @@
     home-manager,
     nixvim,
     niri,
+    zen-browser,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -43,7 +50,12 @@
       # Include the Niri NixOS module
       niri.nixosModules.niri
       {
-        nixpkgs.overlays = overlays;
+        nixpkgs.overlays = overlays ++ [
+          # Add zen-browser to pkgs
+          (final: prev: {
+            zen-browser = zen-browser.packages.${system}.default;
+          })
+        ];
         nixpkgs.config.allowUnfree = true;
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
