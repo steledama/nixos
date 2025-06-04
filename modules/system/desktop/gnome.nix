@@ -1,6 +1,6 @@
 # modules/system/desktop/gnome.nix
 {pkgs, ...}: {
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
   # System gnome packages
   environment.systemPackages = (
     with pkgs; [
