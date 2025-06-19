@@ -9,41 +9,23 @@
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/smb.nix
     ../../modules/system/desktop/gnome.nix
-    # ../../modules/system/desktop/wm.nix
-    # ../../modules/system/desktop/niri.nix
   ];
 
   # Network
   networking = {
     hostName = "acquisti-laptop";
-    networkmanager = {
-      enable = true;
-      settings = {
-        "connection" = {
-          "ethernet.route-metric" = 100;
-          "wifi.route-metric" = 200;
-        };
-      };
-    };
+    networkmanager.enable = true;
     firewall = {
       enable = true;
       allowedTCPPorts = [
         22 # ssh
-        80 # wordpress
-        443 # https
-        3000 # baserow frontend
-        8000 # baserow backend
+        80 # wordpress nginx
+        443 # wordpress nginx https
+        8180 # phpmyadmin
+        8080 # baserow http
+        # 8443 # baserow https
       ];
       allowPing = true;
-      logRefusedConnections = true;
-      logRefusedPackets = true;
-    };
-    hosts = {
-      "127.0.0.1" = [
-        "5.89.62.125" # work pubblic
-        "10.40.40.130" # work eth (reserved)
-        "192.168.1.16" # home wifi ((reserved))
-      ];
     };
   };
 
@@ -57,7 +39,6 @@
       "libvirtd"
       "video"
     ];
-    # shell = pkgs.bash; # Default is zsh uncommet for bash shell
   };
 
   home-manager = {
@@ -105,11 +86,6 @@
     variant = "";
     options = "compose:ralt";
   };
-
-  # System-host-specific packages (additional to common ones)
-  # environment.systemPackages = with pkgs; [
-  # Add system packages
-  # ];
 
   system.stateVersion = "24.11";
 }
