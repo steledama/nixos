@@ -16,7 +16,7 @@
   # Common packages for all users
   home.packages = with pkgs; [
     zen-browser # browser
-    google-chrome # browser by google
+    microsoft-edge # Web browser from Microsoft
     libreoffice # productivity suite
     thunderbird # email client
     obsidian # knowledge base
