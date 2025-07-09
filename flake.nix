@@ -50,12 +50,14 @@
       # Include the Niri NixOS module
       niri.nixosModules.niri
       {
-        nixpkgs.overlays = overlays ++ [
-          # Add zen-browser to pkgs
-          (final: prev: {
-            zen-browser = zen-browser.packages.${system}.default;
-          })
-        ];
+        nixpkgs.overlays =
+          overlays
+          ++ [
+            # Add zen-browser to pkgs
+            (final: prev: {
+              zen-browser = zen-browser.packages.${system}.default;
+            })
+          ];
         nixpkgs.config.allowUnfree = true;
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
@@ -81,6 +83,7 @@
       pcgame = mkHost "pcgame" [];
       acquisti-laptop = mkHost "acquisti-laptop" [];
       minibook = mkHost "minibook" [];
+      pc-sviluppo = mkHost "pc-sviluppo" [];
     };
   };
 }
