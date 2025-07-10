@@ -82,7 +82,7 @@
     nixosConfigurations = {
       pc-game = mkHost "pc-game" [];
       srv-norvegia = mkHost "srv-norvegia" [];
-      minibook = mkHost "minibook" [];
+      pc-minibook = mkHost "pc-minibook" [];
       pc-sviluppo = mkHost "pc-sviluppo" [];
     };
   };

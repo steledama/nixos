@@ -1,4 +1,4 @@
-# nixos/hosts/minibook/default.nix
+# nixos/hosts/pc-minibook/default.nix
 {inputs, ...}: {
   imports = [
     ./hardware.nix
@@ -15,7 +15,7 @@
 
   # Network
   networking = {
-    hostName = "minibook";
+    hostName = "pc-minibook";
     networkmanager = {
       enable = true;
     };
