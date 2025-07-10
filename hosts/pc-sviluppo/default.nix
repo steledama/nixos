@@ -1,5 +1,5 @@
 # nixos/hosts/pc-sviluppo/default.nix
-{inputs, ...}: {
+{ inputs, ... }: {
   imports = [
     ./hardware.nix
     ../default.nix
@@ -87,5 +87,5 @@
     options = "compose:ralt";
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
