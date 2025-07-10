@@ -23,6 +23,7 @@
         443 # wordpress nginx https
         8180 # phpmyadmin
         8080 # baserow http
+        3001 # control p
         # 8443 # baserow https
       ];
       allowPing = true;
