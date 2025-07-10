@@ -8,6 +8,7 @@
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/smb.nix
+    ../../modules/system/services/automated-scripts.nix
     ../../modules/system/desktop/gnome.nix
   ];
 
@@ -86,6 +87,13 @@
     layout = "no"; # Norwegian layout
     variant = "";
     options = "compose:ralt";
+  };
+
+  # Automated scripts service
+  services.automatedScripts = {
+    enable = true;
+    scriptPath = "/home/acquisti/easyfatt/scripts";
+    user = "acquisti";
   };
 
   system.stateVersion = "24.11";
