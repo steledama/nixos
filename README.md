@@ -45,17 +45,23 @@ sudo nixos-rebuild switch
 
 ## Clone and customize the configuration
 
-Clone this repo from your home directory
+Clone this repo from your home directory with https
 
 ```bash
 git clone https://gitlab.com/stefano.pompa/nixos.git
 ```
 
-- Change the name of one of hosts directory (es. 'hosts/pcgame' in 'hotst/your-hostname')
-- Move your hardware configuration in the host directory just renamed above:
+Or as an alternative clone it with ssh. In this case you need to create a local ssk key and add it to the github account (see section below)
 
 ```bash
-mv /etc/nixos/hardware-configuration.nix /home/your-user/nixos/hosts/your-hostname/hardware.nix
+git clone git@github.com:steledama/nixos.git
+```
+
+- Change the name of one of hosts directory (es. 'hosts/pcgame' in 'hotst/your-hostname')
+- Copy your hardware configuration in the host directory just renamed above:
+
+```bash
+cp /etc/nixos/hardware-configuration.nix /home/your-user/nixos/hosts/your-hostname/hardware.nix
 ```
 
 - Change the name of the user directory (es. 'home/stefano' in 'home/your-user')
