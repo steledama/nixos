@@ -1,4 +1,4 @@
-# nixos/hosts/pcgame/default.nix
+# nixos/hosts/pc-game/default.nix
 {inputs, ...}: {
   imports = [
     ./hardware.nix
@@ -15,7 +15,7 @@
 
   # Network
   networking = {
-    hostName = "pcgame";
+    hostName = "pc-game";
     networkmanager.enable = true;
     firewall = {
       enable = true;
