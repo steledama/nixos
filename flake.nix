@@ -81,7 +81,7 @@
   in {
     nixosConfigurations = {
       pcgame = mkHost "pcgame" [];
-      acquisti-laptop = mkHost "acquisti-laptop" [];
+      srv-norvegia = mkHost "srv-norvegia" [];
       minibook = mkHost "minibook" [];
       pc-sviluppo = mkHost "pc-sviluppo" [];
     };

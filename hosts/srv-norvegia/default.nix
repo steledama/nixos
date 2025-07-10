@@ -1,4 +1,4 @@
-# nixos/hosts/acquisti-laptop/default.nix
+# nixos/hosts/srv-norvegia/default.nix
 {inputs, ...}: {
   imports = [
     ./hardware.nix
@@ -13,7 +13,7 @@
 
   # Network
   networking = {
-    hostName = "acquisti-laptop";
+    hostName = "srv-norvegia";
     networkmanager.enable = true;
     firewall = {
       enable = true;
