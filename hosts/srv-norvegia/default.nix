@@ -22,10 +22,10 @@
         22 # ssh
         80 # wordpress nginx
         443 # wordpress nginx https
-        8180 # phpmyadmin
-        8080 # baserow http
+        8181 # phpmyadmin toscanatrading
+        8182 # phpmyadmin flexors
         3001 # control p
-        # 8443 # baserow https
+        8384 # syncthing
       ];
       allowPing = true;
     };
