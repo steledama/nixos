@@ -20,12 +20,11 @@
       enable = true;
       allowedTCPPorts = [
         22 # ssh
-        80 # wordpress nginx
-        443 # wordpress nginx https
-        8181 # phpmyadmin toscanatrading
-        8182 # phpmyadmin flexors
+        80 # nginx
+        443 # nginx https
         3001 # control p
         8384 # syncthing
+        8385 # baserow
       ];
       allowPing = true;
     };
