@@ -10,6 +10,7 @@
     ../../modules/home/waybar.nix
     ../../modules/home/hyprland.nix
     ../../modules/home/niri.nix
+    ../../modules/home/syncthing.nix
   ];
 
   # User
