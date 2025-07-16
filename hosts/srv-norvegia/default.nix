@@ -25,6 +25,8 @@
         3001 # control p
         8384 # syncthing
         8385 # baserow
+        8443 # ToscanaTrading
+        8444 # Flexora
       ];
       allowPing = true;
     };
