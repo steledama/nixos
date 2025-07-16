@@ -11,6 +11,7 @@
     ../../modules/home/hyprland.nix
     ../../modules/home/niri.nix
     ../../modules/home/syncthing.nix
+    ../../modules/home/desktop-apps.nix
   ];
 
   # User

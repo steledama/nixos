@@ -10,15 +10,6 @@
     c = "clear";
     e = "exit";
 
-    # Modern utilities
-    # ll = "eza -l"; # eza as modern ls
-    # la = "eza -a";
-    # lal = "eza -al";
-    # ls = "eza --icons=always";
-    # cat = "bat";
-    # find = "fd";
-    # grep = "rg";
-
     # Editor
     v = "nvim";
     sv = "sudo nvim";

@@ -1,6 +1,6 @@
 # nixos/hosts/default.nix
 {pkgs, ...}: {
-  # Import common system modules
+  # Import common system modules (server-oriented)
   imports = [
     ../modules/system/zen.nix
     ../modules/system/boot.nix
@@ -13,14 +13,12 @@
     ../modules/system/services/print.nix
     ../modules/system/services/keyd.nix
     ../modules/system/services/xdg-portals.nix
-    # ../modules/system/services/lightdm.nix
-    ../modules/system/services/gdm.nix
   ];
 
   # Common system configurations
   nixpkgs.config.allowUnfree = true;
 
-  # Common system packages
+  # Common system packages (server-oriented)
   environment.systemPackages = with pkgs; [
     # Development tools
     git # Version control
@@ -61,12 +59,10 @@
 
     # System management and utilities
     efibootmgr # EFI Boot Manager utility
-    usbimager # OS image USB flasher
     findutils # For find command
     coreutils # For basic Unix utilities
     psmisc # Set of small useful utilities that use the proc filesystem (killall)
     zip # Compressor/archiver for creating and modifying zipfiles
-    gparted # Graphical disk partitioning tool
 
     # Network and file
     wget # HTTP/HTTPS/FTP file retrieval
@@ -76,16 +72,12 @@
     wl-clipboard # Command-line copy/paste utilities for Wayland
     xclip # Tool to access the X clipboard from a console application
     yazi # Terminal file manager
-    filezilla # ftp client
 
     # Tools
     gnumake # Tool to control the generation of non-source files from sources
     curl # Command line tool for transferring files with URL syntax
     ripgrep # Utility that combines the usability of The Silver Searcher with the raw speed of grep
-    fd # Simple, fast and user-friendly alternative to find
     fzf # Command-line fuzzy finder written in Go
-    bat # Cat(1) clone with syntax highlighting and Git integration
-    eza # Modern, maintained replacement for ls
     imagemagick # Software suite to create, edit, compose, or convert bitmap images
 
     # shell
@@ -94,12 +86,8 @@
     direnv # Environment manager
     neofetch # Fast, highly customizable system info script
 
-    # icons
-    gtk3 # Multi-platform toolkit for creating graphical user interfaces
+    # icons (minimal for CLI apps that might need them)
     hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
     adwaita-icon-theme
-
-    # customs
-    evince # GNOME's document viewer
   ];
 }

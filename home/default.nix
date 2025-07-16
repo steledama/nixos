@@ -4,7 +4,7 @@
   inputs,
   ...
 }: {
-  # Import common home modules
+  # Import common home modules (server-oriented)
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ../modules/home/shell-config.nix
@@ -13,15 +13,10 @@
     ../modules/home/zed.nix
   ];
 
-  # Common packages for all users
+  # Common packages for all users (terminal-based)
   home.packages = with pkgs; [
-    zen-browser # browser
-    microsoft-edge # Web browser from Microsoft
-    libreoffice # productivity suite
-    thunderbird # email client
-    obsidian # knowledge base
-    inkscape # vector graphics editor
-    ghostty # terminal emulator
+    # Essential terminal tools only
+    # GUI apps moved to desktop-specific configs
   ];
 
   # Common editor configuration

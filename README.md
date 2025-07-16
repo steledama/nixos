@@ -909,3 +909,106 @@ gsettings reset org.gnome.desktop.interface cursor-theme
 gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
 gsettings get org.gnome.desktop.interface cursor-theme
 ```
+
+### srv-norvegia Server Documentation
+
+The srv-norvegia server is a NixOS-based development and services host running multiple containerized applications and file synchronization services:
+
+#### File Synchronization (Syncthing)
+
+Central hub for project file synchronization across multiple devices.
+Web Interface: https://5.89.62.125/syncthing/
+Configuration: Managed via Home Manager
+Purpose: Centralized file sync for development projects
+
+#### Automated Scripts Service
+
+Executes automated Node.js scripts daily at 4:00 AM.
+Script Location: /home/acquisti/easyfatt/scripts/automated-scripts.sh
+Schedule: Daily at 04:00:00
+User: acquisti
+Management Commands:
+
+```bash
+sudo systemctl status automated-scripts
+sudo journalctl -u automated-scripts -f
+sudo systemctl start automated-scripts
+```
+
+#### Node Server
+
+Runs server.js listening on port 3001 for data exchange between management software and websites. Management Commands:
+
+```bash
+sudo systemctl status node-server
+sudo systemctl start node-server
+sudo systemctl stop node-server
+sudo systemctl restart node-server
+sudo journalctl -u node-server -f
+sudo journalctl -u node-server --since "2 hours ago"
+```
+
+#### Docker Services
+
+Web services managed through docker-compose with Makefile automation.
+
+Management: for available commands
+
+```bash
+make help
+```
+
+User: acquisti (member of docker group)
+Configuration: Auto-pruning enabled (weekly cleanup)
+
+#### SSH Access
+
+Remote access enabled for system administration.
+Port: 22 (firewall allowed)
+Service: OpenSSH daemon
+
+#### SMB Network Shares
+
+Windows network shares mounted for legacy system integration.
+Configured Shares:
+Scan Share: //10.40.40.98/scan → /mnt/scan
+Manuals Share: //10.40.40.98/manuali → /mnt/manuali
+Credentials: /home/acquisti/nixos/smb-secrets
+
+#### Network Configuration
+
+Firewall Ports:
+22 - SSH - Remote administration
+80 - HTTP - Nginx web server
+443 - HTTPS - Nginx web server (SSL)
+3001 - Node Server - Management data exchange
+8384 - Syncthing - File synchronization web UI
+8385 - Baserow - Database service
+8443 - ToscanaTrading - Business application
+8444 - Flexora - Business application
+
+#### User Configuration
+
+Primary User: acquisti
+Groups: networkmanager, wheel, libvirtd, video, docker
+Home Directory: /home/acquisti
+Shell: ZSH (system default)
+
+#### System Management
+
+NixOS Configuration:
+sudo nixos-rebuild switch --flake .
+nix flake update
+sudo nix-collect-garbage -d
+Service Monitoring:
+systemctl list-units --type=service --state=running
+btop
+ping google.com
+
+#### Maintenance Notes
+
+System uses NixOS unstable channel
+Home Manager manages user configurations
+Docker containers auto-prune weekly
+Automated scripts run daily at 4 AM
+SMB credentials stored in user directory (excluded from git)

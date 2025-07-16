@@ -6,6 +6,7 @@
     ../../modules/home/waybar.nix
     ../../modules/home/niri.nix
     ../../modules/home/syncthing.nix
+    ../../modules/home/desktop-apps.nix
   ];
   # User
   home.username = "stele";

@@ -1,5 +1,5 @@
 # nixos/hosts/pc-sviluppo/default.nix
-{ inputs, ... }: {
+{inputs, ...}: {
   imports = [
     ./hardware.nix
     ../default.nix
@@ -8,6 +8,7 @@
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/smb.nix
+    ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
   ];
 

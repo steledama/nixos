@@ -9,7 +9,7 @@
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/smb.nix
     ../../modules/system/services/automated-scripts.nix
-    ../../modules/system/desktop/gnome.nix
+    ../../modules/system/services/node-server.nix
   ];
 
   # Network
@@ -94,6 +94,14 @@
   services.automatedScripts = {
     enable = true;
     scriptPath = "/home/acquisti/easyfatt/scripts";
+    user = "acquisti";
+  };
+
+  # Node.js server service
+  services.nodeServer = {
+    enable = true;
+    scriptPath = "/home/acquisti/easyfatt/scripts/server.js";
+    workingDirectory = "/home/acquisti/easyfatt/scripts";
     user = "acquisti";
   };
 
