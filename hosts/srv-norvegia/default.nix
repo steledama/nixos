@@ -107,6 +107,7 @@
     enable = true;
     scriptPath = "/home/acquisti/easyfatt/scripts/server.js";
     workingDirectory = "/home/acquisti/easyfatt/scripts";
+    projectDirectory = "/home/acquisti/easyfatt";
     user = "acquisti";
   };
 

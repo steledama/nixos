@@ -23,6 +23,12 @@ in {
       example = "/home/acquisti/easyfatt/scripts";
     };
 
+    projectDirectory = mkOption {
+      type = types.str;
+      description = "Root directory of the npm project";
+      example = "/home/acquisti/easyfatt";
+    };
+
     user = mkOption {
       type = types.str;
       description = "User to run the script as";
@@ -45,7 +51,8 @@ in {
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
-        WorkingDirectory = cfg.workingDirectory;
+        WorkingDirectory = cfg.projectDirectory; # Root del progetto, non scripts/
+        ExecStartPre = "${pkgs.nodejs}/bin/npm install"; # Installa dipendenze
         ExecStart = "${pkgs.nodejs}/bin/node ${cfg.scriptPath}";
         Restart =
           if cfg.autoRestart
@@ -55,10 +62,9 @@ in {
 
         # Security settings
         NoNewPrivileges = true;
-        PrivateTmp = true;
         ProtectSystem = "strict";
         ProtectHome = "read-only";
-        ReadWritePaths = [cfg.workingDirectory];
+        ReadWritePaths = [cfg.projectDirectory];
       };
 
       path = with pkgs; [nodejs];
