@@ -52,7 +52,6 @@
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
     amule # Peer-to-peer client for the eD2K and Kademlia networks
-    gimp # Image manipulation program
   ];
 
   home.stateVersion = "23.11";
