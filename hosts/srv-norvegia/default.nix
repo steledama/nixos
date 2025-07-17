@@ -24,24 +24,6 @@
   boot.kernelParams = [
     "consoleblank=600" # Schermo nero dopo 10 minuti di inattività
   ];
-  # tty2 dedicata alla matrix
-  systemd.services."getty@tty2".enable = false;
-
-  # Servizio per avviare cmatrix automaticamente
-  systemd.services.console-screensaver = {
-    description = "Console Matrix Screensaver";
-    wantedBy = ["multi-user.target"];
-    serviceConfig = {
-      Type = "simple";
-      TTYPath = "/dev/tty2";
-      ExecStart = "${pkgs.cmatrix}/bin/cmatrix -ab -u 2 -C green";
-      StandardInput = "tty";
-      StandardOutput = "tty";
-      Restart = "always";
-      RestartSec = "10"; # Se il servizio si blocca, riavvia dopo 10 secondi
-    };
-    # Avvio manuale: sudo systemctl start console-screensaver
-  };
 
   # Network
   networking = {

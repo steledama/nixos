@@ -27,7 +27,6 @@
       iagno
       hitori
       atomix
-      gnome-console
     ]
   );
 
