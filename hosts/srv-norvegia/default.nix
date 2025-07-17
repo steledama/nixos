@@ -28,9 +28,10 @@
   # Servizio per avviare cmatrix automaticamente
   systemd.services.console-screensaver = {
     description = "Console Matrix Screensaver";
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       Type = "simple";
-      TTYPath = "/dev/tty1";
+      TTYPath = "/dev/tty2";
       ExecStart = "${pkgs.cmatrix}/bin/cmatrix -ab -u 2 -C green";
       StandardInput = "tty";
       StandardOutput = "tty";
