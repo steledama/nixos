@@ -24,6 +24,8 @@
   boot.kernelParams = [
     "consoleblank=600" # Schermo nero dopo 10 minuti di inattività
   ];
+  # tty2 dedicata alla matrix
+  systemd.services."getty@tty2".enable = false;
 
   # Servizio per avviare cmatrix automaticamente
   systemd.services.console-screensaver = {
