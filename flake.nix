@@ -40,33 +40,27 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    overlays = [
-      niri.overlays.niri
-    ];
 
-    # Base modules for all hosts
+    # Base modules for all hosts (minimal)
     baseModules = [
       home-manager.nixosModules.home-manager
-      # Include the Niri NixOS module
-      niri.nixosModules.niri
       {
-        nixpkgs.overlays =
-          overlays
-          ++ [
-            # Add zen-browser to pkgs
-            (final: prev: {
-              zen-browser = zen-browser.packages.${system}.default;
-            })
-          ];
         nixpkgs.config.allowUnfree = true;
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.backupFileExtension = "";
         home-manager.extraSpecialArgs = {inherit inputs;};
-        # Niri is available but not activated by default
-        programs.niri.enable = nixpkgs.lib.mkDefault false;
       }
     ];
+
+    # Desktop overlay for zen-browser
+    desktopOverlay = {
+      nixpkgs.overlays = [
+        (final: prev: {
+          zen-browser = zen-browser.packages.${system}.default;
+        })
+      ];
+    };
 
     mkHost = hostname: extraModules:
       nixpkgs.lib.nixosSystem {
@@ -80,10 +74,10 @@
       };
   in {
     nixosConfigurations = {
-      pc-game = mkHost "pc-game" [];
-      srv-norvegia = mkHost "srv-norvegia" [];
-      pc-minibook = mkHost "pc-minibook" [];
-      pc-sviluppo = mkHost "pc-sviluppo" [];
+      pc-game = mkHost "pc-game" [niri.nixosModules.niri desktopOverlay];
+      srv-norvegia = mkHost "srv-norvegia" []; # Server - no desktop packages
+      pc-minibook = mkHost "pc-minibook" [niri.nixosModules.niri desktopOverlay];
+      pc-sviluppo = mkHost "pc-sviluppo" [desktopOverlay]; # Desktop but no niri
     };
   };
 }
