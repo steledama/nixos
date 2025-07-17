@@ -12,7 +12,6 @@
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
     ../modules/system/services/keyd.nix
-    ../modules/system/services/xdg-portals.nix
   ];
 
   # Common system configurations

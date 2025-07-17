@@ -3,7 +3,8 @@
   # Core XDG portal functionality
   xdg.portal = {
     enable = true;
-    # Only include the absolutely necessary portal implementation
+    # Configure portal backends explicitly
+    config.common.default = "*"; # Use first available portal (legacy behavior)
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
     ];

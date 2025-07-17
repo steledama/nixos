@@ -7,6 +7,7 @@
     ../../modules/system/hardware/touchpad.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
+    ../../modules/system/services/xdg-portals.nix
     ../../modules/system/services/smb.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
