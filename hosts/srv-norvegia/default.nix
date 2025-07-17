@@ -12,6 +12,11 @@
     ../../modules/system/services/node-server.nix
   ];
 
+  environment.systemPackages = with pkgs; [
+    # ... altri pacchetti ...
+    ncurses # Include database terminfo completo
+  ];
+
   # Network
   networking = {
     hostName = "srv-norvegia";
