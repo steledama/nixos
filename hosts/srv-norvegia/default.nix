@@ -22,13 +22,8 @@
 
   # Imposta il timeout per blank della console (10 minuti = 600 secondi)
   boot.kernelParams = [
-    "consoleblank=600" # Questo imposta il timeout
+    "consoleblank=600" # Schermo nero dopo 10 minuti di inattività
   ];
-
-  # TTY extra disponibili
-  console = {
-    extraTTYs = ["tty1"]; # Solo per avere tty1 disponibile
-  };
 
   # Servizio per avviare cmatrix automaticamente
   systemd.services.console-screensaver = {
@@ -40,8 +35,9 @@
       StandardInput = "tty";
       StandardOutput = "tty";
       Restart = "always";
-      RestartSec = "10"; # Se si blocca, riavvia dopo 10 secondi
+      RestartSec = "10"; # Se il servizio si blocca, riavvia dopo 10 secondi
     };
+    # Avvio manuale: sudo systemctl start console-screensaver
   };
 
   # Network
