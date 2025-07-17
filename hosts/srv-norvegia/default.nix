@@ -17,9 +17,32 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    # ... altri pacchetti ...
-    ncurses # Include database terminfo completo
+    cmatrix # Matrix screensaver
   ];
+
+  # Imposta il timeout per blank della console (10 minuti = 600 secondi)
+  boot.kernelParams = [
+    "consoleblank=600" # Questo imposta il timeout
+  ];
+
+  # TTY extra disponibili
+  console = {
+    extraTTYs = ["tty1"]; # Solo per avere tty1 disponibile
+  };
+
+  # Servizio per avviare cmatrix automaticamente
+  systemd.services.console-screensaver = {
+    description = "Console Matrix Screensaver";
+    serviceConfig = {
+      Type = "simple";
+      TTYPath = "/dev/tty1";
+      ExecStart = "${pkgs.cmatrix}/bin/cmatrix -ab -u 2 -C green";
+      StandardInput = "tty";
+      StandardOutput = "tty";
+      Restart = "always";
+      RestartSec = "10"; # Se si blocca, riavvia dopo 10 secondi
+    };
+  };
 
   # Network
   networking = {

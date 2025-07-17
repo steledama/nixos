@@ -67,6 +67,7 @@
     wget # HTTP/HTTPS/FTP file retrieval
     unzip # ZIP archive extraction
     tcpdump # network sniffer
+    ncurses # Free software emulation of curses in SVR4 and more
     nmap # Free and open source utility for network discovery and security auditing
     wl-clipboard # Command-line copy/paste utilities for Wayland
     xclip # Tool to access the X clipboard from a console application
