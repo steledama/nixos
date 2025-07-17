@@ -26,7 +26,7 @@
     hostName = "srv-norvegia";
     networkmanager.enable = true;
     firewall = {
-      enable = false;
+      enable = true;
       allowedTCPPorts = [
         22 # ssh
         80 # nginx
@@ -38,6 +38,12 @@
         8444 # Flexora
       ];
       allowPing = true;
+
+      # Regola specifica SOLO per Node.js server
+      extraCommands = ''
+        # Allow local network access to Node.js server only
+        iptables -A INPUT -s 10.40.40.0/24 -p tcp --dport 3001 -j ACCEPT
+      '';
     };
   };
 
