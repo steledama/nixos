@@ -1,5 +1,9 @@
 # nixos/hosts/srv-norvegia/default.nix
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ./hardware.nix
     ../default.nix
