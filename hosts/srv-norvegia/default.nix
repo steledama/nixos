@@ -26,7 +26,7 @@
     hostName = "srv-norvegia";
     networkmanager.enable = true;
     firewall = {
-      enable = true;
+      enable = false;
       allowedTCPPorts = [
         22 # ssh
         80 # nginx
