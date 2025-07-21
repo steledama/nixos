@@ -26,7 +26,6 @@
   ];
 
   # Network
-  # Network
   networking = {
     hostName = "srv-norvegia";
 
@@ -49,7 +48,10 @@
     };
 
     # Default gateway
-    defaultGateway = "10.40.40.254"; # Your router IP
+    defaultGateway = {
+      address = "10.40.40.254";
+      interface = "enp0s31f6";
+    };
 
     # DNS servers
     nameservers = [
