@@ -26,16 +26,45 @@
   ];
 
   # Network
+  # Network
   networking = {
     hostName = "srv-norvegia";
-    networkmanager.enable = true;
+
+    # Disable NetworkManager for server with static IP
+    networkmanager.enable = false;
+
+    # Enable systemd-networkd for static IP configuration
+    useNetworkd = true;
+    useDHCP = false;
+
+    # Static IP configuration
+    interfaces.enp0s31f6 = {
+      # Replace with your actual interface name
+      ipv4.addresses = [
+        {
+          address = "10.40.40.99"; # Your static IP
+          prefixLength = 24; # Subnet mask /24 = 255.255.255.0
+        }
+      ];
+    };
+
+    # Default gateway
+    defaultGateway = "10.40.40.254"; # Your router IP
+
+    # DNS servers
+    nameservers = [
+      "8.8.8.8" # Google DNS
+      "8.8.4.4" # Google DNS secondary
+      "10.40.40.254" # Router as fallback
+    ];
+
     firewall = {
-      enable = false;
+      enable = true; # Changed from false to true for better security
       allowedTCPPorts = [
         22 # ssh
         80 # nginx
         443 # nginx https
-        3001 # control p
+        3001 # control panel
         8384 # syncthing
         8385 # baserow
         8443 # ToscanaTrading
@@ -43,9 +72,8 @@
       ];
       allowPing = true;
 
-      # Regola specifica SOLO per Node.js server
+      # Allow local network access to Node.js server only
       extraCommands = ''
-        # Allow local network access to Node.js server only
         iptables -A INPUT -s 10.40.40.0/24 -p tcp --dport 3001 -j ACCEPT
       '';
     };
