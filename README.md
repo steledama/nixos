@@ -921,6 +921,20 @@ Web Interface: https://5.89.62.125/syncthing/
 Configuration: Managed via Home Manager
 Purpose: Centralized file sync for development projects
 
+```bash
+systemctl --user status syncthing
+systemctl --user restart syncthing
+systemctl --user stop syncthing
+systemctl --user start syncthing
+# Service logs
+journalctl --user -u syncthing -f
+# Last 2 hours service logs
+journalctl --user -u syncthing --since "2 hours ago"
+# Enable disable auto start
+systemctl --user enable syncthing
+systemctl --user disable syncthing
+```
+
 #### Automated Scripts Service
 
 Executes automated Node.js scripts daily at 4:00 AM.
