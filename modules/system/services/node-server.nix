@@ -25,7 +25,7 @@ in {
 
     projectDirectory = mkOption {
       type = types.str;
-      description = "Root directory of the npm project";
+      description = "Root directory of the npm project (containing flake.nix)";
       example = "/home/acquisti/easyfatt";
     };
 
@@ -51,9 +51,12 @@ in {
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
-        WorkingDirectory = cfg.projectDirectory; # Root del progetto, non scripts/
-        ExecStartPre = "${pkgs.nodejs}/bin/npm install"; # Installa dipendenze
-        ExecStart = "${pkgs.nodejs}/bin/node ${cfg.scriptPath}";
+        WorkingDirectory = cfg.projectDirectory;
+
+        # Use nix develop to ensure consistent environment
+        ExecStartPre = "${pkgs.bash}/bin/bash -c 'cd ${cfg.projectDirectory} && PRODUCTION=1 ${pkgs.nix}/bin/nix develop --command npm install'";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'cd ${cfg.projectDirectory} && PRODUCTION=1 ${pkgs.nix}/bin/nix develop --command node ${cfg.scriptPath}'";
+
         Restart =
           if cfg.autoRestart
           then "always"
@@ -67,7 +70,12 @@ in {
         ReadWritePaths = [cfg.projectDirectory];
       };
 
-      path = with pkgs; [nodejs];
+      environment = {
+        NIX_CONFIG = "experimental-features = nix-command flakes";
+        PRODUCTION = "1";
+      };
+
+      path = with pkgs; [nix bash];
     };
   };
 }

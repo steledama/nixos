@@ -143,6 +143,7 @@
   services.automatedScripts = {
     enable = true;
     scriptPath = "/home/acquisti/easyfatt/scripts";
+    projectDirectory = "/home/acquisti/easyfatt";
     user = "acquisti";
   };
 
