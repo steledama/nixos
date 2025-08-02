@@ -25,6 +25,7 @@
     gcc # C compiler
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
+    claude-code # Agentic coding tool
     # Base
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     rustup # Rust toolchain installer
