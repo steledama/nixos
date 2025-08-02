@@ -105,7 +105,7 @@ in {
 
         // Applications
         "Mod+A" hotkey-overlay-title="Application Launcher" { spawn "fuzzel"; }
-        "Mod+B" hotkey-overlay-title="Open Browser" { spawn "firefox"; }
+        "Mod+B" hotkey-overlay-title="Open Browser" { spawn "zen-browser"; }
         "Mod+E" hotkey-overlay-title="File explorer" { spawn "nautilus"; }
         "Mod+G" hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
         "Mod+M" hotkey-overlay-title="Mail client" { spawn "thunderbird"; }
@@ -230,9 +230,7 @@ in {
       executable = true;
     };
 
-    # Make sure niri is installed
-    home.packages = with pkgs; [
-      niri
-    ];
+    # Note: niri is now provided by the system configuration via programs.niri.enable
+    # No need to install it again in home.packages
   };
 }

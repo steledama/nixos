@@ -74,7 +74,7 @@ in {
 
           # Applications
           "SUPER, A, exec, fuzzel"
-          "SUPER, B, exec, firefox"
+          "SUPER, B, exec, zen-browser"
           "SUPER, E, exec, nautilus"
           "SUPER, G, exec, ghostty"
           "SUPER, M, exec, thunderbird"

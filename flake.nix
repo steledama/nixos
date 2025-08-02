@@ -17,12 +17,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # niri
-    niri = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # zen browser
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
@@ -35,7 +29,6 @@
     nixpkgs,
     home-manager,
     nixvim,
-    niri,
     zen-browser,
     ...
   } @ inputs: let
@@ -74,9 +67,9 @@
       };
   in {
     nixosConfigurations = {
-      pc-game = mkHost "pc-game" [niri.nixosModules.niri desktopOverlay];
+      pc-game = mkHost "pc-game" [desktopOverlay]; # Usa niri ufficiale nixpkgs + zen-browser da flake
       srv-norvegia = mkHost "srv-norvegia" []; # Server - no desktop packages
-      pc-minibook = mkHost "pc-minibook" [niri.nixosModules.niri desktopOverlay];
+      pc-minibook = mkHost "pc-minibook" [desktopOverlay]; # Usa niri ufficiale nixpkgs + zen-browser da flake
       pc-sviluppo = mkHost "pc-sviluppo" [desktopOverlay]; # Desktop but no niri
     };
   };

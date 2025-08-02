@@ -2,9 +2,9 @@
 {pkgs, ...}: {
   programs.niri = {
     enable = true;
-    package = pkgs.niri-stable;
+    package = pkgs.niri;  # Usa il pacchetto ufficiale nixpkgs
   };
 
   # Register with display manager
-  services.displayManager.sessionPackages = [pkgs.niri-stable];
+  services.displayManager.sessionPackages = [pkgs.niri];
 }
