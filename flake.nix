@@ -55,6 +55,7 @@
       ];
     };
 
+    # Helper functions for different host types
     mkHost = hostname: extraModules:
       nixpkgs.lib.nixosSystem {
         inherit system;
@@ -65,12 +66,18 @@
           ]
           ++ baseModules ++ extraModules;
       };
+    
+    # Desktop host with zen-browser overlay
+    mkDesktopHost = hostname: mkHost hostname [desktopOverlay];
+    
+    # Server host without desktop overlay
+    mkServerHost = hostname: mkHost hostname [];
   in {
     nixosConfigurations = {
-      pc-game = mkHost "pc-game" [desktopOverlay]; # Usa niri ufficiale nixpkgs + zen-browser da flake
-      srv-norvegia = mkHost "srv-norvegia" []; # Server - no desktop packages
-      pc-minibook = mkHost "pc-minibook" [desktopOverlay]; # Usa niri ufficiale nixpkgs + zen-browser da flake
-      pc-sviluppo = mkHost "pc-sviluppo" [desktopOverlay]; # Desktop but no niri
+      pc-game = mkDesktopHost "pc-game"; # Gaming desktop with niri + zen-browser
+      srv-norvegia = mkServerHost "srv-norvegia"; # Server without desktop packages
+      pc-minibook = mkDesktopHost "pc-minibook"; # Laptop with niri + zen-browser  
+      pc-sviluppo = mkDesktopHost "pc-sviluppo"; # Development desktop with GNOME + zen-browser
     };
   };
 }

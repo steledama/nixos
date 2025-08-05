@@ -12,6 +12,7 @@
     ../../modules/home/niri.nix
     ../../modules/home/syncthing.nix
     ../../modules/home/desktop-apps.nix
+    ../../modules/home/dev-tools.nix
   ];
 
   # User

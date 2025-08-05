@@ -15,39 +15,11 @@
   ];
 
   # Common system configurations
-  nixpkgs.config.allowUnfree = true;
 
   # Common system packages (server-oriented)
   environment.systemPackages = with pkgs; [
-    # Development tools
-    git # Version control
-    lazygit # Git TUI frontend
-    gcc # C compiler
-    direnv # Shell extension that manages your environment
-    openssl # Cryptographic library that implements the SSL and TLS protocols
-    claude-code # Agentic coding tool
-    # Base
-    nodejs # Event-driven I/O framework for the V8 JavaScript engine
-    rustup # Rust toolchain installer
-    cargo # Downloads your Rust project's dependencies and builds your project
-    python3 # High-level dynamically-typed programming language
-    # Language server
-    nil # Nix
-    nixd # Nix
-    lua-language-server # Lua
-    typescript-language-server # Js
-    pyright # python
-    # Formatter
-    prettierd # JavaScript
-    stylua # Lua
-    alejandra # Nix
-    black # Python
-    isort # Python
-    # Linter
-    eslint # JavaScript
-    lua54Packages.luacheck # Lua
-    nixpkgs-fmt # Nix (alternativa ad alejandra)
-    pylint # Python
+    # Essential system tools only
+    # Development tools moved to home-manager dev-tools module
 
     # System monitoring and diagnostics
     btop # Resource monitor (CPU, memory, disks, network, processes)

@@ -3,6 +3,7 @@
   imports = [
     ../default.nix
     ../../modules/home/syncthing.nix
+    ../../modules/home/dev-tools.nix
   ];
   # username
   home.username = "acquisti";

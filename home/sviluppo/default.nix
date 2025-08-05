@@ -4,6 +4,7 @@
     ../default.nix
     ../../modules/home/syncthing.nix
     ../../modules/home/desktop-apps.nix
+    ../../modules/home/dev-tools.nix
   ];
   # username
   home.username = "sviluppo";
