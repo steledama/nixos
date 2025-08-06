@@ -27,7 +27,7 @@ systemctl --user disable syncthing
 
 ### Automated Scripts Service
 **Purpose**: Executes automated Node.js scripts daily at 4:00 AM  
-**Script Location**: `/home/acquisti/easyfatt/scripts/automated-scripts.sh`  
+**Script Location**: `/home/acquisti/bi/scripts/automated-scripts.sh`  
 **Schedule**: Daily at 04:00:00  
 **User**: acquisti  
 

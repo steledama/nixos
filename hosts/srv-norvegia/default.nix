@@ -142,17 +142,17 @@
   # Automated scripts service
   services.automatedScripts = {
     enable = true;
-    scriptPath = "/home/acquisti/easyfatt/scripts";
-    projectDirectory = "/home/acquisti/easyfatt";
+    scriptPath = "/home/acquisti/bi/scripts";
+    projectDirectory = "/home/acquisti/bi";
     user = "acquisti";
   };
 
   # Node.js server service
   services.nodeServer = {
     enable = true;
-    scriptPath = "/home/acquisti/easyfatt/scripts/server.js";
-    workingDirectory = "/home/acquisti/easyfatt/scripts";
-    projectDirectory = "/home/acquisti/easyfatt";
+    scriptPath = "/home/acquisti/bi/scripts/server.js";
+    workingDirectory = "/home/acquisti/bi/scripts";
+    projectDirectory = "/home/acquisti/bi";
     user = "acquisti";
   };
 

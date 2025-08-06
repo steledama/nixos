@@ -52,13 +52,13 @@ in {
     scriptPath = mkOption {
       type = types.str;
       description = "Path to the script directory";
-      example = "/home/acquisti/easyfatt/scripts";
+      example = "/home/acquisti/bi/scripts";
     };
 
     projectDirectory = mkOption {
       type = types.str;
       description = "Root directory of the npm project (containing flake.nix)";
-      example = "/home/acquisti/easyfatt";
+      example = "/home/acquisti/bi";
     };
 
     user = mkOption {
