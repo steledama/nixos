@@ -18,6 +18,7 @@
 
   environment.systemPackages = with pkgs; [
     cmatrix # Matrix screensaver
+    ncurses # Terminal capabilities database
   ];
 
   # Imposta il timeout per blank della console (10 minuti = 600 secondi)
