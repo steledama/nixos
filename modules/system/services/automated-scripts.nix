@@ -37,8 +37,13 @@ with lib; let
       echo "Dependencies up to date"
     fi
 
-    # Show Node.js version for debugging
+    # Configure Puppeteer environment (same as flake.nix)
+    export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+    export PUPPETEER_EXECUTABLE_PATH="${pkgs.chromium}/bin/chromium"
+    
+    # Show versions for debugging
     echo "Using Node.js version: $(node --version)"
+    echo "Puppeteer configured with: $PUPPETEER_EXECUTABLE_PATH"
     echo "Starting automated scripts from: ${cfg.scriptPath}"
 
     # Run the scripts
@@ -83,7 +88,7 @@ in {
         HOME = "/home/${cfg.user}";
       };
 
-      path = with pkgs; [nix bash coreutils nodejs_22];
+      path = with pkgs; [nix bash coreutils nodejs_22 chromium xvfb-run];
     };
 
     systemd.timers.automated-scripts = {
