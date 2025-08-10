@@ -37,15 +37,9 @@
   };
 
   home-manager = {
-    extraSpecialArgs = {
-      inherit inputs;
-    };
     users = {
       stele = import ../../home/stele;
     };
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "";
   };
 
   # Docker containers

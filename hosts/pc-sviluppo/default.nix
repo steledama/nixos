@@ -13,6 +13,9 @@
     ../../modules/system/desktop/gnome.nix
   ];
 
+  # Definizione del segreto per Samba
+  age.secrets.smb-secrets.file = ../../secrets/smb-secrets.age;
+
   # Network
   networking = {
     hostName = "pc-sviluppo";
@@ -44,15 +47,9 @@
   };
 
   home-manager = {
-    extraSpecialArgs = {
-      inherit inputs;
-    };
     users = {
       sviluppo = import ../../home/sviluppo;
     };
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "";
   };
 
   # Docker containers
@@ -70,14 +67,14 @@
         deviceAddress = "//10.40.40.98/scan";
         username = "sviluppo";
         mountPoint = "/mnt/scan";
-        credentialsFile = "/home/sviluppo/nixos/smb-secrets";
+        credentialsFile = config.age.secrets.smb-secrets.path;
       };
       manuali = {
         enable = true;
         deviceAddress = "//10.40.40.98/manuali";
         username = "sviluppo";
         mountPoint = "/mnt/manuali";
-        credentialsFile = "/home/sviluppo/nixos/smb-secrets";
+        credentialsFile = config.age.secrets.smb-secrets.path;
       };
     };
   };

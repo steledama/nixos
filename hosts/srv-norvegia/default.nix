@@ -16,6 +16,9 @@
     ../../modules/system/services/node-server.nix
   ];
 
+  # Definizione del segreto per Samba
+  age.secrets.smb-secrets.file = ../../secrets/smb-secrets.age;
+
   environment.systemPackages = with pkgs; [
     cmatrix # Matrix screensaver
     ncurses # Terminal capabilities database
@@ -95,15 +98,9 @@
   };
 
   home-manager = {
-    extraSpecialArgs = {
-      inherit inputs;
-    };
     users = {
       acquisti = import ../../home/acquisti;
     };
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "";
   };
 
   # Docker containers
@@ -121,14 +118,14 @@
         deviceAddress = "//10.40.40.98/scan";
         username = "acquisti";
         mountPoint = "/mnt/scan";
-        credentialsFile = "/home/acquisti/nixos/smb-secrets";
+        credentialsFile = config.age.secrets.smb-secrets.path;
       };
       manuali = {
         enable = true;
         deviceAddress = "//10.40.40.98/manuali";
         username = "acquisti";
         mountPoint = "/mnt/manuali";
-        credentialsFile = "/home/acquisti/nixos/smb-secrets";
+        credentialsFile = config.age.secrets.smb-secrets.path;
       };
     };
   };

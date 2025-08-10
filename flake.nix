@@ -22,6 +22,12 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Secrets management
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -30,6 +36,7 @@
     home-manager,
     nixvim,
     zen-browser,
+    agenix,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -37,22 +44,14 @@
     # Base modules for all hosts (minimal)
     baseModules = [
       home-manager.nixosModules.home-manager
-      {
-        nixpkgs.config.allowUnfree = true;
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.backupFileExtension = "";
-        home-manager.extraSpecialArgs = {inherit inputs;};
-      }
+      agenix.nixosModules.default
+      
+      ./modules/system/common.nix
     ];
 
     # Desktop overlay for zen-browser
     desktopOverlay = {
-      nixpkgs.overlays = [
-        (final: prev: {
-          zen-browser = zen-browser.packages.${system}.default;
-        })
-      ];
+      nixpkgs.overlays = [ ((import ./overlays/zen-browser.nix) inputs) ];
     };
 
     # Helper functions for different host types

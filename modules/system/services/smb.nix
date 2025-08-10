@@ -87,20 +87,12 @@ in
       }
     ) (filterAttrs (name: share: share.enable) cfg.shares);
 
-    # Create mount points and credentials files for each enabled share
+    # Create mount points for each enabled share
     system.activationScripts = mapAttrs' (
       name: share:
-      nameValuePair "smbCredentials-${name}" ''
+      nameValuePair "smbMountPoint-${name}" ''
         mkdir -p ${share.mountPoint}
         chmod 755 ${share.mountPoint}
-
-        if [ ! -f ${share.credentialsFile} ]; then
-          touch ${share.credentialsFile}
-          chmod 600 ${share.credentialsFile}
-          echo "username=${share.username}" > ${share.credentialsFile}
-          echo "password=YourPasswordHere" >> ${share.credentialsFile}
-          echo "Remember to set the correct password in ${share.credentialsFile}"
-        fi
       ''
     ) (filterAttrs (name: share: share.enable) cfg.shares);
   };

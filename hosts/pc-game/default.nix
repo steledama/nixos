@@ -48,15 +48,9 @@
   };
 
   home-manager = {
-    extraSpecialArgs = {
-      inherit inputs;
-    };
     users = {
       stefano = import ../../home/stefano;
     };
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "";
   };
 
   # Docker containers
