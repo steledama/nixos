@@ -5,12 +5,13 @@
   ...
 }: {
   # Import common home modules (server-oriented)
+  # IMPORTANT: Only add terminal-based tools here!
+  # GUI applications should go in modules/home/desktop-apps.nix
   imports = [
     inputs.nixvim.homeModules.nixvim
     ../modules/home/shell-config.nix
     ../modules/home/neovim.nix
     ../modules/home/yazi.nix
-    ../modules/home/zed.nix
   ];
 
   # Common packages for all users (terminal-based)

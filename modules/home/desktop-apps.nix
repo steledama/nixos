@@ -1,6 +1,11 @@
 # modules/home/desktop-apps.nix
 # Common desktop applications for GUI users
+# IMPORTANT: This module should only be imported by desktop users!
+# Server environments (like srv-norvegia) should NOT import this module.
 {pkgs, ...}: {
+  imports = [
+    ./zed.nix # GUI editor with language server support
+  ];
   home.packages = with pkgs; [
     zen-browser # browser
     microsoft-edge # Web browser from Microsoft
