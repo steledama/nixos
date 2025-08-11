@@ -2,13 +2,18 @@
 result
 result-*
 
-# Backup files
-*.backup
-*.bak
-*~
-
-# Editor specific files
+# Editor files
+.zed/
 .vscode/
-.idea/
-*.swp
-*.swo
+
+# LibreOffice temporary files
+.~lock.*
+
+# System temporary files (first is mac os)
+.DS_Store
+*~
+.cache/
+.tmp/
+
+# Age/secrets (just in case - should be encrypted)
+*.age.key

@@ -101,6 +101,8 @@ journalctl --user -u syncthing -f
 make help  # Show available docker commands
 ```
 
+> 📖 For detailed server management, see [srv-norvegia documentation](docs/srv-norvegia.md)
+
 ## Architecture Overview
 
 ### Host Management
@@ -145,6 +147,8 @@ The repository manages 4 distinct hosts:
 2. Define options and configuration
 3. Import where needed in host or user configs
 
+> 🔧 For detailed examples and patterns, see [CLAUDE.md](CLAUDE.md)
+
 ## Development Workflow
 
 ### Version Control
@@ -175,6 +179,14 @@ Host github.com
   IdentityFile ~/.ssh/id_ed25519
 ```
 
+## Detailed Documentation
+
+For comprehensive guides on specific topics:
+
+- **🔐 [Secrets Management](docs/gestione-segreti.md)**: Complete guide to managing encrypted secrets with agenix
+- **🖥️ [Server Administration](docs/srv-norvegia.md)**: srv-norvegia specific services, networking, and troubleshooting
+- **🔧 [Development Guide](CLAUDE.md)**: Configuration patterns, examples, and best practices for developers
+
 ## Key Features
 
 - **Reproducible**: Flake lock ensures consistent builds across machines
@@ -183,6 +195,7 @@ Host github.com
 - **User-centric**: Home-manager integration for per-user customization
 - **Performance**: Binary cache configuration for faster builds
 - **Modern**: Latest NixOS practices with helper functions
+- **Secure**: Encrypted secrets management with agenix
 
 ## License
 

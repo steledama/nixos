@@ -1,11 +1,6 @@
 # modules/home/waybar.nix
 # Waybar configuration for all Wayland window managers
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{...}: {
   programs.waybar = {
     enable = true;
     systemd.enable = false;

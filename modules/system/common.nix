@@ -1,14 +1,6 @@
 # modules/system/common.nix
 # Configurazioni comuni applicate a tutti gli host.
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  ... 
-}:
-
-{
+{inputs, ...}: {
   # Abilita i pacchetti non-free (es. driver Nvidia)
   nixpkgs.config.allowUnfree = true;
 
@@ -18,6 +10,6 @@
     useUserPackages = true;
     backupFileExtension = "hm-backup";
     # Passa gli input del flake (es. nixvim) ai moduli di home-manager
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
   };
 }

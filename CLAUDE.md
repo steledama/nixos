@@ -125,29 +125,110 @@ make help  # Show available docker commands
 ## Key Configuration Patterns
 
 ### Adding New Hosts
-1. Create directory in `hosts/`
-2. Add hardware configuration
-3. Create `default.nix` with host-specific settings
-4. Add to `flake.nix` nixosConfigurations
+1. **Create host directory**: `hosts/new-hostname/`
+2. **Copy hardware config**: `cp /etc/nixos/hardware-configuration.nix hosts/new-hostname/hardware.nix`
+3. **Create host config**: `hosts/new-hostname/default.nix`
+   ```nix
+   {config, ...}: {
+     imports = [
+       ./hardware.nix
+       ../default.nix
+       # Add specific modules for this host
+       ../../modules/system/hardware/amd.nix  # or intel.nix
+       ../../modules/system/services/ssh.nix
+     ];
+     
+     networking.hostName = "new-hostname";
+     users.users.username = {
+       isNormalUser = true;
+       extraGroups = ["wheel" "networkmanager"];
+     };
+     
+     home-manager.users.username = import ../../home/username;
+     system.stateVersion = "24.11";
+   }
+   ```
+4. **Add to flake**: Update `flake.nix` nixosConfigurations
+   ```nix
+   new-hostname = mkDesktopHost "new-hostname";  # or mkServerHost
+   ```
 
 ### Adding New Users
-1. Create directory in `home/`
-2. Create user-specific `default.nix`
-3. Import in host configuration
+1. **Create user directory**: `home/new-user/`
+2. **Create user config**: `home/new-user/default.nix`
+   ```nix
+   {inputs, ...}: {
+     imports = [
+       ../default.nix
+       ../../modules/home/shell-config.nix
+       ../../modules/home/dev-tools.nix
+       ../../modules/home/desktop-apps.nix  # if desktop user
+     ];
+     
+     home.stateVersion = "24.11";
+   }
+   ```
+3. **Link in host config**: Add to host's `home-manager.users`
 
-### Custom Services
-- Node.js services use flake-aware wrappers
-- Automatic dependency management with npm
-- Systemd integration with proper security settings
-- Environment variables and path management
+### Custom Services Examples
+```nix
+# Example: Adding a new systemd service
+systemd.services.my-service = {
+  description = "My Custom Service";
+  after = ["network.target"];
+  wantedBy = ["multi-user.target"];
+  
+  serviceConfig = {
+    ExecStart = "${pkgs.nodejs}/bin/node /path/to/script.js";
+    User = "myuser";
+    Restart = "always";
+    RestartSec = "10";
+  };
+};
+```
+
+### Module Creation Pattern
+```nix
+# modules/system/services/my-service.nix
+{config, lib, pkgs, ...}: 
+with lib; {
+  options.services.myService = {
+    enable = mkEnableOption "My Service";
+    port = mkOption {
+      type = types.port;
+      default = 3000;
+    };
+  };
+  
+  config = mkIf config.services.myService.enable {
+    # Service implementation
+  };
+}
+```
 
 ### Secrets Management
 The repository uses `agenix` for secure secrets management:
-- Secrets are encrypted and stored safely in the `secrets/` directory
-- Each host must be configured with `age.identityPaths` and secret definitions
-- Use `nix-shell -p agenix --run "agenix -e <secret-file>"` to encrypt secrets
-- Runtime secrets are available in `/run/secrets/` on target hosts
-- See `docs/gestione-segreti.md` for detailed usage instructions
+
+**Quick Setup Pattern**:
+```nix
+# In host configuration
+age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+age.secrets.my-secret.file = ../../secrets/my-secret.age;
+
+# In service configuration  
+services.myService.credentialsFile = config.age.secrets.my-secret.path;
+```
+
+**Common Commands**:
+```bash
+# Create/edit encrypted secret
+nix-shell -p agenix --run "agenix -e secrets/my-secret.age"
+
+# Add public keys to secrets.nix
+cat /etc/ssh/ssh_host_ed25519_key.pub >> secrets.nix
+```
+
+**See `docs/gestione-segreti.md` for complete workflow and troubleshooting.**
 
 ## Important Notes
 
