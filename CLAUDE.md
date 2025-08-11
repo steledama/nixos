@@ -141,10 +141,18 @@ make help  # Show available docker commands
 - Systemd integration with proper security settings
 - Environment variables and path management
 
+### Secrets Management
+The repository uses `agenix` for secure secrets management:
+- Secrets are encrypted and stored safely in the `secrets/` directory
+- Each host must be configured with `age.identityPaths` and secret definitions
+- Use `nix-shell -p agenix --run "agenix -e <secret-file>"` to encrypt secrets
+- Runtime secrets are available in `/run/secrets/` on target hosts
+- See `docs/gestione-segreti.md` for detailed usage instructions
+
 ## Important Notes
 
 - All configurations are declarative and reproducible
 - Use `sudo nixos-rebuild switch --flake .` from the repository root
 - Service configurations support both development and production environments
-- SMB credentials are stored in user directories (excluded from git)
+- Secrets are managed securely with agenix encryption (no plain text credentials)
 - Docker services auto-prune weekly on server configurations
