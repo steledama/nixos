@@ -1,12 +1,12 @@
 # nixos/home/default.nix
 {
-  pkgs,
+  # pkgs,
   inputs,
   ...
 }: {
   # Import common home modules (server-oriented)
   imports = [
-    inputs.nixvim.homeManagerModules.nixvim
+    inputs.nixvim.homeModules.nixvim
     ../modules/home/shell-config.nix
     ../modules/home/neovim.nix
     ../modules/home/yazi.nix
@@ -14,10 +14,10 @@
   ];
 
   # Common packages for all users (terminal-based)
-  home.packages = with pkgs; [
-    # Essential terminal tools only
-    # GUI apps moved to desktop-specific configs
-  ];
+  # home.packages = with pkgs; [
+  # Essential terminal tools only
+  # GUI apps moved to desktop-specific configs
+  # ];
 
   # Common editor configuration
   home.sessionVariables = {

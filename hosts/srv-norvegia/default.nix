@@ -1,6 +1,7 @@
 # nixos/hosts/srv-norvegia/default.nix
 {
   inputs,
+  config,
   pkgs,
   ...
 }: {
@@ -16,6 +17,9 @@
     ../../modules/system/services/node-server.nix
   ];
 
+  # Configurazione agenix per la gestione dei segreti
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  
   # Definizione del segreto per Samba
   age.secrets.smb-secrets.file = ../../secrets/smb-secrets.age;
 
@@ -118,14 +122,14 @@
         deviceAddress = "//10.40.40.98/scan";
         username = "acquisti";
         mountPoint = "/mnt/scan";
-        credentialsFile = config.age.secrets.smb-secrets.path;
+        credentialsFile = "/run/secrets/smb-secrets";
       };
       manuali = {
         enable = true;
         deviceAddress = "//10.40.40.98/manuali";
         username = "acquisti";
         mountPoint = "/mnt/manuali";
-        credentialsFile = config.age.secrets.smb-secrets.path;
+        credentialsFile = "/run/secrets/smb-secrets";
       };
     };
   };

@@ -1,5 +1,5 @@
 # nixos/hosts/pc-sviluppo/default.nix
-{inputs, ...}: {
+{inputs, config, ...}: {
   imports = [
     ./hardware.nix
     ../default.nix
@@ -13,6 +13,9 @@
     ../../modules/system/desktop/gnome.nix
   ];
 
+  # Configurazione agenix per la gestione dei segreti
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  
   # Definizione del segreto per Samba
   age.secrets.smb-secrets.file = ../../secrets/smb-secrets.age;
 
