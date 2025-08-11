@@ -1,5 +1,14 @@
 # modules/home/zed.nix
-# Zed editor minimal configuration
+# Zed editor configuration
+#
+# IMPORTANTE: La configurazione di Zed è gestita in modo ibrido per permettere
+# modifiche runtime dall'editor mantenendo una base declarative.
+# 
+# - I language server sono installati tramite NixOS (phpactor, nil, etc.)
+# - Il file settings.json iniziale viene creato ma poi rimane modificabile da Zed
+# - Per aggiornamenti strutturali, modificare il template qui sotto e ricostruire
+# 
+# File di riferimento: ~/.config/zed/settings.json (modificabile da Zed)
 {
   pkgs,
   lib,
@@ -40,7 +49,9 @@
         },
         "PHP": {
           "tab_size": 4,
-          "format_on_save": "on"
+          "format_on_save": "on",
+          "enable_language_server": true,
+          "language_servers": ["phpactor"]
         }
       },
       "lsp": {
@@ -55,6 +66,10 @@
               }
             }
           }
+        },
+        "phptools": {
+          "initialization_options": {},
+          "settings": {}
         },
         "phpactor": {
           "command": "phpactor",
