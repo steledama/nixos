@@ -9,6 +9,8 @@
   home.packages = with pkgs; [
     zed-editor
     package-version-server
+    phpactor # PHP language server
+    nodePackages.intelephense # Alternative PHP language server
     # nodePackages.vscode-langservers-extracted # HTML/CSS/JSON/ESLint
   ];
 
@@ -35,6 +37,10 @@
             }
           },
           "format_on_save": "on"
+        },
+        "PHP": {
+          "tab_size": 4,
+          "format_on_save": "on"
         }
       },
       "lsp": {
@@ -49,6 +55,10 @@
               }
             }
           }
+        },
+        "phpactor": {
+          "command": "phpactor",
+          "args": ["language-server"]
         }
       }
     }
