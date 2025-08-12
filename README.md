@@ -21,7 +21,8 @@ A comprehensive NixOS configuration using flakes and home-manager for managing m
 
 2. **Clone and customize**:
    ```bash
-   git clone git@github.com:steledama/nixos.git
+   # Initial clone via HTTPS (works without SSH keys)
+   git clone https://github.com/steledama/nixos.git
    cd nixos
    
    # Copy your hardware configuration
@@ -29,9 +30,10 @@ A comprehensive NixOS configuration using flakes and home-manager for managing m
    
    # Edit flake.nix to add your hostname
    # Customize host and user configurations
-   ```
    
-   > **Note**: SSH clone requires configured SSH keys. See [SSH Configuration](#ssh-configuration) section if needed.
+   # Optional: Switch to SSH after configuring keys
+   git remote set-url origin git@github.com:steledama/nixos.git
+   ```
 
 3. **First rebuild**:
    ```bash

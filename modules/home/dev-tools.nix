@@ -5,6 +5,7 @@
     # Development tools
     git # Version control
     lazygit # Git TUI frontend
+    gh # GitHub CLI
     gcc # C compiler
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
