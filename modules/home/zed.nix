@@ -5,8 +5,13 @@
 # modifiche runtime dall'editor mantenendo una base declarative.
 # 
 # - I language server sono installati tramite NixOS (phpactor, nil, etc.)
-# - Il file settings.json iniziale viene creato ma poi rimane modificabile da Zed
-# - Per aggiornamenti strutturali, modificare il template qui sotto e ricostruire
+# - Il file settings.json iniziale viene copiato da config-examples/zed-settings-reference.json
+# - Per aggiornamenti strutturali, modificare config-examples/zed-settings-reference.json e ricostruire
+# 
+# Workflow:
+# 1. Modifica config-examples/zed-settings-reference.json (con syntax highlighting)
+# 2. Ricostruisci il sistema per applicare le modifiche al template iniziale
+# 3. Il file utente (~/.config/zed/settings.json) rimane modificabile da Zed
 # 
 # File di riferimento: ~/.config/zed/settings.json (modificabile da Zed)
 {
@@ -23,61 +28,19 @@
     # nodePackages.vscode-langservers-extracted # HTML/CSS/JSON/ESLint
   ];
 
-  # Create initial settings.json only if it doesn't exist yet
+  # Create initial settings.json from reference file only if it doesn't exist yet
   home.activation.setupZedConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
         ZED_CONFIG_DIR="$HOME/.config/zed"
         ZED_SETTINGS="$ZED_CONFIG_DIR/settings.json"
+        ZED_REFERENCE="${../../config-examples/zed-settings-reference.json}"
 
         if [ ! -d "$ZED_CONFIG_DIR" ]; then
           $DRY_RUN_CMD mkdir -p "$ZED_CONFIG_DIR"
         fi
 
         if [ ! -f "$ZED_SETTINGS" ]; then
-          $DRY_RUN_CMD cat > "$ZED_SETTINGS" << 'EOF'
-    {
-      "format_on_save": "on",
-      "languages": {
-        "Nix": {
-          "tab_size": 2,
-          "formatter": {
-            "external": {
-              "command": "alejandra",
-              "arguments": ["--quiet", "-"]
-            }
-          },
-          "format_on_save": "on"
-        },
-        "PHP": {
-          "tab_size": 4,
-          "format_on_save": "on",
-          "enable_language_server": true,
-          "language_servers": ["phpactor"]
-        }
-      },
-      "lsp": {
-        "nil": {
-          "initialization_options": {
-            "formatting": {
-              "command": ["alejandra", "--quiet", "-"]
-            },
-            "nix": {
-              "flake": {
-                "autoArchive": true
-              }
-            }
-          }
-        },
-        "phptools": {
-          "initialization_options": {},
-          "settings": {}
-        },
-        "phpactor": {
-          "command": "phpactor",
-          "args": ["language-server"]
-        }
-      }
-    }
-    EOF
+          $DRY_RUN_CMD cp "$ZED_REFERENCE" "$ZED_SETTINGS"
+          echo "Zed: Configurazione iniziale copiata da config-examples/zed-settings-reference.json"
         fi
   '';
 }
