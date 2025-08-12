@@ -207,7 +207,7 @@ with lib; {
 ```
 
 ### Secrets Management
-The repository uses `agenix` for secure secrets management:
+The repository uses `agenix` for secure secrets management of service credentials and sensitive configuration:
 
 **Quick Setup Pattern**:
 ```nix
@@ -227,6 +227,13 @@ nix-shell -p agenix --run "agenix -e secrets/my-secret.age"
 # Add public keys to secrets.nix
 cat /etc/ssh/ssh_host_ed25519_key.pub >> secrets.nix
 ```
+
+**SSH Key Management**:
+SSH keys are managed manually for simplicity and reliability:
+- Generate keys manually: `ssh-keygen -t ed25519 -C "your-email@example.com"`
+- Add public key to GitHub/services as needed
+- SSH config is managed by home-manager for convenience
+- After system reinstalls, regenerate keys and re-authorize them
 
 **See `docs/gestione-segreti.md` for complete workflow and troubleshooting.**
 

@@ -62,20 +62,14 @@
           SetEnv = "TERM=xterm-256color";
         };
       };
-      "github-tt" = {
+      "github.com" = {
         hostname = "github.com";
         user = "git";
-        identityFile = "~/.ssh/id_ed25519_tt";
-        extraOptions = {
-          IdentitiesOnly = "yes";
-        };
+        identityFile = "~/.ssh/id_ed25519";
       };
     };
   };
 
-  # SSH public keys (generated from private keys)
-  home.file.".ssh/id_ed25519.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICslyKnf1VSpbP5Yq7mzghnxYFCCwzfeIvrxQVDwwQ89 stefano.pompa@gmail.com";
-  home.file.".ssh/id_ed25519_tt.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAO0muJh32sg6/lsySvxoXSfUXekrLgI0uvmlmwwbTFaI stefano.pompa@gmail.com";
 
   # User-specific packages (additional to common ones)
   home.packages = with pkgs; [
