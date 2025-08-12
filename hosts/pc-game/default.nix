@@ -15,6 +15,26 @@
     # ../../modules/system/desktop/hyprland.nix
   ];
 
+  # Configurazione agenix per la gestione dei segreti
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  
+  # Secrets SSH per stefano
+  age.secrets.ssh-stefano-norvegia = {
+    file = ../../secrets/ssh-stefano-norvegia.age;
+    path = "/home/stefano/.ssh/id_ed25519";
+    owner = "stefano";
+    group = "users";
+    mode = "0600";
+  };
+  
+  age.secrets.ssh-stefano-github = {
+    file = ../../secrets/ssh-stefano-github.age;
+    path = "/home/stefano/.ssh/id_ed25519_tt";
+    owner = "stefano";
+    group = "users";
+    mode = "0600";
+  };
+
   # Network
   networking = {
     hostName = "pc-game";
