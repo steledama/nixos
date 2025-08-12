@@ -12,8 +12,6 @@
     ../../modules/system/services/xdg-portals.nix
     ../../modules/system/services/gdm.nix
     ../../modules/system/desktop/gnome.nix
-    # ../../modules/system/desktop/wm.nix
-    # ../../modules/system/desktop/niri.nix
   ];
 
   # Network

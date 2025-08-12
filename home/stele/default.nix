@@ -2,9 +2,6 @@
 {config, ...}: {
   imports = [
     ../default.nix
-    ../../modules/home/wm.nix
-    ../../modules/home/waybar.nix
-    ../../modules/home/niri.nix
     ../../modules/home/syncthing.nix
     ../../modules/home/desktop-apps.nix
     ../../modules/home/dev-tools.nix
@@ -13,48 +10,24 @@
   home.username = "stele";
   home.homeDirectory = "/home/${config.home.username}";
 
-  # Setup WMs (default us keyboard)
-  wm = {
-    monitors = [
-      # External monitor
-      {
-        name = "DP-1"; # run 'wlr-randr' for yours display names
-        mode = {
-          width = 1920;
-          height = 1080;
+
+  # SSH Configuration
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "srv-norvegia" = {
+        hostname = "5.89.62.125";
+        user = "acquisti";
+        identityFile = "~/.ssh/id_ed25519";
+        extraOptions = {
+          SetEnv = "TERM=xterm-256color";
         };
-        position = {
-          x = 0;
-          y = 0;
-        };
-        scale = 1.0;
-        transform = "normal";
-        wallpaper = {
-          path = "~/Immagini/wallpaper-ext.jpg";
-          mode = "fill";
-        };
-      }
-      # Internal monitor (rotated)
-      {
-        name = "DSI-1"; # run 'wlr-randr' for yours display names
-        mode = {
-          width = 1200;
-          height = 1920;
-        };
-        position = {
-          x = 0;
-          y = 1080;
-        };
-        scale = 1.5;
-        transform = "270";
-        wallpaper = {
-          path = "~/Immagini/wallpaper-int.jpg";
-          mode = "fill";
-        };
-      }
-    ];
-    screenshots = {
-      path = "~/Immagini/Schermate/Screenshot-%Y%m%d-%H%M%S.png";
+      };
+      "github.com" = {
+        hostname = "github.com";
+        user = "git";
+        identityFile = "~/.ssh/id_ed25519";
+      };
     };
   };
 
