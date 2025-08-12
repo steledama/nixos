@@ -9,5 +9,18 @@
   home.username = "acquisti";
   home.homeDirectory = "/home/${config.home.username}";
 
+  # SSH Configuration
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "github-tt" = {
+        hostname = "github.com";
+        user = "git";
+        identityFile = "~/.ssh/id_ed25519_tt";
+        identitiesOnly = true;
+      };
+    };
+  };
+
   home.stateVersion = "23.11";
 }
