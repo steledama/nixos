@@ -81,7 +81,7 @@ make help  # Show available commands
 **Configured Shares**:
 - Scan Share: `//10.40.40.98/scan` → `/mnt/scan`
 - Manuals Share: `//10.40.40.98/manuali` → `/mnt/manuali`
-- Credentials: `/home/acquisti/nixos/smb-secrets`
+- Credentials: Managed by agenix (`config.age.secrets.smb-secrets.path`)
 
 ## User Configuration
 

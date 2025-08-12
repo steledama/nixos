@@ -1,5 +1,6 @@
 # nixos/hosts/pc-game/default.nix
-{inputs, ...}: {
+{ ... }:
+{
   imports = [
     ./hardware.nix
     ../default.nix
@@ -14,7 +15,6 @@
     # ../../modules/system/desktop/niri.nix
     # ../../modules/system/desktop/hyprland.nix
   ];
-
 
   # Network
   networking = {

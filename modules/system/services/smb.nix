@@ -48,8 +48,7 @@ let
 
       credentialsFile = mkOption {
         type = types.str;
-        default = "/etc/nixos/smb-secrets";
-        description = "Path to the credentials file";
+        description = "Path to the credentials file (use config.age.secrets.smb-secrets.path for agenix)";
       };
     };
   };

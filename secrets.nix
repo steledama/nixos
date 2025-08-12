@@ -13,8 +13,4 @@ in
 {
   # Segreto SMB esistente
   "smb-secrets.age".publicKeys = [ pc-sviluppo srv-norvegia ];
-  
-  # Nuovi segreti SSH per stefano
-  "secrets/ssh-stefano-norvegia.age".publicKeys = [ pc-game ];
-  "secrets/ssh-stefano-github.age".publicKeys = [ pc-game ];
 }

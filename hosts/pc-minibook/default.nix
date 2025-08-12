@@ -1,5 +1,6 @@
 # nixos/hosts/pc-minibook/default.nix
-{inputs, ...}: {
+{ ... }:
+{
   imports = [
     ./hardware.nix
     ../default.nix
