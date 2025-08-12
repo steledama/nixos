@@ -10,13 +10,26 @@ A comprehensive NixOS configuration using flakes and home-manager for managing m
 
 ### Prerequisites
 - Working NixOS installation with UEFI boot on GPT
-- Git enabled in system configuration
 
 ### Initial Setup
 
-1. **Enable flakes** in `/etc/nixos/configuration.nix`:
+1. **Enable flakes and git** in `/etc/nixos/configuration.nix`:
    ```nix
    nix.settings.experimental-features = ["nix-command" "flakes"];
+   environment.systemPackages = with pkgs; [
+     git
+   ];
+   ```
+   
+   Optionally, change hostname if needed:
+   ```nix
+   networking.hostName = "your-desired-hostname";
+   ```
+   
+   Apply changes and reboot:
+   ```bash
+   sudo nixos-rebuild boot
+   sudo reboot
    ```
 
 2. **Clone and customize**:
@@ -37,7 +50,8 @@ A comprehensive NixOS configuration using flakes and home-manager for managing m
 
 3. **First rebuild**:
    ```bash
-   sudo nixos-rebuild switch --flake .
+   sudo nixos-rebuild boot --flake .
+   sudo reboot
    ```
 
 ## Repository Structure
