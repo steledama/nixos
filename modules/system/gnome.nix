@@ -1,4 +1,4 @@
-# modules/system/desktop/gnome.nix
+# modules/system/gnome.nix
 {pkgs, ...}: {
   services.desktopManager.gnome.enable = true;
   # System gnome packages

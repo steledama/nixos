@@ -10,7 +10,7 @@
     ../../modules/system/services/xdg-portals.nix
     ../../modules/system/services/smb.nix
     ../../modules/system/services/gdm.nix
-    ../../modules/system/desktop/gnome.nix
+    ../../modules/system/gnome.nix
   ];
 
   # Configurazione agenix per la gestione dei segreti
