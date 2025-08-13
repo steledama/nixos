@@ -187,6 +187,11 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 cat ~/.ssh/id_ed25519.pub
 ```
 
+**Copy SSH key to remote server** (e.g., to authorize pc-sviluppo on srv-norvegia):
+```bash
+ssh-copy-id acquisti@srv-norvegia
+```
+
 **Multiple accounts** - configure `~/.ssh/config`:
 ```
 Host github.com

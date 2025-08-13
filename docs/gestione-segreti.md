@@ -1,6 +1,8 @@
 # Gestione dei Segreti con Agenix
 
-Questa guida spiega come gestire i segreti (password, token, chiavi API) in questa configurazione NixOS utilizzando `agenix`. `agenix` permette di salvare i segreti in formato criptato all'interno del repository Git, garantendo sicurezza e riproducibilità.
+Questa guida spiega come gestire i segreti (credenziali SMB, token, chiavi API) in questa configurazione NixOS utilizzando `agenix`. `agenix` permette di salvare i segreti in formato criptato all'interno del repository Git, garantendo sicurezza e riproducibilità.
+
+**IMPORTANTE:** Le chiavi SSH sono gestite manualmente per semplicità e affidabilità, non tramite agenix.
 
 ## Prerequisiti
 
@@ -48,17 +50,11 @@ Seguire questi passaggi per aggiungere un nuovo segreto o aggiornarne uno esiste
 - **`secrets.nix`**: Contiene le chiavi **pubbliche** usate da `age` per **criptare** i segreti quando li crei/modifichi
 - **`age.identityPaths` negli host**: Specifica dove trovare la chiave **privata** per **decriptare** i segreti a runtime
 
-Per criptare un segreto, `agenix` ha bisogno di sapere per chi lo sta criptando. Le "identità" sono le chiavi pubbliche SSH delle macchine e degli utenti che devono poter leggere il segreto.
+Per criptare un segreto, `agenix` ha bisogno di sapere per chi lo sta criptando. Le "identità" sono le chiavi pubbliche SSH delle macchine che devono poter leggere il segreto.
 
 Il file che le contiene è `secrets.nix` nella root del progetto.
 
-Per popolarlo correttamente, devi ottenere le seguenti chiavi:
-
-*   **Chiave Pubblica dell'Utente** (permette a te di modificare i segreti):
-    ```bash
-    cat ~/.ssh/id_ed25519.pub
-    ```
-    *Se non esiste, creala con `ssh-keygen -t ed25519`.*
+Per popolarlo correttamente, devi ottenere le chiavi pubbliche degli host che necessitano di accesso ai segreti:
 
 *   **Chiave Pubblica dell'Host** (permette alla macchina di usare il segreto):
     La chiave si trova in `/etc/ssh/ssh_host_ed25519_key.pub`. Devi recuperarla da ogni host che ha bisogno di accedere al segreto.
@@ -83,7 +79,6 @@ Apri il file `secrets.nix` e incolla le chiavi pubbliche che hai raccolto, una p
 ```nix
 # secrets.nix
 [
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM... tu@email.com"
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG... root@pc-sviluppo"
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH... root@srv-norvegia"
 ]
