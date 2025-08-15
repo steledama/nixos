@@ -8,9 +8,7 @@
   ];
   home.packages = with pkgs; [
     vivaldi # browser
-    microsoft-edge # browser
     libreoffice # productivity suite
-    thunderbird # email client
     obsidian # knowledge base
     inkscape # vector graphics editor
     ghostty # terminal emulator
