@@ -7,16 +7,16 @@
     ./zed.nix # GUI editor with language server support
   ];
   home.packages = with pkgs; [
-    zen-browser # browser
-    microsoft-edge # Web browser from Microsoft
+    vivaldi # browser
+    microsoft-edge # browser
     libreoffice # productivity suite
     thunderbird # email client
     obsidian # knowledge base
     inkscape # vector graphics editor
     ghostty # terminal emulator
-    evince # GNOME's document viewer
-    gparted # Graphical disk partitioning tool
-    usbimager # OS image USB flasher
+    evince # document viewer
+    gparted # disk partitioning tool
+    usbimager # os image usb flasher
     filezilla # ftp client
   ];
 }

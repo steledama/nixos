@@ -17,11 +17,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # zen browser
-    zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # Secrets management
     agenix = {
@@ -35,7 +30,6 @@
     nixpkgs,
     home-manager,
     nixvim,
-    zen-browser,
     agenix,
     ...
   } @ inputs: let
@@ -49,34 +43,22 @@
       ./modules/system/common.nix
     ];
 
-    # Desktop overlay for zen-browser
-    desktopOverlay = {
-      nixpkgs.overlays = [ ((import ./overlays/zen-browser.nix) inputs) ];
-    };
 
-    # Helper functions for different host types
-    mkHost = hostname: extraModules:
+    # Helper function for all hosts
+    mkHost = hostname:
       nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit inputs;};
-        modules =
-          [
-            ./hosts/${hostname}
-          ]
-          ++ baseModules ++ extraModules;
+        modules = [
+          ./hosts/${hostname}
+        ] ++ baseModules;
       };
-    
-    # Desktop host with zen-browser overlay
-    mkDesktopHost = hostname: mkHost hostname [desktopOverlay];
-    
-    # Server host without desktop overlay
-    mkServerHost = hostname: mkHost hostname [];
   in {
     nixosConfigurations = {
-      pc-game = mkDesktopHost "pc-game"; # Gaming desktop with niri + zen-browser
-      srv-norvegia = mkServerHost "srv-norvegia"; # Server without desktop packages
-      pc-minibook = mkDesktopHost "pc-minibook"; # Laptop with niri + zen-browser  
-      pc-sviluppo = mkDesktopHost "pc-sviluppo"; # Development desktop with GNOME + zen-browser
+      pc-game = mkHost "pc-game";
+      srv-norvegia = mkHost "srv-norvegia";
+      pc-minibook = mkHost "pc-minibook";
+      pc-sviluppo = mkHost "pc-sviluppo";
     };
   };
 }
