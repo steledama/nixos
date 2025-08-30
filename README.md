@@ -9,41 +9,46 @@ A comprehensive NixOS configuration using flakes and home-manager for managing m
 ## Quick Start
 
 ### Prerequisites
+
 - Working NixOS installation with UEFI boot on GPT
 
 ### Initial Setup
 
 1. **Enable flakes and git** in `/etc/nixos/configuration.nix`:
+
    ```nix
    nix.settings.experimental-features = ["nix-command" "flakes"];
    environment.systemPackages = with pkgs; [
      git
    ];
    ```
-   
+
    Optionally, change hostname if needed:
+
    ```nix
    networking.hostName = "your-desired-hostname";
    ```
-   
+
    Apply changes and reboot:
+
    ```bash
    sudo nixos-rebuild boot
    sudo reboot
    ```
 
 2. **Clone and customize**:
+
    ```bash
    # Initial clone via HTTPS (works without SSH keys)
    git clone https://github.com/steledama/nixos.git
    cd nixos
-   
+
    # Copy your hardware configuration
    cp /etc/nixos/hardware-configuration.nix hosts/your-hostname/hardware.nix
-   
+
    # Edit flake.nix to add your hostname
    # Customize host and user configurations
-   
+
    # Optional: Switch to SSH after configuring keys
    git remote set-url origin git@github.com:steledama/nixos.git
    ```
@@ -79,6 +84,7 @@ nixos/
 ## Common Commands
 
 ### System Management
+
 ```bash
 # Update flake inputs
 nix flake update
@@ -98,6 +104,7 @@ gcCleanup
 ```
 
 ### Service Management (srv-norvegia)
+
 ```bash
 # Node.js server service
 sudo systemctl status node-server
@@ -120,12 +127,15 @@ make help  # Show available docker commands
 ## Architecture Overview
 
 ### Host Management
+
 The repository manages 3 distinct hosts:
-- **pc-minibook**: Laptop with Niri window manager  
+
+- **pc-minibook**: Laptop with Niri window manager
 - **pc-sviluppo**: Development desktop with GNOME
 - **srv-norvegia**: Server without desktop environment
 
 ### Flake Configuration
+
 - Uses NixOS unstable channel for latest packages
 - Integrates home-manager as NixOS module
 - Includes nixvim and zen-browser inputs
@@ -133,11 +143,13 @@ The repository manages 3 distinct hosts:
 - Helper functions `mkDesktopHost` and `mkServerHost` for different host types
 
 ### Module System
+
 - **System modules** (`modules/system/`): Desktop environments, hardware configs, services
 - **Home modules** (`modules/home/`): User applications, dotfiles, development tools
 - **Overlays**: Custom package modifications (zen-browser)
 
 ### User Management
+
 - Home-manager integrated as NixOS module
 - Per-user configurations with shared modules
 - Development tools distributed via `dev-tools.nix` module
@@ -145,26 +157,130 @@ The repository manages 3 distinct hosts:
 ## Adding New Components
 
 ### Adding New Hosts
+
 1. Create directory in `hosts/`
 2. Add hardware configuration and `default.nix`
 3. Add to `flake.nix` using `mkDesktopHost` or `mkServerHost`
 
 ### Adding New Users
+
 1. Create directory in `home/`
 2. Create user-specific `default.nix`
 3. Import relevant modules (dev-tools, desktop-apps, etc.)
 4. Add to host configuration
 
 ### Creating Custom Modules
+
 1. Add file in appropriate directory under `modules/`
 2. Define options and configuration
 3. Import where needed in host or user configs
 
 > 🔧 For detailed examples and patterns, see [CLAUDE.md](CLAUDE.md)
 
+## Cross-Platform Shortcuts
+
+For users coming from Windows or working across different platforms, here are essential GNOME keyboard shortcuts to create a more uniform experience:
+
+### GNOME Settings Configuration
+
+To configure these shortcuts, go to **Settings > Keyboard > Keyboard Shortcuts > Custom Shortcuts** and add:
+
+1. **File Manager Launcher** (Windows-like):
+
+   - **Name**: Open Home Folder
+   - **Command**: `nautilus`
+   - **Shortcut**: `Super + E`
+   - This mimics the Windows `Win + E` shortcut for opening the file explorer
+
+2. **Window Switching** (Windows-like):
+
+   - Go to **Settings > Keyboard > Keyboard Shortcuts > Navigation**
+   - Find **"Switch windows"** and set it to `Alt + Tab`
+   - Find **"Switch applications"** and disable it or set to a different shortcut
+   - This makes `Alt + Tab` cycle through individual windows instead of applications
+
+3. **Workspace Navigation**:
+   - Go to **Settings > Keyboard > Keyboard Shortcuts > Navigation**
+   - Set **"Switch to workspace on the right"** to `Ctrl + Alt + Right`
+   - Set **"Switch to workspace on the left"** to `Ctrl + Alt + Left`
+   - This provides consistent workspace switching across desktop environments
+
+### Additional Cross-Platform Tips
+
+- **Super Key**: The Windows/Super key opens the Activities overview (equivalent to Windows Start menu)
+- **Alt + F2**: Opens the command runner (similar to Windows Run dialog)
+- **Ctrl + Alt + T**: Opens terminal (consistent across most Linux distributions)
+
+## Cross-Platform Development Setup
+
+### VS Code Extensions
+
+To maintain consistency across NixOS and Windows development environments, install these essential VS Code extensions:
+
+- **Nix** by Battist BENOIST (`bbenoist.nix`) - Nix language support with syntax highlighting and formatting
+- **Prettier - Code formatter** by Prettier (`esbenp.prettier-vscode`) - Consistent code formatting across languages
+- **Version Lens** by pflannery (`pflannery.versionlens`) - Shows package versions in package.json and other dependency files
+
+- **PHP Intelephense** by Ben Mewburn (`bmewburn.vscode-intelephense-client`) - Advanced PHP language support and IntelliSense
+
+- **Rainbow CSV** by mechatroner (`mechatroner.rainbow-csv`) - Colorizes CSV files and provides table view
+
+- **XML Tools** by Josh Johnson (`dotjoshjohnson.xml`) - XML formatting, XQuery, and XPath tools
+
+Installation Commands:
+
+```bash
+# Install all extensions at once
+code --install-extension bbenoist.nix
+code --install-extension esbenp.prettier-vscode
+code --install-extension pflannery.versionlens
+code --install-extension bmewburn.vscode-intelephense-client
+code --install-extension mechatroner.rainbow-csv
+code --install-extension dotjoshjohnson.xml
+```
+
+### Windows Development Environment (Chocolatey)
+
+For Windows systems, use Chocolatey to install development tools that mirror the NixOS environment:
+
+````powershell
+# Modern browsers
+choco install vivaldi
+
+```powershell
+# Core development tools
+choco install vscode git nodejs-lts
+
+# Advanced development tools
+choco install lazygit
+
+# File management and utilities
+choco install 7zip.install googledrive syncthingtray
+choco install windirstat usbimager
+
+# Productivity applications
+choco install obsidian libreoffice-fresh
+
+# Graphics and media
+choco install gimp inkscape foxitreader
+
+# Gaming platforms (optional)
+choco install steam epicgameslauncher goggalaxy
+````
+
+To install All at Once
+
+```powershell
+# Single command to install all essential packages
+choco install vscode git nodejs-lts 7zip.install googledrive syncthingtray windirstat usbimager obsidian libreoffice-fresh gimp inkscape foxitreader lazygit vivaldi -y
+```
+
+> **Note**: This package list is based on the current working Windows development setup and provides feature parity with the NixOS configuration.
+
 ## Development Workflow
 
 ### Version Control
+
 ```bash
 # Basic git workflow
 git add .
@@ -175,21 +291,25 @@ git push
 ### SSH Configuration
 
 **Generate SSH key** (if not already done):
+
 ```bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
 
 **Add to GitHub**: Copy public key and add to GitHub Settings > SSH Keys:
+
 ```bash
 cat ~/.ssh/id_ed25519.pub
 ```
 
 **Copy SSH key to remote server** (e.g., to authorize pc-sviluppo on srv-norvegia):
+
 ```bash
 ssh-copy-id acquisti@srv-norvegia
 ```
 
 **Multiple accounts** - configure `~/.ssh/config`:
+
 ```
 Host github.com
   HostName github.com
@@ -201,7 +321,7 @@ Host github.com
 
 For comprehensive guides on specific topics:
 
-- **🔐 [Secrets Management](docs/gestione-segreti.md)**: Complete guide to managing encrypted secrets with agenix
+- **🔐 [Secrets Management](docs/secrets-management.md)**: Complete guide to managing encrypted secrets with agenix
 - **🖥️ [Server Administration](docs/srv-norvegia.md)**: srv-norvegia specific services, networking, and troubleshooting
 - **🔧 [Development Guide](CLAUDE.md)**: Configuration patterns, examples, and best practices for developers
 
