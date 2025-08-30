@@ -62,13 +62,11 @@ nixos/
 ├── flake.lock             # Dependency lockfile
 ├── hosts/                 # Host-specific configurations
 │   ├── default.nix        # Common host configurations
-│   ├── pc-game/           # Gaming desktop configuration
 │   ├── pc-minibook/       # Minibook laptop configuration
 │   ├── pc-sviluppo/       # Development desktop configuration
 │   └── srv-norvegia/      # Server configuration
 ├── home/                  # Home-manager user configurations
 │   ├── acquisti/          # User: acquisti
-│   ├── stefano/           # User: stefano
 │   ├── stele/             # User: stele
 │   └── sviluppo/          # User: sviluppo
 ├── modules/               # Reusable system and user modules
@@ -122,8 +120,7 @@ make help  # Show available docker commands
 ## Architecture Overview
 
 ### Host Management
-The repository manages 4 distinct hosts:
-- **pc-game**: Gaming desktop with Niri window manager
+The repository manages 3 distinct hosts:
 - **pc-minibook**: Laptop with Niri window manager  
 - **pc-sviluppo**: Development desktop with GNOME
 - **srv-norvegia**: Server without desktop environment
