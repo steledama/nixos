@@ -14,6 +14,7 @@
   # SSH Configuration
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = {
       "srv-norvegia" = {
         hostname = "5.89.62.125";
