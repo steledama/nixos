@@ -12,6 +12,7 @@
   # SSH Configuration
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = {
       "github-tt" = {
         hostname = "github.com";

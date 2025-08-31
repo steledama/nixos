@@ -213,31 +213,6 @@ To configure these shortcuts, go to **Settings > Keyboard > Keyboard Shortcuts >
 
 ## Cross-Platform Development Setup
 
-### VS Code Extensions
-
-To maintain consistency across NixOS and Windows development environments, install these essential VS Code extensions:
-
-- **Nix** by Battist BENOIST (`bbenoist.nix`) - Nix language support with syntax highlighting and formatting
-- **Prettier - Code formatter** by Prettier (`esbenp.prettier-vscode`) - Consistent code formatting across languages
-- **Version Lens** by pflannery (`pflannery.versionlens`) - Shows package versions in package.json and other dependency files
-
-- **PHP Intelephense** by Ben Mewburn (`bmewburn.vscode-intelephense-client`) - Advanced PHP language support and IntelliSense
-
-- **Rainbow CSV** by mechatroner (`mechatroner.rainbow-csv`) - Colorizes CSV files and provides table view
-
-- **XML Tools** by Josh Johnson (`dotjoshjohnson.xml`) - XML formatting, XQuery, and XPath tools
-
-Installation Commands:
-
-```bash
-# Install all extensions at once
-code --install-extension bbenoist.nix
-code --install-extension esbenp.prettier-vscode
-code --install-extension pflannery.versionlens
-code --install-extension bmewburn.vscode-intelephense-client
-code --install-extension mechatroner.rainbow-csv
-code --install-extension dotjoshjohnson.xml
-```
 
 ### Windows Development Environment (Chocolatey)
 
