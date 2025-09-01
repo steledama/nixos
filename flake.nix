@@ -57,7 +57,6 @@
     nixosConfigurations = {
       srv-norvegia = mkHost "srv-norvegia";
       pc-minibook = mkHost "pc-minibook";
-      pc-sviluppo = mkHost "pc-sviluppo";
     };
   };
 }

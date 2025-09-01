@@ -55,9 +55,8 @@ gcCleanup
 
 ### Host-Specific Commands
 
-The repository manages 3 hosts:
-- `pc-minibook`: Laptop with Niri window manager  
-- `pc-sviluppo`: Development desktop with GNOME
+The repository manages 2 hosts:
+- `pc-minibook`: Laptop with GNOME desktop environment  
 - `srv-norvegia`: Server without desktop environment
 
 ### Service Management (srv-norvegia)
@@ -87,12 +86,11 @@ make help  # Show available docker commands
 - Uses NixOS unstable channel
 - Integrates home-manager as NixOS module
 - Includes nixvim and zen-browser inputs
-- Uses official nixpkgs for niri (no external flake needed)
 - Modular host configuration with `mkHost` helper function
 
 ### Module System
 - **System modules**: Located in `modules/system/`
-  - Desktop environments (GNOME, Hyprland, Niri)
+  - Desktop environments (GNOME)
   - Hardware configurations (AMD, Intel, NVIDIA)
   - Services (Docker, SSH, SMB, etc.)
 - **Home modules**: Located in `modules/home/`
@@ -113,8 +111,7 @@ make help  # Show available docker commands
 - Firewall configured for specific services (ports 22, 80, 443, 3001, 8384, etc.)
 
 ### Desktop Features
-- Multi-desktop environment support (GNOME, Hyprland, Niri)
-- Niri uses official nixpkgs package (fast, pre-compiled)
+- GNOME desktop environment on pc-minibook
 - Custom keyboard shortcuts for cross-platform compatibility
 - Hardware-specific optimizations per host
 - Zen browser integration via overlay
