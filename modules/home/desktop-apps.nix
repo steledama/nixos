@@ -18,5 +18,6 @@
     gparted # disk partitioning tool
     usbimager # os image usb flasher
     filezilla # ftp client
+    amule # peer-to-peer client
   ];
 }
