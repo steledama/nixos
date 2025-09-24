@@ -15,7 +15,6 @@
     ../../modules/system/services/smb.nix
     ../../modules/system/services/automated-scripts.nix
     ../../modules/system/services/node-server.nix
-    ../../modules/system/services/syncthing.nix
   ];
 
   # Configurazione agenix per la gestione dei segreti
@@ -159,12 +158,6 @@
     user = "norvegia";
   };
 
-  # Syncthing system service
-  services.syncthingSystem = {
-    enable = true;
-    user = "norvegia";
-    guiAddress = "0.0.0.0:8384";
-  };
 
   system.stateVersion = "24.11";
 }

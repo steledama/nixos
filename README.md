@@ -113,10 +113,10 @@ sudo journalctl -u node-server -f
 sudo systemctl status automated-scripts
 sudo journalctl -u automated-scripts -f
 
-# Syncthing (system service)
-sudo systemctl status syncthing
-sudo systemctl restart syncthing
-sudo journalctl -u syncthing -f
+# Syncthing (user service via home-manager)
+systemctl --user status syncthing
+systemctl --user restart syncthing
+journalctl --user -u syncthing -f
 
 # Access Syncthing web GUI
 # Web interface available at: http://srv-norvegia:8384
@@ -124,6 +124,35 @@ sudo journalctl -u syncthing -f
 # Docker services
 make help  # Show available docker commands
 ```
+
+### System Rebuild and Repository Management Workflow
+
+⚠️ **Important**: After NixOS rebuilds, follow this sequence to avoid service conflicts:
+
+```bash
+# 1. Complete system rebuild first
+sudo nixos-rebuild switch --flake .
+sudo reboot  # if needed
+
+# 2. Stop services before git operations to prevent conflicts
+sudo systemctl stop automated-scripts
+sudo systemctl stop node-server
+
+# 3. Now safe to perform git operations
+cd /home/norvegia
+git clone <repository-url>
+# or git pull in existing directories
+
+# 4. Handle npm dependencies
+cd project-directory
+npm install  # or use 'nix develop' if available
+
+# 5. Restart services
+sudo systemctl start automated-scripts
+sudo systemctl start node-server
+```
+
+**Why this is necessary**: The automated-scripts service runs npm install operations that can interfere with git clone/pull operations, causing file conflicts and failed operations.
 
 > 📖 For detailed server management, see [srv-norvegia documentation](docs/srv-norvegia.md)
 

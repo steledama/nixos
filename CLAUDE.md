@@ -70,10 +70,10 @@ sudo journalctl -u node-server -f
 sudo systemctl status automated-scripts
 sudo journalctl -u automated-scripts -f
 
-# Syncthing (system service)
-sudo systemctl status syncthing
-sudo systemctl restart syncthing
-sudo journalctl -u syncthing -f
+# Syncthing (user service via home-manager)
+systemctl --user status syncthing
+systemctl --user restart syncthing
+journalctl --user -u syncthing -f
 
 # Access Syncthing web GUI
 # Web interface available at: http://srv-norvegia:8384
@@ -108,31 +108,31 @@ make help  # Show available docker commands
 ### Server Configuration (srv-norvegia)
 - Runs containerized services via Docker
 - Node.js applications with automated service management
-- Syncthing for file synchronization (system service architecture)
+- Syncthing for file synchronization (user service via home-manager)
 - SMB network shares for legacy system integration
 - Firewall configured for specific services (ports 22, 80, 443, 3001, 8384, etc.)
 
 #### Syncthing Architecture
-**Service Design**: Syncthing runs as a dedicated system service rather than user service for:
-- **Server reliability**: Independent of user sessions on headless server
-- **Architectural consistency**: Aligns with other system services (node-server, automated-scripts)
-- **Service isolation**: Dedicated `syncthing` user with limited permissions
+**Service Design**: Syncthing runs as a user service via home-manager:
+- **User-centric**: Runs under the `norvegia` user account
+- **Home-manager integration**: Configured through `modules/home/syncthing.nix`
+- **Simple permissions**: Direct file access under user's home directory
 
-**Permission Management**:
-- Syncthing service runs under dedicated `syncthing` system user
-- Data stored in `/var/lib/syncthing/` with appropriate ownership
-- Normal users (e.g., `norvegia`) added to `syncthing` group for file access
+**Configuration**:
+- Syncthing service runs under `norvegia` user
+- Configuration and data stored in `/home/norvegia/.config/syncthing/`
 - Web GUI accessible at `0.0.0.0:8384` for remote management
+- Service managed via systemd user session
 
 **File Access Pattern**:
 ```bash
-# Syncthing data directory
-/var/lib/syncthing/          # owned by syncthing:syncthing
-├── .config/syncthing/       # service configuration
-└── Sync/                    # synced folders (example)
+# Syncthing user service directories
+/home/norvegia/.config/syncthing/    # service configuration
+/home/norvegia/Sync/                 # synced folders (example)
 
-# User access via group membership
-usermod -a -G syncthing norvegia  # handled automatically by NixOS
+# Service management (as norvegia user)
+systemctl --user status syncthing
+systemctl --user restart syncthing
 ```
 
 ### Desktop Features
@@ -256,10 +256,78 @@ SSH keys are managed manually for simplicity and reliability:
 
 **See `docs/gestione-segreti.md` for complete workflow and troubleshooting.**
 
+## System Reinstallation Workflow
+
+### Critical Steps After NixOS Rebuild (srv-norvegia)
+
+When performing initial system setup or major rebuilds, follow this sequence to avoid service conflicts:
+
+1. **Complete NixOS rebuild first**:
+   ```bash
+   sudo nixos-rebuild switch --flake .
+   sudo reboot  # if needed
+   ```
+
+2. **Stop interfering services before git operations**:
+   ```bash
+   # Stop services that may interfere with git clone/npm install
+   sudo systemctl stop automated-scripts
+   sudo systemctl stop node-server
+   # Note: Keep syncthing running unless specific conflicts occur
+   ```
+
+3. **Perform git operations**:
+   ```bash
+   # Now safe to clone/pull repositories
+   git clone <repository-url>
+   # or git pull in existing directories
+   ```
+
+4. **Handle npm dependencies in NixOS environment**:
+   ```bash
+   # Use nix develop if available, or ensure build tools are accessible
+   cd project-directory
+   npm install
+   ```
+
+5. **Restart services**:
+   ```bash
+   sudo systemctl start automated-scripts
+   sudo systemctl start node-server
+   ```
+
+### Common Issues and Solutions
+
+**Service Interference with Git Operations**:
+- **Problem**: automated-scripts service runs npm install during git clone operations, causing conflicts
+- **Solution**: Always stop automated-scripts and node-server services before git clone/pull operations
+- **Detection**: Look for "error: the following files have changes" during git operations
+
+**npm Install Failures in NixOS**:
+- **Problem**: Missing system dependencies (tar, build tools) for native modules
+- **Solution**: Use `nix develop` environment or ensure system packages include necessary build tools
+- **Common missing**: tar, gcc, python3, node-gyp dependencies
+
+**SSH Host Key Verification**:
+- **Problem**: Host key changes after system rebuild cause SSH connection failures
+- **Solution**: Remove old host keys with `ssh-keygen -R <hostname>` and `ssh-keygen -R <ip>`
+- **Prevention**: Document host key fingerprints for verification
+
+### Syncthing Service Recovery
+
+If Syncthing service needs restart after directory conflicts:
+```bash
+sudo systemctl stop syncthing
+sudo systemctl start syncthing
+# Verify GUI accessibility at http://srv-norvegia:8384
+```
+
 ## Important Notes
 
 - All configurations are declarative and reproducible
 - Use `sudo nixos-rebuild switch --flake .` from the repository root
+- **Always stop automated services before git operations to prevent conflicts**
 - Service configurations support both development and production environments
 - Secrets are managed securely with agenix encryption (no plain text credentials)
 - Docker services auto-prune weekly on server configurations
+- **After major rebuilds, expect to resolve SSH host key verification issues**
