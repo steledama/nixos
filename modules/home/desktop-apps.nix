@@ -9,15 +9,16 @@
     package = pkgs.vscode;
   };
   home.packages = with pkgs; [
-    vivaldi # browser
-    libreoffice # productivity suite
-    obsidian # knowledge base
-    inkscape # vector graphics editor
-    ghostty # terminal emulator
-    evince # document viewer
-    gparted # disk partitioning tool
-    usbimager # os image usb flasher
-    filezilla # ftp client
-    amule # peer-to-peer client
+    vivaldi # Browser
+    libreoffice # Productivity suite
+    obsidian # Knowledge base
+    inkscape # Vector graphics editor
+    ghostty # Terminal emulator
+    evince # Document viewer
+    gparted # Disk partitioning tool
+    usbimager # Os image usb flasher
+    filezilla # Ftp client
+    amule # Peer-to-peer client
+    anydesk # Desktop sharing application
   ];
 }
