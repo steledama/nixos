@@ -1,5 +1,5 @@
 # nixos/modules/home/dev-tools.nix
-{pkgs, ...}: {
+{ pkgs, ... }: {
   # Development-specific packages that should be user-specific rather than system-wide
   home.packages = with pkgs; [
     # Development tools
@@ -9,9 +9,7 @@
     gcc # C compiler
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
-    claude-code # Agentic coding tool
     gemini-cli # AI agent into your terminal
-
     # Language runtimes
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     rustup # Rust toolchain installer (includes cargo)
