@@ -12,7 +12,7 @@
     ../../modules/system/hardware/touchpad.nix
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
-    ../../modules/system/services/smb.nix
+    # ../../modules/system/services/smb.nix
     ../../modules/system/services/automated-scripts.nix
     ../../modules/system/services/node-server.nix
   ];
@@ -21,7 +21,7 @@
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   # Definizione del segreto per Samba
-  age.secrets.smb-secrets.file = ../../secrets/smb-secrets.age;
+  # age.secrets.smb-secrets.file = ../../secrets/smb-secrets.age;
 
   environment.systemPackages = with pkgs; [
     cmatrix # Matrix screensaver
@@ -114,25 +114,25 @@
   };
 
   # Windows network share
-  services.windowsShares = {
-    enable = true;
-    shares = {
-      scan = {
-        enable = true;
-        deviceAddress = "//10.40.40.98/scan";
-        username = "norvegia";
-        mountPoint = "/mnt/scan";
-        credentialsFile = config.age.secrets.smb-secrets.path;
-      };
-      manuali = {
-        enable = true;
-        deviceAddress = "//10.40.40.98/manuali";
-        username = "norvegia";
-        mountPoint = "/mnt/manuali";
-        credentialsFile = config.age.secrets.smb-secrets.path;
-      };
-    };
-  };
+  # services.windowsShares = {
+  #   enable = true;
+  #   shares = {
+  #     scan = {
+  #       enable = true;
+  #       deviceAddress = "//10.40.40.98/scan";
+  #       username = "norvegia";
+  #       mountPoint = "/mnt/scan";
+  #       credentialsFile = config.age.secrets.smb-secrets.path;
+  #     };
+  #     manuali = {
+  #       enable = true;
+  #       deviceAddress = "//10.40.40.98/manuali";
+  #       username = "norvegia";
+  #       mountPoint = "/mnt/manuali";
+  #       credentialsFile = config.age.secrets.smb-secrets.path;
+  #     };
+  #   };
+  # };
 
   # Keyboard layout
   hardware.keyboard = {
