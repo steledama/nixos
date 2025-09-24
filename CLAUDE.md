@@ -75,6 +75,9 @@ sudo systemctl status syncthing
 sudo systemctl restart syncthing
 sudo journalctl -u syncthing -f
 
+# Access Syncthing web GUI
+# Web interface available at: http://srv-norvegia:8384
+
 # Docker services
 make help  # Show available docker commands
 ```
@@ -105,9 +108,32 @@ make help  # Show available docker commands
 ### Server Configuration (srv-norvegia)
 - Runs containerized services via Docker
 - Node.js applications with automated service management
-- Syncthing for file synchronization
+- Syncthing for file synchronization (system service architecture)
 - SMB network shares for legacy system integration
 - Firewall configured for specific services (ports 22, 80, 443, 3001, 8384, etc.)
+
+#### Syncthing Architecture
+**Service Design**: Syncthing runs as a dedicated system service rather than user service for:
+- **Server reliability**: Independent of user sessions on headless server
+- **Architectural consistency**: Aligns with other system services (node-server, automated-scripts)
+- **Service isolation**: Dedicated `syncthing` user with limited permissions
+
+**Permission Management**:
+- Syncthing service runs under dedicated `syncthing` system user
+- Data stored in `/var/lib/syncthing/` with appropriate ownership
+- Normal users (e.g., `norvegia`) added to `syncthing` group for file access
+- Web GUI accessible at `0.0.0.0:8384` for remote management
+
+**File Access Pattern**:
+```bash
+# Syncthing data directory
+/var/lib/syncthing/          # owned by syncthing:syncthing
+├── .config/syncthing/       # service configuration
+└── Sync/                    # synced folders (example)
+
+# User access via group membership
+usermod -a -G syncthing norvegia  # handled automatically by NixOS
+```
 
 ### Desktop Features
 - GNOME desktop environment on pc-minibook
