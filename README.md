@@ -118,6 +118,9 @@ systemctl --user status syncthing
 systemctl --user restart syncthing
 journalctl --user -u syncthing -f
 
+# Enable linger to prevent service timeout (run once)
+sudo loginctl enable-linger norvegia
+
 # Access Syncthing web GUI
 # Web interface available at: http://srv-norvegia:8384
 

@@ -315,10 +315,20 @@ When performing initial system setup or major rebuilds, follow this sequence to 
 
 ### Syncthing Service Recovery
 
-If Syncthing service needs restart after directory conflicts:
+**User Service Timeout Prevention**:
+User services may go into timeout/sleep mode. Enable linger to keep services active:
 ```bash
-sudo systemctl stop syncthing
-sudo systemctl start syncthing
+# Enable linger for the user (run once after system setup)
+sudo loginctl enable-linger norvegia
+
+# Verify linger status
+loginctl show-user norvegia | grep Linger
+```
+
+**Service Restart** (if needed after directory conflicts):
+```bash
+systemctl --user stop syncthing
+systemctl --user start syncthing
 # Verify GUI accessibility at http://srv-norvegia:8384
 ```
 
