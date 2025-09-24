@@ -115,7 +115,11 @@ sudo journalctl -u automated-scripts -f
 
 # Syncthing (system service)
 sudo systemctl status syncthing
+sudo systemctl restart syncthing
 sudo journalctl -u syncthing -f
+
+# Access Syncthing web GUI
+# Web interface available at: http://srv-norvegia:8384
 
 # Docker services
 make help  # Show available docker commands
