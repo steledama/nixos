@@ -25,8 +25,11 @@ with lib; {
       guiAddress = config.services.syncthingSystem.guiAddress;
     };
 
-    # Ensure the user exists
-    users.users.${config.services.syncthingSystem.user} = mkIf (config.services.syncthingSystem.user != "root") {
+    # Only create system user if it doesn't exist as a normal user
+    users.users.${config.services.syncthingSystem.user} = mkIf (
+      config.services.syncthingSystem.user != "root" &&
+      !config.users.users ? ${config.services.syncthingSystem.user}
+    ) {
       isSystemUser = true;
       group = config.services.syncthingSystem.user;
       home = "/var/lib/syncthing";
