@@ -18,7 +18,7 @@
     matchBlocks = {
       "srv-norvegia" = {
         hostname = "5.89.62.125";
-        user = "acquisti";
+        user = "norvegia";
         identityFile = "~/.ssh/id_ed25519";
         extraOptions = {
           SetEnv = "TERM=xterm-256color";

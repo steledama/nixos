@@ -15,6 +15,7 @@
     ../../modules/system/services/smb.nix
     ../../modules/system/services/automated-scripts.nix
     ../../modules/system/services/node-server.nix
+    ../../modules/system/services/syncthing.nix
   ];
 
   # Configurazione agenix per la gestione dei segreti
@@ -90,9 +91,9 @@
   };
 
   # User
-  users.users.acquisti = {
+  users.users.norvegia = {
     isNormalUser = true;
-    description = "acquisti";
+    description = "norvegia";
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -103,14 +104,14 @@
 
   home-manager = {
     users = {
-      acquisti = import ../../home/acquisti;
+      norvegia = import ../../home/norvegia;
     };
   };
 
   # Docker containers
   virtualisation.dockerSetup = {
     enable = true;
-    user = "acquisti";
+    user = "norvegia";
   };
 
   # Windows network share
@@ -120,14 +121,14 @@
       scan = {
         enable = true;
         deviceAddress = "//10.40.40.98/scan";
-        username = "acquisti";
+        username = "norvegia";
         mountPoint = "/mnt/scan";
         credentialsFile = config.age.secrets.smb-secrets.path;
       };
       manuali = {
         enable = true;
         deviceAddress = "//10.40.40.98/manuali";
-        username = "acquisti";
+        username = "norvegia";
         mountPoint = "/mnt/manuali";
         credentialsFile = config.age.secrets.smb-secrets.path;
       };
@@ -144,18 +145,25 @@
   # Automated scripts service
   services.automatedScripts = {
     enable = true;
-    scriptPath = "/home/acquisti/bi/scripts";
-    projectDirectory = "/home/acquisti/bi";
-    user = "acquisti";
+    scriptPath = "/home/norvegia/bi/scripts";
+    projectDirectory = "/home/norvegia/bi";
+    user = "norvegia";
   };
 
   # Node.js server service
   services.nodeServer = {
     enable = true;
-    scriptPath = "/home/acquisti/bi/scripts/server.js";
-    workingDirectory = "/home/acquisti/bi/scripts";
-    projectDirectory = "/home/acquisti/bi";
-    user = "acquisti";
+    scriptPath = "/home/norvegia/bi/scripts/server.js";
+    workingDirectory = "/home/norvegia/bi/scripts";
+    projectDirectory = "/home/norvegia/bi";
+    user = "norvegia";
+  };
+
+  # Syncthing system service
+  services.syncthingSystem = {
+    enable = true;
+    user = "norvegia";
+    guiAddress = "0.0.0.0:8384";
   };
 
   system.stateVersion = "24.11";

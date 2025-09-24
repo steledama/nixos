@@ -27,9 +27,9 @@ systemctl --user disable syncthing
 
 ### Automated Scripts Service
 **Purpose**: Executes automated Node.js scripts daily at 4:00 AM  
-**Script Location**: `/home/acquisti/bi/scripts/automated-scripts.sh`  
+**Script Location**: `/home/norvegia/bi/scripts/automated-scripts.sh`  
 **Schedule**: Daily at 04:00:00  
-**User**: acquisti  
+**User**: norvegia  
 
 **Management Commands**:
 ```bash
@@ -53,7 +53,7 @@ sudo journalctl -u node-server --since "2 hours ago"
 
 ### Docker Services
 **Purpose**: Web services managed through docker-compose with Makefile automation  
-**User**: acquisti (member of docker group)  
+**User**: norvegia (member of docker group)  
 **Configuration**: Auto-pruning enabled (weekly cleanup)  
 
 **Management Commands**:
@@ -85,9 +85,9 @@ make help  # Show available commands
 
 ## User Configuration
 
-**Primary User**: acquisti  
+**Primary User**: norvegia  
 **Groups**: networkmanager, wheel, libvirtd, video, docker  
-**Home Directory**: `/home/acquisti`  
+**Home Directory**: `/home/norvegia`  
 **Shell**: ZSH (system default)  
 
 ## System Management

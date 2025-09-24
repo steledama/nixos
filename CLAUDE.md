@@ -18,9 +18,8 @@ nixos/
 │   ├── pc-sviluppo/       # Development desktop configuration
 │   └── srv-norvegia/      # Server configuration
 ├── home/                  # Home-manager user configurations
-│   ├── acquisti/          # User: acquisti
-│   ├── stele/             # User: stele
-│   └── sviluppo/          # User: sviluppo
+│   ├── norvegia/          # User: norvegia
+│   └── stele/             # User: stele
 ├── modules/               # Reusable system and user modules
 │   ├── home/              # Home-manager modules
 │   └── system/            # System-level modules
@@ -71,10 +70,10 @@ sudo journalctl -u node-server -f
 sudo systemctl status automated-scripts
 sudo journalctl -u automated-scripts -f
 
-# Syncthing (user service)
-systemctl --user status syncthing
-systemctl --user restart syncthing
-journalctl --user -u syncthing -f
+# Syncthing (system service)
+sudo systemctl status syncthing
+sudo systemctl restart syncthing
+sudo journalctl -u syncthing -f
 
 # Docker services
 make help  # Show available docker commands

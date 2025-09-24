@@ -71,9 +71,8 @@ nixos/
 │   ├── pc-sviluppo/       # Development desktop configuration
 │   └── srv-norvegia/      # Server configuration
 ├── home/                  # Home-manager user configurations
-│   ├── acquisti/          # User: acquisti
-│   ├── stele/             # User: stele
-│   └── sviluppo/          # User: sviluppo
+│   ├── norvegia/          # User: norvegia
+│   └── stele/             # User: stele
 ├── modules/               # Reusable system and user modules
 │   ├── home/              # Home-manager modules
 │   └── system/            # System-level modules
@@ -114,9 +113,9 @@ sudo journalctl -u node-server -f
 sudo systemctl status automated-scripts
 sudo journalctl -u automated-scripts -f
 
-# Syncthing (user service)
-systemctl --user status syncthing
-journalctl --user -u syncthing -f
+# Syncthing (system service)
+sudo systemctl status syncthing
+sudo journalctl -u syncthing -f
 
 # Docker services
 make help  # Show available docker commands
@@ -128,10 +127,9 @@ make help  # Show available docker commands
 
 ### Host Management
 
-The repository manages 3 distinct hosts:
+The repository manages 2 distinct hosts:
 
-- **pc-minibook**: Laptop with Niri window manager
-- **pc-sviluppo**: Development desktop with GNOME
+- **pc-minibook**: Laptop with GNOME desktop environment
 - **srv-norvegia**: Server without desktop environment
 
 ### Flake Configuration
@@ -280,7 +278,7 @@ cat ~/.ssh/id_ed25519.pub
 **Copy SSH key to remote server** (e.g., to authorize pc-sviluppo on srv-norvegia):
 
 ```bash
-ssh-copy-id acquisti@srv-norvegia
+ssh-copy-id norvegia@srv-norvegia
 ```
 
 **Multiple accounts** - configure `~/.ssh/config`:

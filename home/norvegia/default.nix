@@ -1,12 +1,11 @@
-# nixos/home/acquisti/default.nix
+# nixos/home/norvegia/default.nix
 {config, ...}: {
   imports = [
     ../default.nix
-    ../../modules/home/syncthing.nix
     ../../modules/home/dev-tools.nix
   ];
   # username
-  home.username = "acquisti";
+  home.username = "norvegia";
   home.homeDirectory = "/home/${config.home.username}";
 
   # SSH Configuration
