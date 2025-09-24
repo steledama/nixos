@@ -18,23 +18,23 @@ with lib; {
   config = mkIf config.services.syncthingSystem.enable {
     services.syncthing = {
       enable = true;
-      user = config.services.syncthingSystem.user;
-      group = config.services.syncthingSystem.user;
+      user = "syncthing";
+      group = "syncthing";
       dataDir = "/var/lib/syncthing";
       configDir = "/var/lib/syncthing/.config/syncthing";
       guiAddress = config.services.syncthingSystem.guiAddress;
     };
 
-    # Only create system user if it doesn't exist as a normal user
-    users.users.${config.services.syncthingSystem.user} = mkIf (
-      config.services.syncthingSystem.user != "root" &&
-      !config.users.users ? ${config.services.syncthingSystem.user}
-    ) {
+    # Create dedicated syncthing system user
+    users.users.syncthing = {
       isSystemUser = true;
-      group = config.services.syncthingSystem.user;
+      group = "syncthing";
       home = "/var/lib/syncthing";
     };
 
-    users.groups.${config.services.syncthingSystem.user} = mkIf (config.services.syncthingSystem.user != "root") {};
+    users.groups.syncthing = {};
+
+    # Add the specified user to syncthing group for access
+    users.users.${config.services.syncthingSystem.user}.extraGroups = mkIf (config.services.syncthingSystem.user != "syncthing") ["syncthing"];
   };
 }
