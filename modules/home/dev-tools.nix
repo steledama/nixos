@@ -10,6 +10,7 @@
     direnv # Shell extension that manages your environment
     openssl # Cryptographic library that implements the SSL and TLS protocols
     gemini-cli # AI agent into your terminal
+    claude-code # Claude AI assistant in terminal
     # Language runtimes
     nodejs # Event-driven I/O framework for the V8 JavaScript engine
     rustup # Rust toolchain installer (includes cargo)
