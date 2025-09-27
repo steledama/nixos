@@ -15,7 +15,6 @@ nixos/
 ├── hosts/                 # Host-specific configurations
 │   ├── default.nix        # Common host configurations
 │   ├── pc-minibook/       # Minibook laptop configuration
-│   ├── pc-sviluppo/       # Development desktop configuration
 │   └── srv-norvegia/      # Server configuration
 ├── home/                  # Home-manager user configurations
 │   ├── norvegia/          # User: norvegia
@@ -55,7 +54,8 @@ gcCleanup
 ### Host-Specific Commands
 
 The repository manages 2 hosts:
-- `pc-minibook`: Laptop with GNOME desktop environment  
+
+- `pc-minibook`: Laptop with GNOME desktop environment
 - `srv-norvegia`: Server without desktop environment
 
 ### Service Management (srv-norvegia)
@@ -85,12 +85,14 @@ make help  # Show available docker commands
 ## Architecture Overview
 
 ### Flake Configuration
+
 - Uses NixOS unstable channel
 - Integrates home-manager as NixOS module
 - Includes nixvim and zen-browser inputs
 - Modular host configuration with `mkHost` helper function
 
 ### Module System
+
 - **System modules**: Located in `modules/system/`
   - Desktop environments (GNOME)
   - Hardware configurations (AMD, Intel, NVIDIA)
@@ -101,11 +103,13 @@ make help  # Show available docker commands
   - Development tools and shell configurations
 
 ### User Management
+
 - Home-manager integrated as NixOS module
 - Per-user configurations in `home/` directory
 - Shared modules for common configurations
 
 ### Server Configuration (srv-norvegia)
+
 - Runs containerized services via Docker
 - Node.js applications with automated service management
 - Syncthing for file synchronization (user service via home-manager)
@@ -113,18 +117,22 @@ make help  # Show available docker commands
 - Firewall configured for specific services (ports 22, 80, 443, 3001, 8384, etc.)
 
 #### Syncthing Architecture
+
 **Service Design**: Syncthing runs as a user service via home-manager:
+
 - **User-centric**: Runs under the `norvegia` user account
 - **Home-manager integration**: Configured through `modules/home/syncthing.nix`
 - **Simple permissions**: Direct file access under user's home directory
 
 **Configuration**:
+
 - Syncthing service runs under `norvegia` user
 - Configuration and data stored in `/home/norvegia/.config/syncthing/`
 - Web GUI accessible at `0.0.0.0:8384` for remote management
 - Service managed via systemd user session
 
 **File Access Pattern**:
+
 ```bash
 # Syncthing user service directories
 /home/norvegia/.config/syncthing/    # service configuration
@@ -136,6 +144,7 @@ systemctl --user restart syncthing
 ```
 
 ### Desktop Features
+
 - GNOME desktop environment on pc-minibook
 - Custom keyboard shortcuts for cross-platform compatibility
 - Hardware-specific optimizations per host
@@ -144,6 +153,7 @@ systemctl --user restart syncthing
 ## Key Configuration Patterns
 
 ### Adding New Hosts
+
 1. **Create host directory**: `hosts/new-hostname/`
 2. **Copy hardware config**: `cp /etc/nixos/hardware-configuration.nix hosts/new-hostname/hardware.nix`
 3. **Create host config**: `hosts/new-hostname/default.nix`
@@ -156,13 +166,13 @@ systemctl --user restart syncthing
        ../../modules/system/hardware/amd.nix  # or intel.nix
        ../../modules/system/services/ssh.nix
      ];
-     
+
      networking.hostName = "new-hostname";
      users.users.username = {
        isNormalUser = true;
        extraGroups = ["wheel" "networkmanager"];
      };
-     
+
      home-manager.users.username = import ../../home/username;
      system.stateVersion = "24.11";
    }
@@ -173,6 +183,7 @@ systemctl --user restart syncthing
    ```
 
 ### Adding New Users
+
 1. **Create user directory**: `home/new-user/`
 2. **Create user config**: `home/new-user/default.nix`
    ```nix
@@ -183,20 +194,21 @@ systemctl --user restart syncthing
        ../../modules/home/dev-tools.nix
        ../../modules/home/desktop-apps.nix  # if desktop user
      ];
-     
+
      home.stateVersion = "24.11";
    }
    ```
 3. **Link in host config**: Add to host's `home-manager.users`
 
 ### Custom Services Examples
+
 ```nix
 # Example: Adding a new systemd service
 systemd.services.my-service = {
   description = "My Custom Service";
   after = ["network.target"];
   wantedBy = ["multi-user.target"];
-  
+
   serviceConfig = {
     ExecStart = "${pkgs.nodejs}/bin/node /path/to/script.js";
     User = "myuser";
@@ -207,9 +219,10 @@ systemd.services.my-service = {
 ```
 
 ### Module Creation Pattern
+
 ```nix
 # modules/system/services/my-service.nix
-{config, lib, pkgs, ...}: 
+{config, lib, pkgs, ...}:
 with lib; {
   options.services.myService = {
     enable = mkEnableOption "My Service";
@@ -218,7 +231,7 @@ with lib; {
       default = 3000;
     };
   };
-  
+
   config = mkIf config.services.myService.enable {
     # Service implementation
   };
@@ -226,10 +239,12 @@ with lib; {
 ```
 
 ### Secrets Management
+
 The repository uses traditional file-based credential management for simplicity:
 
 **SMB Credentials Example**:
 Create a credentials file at `/home/user/.smb-credentials`:
+
 ```
 username=your_username
 password=your_password
@@ -237,6 +252,7 @@ domain=your_domain
 ```
 
 Set appropriate permissions:
+
 ```bash
 chmod 600 /home/user/.smb-credentials
 chown user:user /home/user/.smb-credentials
@@ -246,21 +262,25 @@ chown user:user /home/user/.smb-credentials
 SSH keys are managed manually for simplicity and reliability:
 
 **Generate SSH key** (if not already done):
+
 ```bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
 
 **Add to GitHub**: Copy public key and add to GitHub Settings > SSH Keys:
+
 ```bash
 cat ~/.ssh/id_ed25519.pub
 ```
 
 **Copy SSH key to remote server** (e.g., to authorize pc-minibook on srv-norvegia):
+
 ```bash
 ssh-copy-id norvegia@srv-norvegia
 ```
 
 **Multiple accounts** - configure `~/.ssh/config`:
+
 ```
 Host github.com
   HostName github.com
@@ -271,7 +291,6 @@ Host github.com
 - SSH config is managed by home-manager for convenience
 - After system reinstalls, regenerate keys and re-authorize them
 
-
 ## System Reinstallation Workflow
 
 ### Critical Steps After NixOS Rebuild (srv-norvegia)
@@ -279,12 +298,14 @@ Host github.com
 When performing initial system setup or major rebuilds, follow this sequence to avoid service conflicts:
 
 1. **Complete NixOS rebuild first**:
+
    ```bash
    sudo nixos-rebuild switch --flake .
    sudo reboot  # if needed
    ```
 
 2. **Stop interfering services before git operations**:
+
    ```bash
    # Stop services that may interfere with git clone/npm install
    sudo systemctl stop automated-scripts
@@ -293,6 +314,7 @@ When performing initial system setup or major rebuilds, follow this sequence to 
    ```
 
 3. **Perform git operations**:
+
    ```bash
    # Now safe to clone/pull repositories
    git clone <repository-url>
@@ -300,6 +322,7 @@ When performing initial system setup or major rebuilds, follow this sequence to 
    ```
 
 4. **Handle npm dependencies in NixOS environment**:
+
    ```bash
    # Use nix develop if available, or ensure build tools are accessible
    cd project-directory
@@ -315,16 +338,19 @@ When performing initial system setup or major rebuilds, follow this sequence to 
 ### Common Issues and Solutions
 
 **Service Interference with Git Operations**:
+
 - **Problem**: automated-scripts service runs npm install during git clone operations, causing conflicts
 - **Solution**: Always stop automated-scripts and node-server services before git clone/pull operations
 - **Detection**: Look for "error: the following files have changes" during git operations
 
 **npm Install Failures in NixOS**:
+
 - **Problem**: Missing system dependencies (tar, build tools) for native modules
 - **Solution**: Use `nix develop` environment or ensure system packages include necessary build tools
 - **Common missing**: tar, gcc, python3, node-gyp dependencies
 
 **SSH Host Key Verification**:
+
 - **Problem**: Host key changes after system rebuild cause SSH connection failures
 - **Solution**: Remove old host keys with `ssh-keygen -R <hostname>` and `ssh-keygen -R <ip>`
 - **Prevention**: Document host key fingerprints for verification
@@ -333,6 +359,7 @@ When performing initial system setup or major rebuilds, follow this sequence to 
 
 **User Service Timeout Prevention**:
 User services may go into timeout/sleep mode. Enable linger to keep services active:
+
 ```bash
 # Enable linger for the user (run once after system setup)
 sudo loginctl enable-linger norvegia
@@ -342,6 +369,7 @@ loginctl show-user norvegia | grep Linger
 ```
 
 **Service Restart** (if needed after directory conflicts):
+
 ```bash
 systemctl --user stop syncthing
 systemctl --user start syncthing
