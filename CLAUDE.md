@@ -226,35 +226,51 @@ with lib; {
 ```
 
 ### Secrets Management
-The repository uses `agenix` for secure secrets management of service credentials and sensitive configuration:
+The repository uses traditional file-based credential management for simplicity:
 
-**Quick Setup Pattern**:
-```nix
-# In host configuration
-age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
-age.secrets.my-secret.file = ../../secrets/my-secret.age;
-
-# In service configuration  
-services.myService.credentialsFile = config.age.secrets.my-secret.path;
+**SMB Credentials Example**:
+Create a credentials file at `/home/user/.smb-credentials`:
+```
+username=your_username
+password=your_password
+domain=your_domain
 ```
 
-**Common Commands**:
+Set appropriate permissions:
 ```bash
-# Create/edit encrypted secret
-nix-shell -p agenix --run "agenix -e secrets/my-secret.age"
-
-# Add public keys to secrets.nix
-cat /etc/ssh/ssh_host_ed25519_key.pub >> secrets.nix
+chmod 600 /home/user/.smb-credentials
+chown user:user /home/user/.smb-credentials
 ```
 
 **SSH Key Management**:
 SSH keys are managed manually for simplicity and reliability:
-- Generate keys manually: `ssh-keygen -t ed25519 -C "your-email@example.com"`
-- Add public key to GitHub/services as needed
+
+**Generate SSH key** (if not already done):
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+**Add to GitHub**: Copy public key and add to GitHub Settings > SSH Keys:
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+**Copy SSH key to remote server** (e.g., to authorize pc-minibook on srv-norvegia):
+```bash
+ssh-copy-id norvegia@srv-norvegia
+```
+
+**Multiple accounts** - configure `~/.ssh/config`:
+```
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+```
+
 - SSH config is managed by home-manager for convenience
 - After system reinstalls, regenerate keys and re-authorize them
 
-**See `docs/gestione-segreti.md` for complete workflow and troubleshooting.**
 
 ## System Reinstallation Workflow
 

@@ -23,6 +23,12 @@ journalctl --user -u syncthing --since "2 hours ago"
 # Enable/disable auto start
 systemctl --user enable syncthing
 systemctl --user disable syncthing
+
+# Enable linger to prevent service timeout (run once)
+sudo loginctl enable-linger norvegia
+
+# Access Syncthing web GUI
+# Web interface available at: http://srv-norvegia:8384
 ```
 
 ### Automated Scripts Service
@@ -81,7 +87,7 @@ make help  # Show available commands
 **Configured Shares**:
 - Scan Share: `//10.40.40.98/scan` → `/mnt/scan`
 - Manuals Share: `//10.40.40.98/manuali` → `/mnt/manuali`
-- Credentials: Managed by agenix (`config.age.secrets.smb-secrets.path`)
+- Credentials: Stored in `/home/norvegia/.smb-credentials`
 
 ## User Configuration
 
@@ -99,6 +105,35 @@ nix flake update
 sudo nix-collect-garbage -d
 ```
 
+### System Rebuild and Repository Management Workflow
+
+⚠️ **Important**: After NixOS rebuilds, follow this sequence to avoid service conflicts:
+
+```bash
+# 1. Complete system rebuild first
+sudo nixos-rebuild switch --flake .
+sudo reboot  # if needed
+
+# 2. Stop services before git operations to prevent conflicts
+sudo systemctl stop automated-scripts
+sudo systemctl stop node-server
+
+# 3. Now safe to perform git operations
+cd /home/norvegia
+git clone <repository-url>
+# or git pull in existing directories
+
+# 4. Handle npm dependencies
+cd project-directory
+npm install  # or use 'nix develop' if available
+
+# 5. Restart services
+sudo systemctl start automated-scripts
+sudo systemctl start node-server
+```
+
+**Why this is necessary**: The automated-scripts service runs npm install operations that can interfere with git clone/pull operations, causing file conflicts and failed operations.
+
 ### Service Monitoring
 ```bash
 systemctl list-units --type=service --state=running
@@ -112,7 +147,7 @@ ping google.com
 - Home Manager manages user configurations  
 - Docker containers auto-prune weekly
 - Automated scripts run daily at 4 AM
-- SMB credentials stored in user directory (excluded from git)
+- SMB credentials stored in `/home/norvegia/.smb-credentials` (excluded from git)
 
 ## Troubleshooting
 

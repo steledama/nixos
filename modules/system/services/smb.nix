@@ -48,7 +48,7 @@ let
 
       credentialsFile = mkOption {
         type = types.str;
-        description = "Path to the credentials file (use config.age.secrets.smb-secrets.path for agenix)";
+        description = "Path to the credentials file (e.g., /home/user/.smb-credentials)";
       };
     };
   };

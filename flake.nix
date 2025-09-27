@@ -18,11 +18,6 @@
     };
 
 
-    # Secrets management
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -30,7 +25,6 @@
     nixpkgs,
     home-manager,
     nixvim,
-    agenix,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -38,8 +32,7 @@
     # Base modules for all hosts (minimal)
     baseModules = [
       home-manager.nixosModules.home-manager
-      agenix.nixosModules.default
-      
+
       ./modules/system/common.nix
     ];
 

@@ -15,5 +15,6 @@ result-*
 .cache/
 .tmp/
 
-# Age/secrets (just in case - should be encrypted)
-*.age.key
+# Credential files
+.smb-credentials
+*/.smb-credentials
