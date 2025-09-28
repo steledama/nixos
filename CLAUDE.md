@@ -276,7 +276,11 @@ cat ~/.ssh/id_ed25519.pub
 **Copy SSH key to remote server** (e.g., to authorize pc-minibook on srv-norvegia):
 
 ```bash
+# Linux/macOS
 ssh-copy-id norvegia@srv-norvegia
+
+# Windows PowerShell
+Get-Content ~/.ssh/id_ed25519.pub | ssh norvegia@srv-norvegia "cat >> ~/.ssh/authorized_keys"
 ```
 
 **Multiple accounts** - configure `~/.ssh/config`:

@@ -4,7 +4,6 @@ A comprehensive NixOS configuration using flakes and home-manager for managing m
 
 [![NixOS](https://img.shields.io/badge/NixOS-24.11%20(unstable)-blue.svg?logo=nixos&logoColor=white)](https://nixos.org)
 [![Nix Flakes](https://img.shields.io/badge/Nix-Flakes-blue.svg?logo=nixos&logoColor=white)](https://nixos.wiki/wiki/Flakes)
-[![Home Manager](https://img.shields.io/badge/Home-Manager-latest-blue.svg)](https://github.com/nix-community/home-manager)
 [![Hosts](https://img.shields.io/badge/Hosts-2-green.svg)](#host-management)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
@@ -74,11 +73,9 @@ nixos/
 ├── home/                  # Home-manager user configurations
 │   ├── norvegia/          # User: norvegia
 │   └── stele/             # User: stele
-├── modules/               # Reusable system and user modules
-│   ├── home/              # Home-manager modules
-│   └── system/            # System-level modules
-├── overlays/              # Custom overlays
-└── pkgs/                  # Custom packages
+└── modules/               # Reusable system and user modules
+    ├── home/              # Home-manager modules
+    └── system/            # System-level modules
 ```
 
 ## Common Commands
@@ -92,12 +89,12 @@ sudo nixos-rebuild switch --flake .
 
 # Cleanup
 nix-collect-garbage --delete-old && sudo nix-collect-garbage -d
-gcCleanup  # Clean bootloader entries
+# Additional system cleanup as needed
 ```
 
 ### Service Management
 
-For detailed service management on srv-norvegia, see [srv-norvegia documentation](docs/srv-norvegia.md).
+For detailed service management on srv-norvegia, see srv-norvegia documentation in the docs directory.
 
 ### Development Workflow
 
@@ -106,7 +103,7 @@ For detailed service management on srv-norvegia, see [srv-norvegia documentation
 git add . && git commit -m "description" && git push
 ```
 
-For detailed SSH setup, multi-account configuration, and advanced workflows, see [Development Guide](CLAUDE.md).
+For detailed SSH setup, multi-account configuration, and advanced workflows, see the development guide.
 
 ## Architecture Overview
 
@@ -121,15 +118,11 @@ The repository manages 2 distinct hosts:
 
 - Uses NixOS unstable channel for latest packages
 - Integrates home-manager as NixOS module
-- Includes nixvim and zen-browser inputs
-- Uses official nixpkgs for niri (no external flake needed)
-- Helper functions `mkDesktopHost` and `mkServerHost` for different host types
 
 ### Module System
 
 - **System modules** (`modules/system/`): Desktop environments, hardware configs, services
 - **Home modules** (`modules/home/`): User applications, dotfiles, development tools
-- **Overlays**: Custom package modifications (zen-browser)
 
 ### User Management
 
@@ -139,15 +132,15 @@ The repository manages 2 distinct hosts:
 
 ## Extending the Configuration
 
-For adding new hosts, users, or custom modules, see detailed guides and examples in [CLAUDE.md](CLAUDE.md).
+For adding new hosts, users, or custom modules, see detailed guides and examples in the development documentation.
 
 
 ## Detailed Documentation
 
-For comprehensive guides on specific topics:
+For comprehensive guides on specific topics, see the documentation files in the repository:
 
-- **🖥️ [Server Administration](docs/srv-norvegia.md)**: srv-norvegia specific services, networking, and troubleshooting
-- **🔧 [Development Guide](CLAUDE.md)**: Configuration patterns, examples, and best practices for developers
+- **🖥️ Server Administration**: srv-norvegia specific services, networking, and troubleshooting
+- **🔧 Development Guide**: Configuration patterns, examples, and best practices for developers
 
 ## Key Features
 
@@ -156,7 +149,7 @@ For comprehensive guides on specific topics:
 - **Multi-host**: Support for different machine types and purposes
 - **User-centric**: Home-manager integration for per-user customization
 - **Performance**: Binary cache configuration for faster builds
-- **Modern**: Latest NixOS practices with helper functions
+- **Modern**: Latest NixOS practices and clean configuration structure
 - **Secure**: Traditional file-based credential management
 
 ## Cross-Platform Setup
