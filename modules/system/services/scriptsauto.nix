@@ -9,7 +9,7 @@ with lib; let
   cfg = config.services.automatedScripts;
 
   # Create a wrapper script
-  scriptsWrapper = pkgs.writeShellScript "automated-scripts-wrapper" ''
+  scriptsWrapper = pkgs.writeShellScript "scriptsauto-wrapper" ''
     set -e
 
     echo "Starting automated scripts wrapper..."
@@ -48,7 +48,7 @@ with lib; let
 
     # Run the scripts
     cd ${cfg.scriptPath}
-    exec bash ${cfg.scriptPath}/automated-scripts.sh
+    exec bash ${cfg.scriptPath}/scripts-auto.sh
   '';
 in {
   options.services.automatedScripts = {
@@ -74,7 +74,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.services.automated-scripts = {
+    systemd.services.scriptsauto = {
       description = "Automated Node.js scripts execution";
       serviceConfig = {
         Type = "oneshot";
@@ -91,7 +91,7 @@ in {
       path = with pkgs; [nix bash coreutils nodejs_22 chromium xvfb-run];
     };
 
-    systemd.timers.automated-scripts = {
+    systemd.timers.scriptsauto = {
       description = "Run automated scripts daily at 4 AM";
       wantedBy = ["timers.target"];
       timerConfig = {

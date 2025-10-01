@@ -61,14 +61,14 @@ The repository manages 2 hosts:
 ### Service Management (srv-norvegia)
 
 ```bash
-# Node.js server service
-sudo systemctl status node-server
-sudo systemctl restart node-server
-sudo journalctl -u node-server -f
+# Node.js control panel service
+sudo systemctl status controlp
+sudo systemctl restart controlp
+sudo journalctl -u controlp -f
 
 # Automated scripts service
-sudo systemctl status automated-scripts
-sudo journalctl -u automated-scripts -f
+sudo systemctl status scriptsauto
+sudo journalctl -u scriptsauto -f
 
 # Syncthing (user service via home-manager)
 systemctl --user status syncthing
@@ -312,8 +312,8 @@ When performing initial system setup or major rebuilds, follow this sequence to 
 
    ```bash
    # Stop services that may interfere with git clone/npm install
-   sudo systemctl stop automated-scripts
-   sudo systemctl stop node-server
+   sudo systemctl stop scriptsauto
+   sudo systemctl stop controlp
    # Note: Keep syncthing running unless specific conflicts occur
    ```
 
@@ -335,16 +335,16 @@ When performing initial system setup or major rebuilds, follow this sequence to 
 
 5. **Restart services**:
    ```bash
-   sudo systemctl start automated-scripts
-   sudo systemctl start node-server
+   sudo systemctl start scriptsauto
+   sudo systemctl start controlp
    ```
 
 ### Common Issues and Solutions
 
 **Service Interference with Git Operations**:
 
-- **Problem**: automated-scripts service runs npm install during git clone operations, causing conflicts
-- **Solution**: Always stop automated-scripts and node-server services before git clone/pull operations
+- **Problem**: scriptsauto service runs npm install during git clone operations, causing conflicts
+- **Solution**: Always stop scriptsauto and controlp services before git clone/pull operations
 - **Detection**: Look for "error: the following files have changes" during git operations
 
 **npm Install Failures in NixOS**:

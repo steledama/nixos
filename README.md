@@ -96,6 +96,10 @@ nix-collect-garbage --delete-old && sudo nix-collect-garbage -d
 
 For detailed service management on srv-norvegia, see srv-norvegia documentation in the docs directory.
 
+**Main Services:**
+- `scriptsauto`: Automated Node.js scripts execution (daily at 4 AM)
+- `controlp`: Node.js control panel server
+
 ### Development Workflow
 
 **Basic Git Commands:**

@@ -13,8 +13,8 @@
     ../../modules/system/services/docker.nix
     ../../modules/system/services/ssh.nix
     ../../modules/system/services/smb.nix
-    ../../modules/system/services/automated-scripts.nix
-    ../../modules/system/services/node-server.nix
+    ../../modules/system/services/scriptsauto.nix
+    ../../modules/system/services/controlp.nix
   ];
 
 

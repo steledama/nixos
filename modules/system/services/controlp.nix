@@ -9,7 +9,7 @@ with lib; let
   cfg = config.services.nodeServer;
 
   # Create a wrapper script that sets up the environment
-  nodeWrapper = pkgs.writeShellScript "node-server-wrapper" ''
+  nodeWrapper = pkgs.writeShellScript "controlp-wrapper" ''
     set -e
 
     echo "Starting Node.js server wrapper..."
@@ -81,7 +81,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.services.node-server = {
+    systemd.services.controlp = {
       description = "Node.js Server Service";
       after = ["network.target"];
       wantedBy = ["multi-user.target"];

@@ -31,30 +31,30 @@ sudo loginctl enable-linger norvegia
 # Web interface available at: http://srv-norvegia:8384
 ```
 
-### Automated Scripts Service
-**Purpose**: Executes automated Node.js scripts daily at 4:00 AM  
-**Script Location**: `/home/norvegia/bi/scripts/automated-scripts.sh`  
-**Schedule**: Daily at 04:00:00  
-**User**: norvegia  
+### Automated Scripts Service (scriptsauto)
+**Purpose**: Executes automated Node.js scripts daily at 4:00 AM
+**Script Location**: `/home/norvegia/bi/scripts/scripts-auto.sh`
+**Schedule**: Daily at 04:00:00
+**User**: norvegia
 
 **Management Commands**:
 ```bash
-sudo systemctl status automated-scripts
-sudo journalctl -u automated-scripts -f
-sudo systemctl start automated-scripts
+sudo systemctl status scriptsauto
+sudo journalctl -u scriptsauto -f
+sudo systemctl start scriptsauto
 ```
 
-### Node Server
-**Purpose**: Runs server.js listening on port 3001 for data exchange between management software and websites  
+### Control Panel Server (controlp)
+**Purpose**: Runs server.js listening on port 3001 for data exchange between management software and websites
 
 **Management Commands**:
 ```bash
-sudo systemctl status node-server
-sudo systemctl start node-server
-sudo systemctl stop node-server
-sudo systemctl restart node-server
-sudo journalctl -u node-server -f
-sudo journalctl -u node-server --since "2 hours ago"
+sudo systemctl status controlp
+sudo systemctl start controlp
+sudo systemctl stop controlp
+sudo systemctl restart controlp
+sudo journalctl -u controlp -f
+sudo journalctl -u controlp --since "2 hours ago"
 ```
 
 ### Docker Services
@@ -75,7 +75,7 @@ make help  # Show available commands
 | 22   | SSH     | Remote administration |
 | 80   | HTTP    | Nginx web server |
 | 443  | HTTPS   | Nginx web server (SSL) |
-| 3001 | Node Server | Management data exchange |
+| 3001 | Control Panel | Management data exchange |
 | 8384 | Syncthing | File synchronization web UI |
 | 8385 | Baserow | Database service |
 | 8443 | ToscanaTrading | Business application |
@@ -115,8 +115,8 @@ sudo nixos-rebuild switch --flake .
 sudo reboot  # if needed
 
 # 2. Stop services before git operations to prevent conflicts
-sudo systemctl stop automated-scripts
-sudo systemctl stop node-server
+sudo systemctl stop scriptsauto
+sudo systemctl stop controlp
 
 # 3. Now safe to perform git operations
 cd /home/norvegia
@@ -128,11 +128,11 @@ cd project-directory
 npm install  # or use 'nix develop' if available
 
 # 5. Restart services
-sudo systemctl start automated-scripts
-sudo systemctl start node-server
+sudo systemctl start scriptsauto
+sudo systemctl start controlp
 ```
 
-**Why this is necessary**: The automated-scripts service runs npm install operations that can interfere with git clone/pull operations, causing file conflicts and failed operations.
+**Why this is necessary**: The scriptsauto service runs npm install operations that can interfere with git clone/pull operations, causing file conflicts and failed operations.
 
 ### Service Monitoring
 ```bash
