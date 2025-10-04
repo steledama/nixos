@@ -196,19 +196,17 @@ make status   # View running services
 
 ### Docker Compose Infrastructure
 
-**🐳 Docker infrastructure migrated from [BI repository](https://github.com/steledama/bi)**
-
-All Docker services for Business Intelligence system are managed in `compose/` directory:
+Baserow shared database service is managed in `compose/` directory:
 
 ```bash
 # Navigate to compose directory
 cd /home/norvegia/nixos/compose
 
-# Start all services
-make up-all
+# Start Baserow
+make up
 
-# Stop all services
-make down-all
+# Stop Baserow
+make down
 
 # View service status
 make status
@@ -222,33 +220,29 @@ make help
 compose/
 ├── .env                     # Infrastructure credentials (gitignored)
 ├── .env.example            # Template with documentation
-├── compose.baserow.yml     # Baserow database
-├── compose.toscana.yml     # Toscana Trading WordPress
-├── compose.flexora.yml     # Flexora WordPress
-├── compose.nginx.yml       # Nginx reverse proxy
-├── compose.n8n.yml         # n8n automation (experimental)
-├── compose.librechat.yml   # LibreChat (experimental)
-├── Makefile                # Command shortcuts
-└── nginx/                  # Nginx configuration files
+├── baserow.yml             # Baserow database
+└── Makefile                # Command shortcuts
 ```
 
 **Configuration Files**:
 - `.env` (gitignored): Contains DB passwords, SMTP credentials, ports
-- `.env.example` (versionato): Template with detailed comments
+- `.env.example`: Template with detailed comments
 - Business logic credentials: See `/home/norvegia/bi/.env`
+- WordPress credentials: See `/home/norvegia/ecomm/.env`
 
 **Services**:
-- **Baserow**: http://5.89.62.125:8385 (low-code database)
-- **Toscana Trading**: https://5.89.62.125:8443 (WordPress/WooCommerce)
-- **Flexora**: https://5.89.62.125:8444 (WordPress/WooCommerce)
-- **n8n**, **LibreChat**: Experimental, not in production
+- **Baserow**: http://5.89.62.125:8385 (low-code database, shared infrastructure)
+
+**Services migrated to dedicated repositories**:
+- **WordPress sites** (Toscana Trading, Flexora): `/home/norvegia/ecomm` repository
+- **BI/automation** (n8n, LibreChat): `/home/norvegia/bi` repository
 
 **First Setup**:
 ```bash
 cd /home/norvegia/nixos/compose
 cp .env.example .env
 # Edit .env with real credentials
-make up-all
+make up
 ```
 
 ## Architecture Overview
@@ -282,24 +276,21 @@ make up-all
 **NixOS-based development and services server** running containerized applications and file synchronization.
 
 **Infrastructure:**
-- Docker services via compose (Baserow, WordPress/WooCommerce sites)
-- Node.js applications with automated service management
+- Docker services via compose (Baserow shared database)
+- Node.js applications with automated service management (BI scripts, Control Panel)
 - Syncthing for file synchronization (user service via home-manager)
 - SMB network shares for legacy system integration
-- Nginx reverse proxy with SSL
 
 **Network Configuration:**
 
 | Port | Service | Purpose |
 |------|---------|---------|
 | 22   | SSH     | Remote administration |
-| 80   | HTTP    | Nginx web server |
-| 443  | HTTPS   | Nginx web server (SSL) |
 | 3001 | Control Panel | Management data exchange |
 | 8384 | Syncthing | File sync web UI |
-| 8385 | Baserow | Database service |
-| 8443 | ToscanaTrading | Business application |
-| 8444 | Flexora | Business application |
+| 8385 | Baserow | Shared database service |
+
+**Note**: WordPress sites (ports 80, 443, 8443, 8444) are managed in `/home/norvegia/ecomm` repository
 
 **SMB Network Shares:**
 - Scan: `//10.40.40.98/scan` → `/mnt/scan`
