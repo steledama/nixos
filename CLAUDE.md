@@ -60,27 +60,64 @@ The repository manages 2 hosts:
 
 ### Service Management (srv-norvegia)
 
+#### Syncthing (File Synchronization)
+**Purpose**: Central hub for project file synchronization across devices
+**Web Interface**: http://srv-norvegia:8384 or https://5.89.62.125/syncthing/
+
 ```bash
-# Node.js control panel service
-sudo systemctl status controlp
-sudo systemctl restart controlp
-sudo journalctl -u controlp -f
-
-# Automated scripts service
-sudo systemctl status scriptsauto
-sudo journalctl -u scriptsauto -f
-
-# Syncthing (user service via home-manager)
+# Service management
 systemctl --user status syncthing
 systemctl --user restart syncthing
+systemctl --user stop syncthing
+systemctl --user start syncthing
+
+# Service logs
 journalctl --user -u syncthing -f
+journalctl --user -u syncthing --since "2 hours ago"
 
-# Access Syncthing web GUI
-# Web interface available at: http://srv-norvegia:8384
+# Enable/disable auto start
+systemctl --user enable syncthing
+systemctl --user disable syncthing
 
-# Docker services (see Docker Compose section below)
+# Enable linger to prevent service timeout (run once after setup)
+sudo loginctl enable-linger norvegia
+```
+
+#### Automated Scripts Service (scriptsauto)
+**Purpose**: Executes automated Node.js scripts daily at 4:00 AM
+**Script Location**: `/home/norvegia/bi/scripts/scripts-auto.sh`
+**Schedule**: Daily at 04:00:00
+**User**: norvegia
+
+```bash
+sudo systemctl status scriptsauto
+sudo systemctl start scriptsauto
+sudo journalctl -u scriptsauto -f
+sudo journalctl -u scriptsauto --since "24 hours ago"
+```
+
+#### Control Panel Server (controlp)
+**Purpose**: Runs server.js listening on port 3001 for data exchange between management software and websites
+
+```bash
+sudo systemctl status controlp
+sudo systemctl start controlp
+sudo systemctl stop controlp
+sudo systemctl restart controlp
+sudo journalctl -u controlp -f
+sudo journalctl -u controlp --since "2 hours ago"
+```
+
+#### Docker Services
+**Purpose**: Web services managed through docker-compose with Makefile automation
+**User**: norvegia (member of docker group)
+**Configuration**: Auto-pruning enabled (weekly cleanup)
+
+```bash
 cd /home/norvegia/nixos/compose
-make help  # Show available docker commands
+make help     # Show available commands
+make up-all   # Start all services
+make status   # View running services
 ```
 
 ### Docker Compose Infrastructure
@@ -168,11 +205,32 @@ make up-all
 
 ### Server Configuration (srv-norvegia)
 
-- Runs containerized services via Docker
+**NixOS-based development and services server** running containerized applications and file synchronization.
+
+**Infrastructure:**
+- Docker services via compose (Baserow, WordPress/WooCommerce sites)
 - Node.js applications with automated service management
 - Syncthing for file synchronization (user service via home-manager)
 - SMB network shares for legacy system integration
-- Firewall configured for specific services (ports 22, 80, 443, 3001, 8384, etc.)
+- Nginx reverse proxy with SSL
+
+**Network Configuration:**
+
+| Port | Service | Purpose |
+|------|---------|---------|
+| 22   | SSH     | Remote administration |
+| 80   | HTTP    | Nginx web server |
+| 443  | HTTPS   | Nginx web server (SSL) |
+| 3001 | Control Panel | Management data exchange |
+| 8384 | Syncthing | File sync web UI |
+| 8385 | Baserow | Database service |
+| 8443 | ToscanaTrading | Business application |
+| 8444 | Flexora | Business application |
+
+**SMB Network Shares:**
+- Scan: `//10.40.40.98/scan` → `/mnt/scan`
+- Manuals: `//10.40.40.98/manuali` → `/mnt/manuali`
+- Credentials: `/home/norvegia/.smb-credentials` (gitignored)
 
 #### Syncthing Architecture
 
@@ -417,25 +475,52 @@ When performing initial system setup or major rebuilds, follow this sequence to 
 - **Solution**: Remove old host keys with `ssh-keygen -R <hostname>` and `ssh-keygen -R <ip>`
 - **Prevention**: Document host key fingerprints for verification
 
-### Syncthing Service Recovery
+### System Monitoring and Troubleshooting
 
-**User Service Timeout Prevention**:
-User services may go into timeout/sleep mode. Enable linger to keep services active:
-
+#### Service Status Checks
 ```bash
-# Enable linger for the user (run once after system setup)
-sudo loginctl enable-linger norvegia
+# Check all running services
+systemctl list-units --type=service --state=running
+systemctl --failed
+systemctl list-units --state=failed
 
-# Verify linger status
-loginctl show-user norvegia | grep Linger
+# System monitoring
+btop
+ping google.com
 ```
 
-**Service Restart** (if needed after directory conflicts):
-
+#### Log Analysis
 ```bash
-systemctl --user stop syncthing
-systemctl --user start syncthing
-# Verify GUI accessibility at http://srv-norvegia:8384
+# System logs
+journalctl --since "1 hour ago"
+journalctl -f
+
+# Specific service logs
+journalctl -u service-name --since "24 hours ago"
+```
+
+#### Common Issues
+
+**ALSA Store Error**:
+```bash
+sudo mkdir -p /var/lib/alsa
+sudo touch /var/lib/alsa/asound.state
+sudo chmod 644 /var/lib/alsa/asound.state
+sudo chown root:root /var/lib/alsa/asound.state
+sudo alsactl store
+```
+
+**Syncthing Service Recovery**:
+If user service goes into timeout/sleep mode, linger should already be enabled. If issues persist:
+```bash
+# Verify linger status
+loginctl show-user norvegia | grep Linger
+
+# Re-enable if needed
+sudo loginctl enable-linger norvegia
+
+# Restart service
+systemctl --user restart syncthing
 ```
 
 ## Important Notes
@@ -444,6 +529,16 @@ systemctl --user start syncthing
 - Use `sudo nixos-rebuild switch --flake .` from the repository root
 - **Always stop automated services before git operations to prevent conflicts**
 - Service configurations support both development and production environments
-- Secrets are managed securely with agenix encryption (no plain text credentials)
+- Secrets managed via traditional file-based approach (`.smb-credentials`, `.env` files)
 - Docker services auto-prune weekly on server configurations
 - **After major rebuilds, expect to resolve SSH host key verification issues**
+
+## Maintenance Notes (srv-norvegia)
+
+- System uses NixOS unstable channel
+- Home Manager manages user configurations
+- Docker containers auto-prune weekly
+- Automated scripts run daily at 4 AM
+- SMB credentials stored in `/home/norvegia/.smb-credentials` (gitignored)
+- User: norvegia (groups: networkmanager, wheel, libvirtd, video, docker)
+- Shell: ZSH (system default)

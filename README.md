@@ -2,7 +2,7 @@
 
 A comprehensive NixOS configuration using flakes and home-manager for managing multiple hosts and users with a modular approach.
 
-[![NixOS](https://img.shields.io/badge/NixOS-24.11%20(unstable)-blue.svg?logo=nixos&logoColor=white)](https://nixos.org)
+[![NixOS](<https://img.shields.io/badge/NixOS-24.11%20(unstable)-blue.svg?logo=nixos&logoColor=white>)](https://nixos.org)
 [![Nix Flakes](https://img.shields.io/badge/Nix-Flakes-blue.svg?logo=nixos&logoColor=white)](https://nixos.wiki/wiki/Flakes)
 [![Hosts](https://img.shields.io/badge/Hosts-2-green.svg)](#host-management)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](#license)
@@ -83,9 +83,9 @@ nixos/
     └── nginx/             # Nginx configuration
 ```
 
-### Docker Services (srv-norvegia)
+### Docker Services
 
-Docker infrastructure for Business Intelligence system (migrated from [bi repository](https://github.com/steledama/bi)):
+Docker infrastructure (srv-nrovegia):
 
 ```bash
 cd compose/
@@ -111,17 +111,20 @@ nix-collect-garbage --delete-old && sudo nix-collect-garbage -d
 # Additional system cleanup as needed
 ```
 
-### Service Management
-
-For detailed service management on srv-norvegia, see srv-norvegia documentation in the docs directory.
+### Service Management (srv-norvegia)
 
 **Main Services:**
-- `scriptsauto`: Automated Node.js scripts execution (daily at 4 AM)
-- `controlp`: Node.js control panel server
+
+- `scriptsauto`: Automated Node.js scripts (daily at 4 AM)
+- `controlp`: Node.js control panel (port 3001)
+- `syncthing`: File sync (user service, port 8384)
+
+📋 **Detailed commands and troubleshooting**: See [`CLAUDE.md`](CLAUDE.md#service-management-srv-norvegia)
 
 ### Development Workflow
 
 **Basic Git Commands:**
+
 ```bash
 git add . && git commit -m "description" && git push
 ```
@@ -157,13 +160,9 @@ The repository manages 2 distinct hosts:
 
 For adding new hosts, users, or custom modules, see detailed guides and examples in the development documentation.
 
-
 ## Detailed Documentation
 
-For comprehensive guides on specific topics, see the documentation files in the repository:
-
-- **🖥️ Server Administration**: srv-norvegia specific services, networking, and troubleshooting
-- **🔧 Development Guide**: Configuration patterns, examples, and best practices for developers
+**📋 [`CLAUDE.md`](CLAUDE.md)**: Complete development guide with configuration patterns, service management, troubleshooting, and best practices
 
 ## Key Features
 
