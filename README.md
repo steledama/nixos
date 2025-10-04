@@ -77,23 +77,29 @@ nixos/
 │   ├── home/              # Home-manager modules
 │   └── system/            # System-level modules
 └── compose/               # 🐳 Docker infrastructure (srv-norvegia)
-    ├── compose.*.yml      # Service definitions
+    ├── baserow.yml        # Baserow database service
+    ├── nginx.yml          # Nginx reverse proxy
     ├── Makefile           # Management commands
     ├── .env.example       # Configuration template
-    └── nginx/             # Nginx configuration
+    ├── nginx/             # Nginx configuration
+    └── certs/             # SSL certificates
 ```
 
 ### Docker Services
 
-Docker infrastructure (srv-nrovegia):
+Docker infrastructure (srv-norvegia):
 
 ```bash
 cd compose/
-make up-all      # Start all services
+make up-all      # Start all services (Baserow + Nginx)
+make up-nginx    # Start nginx reverse proxy only
 make status      # View services and URLs
 ```
 
-**Services**: Baserow (database), WordPress/WooCommerce sites, nginx reverse proxy
+**Services**:
+- Baserow (database) - http://5.89.62.125:8385
+- Nginx reverse proxy - routes to WordPress (ecomm), Baserow, future services
+- WordPress sites managed in `/home/norvegia/ecomm` repository
 
 📋 **Full documentation**: See [`CLAUDE.md`](CLAUDE.md#docker-compose-infrastructure)
 

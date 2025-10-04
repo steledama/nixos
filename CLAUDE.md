@@ -63,7 +63,12 @@ cd /home/norvegia/nixos/compose
 make status
 sudo systemctl status scriptsauto controlp
 
-# Stop Docker services gracefully
+# Stop WordPress services (from ecomm repository)
+cd /home/norvegia/ecomm/compose
+make down-all
+
+# Stop infrastructure services (nginx + baserow from nixos)
+cd /home/norvegia/nixos/compose
 make down-all
 
 # Stop Node.js services
@@ -91,36 +96,42 @@ sudo reboot
 
 *Automated checks (no root required):*
 ```bash
-# 1. Verify Docker services
+# 1. Verify infrastructure services (nginx + baserow)
 cd /home/norvegia/nixos/compose && make status
 
-# 2. Verify user service
+# 2. Verify WordPress services
+cd /home/norvegia/ecomm/compose && make status
+
+# 3. Verify user service
 systemctl --user status syncthing
 ```
 
 *Manual verification (requires sudo):*
 ```bash
-# 3. Verify Node.js system services
+# 4. Verify Node.js system services
 sudo systemctl status scriptsauto controlp
 
-# 4. Check for failed services system-wide
+# 5. Check for failed services system-wide
 systemctl --failed
 ```
 
 **Notes:**
 - `scriptsauto` shows `inactive (dead)` when not running - this is normal (timer-based, executes at 4:00 AM)
 - Check `scriptsauto.timer` status to verify schedule: `sudo systemctl status scriptsauto.timer`
+- WordPress services are independent from nixos and will auto-restart with docker daemon
+- Nginx routes traffic to WordPress containers, verify all sites accessible
 
 **Quick update (development/testing only)**
 ```bash
 # For non-critical updates, direct switch is acceptable:
 sudo nixos-rebuild switch --flake .
 # Note: Docker will restart automatically, containers may experience brief downtime
+# WordPress containers (ecomm) will need manual restart if affected
 ```
 
 **Best Practices:**
 - ✅ Always use `boot` mode for production updates
-- ✅ Stop Docker containers gracefully before rebuild
+- ✅ Stop Docker containers gracefully from both repositories (ecomm + nixos) before rebuild
 - ✅ Plan updates during low-traffic periods
 - ✅ Verify all services after reboot
 - ⚠️ Use `switch` mode only for development/testing or minor config changes
@@ -183,30 +194,37 @@ sudo journalctl -u controlp --since "2 hours ago"
 ```
 
 #### Docker Services
-**Purpose**: Web services managed through docker-compose with Makefile automation
+**Purpose**: Infrastructure services (Baserow, Nginx reverse proxy)
 **User**: norvegia (member of docker group)
 **Configuration**: Auto-pruning enabled (weekly cleanup)
 
 ```bash
 cd /home/norvegia/nixos/compose
-make help     # Show available commands
-make up-all   # Start all services
-make status   # View running services
+make help       # Show available commands
+make up-all     # Start all services (Baserow + Nginx)
+make up-nginx   # Start Nginx only
+make status     # View running services
 ```
+
+**Note**: WordPress sites managed in `/home/norvegia/ecomm` repository
 
 ### Docker Compose Infrastructure
 
-Baserow shared database service is managed in `compose/` directory:
+Infrastructure services (Baserow, Nginx) managed in `compose/` directory:
 
 ```bash
 # Navigate to compose directory
 cd /home/norvegia/nixos/compose
 
-# Start Baserow
-make up
+# Start services
+make up          # Baserow only
+make up-nginx    # Nginx reverse proxy only
+make up-all      # All services (Baserow + Nginx)
 
-# Stop Baserow
-make down
+# Stop services
+make down        # Baserow only
+make down-nginx  # Nginx only
+make down-all    # All services
 
 # View service status
 make status
@@ -221,6 +239,12 @@ compose/
 ├── .env                     # Infrastructure credentials (gitignored)
 ├── .env.example            # Template with documentation
 ├── baserow.yml             # Baserow database
+├── nginx.yml               # Nginx reverse proxy
+├── nginx/                  # Nginx configuration
+│   ├── Dockerfile
+│   ├── conf.d/
+│   └── html/
+├── certs/                  # SSL certificates
 └── Makefile                # Command shortcuts
 ```
 
@@ -289,6 +313,9 @@ make up
 | 3001 | Control Panel | Management data exchange |
 | 8384 | Syncthing | File sync web UI |
 | 8385 | Baserow | Shared database service |
+| 80/443 | Nginx | HTTPS reverse proxy (landing page) |
+| 8443 | Nginx → WordPress | Toscana Trading (ecomm) |
+| 8444 | Nginx → WordPress | Flexora (ecomm) |
 
 **Note**: WordPress sites (ports 80, 443, 8443, 8444) are managed in `/home/norvegia/ecomm` repository
 
@@ -608,6 +635,7 @@ systemctl --user restart syncthing
 
 **Commands that CAN be automated (no sudo required):**
 - Docker operations: `cd /home/norvegia/nixos/compose && make status/up-all/down-all`
+- Nginx reverse proxy routes traffic to WordPress (ecomm), Baserow, and future services (n8n, librechat)
 - User services: `systemctl --user status/start/stop/restart <service>`
 - Git operations: `git status/add/commit/push/pull`
 - File operations: read/edit/write files in user directories
