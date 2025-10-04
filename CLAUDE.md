@@ -47,9 +47,83 @@ sudo nixos-rebuild boot --flake .
 nix-collect-garbage --delete-old
 sudo nix-collect-garbage -d
 
-# Clean bootloader entries (aliased as gcCleanup)
-gcCleanup
+# Clean bootloader entries
+sudo /run/current-system/bin/switch-to-configuration boot
+sudo nvim /boot/loader/loader.conf
 ```
+
+### Production Update Workflow (srv-norvegia)
+
+For production environments, follow this safe update procedure to minimize service disruption:
+
+**Step 1: Prepare for update**
+```bash
+# Verify current service status
+cd /home/norvegia/nixos/compose
+make status
+sudo systemctl status scriptsauto controlp
+
+# Stop Docker services gracefully
+make down-all
+
+# Stop Node.js services
+sudo systemctl stop scriptsauto
+sudo systemctl stop controlp
+```
+
+**Step 2: Update and rebuild**
+```bash
+# Update flake inputs (optional)
+cd /home/norvegia/nixos
+nix flake update
+
+# Rebuild using boot mode (safer for production)
+sudo nixos-rebuild boot --flake .
+```
+
+**Step 3: Apply changes and restart**
+```bash
+# Schedule reboot (apply changes)
+sudo reboot
+```
+
+**Step 4: Post-reboot verification**
+
+*Automated checks (no root required):*
+```bash
+# 1. Verify Docker services
+cd /home/norvegia/nixos/compose && make status
+
+# 2. Verify user service
+systemctl --user status syncthing
+```
+
+*Manual verification (requires sudo):*
+```bash
+# 3. Verify Node.js system services
+sudo systemctl status scriptsauto controlp
+
+# 4. Check for failed services system-wide
+systemctl --failed
+```
+
+**Notes:**
+- `scriptsauto` shows `inactive (dead)` when not running - this is normal (timer-based, executes at 4:00 AM)
+- Check `scriptsauto.timer` status to verify schedule: `sudo systemctl status scriptsauto.timer`
+
+**Quick update (development/testing only)**
+```bash
+# For non-critical updates, direct switch is acceptable:
+sudo nixos-rebuild switch --flake .
+# Note: Docker will restart automatically, containers may experience brief downtime
+```
+
+**Best Practices:**
+- ✅ Always use `boot` mode for production updates
+- ✅ Stop Docker containers gracefully before rebuild
+- ✅ Plan updates during low-traffic periods
+- ✅ Verify all services after reboot
+- ⚠️ Use `switch` mode only for development/testing or minor config changes
 
 ### Host-Specific Commands
 
@@ -532,6 +606,21 @@ systemctl --user restart syncthing
 - Secrets managed via traditional file-based approach (`.smb-credentials`, `.env` files)
 - Docker services auto-prune weekly on server configurations
 - **After major rebuilds, expect to resolve SSH host key verification issues**
+
+## Automation Limitations
+
+**Commands requiring sudo password cannot be automated via Claude Code:**
+- `sudo nixos-rebuild switch/boot --flake .`
+- `sudo systemctl status/start/stop/restart <service>`
+- `systemctl --failed` (system-wide check)
+- Any command requiring root privileges
+
+**Commands that CAN be automated (no sudo required):**
+- Docker operations: `cd /home/norvegia/nixos/compose && make status/up-all/down-all`
+- User services: `systemctl --user status/start/stop/restart <service>`
+- Git operations: `git status/add/commit/push/pull`
+- File operations: read/edit/write files in user directories
+- NixOS queries: `nix flake update`, `nix-collect-garbage --delete-old`
 
 ## Maintenance Notes (srv-norvegia)
 

@@ -1,35 +1,5 @@
 # modules/home/shell-config.nix
 {config, ...}: {
-  # Common shell aliases for both bash and zsh
-  home.shellAliases = {
-    # Navigation
-    ".." = "cd ..";
-    "..." = "cd ../..";
-
-    # System utilities
-    c = "clear";
-    e = "exit";
-
-    # Editor
-    v = "nvim";
-    sv = "sudo nvim";
-
-    # Git
-    g = "git";
-    gs = "git status";
-    ga = "git add";
-    gc = "git commit";
-    gp = "git push";
-    gl = "git pull";
-
-    # Yazi
-    y = "yazi";
-
-    # NixOS
-    nrb = "sudo nixos-rebuild switch --flake .";
-    nup = "nix flake update";
-    ngc = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot && sudo nvim /boot/loader/loader.conf";
-  };
 
   # Shell tools configurations
   programs = {
@@ -75,17 +45,6 @@
       };
     };
 
-    # zoxide - smarter cd
-    zoxide = {
-      enable = true;
-      enableZshIntegration = true;
-      enableBashIntegration = true;
-      options = [
-        "--cmd cd" # Replace cd command
-      ];
-      enableFishIntegration = true;
-    };
-
     # zsh configuration
     zsh = {
       enable = true;
@@ -112,16 +71,12 @@
         zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
         zstyle ':completion:*' verbose true
         zstyle ':completion:*:descriptions' format '%F{green}-- %d --%f'
-
-        # Add zoxide tab completion
-        compdef _zoxide_z z
       '';
 
       initContent = ''
         export EDITOR=nvim
         # Tool integrations
         eval "$(starship init zsh)"
-        eval "$(zoxide init zsh --hook pwd)"
         eval "$(direnv hook zsh)"
 
         # FZF integration
@@ -140,7 +95,6 @@
         export EDITOR=nvim
         # Tool integrations
         eval "$(starship init bash)"
-        eval "$(zoxide init bash --hook pwd)"
         eval "$(direnv hook bash)"
 
         # FZF integration

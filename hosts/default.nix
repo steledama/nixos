@@ -56,7 +56,6 @@
 
     # shell
     starship # Customizable prompt
-    zoxide # Smarter cd command
     direnv # Environment manager
     neofetch # Fast, highly customizable system info script
 
