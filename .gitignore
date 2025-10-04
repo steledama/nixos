@@ -18,3 +18,6 @@ result-*
 # Credential files
 .smb-credentials
 */.smb-credentials
+
+# Docker Compose - Environment variables con credenziali
+compose/.env

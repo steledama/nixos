@@ -78,8 +78,66 @@ journalctl --user -u syncthing -f
 # Access Syncthing web GUI
 # Web interface available at: http://srv-norvegia:8384
 
-# Docker services
+# Docker services (see Docker Compose section below)
+cd /home/norvegia/nixos/compose
 make help  # Show available docker commands
+```
+
+### Docker Compose Infrastructure
+
+**🐳 Docker infrastructure migrated from [BI repository](https://github.com/steledama/bi)**
+
+All Docker services for Business Intelligence system are managed in `compose/` directory:
+
+```bash
+# Navigate to compose directory
+cd /home/norvegia/nixos/compose
+
+# Start all services
+make up-all
+
+# Stop all services
+make down-all
+
+# View service status
+make status
+
+# Show all available commands
+make help
+```
+
+**Directory Structure**:
+```
+compose/
+├── .env                     # Infrastructure credentials (gitignored)
+├── .env.example            # Template with documentation
+├── compose.baserow.yml     # Baserow database
+├── compose.toscana.yml     # Toscana Trading WordPress
+├── compose.flexora.yml     # Flexora WordPress
+├── compose.nginx.yml       # Nginx reverse proxy
+├── compose.n8n.yml         # n8n automation (experimental)
+├── compose.librechat.yml   # LibreChat (experimental)
+├── Makefile                # Command shortcuts
+└── nginx/                  # Nginx configuration files
+```
+
+**Configuration Files**:
+- `.env` (gitignored): Contains DB passwords, SMTP credentials, ports
+- `.env.example` (versionato): Template with detailed comments
+- Business logic credentials: See `/home/norvegia/bi/.env`
+
+**Services**:
+- **Baserow**: http://5.89.62.125:8385 (low-code database)
+- **Toscana Trading**: https://5.89.62.125:8443 (WordPress/WooCommerce)
+- **Flexora**: https://5.89.62.125:8444 (WordPress/WooCommerce)
+- **n8n**, **LibreChat**: Experimental, not in production
+
+**First Setup**:
+```bash
+cd /home/norvegia/nixos/compose
+cp .env.example .env
+# Edit .env with real credentials
+make up-all
 ```
 
 ## Architecture Overview

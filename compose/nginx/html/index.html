@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Toscana Trading - Dashboard</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .container {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                padding: 40px;
+                max-width: 1200px;
+                width: 100%;
+                animation: fadeIn 0.8s ease-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 50px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                color: #2c3e50;
+                margin-bottom: 10px;
+                font-weight: 700;
+            }
+
+            .header .subtitle {
+                font-size: 1.1rem;
+                color: #7f8c8d;
+                font-weight: 300;
+            }
+
+            .services {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+                margin-bottom: 40px;
+            }
+
+            .service {
+                background: white;
+                border-radius: 15px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .service:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            }
+
+            .service::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #667eea, #764ba2);
+            }
+
+            .service-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+
+            .service-icon {
+                font-size: 2.5rem;
+                margin-right: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 15px;
+                color: white;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            .service-title {
+                font-size: 1.4rem;
+                font-weight: 600;
+                color: #2c3e50;
+            }
+
+            .service-desc {
+                color: #7f8c8d;
+                margin-bottom: 20px;
+                line-height: 1.6;
+            }
+
+            .url-info {
+                font-family: "Courier New", monospace;
+                background: #f8f9fa;
+                padding: 10px 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-size: 0.9rem;
+                color: #495057;
+                border-left: 4px solid #667eea;
+            }
+
+            .service-link {
+                display: inline-flex;
+                align-items: center;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                text-decoration: none;
+                padding: 12px 24px;
+                border-radius: 25px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            }
+
+            .service-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+                text-decoration: none;
+                color: white;
+            }
+
+            .service-link::after {
+                content: "→";
+                margin-left: 8px;
+                transition: transform 0.3s ease;
+            }
+
+            .service-link:hover::after {
+                transform: translateX(3px);
+            }
+
+            .status {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                width: 12px;
+                height: 12px;
+                background: #27ae60;
+                border-radius: 50%;
+                box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.2);
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4);
+                }
+                70% {
+                    box-shadow: 0 0 0 10px rgba(39, 174, 96, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0);
+                }
+            }
+
+            .server-info {
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                padding: 30px;
+                border-radius: 15px;
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                margin-top: 30px;
+            }
+
+            .server-info h3 {
+                color: #2c3e50;
+                margin-bottom: 20px;
+                font-size: 1.3rem;
+                display: flex;
+                align-items: center;
+            }
+
+            .server-info h3::before {
+                content: "🖥️";
+                margin-right: 10px;
+                font-size: 1.5rem;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .info-item {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            }
+
+            .info-item strong {
+                color: #2c3e50;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .info-item span {
+                color: #7f8c8d;
+                font-size: 0.95rem;
+            }
+
+            /* Responsive design */
+            @media (max-width: 768px) {
+                .container {
+                    padding: 25px;
+                    margin: 10px;
+                }
+
+                .header h1 {
+                    font-size: 2rem;
+                }
+
+                .services {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+                }
+
+                .service {
+                    padding: 25px;
+                }
+
+                .service-icon {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 2rem;
+                }
+
+                .service-title {
+                    font-size: 1.2rem;
+                }
+            }
+
+            /* Tema scuro per preferenze sistema */
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background: linear-gradient(
+                        135deg,
+                        #2c3e50 0%,
+                        #3498db 100%
+                    );
+                }
+
+                .container {
+                    background: rgba(44, 62, 80, 0.95);
+                    color: #ecf0f1;
+                }
+
+                .header h1 {
+                    color: #ecf0f1;
+                }
+
+                .service {
+                    background: rgba(52, 73, 94, 0.8);
+                    border-color: rgba(255, 255, 255, 0.1);
+                }
+
+                .service-title {
+                    color: #ecf0f1;
+                }
+
+                .url-info {
+                    background: rgba(52, 73, 94, 0.6);
+                    color: #bdc3c7;
+                }
+
+                .server-info {
+                    background: linear-gradient(
+                        135deg,
+                        rgba(52, 73, 94, 0.6),
+                        rgba(44, 62, 80, 0.6)
+                    );
+                }
+
+                .info-item {
+                    background: rgba(52, 73, 94, 0.6);
+                }
+
+                .info-item strong {
+                    color: #ecf0f1;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🚀 Toscana Trading</h1>
+                <div class="subtitle">
+                    Dashboard Servizi • Server Management Console
+                </div>
+            </div>
+
+            <div class="services">
+                <div class="service">
+                    <div class="status"></div>
+                    <div class="service-header">
+                        <div class="service-icon">🛍️</div>
+                        <div class="service-title">Toscana Trading</div>
+                    </div>
+                    <div class="service-desc">
+                        Piattaforma e-commerce completa con WooCommerce
+                    </div>
+                    <div class="url-info">🔗 https://5.89.62.125:8443</div>
+                    <a
+                        href="https://5.89.62.125:8443"
+                        class="service-link"
+                        target="_blank"
+                    >
+                        Apri Negozio
+                    </a>
+                </div>
+
+                <div class="service">
+                    <div class="status"></div>
+                    <div class="service-header">
+                        <div class="service-icon">💼</div>
+                        <div class="service-title">Flexora</div>
+                    </div>
+                    <div class="service-desc">
+                        Sito web business e gestione aziendale
+                    </div>
+                    <div class="url-info">🔗 https://5.89.62.125:8444</div>
+                    <a
+                        href="https://5.89.62.125:8444"
+                        class="service-link"
+                        target="_blank"
+                    >
+                        Apri Sito
+                    </a>
+                </div>
+
+                <div class="service">
+                    <div class="status"></div>
+                    <div class="service-header">
+                        <div class="service-icon">📊</div>
+                        <div class="service-title">Baserow</div>
+                    </div>
+                    <div class="service-desc">
+                        Database collaborativo e gestione dati
+                    </div>
+                    <div class="url-info">🔗 http://5.89.62.125:8385</div>
+                    <a
+                        href="http://5.89.62.125:8385"
+                        class="service-link"
+                        target="_blank"
+                    >
+                        Apri Database
+                    </a>
+                </div>
+
+                <div class="service">
+                    <div class="status"></div>
+                    <div class="service-header">
+                        <div class="service-icon">🔄</div>
+                        <div class="service-title">Syncthing</div>
+                    </div>
+                    <div class="service-desc">
+                        Sincronizzazione file sicura e privata
+                    </div>
+                    <div class="url-info">
+                        🔗 https://5.89.62.125/syncthing/
+                    </div>
+                    <a href="/syncthing/" class="service-link">
+                        Apri Syncthing
+                    </a>
+                </div>
+            </div>
+
+            <div class="server-info">
+                <h3>Informazioni Server</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Indirizzo IP</strong>
+                        <span>5.89.62.125</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Servizi Attivi</strong>
+                        <span>WordPress (2), Baserow, Syncthing</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Architettura</strong>
+                        <span>Nginx reverse proxy con SSL</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Database</strong>
+                        <span
+                            >PHPMyAdmin :8181 (Toscana) • :8182 (Flexora)</span
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

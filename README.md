@@ -73,10 +73,29 @@ nixos/
 ├── home/                  # Home-manager user configurations
 │   ├── norvegia/          # User: norvegia
 │   └── stele/             # User: stele
-└── modules/               # Reusable system and user modules
-    ├── home/              # Home-manager modules
-    └── system/            # System-level modules
+├── modules/               # Reusable system and user modules
+│   ├── home/              # Home-manager modules
+│   └── system/            # System-level modules
+└── compose/               # 🐳 Docker infrastructure (srv-norvegia)
+    ├── compose.*.yml      # Service definitions
+    ├── Makefile           # Management commands
+    ├── .env.example       # Configuration template
+    └── nginx/             # Nginx configuration
 ```
+
+### Docker Services (srv-norvegia)
+
+Docker infrastructure for Business Intelligence system (migrated from [bi repository](https://github.com/steledama/bi)):
+
+```bash
+cd compose/
+make up-all      # Start all services
+make status      # View services and URLs
+```
+
+**Services**: Baserow (database), WordPress/WooCommerce sites, nginx reverse proxy
+
+📋 **Full documentation**: See [`CLAUDE.md`](CLAUDE.md#docker-compose-infrastructure)
 
 ## Common Commands
 

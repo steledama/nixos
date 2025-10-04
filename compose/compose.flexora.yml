@@ -1,0 +1,74 @@
+networks:
+  shared-network:
+    external: true
+
+services:
+  flexora-wordpress:
+    image: wordpress:latest
+    container_name: flexora-wordpress
+    volumes:
+      # Contenuti specifici Flexora (volume esterno)
+      - flexora_wp_content:/var/www/html/wp-content
+
+      # File condivisi (tema child e plugin)
+      - ./wp/child:/var/www/html/wp-content/themes/storefront-child
+      - ./wp/tt-import:/var/www/html/wp-content/plugins/tt-import
+
+      # Configurazione specifica Flexora
+      - ./wp/wp-config-flexora.php:/var/www/html/wp-config.php
+      - ./wp/debug.log:/var/www/html/wp-content/debug.log
+
+      # Upload specifici Flexora
+      - ./uploads/flexora:/var/www/html/wp-content/uploads
+    environment:
+      WORDPRESS_DB_NAME: ${FLEXORA_DB_NAME}
+      WORDPRESS_TABLE_PREFIX: ${FLEXORA_TABLE_PREFIX}
+      WORDPRESS_DB_HOST: ${FLEXORA_DB_HOST}
+      WORDPRESS_DB_USER: ${FLEXORA_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${FLEXORA_DB_PASSWORD}
+      WORDPRESS_DEBUG: ${WP_DEBUG}
+      WORDPRESS_DEBUG_LOG: ${WP_DEBUG_LOG}
+      WORDPRESS_DEBUG_DISPLAY: ${WP_DEBUG_DISPLAY}
+      TZ: Europe/Rome
+    depends_on:
+      - flexora-db
+    restart: always
+    networks:
+      - shared-network
+    user: "${WP_UID}:${WP_GID}"
+
+  flexora-db:
+    image: mariadb:latest
+    container_name: flexora-db
+    volumes:
+      - flexora_wp_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${FLEXORA_DB_ROOT_PASSWORD}
+      MYSQL_USER: ${FLEXORA_DB_USER}
+      MYSQL_PASSWORD: ${FLEXORA_DB_PASSWORD}
+      MYSQL_DATABASE: ${FLEXORA_DB_NAME}
+    restart: always
+    networks:
+      - shared-network
+
+  flexora-phpmyadmin:
+    depends_on:
+      - flexora-db
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: flexora-phpmyadmin
+    ports:
+      - "8182:80"
+    environment:
+      PMA_HOST: ${FLEXORA_DB_HOST}
+      MYSQL_ROOT_PASSWORD: ${FLEXORA_DB_ROOT_PASSWORD}
+    restart: always
+    networks:
+      - shared-network
+
+volumes:
+  flexora_wp_db_data:
+    name: flexora_wp_db_data
+    external: true
+  flexora_wp_content:
+    name: flexora_wp_content
+    external: true

@@ -1,0 +1,31 @@
+# compose.baserow.yml - versione standalone temporanea
+# Check for new versions: curl -s "https://registry.hub.docker.com/v2/repositories/baserow/baserow/tags/?page_size=50" | grep -o '"name":"[0-9]\+\.[0-9]\+\.[0-9]\+"' | head -10
+services:
+  baserow:
+    container_name: baserow
+    image: baserow/baserow:1.35.1
+    ports:
+      - "8385:80" # Porta temporanea
+    environment:
+      BASEROW_PUBLIC_URL: ${BASEROW_PUBLIC_URL}
+      FROM_EMAIL: ${FROM_EMAIL}
+      EMAIL_SMTP: ${EMAIL_SMTP}
+      EMAIL_SMTP_HOST: ${EMAIL_SMTP_HOST}
+      EMAIL_SMTP_PORT: ${EMAIL_SMTP_PORT}
+      EMAIL_SMTP_USE_SSL: ${EMAIL_SMTP_USE_SSL}
+      EMAIL_SMTP_USER: ${EMAIL_SMTP_USER}
+      EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD}
+    volumes:
+      - baserow_data:/baserow/data
+    networks:
+      - shared-network
+    restart: unless-stopped
+
+volumes:
+  baserow_data:
+    name: baserow_data
+    external: true
+
+networks:
+  shared-network:
+    external: true

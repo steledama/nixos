@@ -1,0 +1,109 @@
+# LibreChat Docker Compose
+services:
+  # LibreChat API
+  librechat-api:
+    image: ghcr.io/danny-avila/librechat:latest
+    container_name: librechat-api
+    ports:
+      - "${PORT:-3080}:3080"
+    depends_on:
+      - librechat-mongodb
+      - librechat-meilisearch
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+      - librechat_uploads:/app/client/public/images
+      - librechat_logs:/app/api/logs
+    environment:
+      - NODE_ENV=production
+      - HOST=${HOST:-localhost}
+      - PORT=${PORT:-3080}
+      - MONGO_URI=${MONGO_URI}
+      - DOMAIN_CLIENT=${DOMAIN_CLIENT}
+      - DOMAIN_SERVER=${DOMAIN_SERVER}
+      - NO_INDEX=${NO_INDEX:-true}
+      - TRUST_PROXY=${TRUST_PROXY:-1}
+      - CONSOLE_JSON=${CONSOLE_JSON:-false}
+      - DEBUG_LOGGING=${DEBUG_LOGGING:-true}
+      - DEBUG_CONSOLE=${DEBUG_CONSOLE:-false}
+      - ENDPOINTS=${ENDPOINTS}
+      - MEILI_HOST=http://librechat-meilisearch:7700
+      - MEILI_HTTP_ADDR=librechat-meilisearch:7700
+      # API Keys from .env
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - OPENROUTER_KEY=${OPENROUTER_KEY}
+      - PORTKEY_API_KEY=${PORTKEY_API_KEY}
+      - PORTKEY_OPENAI_VIRTUAL_KEY=${PORTKEY_OPENAI_VIRTUAL_KEY}
+      - TTS_API_KEY=${TTS_API_KEY}
+      - STT_API_KEY=${STT_API_KEY}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - shared-network
+
+  # MongoDB per LibreChat
+  librechat-mongodb:
+    image: mongo:latest
+    container_name: librechat-mongodb
+    restart: unless-stopped
+    volumes:
+      - librechat_mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=LibreChat
+    networks:
+      - shared-network
+
+  # Meilisearch per ricerca in LibreChat
+  librechat-meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: librechat-meilisearch
+    restart: unless-stopped
+    volumes:
+      - librechat_meilisearch_data:/meili_data
+    environment:
+      - MEILI_HTTP_ADDR=0.0.0.0:7700
+      - MEILI_NO_ANALYTICS=true
+    networks:
+      - shared-network
+
+  # Optional: Ollama per modelli locali
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: librechat-ollama
+  #   restart: unless-stopped
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - librechat_ollama_data:/root/.ollama
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             capabilities: [compute, utility]
+  #   networks:
+  #     - shared-network
+
+volumes:
+  librechat_mongodb_data:
+    name: librechat_mongodb_data
+    external: true
+  librechat_meilisearch_data:
+    name: librechat_meilisearch_data
+    external: true
+  librechat_uploads:
+    name: librechat_uploads
+    external: true
+  librechat_logs:
+    name: librechat_logs
+    external: true
+  # librechat_ollama_data:
+  #   name: librechat_ollama_data
+  #   external: true
+
+networks:
+  shared-network:
+    external: true

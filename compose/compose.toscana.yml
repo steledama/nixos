@@ -1,0 +1,74 @@
+networks:
+  shared-network:
+    external: true
+
+services:
+  toscana-wordpress:
+    image: wordpress:latest
+    container_name: toscana-wordpress
+    volumes:
+      # Contenuti specifici Toscana (volume esterno)
+      - toscana_wp_content:/var/www/html/wp-content
+
+      # File condivisi (tema child e plugin)
+      - ./wp/child:/var/www/html/wp-content/themes/storefront-child
+      - ./wp/tt-import:/var/www/html/wp-content/plugins/tt-import
+
+      # Configurazione specifica Toscana
+      - ./wp/wp-config-toscana.php:/var/www/html/wp-config.php
+      - ./wp/debug.log:/var/www/html/wp-content/debug.log
+
+      # Upload specifici Toscana
+      - ./uploads/toscana:/var/www/html/wp-content/uploads
+    environment:
+      WORDPRESS_DB_NAME: ${TOSCANA_DB_NAME}
+      WORDPRESS_TABLE_PREFIX: ${TOSCANA_TABLE_PREFIX}
+      WORDPRESS_DB_HOST: ${TOSCANA_DB_HOST}
+      WORDPRESS_DB_USER: ${TOSCANA_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${TOSCANA_DB_PASSWORD}
+      WORDPRESS_DEBUG: ${WP_DEBUG}
+      WORDPRESS_DEBUG_LOG: ${WP_DEBUG_LOG}
+      WORDPRESS_DEBUG_DISPLAY: ${WP_DEBUG_DISPLAY}
+      TZ: Europe/Rome
+    depends_on:
+      - toscana-db
+    restart: always
+    networks:
+      - shared-network
+    user: "${WP_UID}:${WP_GID}"
+
+  toscana-db:
+    image: mariadb:latest
+    container_name: toscana-db
+    volumes:
+      - toscana_wp_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${TOSCANA_DB_ROOT_PASSWORD}
+      MYSQL_USER: ${TOSCANA_DB_USER}
+      MYSQL_PASSWORD: ${TOSCANA_DB_PASSWORD}
+      MYSQL_DATABASE: ${TOSCANA_DB_NAME}
+    restart: always
+    networks:
+      - shared-network
+
+  toscana-phpmyadmin:
+    depends_on:
+      - toscana-db
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: toscana-phpmyadmin
+    ports:
+      - "8181:80"
+    environment:
+      PMA_HOST: ${TOSCANA_DB_HOST}
+      MYSQL_ROOT_PASSWORD: ${TOSCANA_DB_ROOT_PASSWORD}
+    restart: always
+    networks:
+      - shared-network
+
+volumes:
+  toscana_wp_db_data:
+    name: toscana_wp_db_data
+    external: true
+  toscana_wp_content:
+    name: toscana_wp_content
+    external: true
