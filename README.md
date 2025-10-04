@@ -87,21 +87,21 @@ nixos/
 
 ### Docker Services
 
-Docker infrastructure (srv-norvegia):
+Infrastructure services managed via Docker Compose (srv-norvegia):
 
 ```bash
-cd compose/
+cd /home/norvegia/nixos/compose
 make up-all      # Start all services (Baserow + Nginx)
-make up-nginx    # Start nginx reverse proxy only
-make status      # View services and URLs
+make down-all    # Stop all services
+make status      # View running services and URLs
 ```
 
 **Services**:
-- Baserow (database) - http://5.89.62.125:8385
-- Nginx reverse proxy - routes to WordPress (ecomm), Baserow, future services
-- WordPress sites managed in `/home/norvegia/ecomm` repository
+- **Baserow** - Shared database service (port 8385)
+- **Nginx** - Reverse proxy routing to WordPress and Baserow (ports 80/443/8443/8444)
+- WordPress containers run separately in `/home/norvegia/ecomm`
 
-📋 **Full documentation**: See [`CLAUDE.md`](CLAUDE.md#docker-compose-infrastructure)
+📋 **Full documentation**: See [`CLAUDE.md`](CLAUDE.md#docker-services)
 
 ## Common Commands
 

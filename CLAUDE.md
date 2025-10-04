@@ -22,8 +22,7 @@ nixos/
 ├── modules/               # Reusable system and user modules
 │   ├── home/              # Home-manager modules
 │   └── system/            # System-level modules
-├── overlays/              # Custom overlays
-└── pkgs/                  # Custom packages
+├── compose/               # Compose
 ```
 
 ## Common Development Commands
@@ -56,27 +55,23 @@ sudo nvim /boot/loader/loader.conf
 
 For production environments, follow this safe update procedure to minimize service disruption:
 
-**Step 1: Prepare for update**
-```bash
-# Verify current service status
-cd /home/norvegia/nixos/compose
-make status
-sudo systemctl status scriptsauto controlp
+**Step 1: Verify and stop services**
 
+Verify all services are running (see [Service Status Verification](#service-status-verification)), then stop them:
+
+```bash
 # Stop WordPress services (from ecomm repository)
-cd /home/norvegia/ecomm/compose
-make down-all
+cd /home/norvegia/ecomm/compose && make down-all
 
 # Stop infrastructure services (nginx + baserow from nixos)
-cd /home/norvegia/nixos/compose
-make down-all
+cd /home/norvegia/nixos/compose && make down-all
 
 # Stop Node.js services
-sudo systemctl stop scriptsauto
-sudo systemctl stop controlp
+sudo systemctl stop scriptsauto && sudo systemctl stop controlp
 ```
 
 **Step 2: Update and rebuild**
+
 ```bash
 # Update flake inputs (optional)
 cd /home/norvegia/nixos
@@ -87,6 +82,7 @@ sudo nixos-rebuild boot --flake .
 ```
 
 **Step 3: Apply changes and restart**
+
 ```bash
 # Schedule reboot (apply changes)
 sudo reboot
@@ -94,42 +90,26 @@ sudo reboot
 
 **Step 4: Post-reboot verification**
 
-*Automated checks (no root required):*
-```bash
-# 1. Verify infrastructure services (nginx + baserow)
-cd /home/norvegia/nixos/compose && make status
-
-# 2. Verify WordPress services
-cd /home/norvegia/ecomm/compose && make status
-
-# 3. Verify user service
-systemctl --user status syncthing
-```
-
-*Manual verification (requires sudo):*
-```bash
-# 4. Verify Node.js system services
-sudo systemctl status scriptsauto controlp
-
-# 5. Check for failed services system-wide
-systemctl --failed
-```
+Verify all services restarted correctly (see [Service Status Verification](#service-status-verification)).
 
 **Notes:**
+
 - `scriptsauto` shows `inactive (dead)` when not running - this is normal (timer-based, executes at 4:00 AM)
 - Check `scriptsauto.timer` status to verify schedule: `sudo systemctl status scriptsauto.timer`
 - WordPress services are independent from nixos and will auto-restart with docker daemon
 - Nginx routes traffic to WordPress containers, verify all sites accessible
 
 **Quick update (development/testing only)**
+
 ```bash
-# For non-critical updates, direct switch is acceptable:
+# For minor config changes, direct switch without stopping services:
 sudo nixos-rebuild switch --flake .
-# Note: Docker will restart automatically, containers may experience brief downtime
-# WordPress containers (ecomm) will need manual restart if affected
 ```
 
+Note: Services remain running during update. Docker/containers may restart automatically.
+
 **Best Practices:**
+
 - ✅ Always use `boot` mode for production updates
 - ✅ Stop Docker containers gracefully from both repositories (ecomm + nixos) before rebuild
 - ✅ Plan updates during low-traffic periods
@@ -145,7 +125,33 @@ The repository manages 2 hosts:
 
 ### Service Management (srv-norvegia)
 
+#### Service Status Verification
+
+**Automated checks (no sudo required):**
+
+```bash
+# Infrastructure services (nginx + baserow)
+cd /home/norvegia/nixos/compose && make status
+
+# WordPress services
+cd /home/norvegia/ecomm/compose && make status
+
+# User service
+systemctl --user status syncthing
+```
+
+**Manual verification (requires sudo):**
+
+```bash
+# Node.js system services
+sudo systemctl status scriptsauto controlp
+
+# System-wide failed services
+systemctl --failed
+```
+
 #### Syncthing (File Synchronization)
+
 **Purpose**: Central hub for project file synchronization across devices
 **Web Interface**: http://srv-norvegia:8384 or https://5.89.62.125/syncthing/
 
@@ -169,6 +175,7 @@ sudo loginctl enable-linger norvegia
 ```
 
 #### Automated Scripts Service (scriptsauto)
+
 **Purpose**: Executes automated Node.js scripts daily at 4:00 AM
 **Script Location**: `/home/norvegia/bi/scripts/scripts-auto.sh`
 **Schedule**: Daily at 04:00:00
@@ -181,7 +188,8 @@ sudo journalctl -u scriptsauto -f
 sudo journalctl -u scriptsauto --since "24 hours ago"
 ```
 
-#### Control Panel Server (controlp)
+#### ControlP Server (controlp) to receive and manage Danea Easyfatt updates
+
 **Purpose**: Runs server.js listening on port 3001 for data exchange between management software and websites
 
 ```bash
@@ -194,6 +202,7 @@ sudo journalctl -u controlp --since "2 hours ago"
 ```
 
 #### Docker Services
+
 **Purpose**: Infrastructure services (Baserow, Nginx reverse proxy)
 **User**: norvegia (member of docker group)
 **Configuration**: Auto-pruning enabled (weekly cleanup)
@@ -203,37 +212,22 @@ cd /home/norvegia/nixos/compose
 make help       # Show available commands
 make up-all     # Start all services (Baserow + Nginx)
 make up-nginx   # Start Nginx only
+
+# View service status
 make status     # View running services
-```
-
-**Note**: WordPress sites managed in `/home/norvegia/ecomm` repository
-
-### Docker Compose Infrastructure
-
-Infrastructure services (Baserow, Nginx) managed in `compose/` directory:
-
-```bash
-# Navigate to compose directory
-cd /home/norvegia/nixos/compose
-
-# Start services
-make up          # Baserow only
-make up-nginx    # Nginx reverse proxy only
-make up-all      # All services (Baserow + Nginx)
-
 # Stop services
 make down        # Baserow only
 make down-nginx  # Nginx only
 make down-all    # All services
 
-# View service status
-make status
-
 # Show all available commands
 make help
 ```
 
+**Note**: WordPress sites managed in `/home/norvegia/ecomm` repository
+
 **Directory Structure**:
+
 ```
 compose/
 ├── .env                     # Infrastructure credentials (gitignored)
@@ -249,19 +243,14 @@ compose/
 ```
 
 **Configuration Files**:
+
 - `.env` (gitignored): Contains DB passwords, SMTP credentials, ports
 - `.env.example`: Template with detailed comments
 - Business logic credentials: See `/home/norvegia/bi/.env`
 - WordPress credentials: See `/home/norvegia/ecomm/.env`
 
-**Services**:
-- **Baserow**: http://5.89.62.125:8385 (low-code database, shared infrastructure)
-
-**Services migrated to dedicated repositories**:
-- **WordPress sites** (Toscana Trading, Flexora): `/home/norvegia/ecomm` repository
-- **BI/automation** (n8n, LibreChat): `/home/norvegia/bi` repository
-
 **First Setup**:
+
 ```bash
 cd /home/norvegia/nixos/compose
 cp .env.example .env
@@ -275,8 +264,7 @@ make up
 
 - Uses NixOS unstable channel
 - Integrates home-manager as NixOS module
-- Includes nixvim and zen-browser inputs
-- Modular host configuration with `mkHost` helper function
+- Includes nixvim inputs
 
 ### Module System
 
@@ -300,6 +288,7 @@ make up
 **NixOS-based development and services server** running containerized applications and file synchronization.
 
 **Infrastructure:**
+
 - Docker services via compose (Baserow shared database)
 - Node.js applications with automated service management (BI scripts, Control Panel)
 - Syncthing for file synchronization (user service via home-manager)
@@ -307,19 +296,20 @@ make up
 
 **Network Configuration:**
 
-| Port | Service | Purpose |
-|------|---------|---------|
-| 22   | SSH     | Remote administration |
-| 3001 | Control Panel | Management data exchange |
-| 8384 | Syncthing | File sync web UI |
-| 8385 | Baserow | Shared database service |
-| 80/443 | Nginx | HTTPS reverse proxy (landing page) |
-| 8443 | Nginx → WordPress | Toscana Trading (ecomm) |
-| 8444 | Nginx → WordPress | Flexora (ecomm) |
+| Port   | Service           | Purpose                                      |
+| ------ | ----------------- | -------------------------------------------- |
+| 22     | SSH               | Remote administration                        |
+| 3001   | Control Panel     | Management data exchange                     |
+| 8384   | Syncthing         | File sync web UI                             |
+| 8385   | Baserow           | Shared database service                      |
+| 80/443 | Nginx             | Reverse proxy: landing page + /syncthing/    |
+| 8443   | Nginx → WordPress | Toscana Trading (proxied from ecomm)         |
+| 8444   | Nginx → WordPress | Flexora (proxied from ecomm)                 |
 
-**Note**: WordPress sites (ports 80, 443, 8443, 8444) are managed in `/home/norvegia/ecomm` repository
+**Note**: WordPress containers run in `/home/norvegia/ecomm`, nginx proxies traffic to them
 
 **SMB Network Shares:**
+
 - Scan: `//10.40.40.98/scan` → `/mnt/scan`
 - Manuals: `//10.40.40.98/manuali` → `/mnt/manuali`
 - Credentials: `/home/norvegia/.smb-credentials` (gitignored)
@@ -344,7 +334,7 @@ make up
 ```bash
 # Syncthing user service directories
 /home/norvegia/.config/syncthing/    # service configuration
-/home/norvegia/Sync/                 # synced folders (example)
+/home/norvegia/bi/client             # synced folder
 
 # Service management (as norvegia user)
 systemctl --user status syncthing
@@ -356,7 +346,6 @@ systemctl --user restart syncthing
 - GNOME desktop environment on pc-minibook
 - Custom keyboard shortcuts for cross-platform compatibility
 - Hardware-specific optimizations per host
-- Zen browser integration via overlay
 
 ## Key Configuration Patterns
 
@@ -365,6 +354,7 @@ systemctl --user restart syncthing
 1. **Create host directory**: `hosts/new-hostname/`
 2. **Copy hardware config**: `cp /etc/nixos/hardware-configuration.nix hosts/new-hostname/hardware.nix`
 3. **Create host config**: `hosts/new-hostname/default.nix`
+
    ```nix
    {config, ...}: {
      imports = [
@@ -385,6 +375,7 @@ systemctl --user restart syncthing
      system.stateVersion = "24.11";
    }
    ```
+
 4. **Add to flake**: Update `flake.nix` nixosConfigurations
    ```nix
    new-hostname = mkDesktopHost "new-hostname";  # or mkServerHost
@@ -394,6 +385,7 @@ systemctl --user restart syncthing
 
 1. **Create user directory**: `home/new-user/`
 2. **Create user config**: `home/new-user/default.nix`
+
    ```nix
    {inputs, ...}: {
      imports = [
@@ -406,6 +398,7 @@ systemctl --user restart syncthing
      home.stateVersion = "24.11";
    }
    ```
+
 3. **Link in host config**: Add to host's `home-manager.users`
 
 ### Custom Services Examples
@@ -467,41 +460,20 @@ chown user:user /home/user/.smb-credentials
 ```
 
 **SSH Key Management**:
-SSH keys are managed manually for simplicity and reliability:
-
-**Generate SSH key** (if not already done):
+SSH keys managed manually for simplicity:
 
 ```bash
+# Generate key (if needed)
 ssh-keygen -t ed25519 -C "your_email@example.com"
-```
 
-**Add to GitHub**: Copy public key and add to GitHub Settings > SSH Keys:
-
-```bash
+# View public key (to add to GitHub/servers)
 cat ~/.ssh/id_ed25519.pub
+
+# Authorize on remote server
+ssh-copy-id user@hostname
 ```
 
-**Copy SSH key to remote server** (e.g., to authorize pc-minibook on srv-norvegia):
-
-```bash
-# Linux/macOS
-ssh-copy-id norvegia@srv-norvegia
-
-# Windows PowerShell
-Get-Content ~/.ssh/id_ed25519.pub | ssh norvegia@srv-norvegia "cat >> ~/.ssh/authorized_keys"
-```
-
-**Multiple accounts** - configure `~/.ssh/config`:
-
-```
-Host github.com
-  HostName github.com
-  User git
-  IdentityFile ~/.ssh/id_ed25519
-```
-
-- SSH config is managed by home-manager for convenience
-- After system reinstalls, regenerate keys and re-authorize them
+SSH config managed by home-manager. After reinstalls, regenerate and re-authorize keys.
 
 ## System Reinstallation Workflow
 
@@ -570,6 +542,7 @@ When performing initial system setup or major rebuilds, follow this sequence to 
 ### System Monitoring and Troubleshooting
 
 #### Service Status Checks
+
 ```bash
 # Check all running services
 systemctl list-units --type=service --state=running
@@ -582,6 +555,7 @@ ping google.com
 ```
 
 #### Log Analysis
+
 ```bash
 # System logs
 journalctl --since "1 hour ago"
@@ -594,6 +568,7 @@ journalctl -u service-name --since "24 hours ago"
 #### Common Issues
 
 **ALSA Store Error**:
+
 ```bash
 sudo mkdir -p /var/lib/alsa
 sudo touch /var/lib/alsa/asound.state
@@ -604,6 +579,7 @@ sudo alsactl store
 
 **Syncthing Service Recovery**:
 If user service goes into timeout/sleep mode, linger should already be enabled. If issues persist:
+
 ```bash
 # Verify linger status
 loginctl show-user norvegia | grep Linger
@@ -628,14 +604,15 @@ systemctl --user restart syncthing
 ## Automation Limitations
 
 **Commands requiring sudo password cannot be automated via Claude Code:**
+
 - `sudo nixos-rebuild switch/boot --flake .`
 - `sudo systemctl status/start/stop/restart <service>`
 - `systemctl --failed` (system-wide check)
 - Any command requiring root privileges
 
 **Commands that CAN be automated (no sudo required):**
+
 - Docker operations: `cd /home/norvegia/nixos/compose && make status/up-all/down-all`
-- Nginx reverse proxy routes traffic to WordPress (ecomm), Baserow, and future services (n8n, librechat)
 - User services: `systemctl --user status/start/stop/restart <service>`
 - Git operations: `git status/add/commit/push/pull`
 - File operations: read/edit/write files in user directories
