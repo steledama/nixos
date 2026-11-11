@@ -108,9 +108,11 @@ La revisione attiva si legge con `nixos-version --configuration-revision`
 (da `deck` per gli altri host, riga `revisione:` di `remoto stato`). Siccome
 entra nel toplevel, il toplevel cambia a ogni commit e non dice se il
 sistema è in deriva: lo dice `o3/scripts/system-drift.sh [host] [revisione]
-[sistema]`, solo valutazione. Riconduce la revisione al commit (un `narHash`
-lo cerca fra gli ultimi commit e non lo dà per buono se nessuno
-corrisponde), poi valuta `HEAD` con l'identità locale di oggi e la revisione
+[sistema]`, solo valutazione. Cerca il contenuto della revisione fra gli
+ultimi 40 commit; con `narHash` non distingue commit con lo stesso albero.
+Senza una corrispondenza verificata la provenienza resta sconosciuta:
+non dimostra modifiche locali e può dipendere dalla finestra di ricerca
+o dalla lettura dei metadati. Valuta poi `HEAD` con l'identità locale di oggi e la revisione
 forzata a quella attiva: allineato se e solo se ottiene esattamente il
 toplevel attivo. Il confronto vede codice, input e identità; se il sistema
 non coincide nemmeno col proprio commit, la causa è un'identità o un input

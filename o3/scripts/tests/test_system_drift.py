@@ -17,14 +17,17 @@ CONFIG = "o3/hosts/game/sistema.txt"
 # nix finto: narHash dal commit, toplevel da configurazione del commit,
 # identità e revisione forzata. Gli altri comandi falliscono.
 FAKE_NIX = r"""#!/usr/bin/env python3
-import hashlib, json, re, subprocess, sys
+import hashlib, json, os, re, subprocess, sys
 args = sys.argv[1:]
 def rev_of(ref):
     return re.search(r"\?rev=([0-9a-f]{40})", ref).group(1)
 def repo_of(ref):
     return re.match(r"git\+file://([^?]+)", ref).group(1)
 if args[:2] == ["flake", "metadata"]:
-    print(json.dumps({"locked": {"narHash": "sha256-" + rev_of(args[3])[:20] + "="}}))
+    if os.environ.get("FAIL_METADATA"):
+        sys.exit(1)
+    tree = subprocess.check_output(["git", "-C", repo_of(args[3]), "rev-parse", rev_of(args[3]) + "^{tree}"], text=True).strip()
+    print(json.dumps({"locked": {"narHash": "sha256-" + tree[:20] + "="}}))
     sys.exit(0)
 if args[0] == "eval":
     ref = args[2]
@@ -108,7 +111,7 @@ class SystemDriftTests(unittest.TestCase):
         return result.stdout
 
     def nar(self, rev):
-        return "nar:sha256-" + rev[:20] + "="
+        return "nar:sha256-" + self.git("rev-parse", rev + "^{tree}")[:20] + "="
 
     def identity_text(self, directory=None):
         return ((directory or self.identity) / "default.nix").read_text()
@@ -116,7 +119,7 @@ class SystemDriftTests(unittest.TestCase):
     def test_build_pulito_con_identita_allineato(self):
         rev = self.nar(self.base)
         out = self.drift(rev, toplevel("sistema A", self.identity_text(), rev))
-        self.assertIn(f"provenienza: commit {self.base[:7]}", out)
+        self.assertIn(f"provenienza: contenuto del commit {self.base[:7]}", out)
         self.assertIn("verdetto: allineato\n", out)
 
     def test_revisione_precedente_commit_di_soli_testi(self):
@@ -152,10 +155,37 @@ class SystemDriftTests(unittest.TestCase):
     def test_narhash_di_nessun_commit(self):
         rev = "nar:sha256-" + "f" * 20 + "="
         out = self.drift(rev, toplevel("sistema locale", self.identity_text(), rev))
-        self.assertIn("narHash di nessuno degli ultimi", out)
-        self.assertIn(
-            "verdetto: deriva (sistema costruito da un albero modificato", out
-        )
+        self.assertIn("nessuna corrispondenza verificata", out)
+        self.assertIn("verdetto: deriva (provenienza sconosciuta", out)
+        self.assertNotIn("albero modificato", out)
+
+    def test_commit_fuori_finestra_non_significa_albero_modificato(self):
+        rev = self.nar(self.base)
+        self.commit("sistema B", "sistema nuovo")
+        env = self.env | {"DRIFT_NAR_LIMIT": "1"}
+        out = self.drift(rev, toplevel("sistema A", self.identity_text(), rev), env=env)
+        self.assertIn("ultimi 1 commit", out)
+        self.assertIn("verdetto: deriva (provenienza sconosciuta", out)
+        self.assertNotIn("albero modificato", out)
+
+    def test_metadati_non_disponibili_non_significano_albero_modificato(self):
+        rev = self.nar(self.base)
+        env = self.env | {"FAIL_METADATA": "1"}
+        out = self.drift(rev, toplevel("sistema A", self.identity_text(), rev), env=env)
+        self.assertIn("provenienza: sconosciuta", out)
+        self.assertIn("verdetto: allineato", out)
+        self.assertNotIn("albero modificato", out)
+
+    def test_commit_con_stesso_albero_non_hanno_origine_univoca(self):
+        rev = self.nar(self.base)
+        self.git("commit", "--allow-empty", "-q", "-m", "giro vuoto")
+        current = self.git("rev-parse", "HEAD")
+        self.assertNotEqual(current, self.base)
+        self.assertEqual(self.nar(current), rev)
+        out = self.drift(rev, toplevel("sistema A", self.identity_text(), rev))
+        self.assertIn(f"contenuto del commit {current[:7]}", out)
+        self.assertIn("commit d'origine non univoco", out)
+        self.assertIn("verdetto: allineato", out)
 
     def test_identita_diversa_non_e_allineamento(self):
         rev = self.nar(self.base)

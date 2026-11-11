@@ -83,11 +83,14 @@ o3/scripts/home-drift.sh
 o3/scripts/home-drift.sh <host> '<riga home:>'
 ```
 
-`system-drift.sh` riconduce la revisione attiva al commit e confronta il
+`system-drift.sh` cerca un contenuto committato corrispondente alla revisione
+attiva (un `narHash` non identifica un commit d'origine univoco) e confronta il
 toplevel attivo con `HEAD` valutato con l'identità locale e la stessa
 revisione (righe `revisione:` e `sistema:` di `remoto stato` da deck).
 Riporta `allineato`, `deriva` con commit candidati e comando minimo, oppure
-`non misurabile` (build dirty/revisione sconosciuta), senza stimare dalla
+`non misurabile` se la valutazione non riesce o manca il sistema attivo
+necessario al confronto. La provenienza può restare sconosciuta anche
+quando il sistema è misurabile, senza stimare dalla
 data. Per il significato della misura home e il limite sul candidato
 ancora da committare leggi `kb/home-manager.md`, «Verifica della home
 attiva». Da `deck` misura anche `game` e `neve` accesi secondo

@@ -46,9 +46,11 @@ metadata` sul commit; con l'albero modificato resta invece `dirtyRev`.
   `self.dirtyRev`, altrimenti `nar:` seguito da `self.narHash`. Il
   `narHash` copre i soli file tracciati: dice il codice pubblico, non
   l'identità.
-- `o3/scripts/system-drift.sh [host] [revisione] [sistema]`: riconduce
-  `nar:` al commit fra gli ultimi 40 (nessuna corrispondenza = albero
-  modificato, mai HEAD per difetto); il verdetto confronta il toplevel
+- `o3/scripts/system-drift.sh [host] [revisione] [sistema]`: cerca fra gli
+  ultimi 40 un commit con contenuto corrispondente a `nar:`. Non identifica
+  un commit d'origine univoco: commit diversi possono avere lo stesso albero.
+  Nessuna corrispondenza verificata lascia la provenienza sconosciuta,
+  senza dimostrare modifiche locali o assumere HEAD. Il verdetto confronta il toplevel
   attivo con `HEAD` valutato con l'identità di oggi e la revisione attiva,
   così un'identità cambiata non passa per allineamento. Test in
   `o3/scripts/tests/test_system_drift.py`.
@@ -62,7 +64,7 @@ metadata` sul commit; con l'albero modificato resta invece `dirtyRev`.
 
 Resta il rebuild ordinario di game, al custode: dopo, `nixos-version
 --configuration-revision` deve dare `nar:sha256-…` e `system-drift.sh`
-`provenienza: commit <HEAD>` e «allineato». Deck e neve ricevono la stessa
+`provenienza: contenuto del commit …` e «allineato». Deck e neve ricevono la stessa
 forma al loro prossimo rebuild; da deck il confronto completo richiede la
 riga `sistema:` di `remoto stato` come terzo argomento.
 

@@ -8,11 +8,11 @@
   # Provenienza del codice pubblico, letta da o3/scripts/system-drift.sh.
   # Con l'identità locale (con-identita.sh: --override-input, lock non
   # scritto) Nix toglie rev da self anche a checkout pulito; resta narHash,
-  # l'hash dei soli file tracciati, che identifica il commit senza dire nulla
+  # l'hash dei soli file tracciati, che identifica il contenuto senza dire nulla
   # dell'identità. Valori: <rev> (pulito, senza override), <rev>-dirty
   # (albero modificato, con o senza override), nar:<narHash> (pulito, con
-  # override). Lo script riconduce il narHash al commit confrontandolo con
-  # quello dei commit, e non lo dà per buono se nessuno corrisponde.
+  # override). Lo script cerca un commit con lo stesso contenuto, senza
+  # attribuire un commit d'origine univoco o un albero modificato per esclusione.
   system.configurationRevision = self.rev or self.dirtyRev or "nar:${self.narHash}";
 
   # Common system modules for every host (deck, game, neve).

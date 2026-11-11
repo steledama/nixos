@@ -12,7 +12,8 @@
 # La revisione attiva (o3/hosts/default.nix) dice da quale codice pubblico
 # viene il sistema: <rev> o <rev>-dirty, oppure nar:<narHash> quando il build
 # è passato da con-identita.sh a checkout pulito. Il narHash si riconduce al
-# commit confrontandolo con quello degli ultimi commit.
+# contenuto di un commit confrontandolo con quello degli ultimi commit;
+# commit con lo stesso albero non si distinguono tramite narHash.
 #
 # Il verdetto confronta output, non revisioni: HEAD valutato con l'identità
 # locale di oggi e con la revisione forzata a quella attiva deve dare
@@ -96,10 +97,9 @@ case "$REV" in
             fi
         done < <(git rev-list --max-count="$NAR_LIMIT" HEAD)
         if [[ -n "$COMMIT" ]]; then
-            echo "provenienza: commit ${COMMIT:0:7} (narHash corrispondente, build con identità locale)"
+            echo "provenienza: contenuto del commit ${COMMIT:0:7} (narHash corrispondente; commit d'origine non univoco)"
         else
-            STATO="modificata"
-            echo "provenienza: narHash di nessuno degli ultimi $NAR_LIMIT commit (albero modificato o commit più vecchio)"
+            echo "provenienza: sconosciuta (nessuna corrispondenza verificata fra gli ultimi $NAR_LIMIT commit; possibile commit fuori finestra o metadati non disponibili)"
         fi
         ;;
     "" | dirty)
