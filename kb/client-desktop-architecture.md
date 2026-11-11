@@ -10,9 +10,11 @@ tooling utente, accesso SSH e sincronizzazione dei dati, ma non sono cloni:
 ciascuno ha una responsabilità funzionale propria e quindi una configurazione
 host-specifica distinta.
 
-La composizione comune è la baseline `o3/hosts/default.nix`: abilita desktop
-Niri, app GUI e policy comuni di rete e lingering. I file host mantengono hardware, utenti, indirizzi e servizi
-specifici; i profili `o3/home/<user>/<host>.nix` compongono l'ambiente utente.
+La composizione comune sono le due baseline: `o3/hosts/default.nix` (desktop
+Niri, app GUI, utente `stele`, rete, lingering, accessi SSH) e
+`o3/home/default.nix` (shell, tooling, SSH, Syncthing, Drive, configurazione
+Niri). I file host e i profili `o3/home/<user>/<host>.nix` aggiungono solo
+ciò che il singolo host ha in più.
 La distribuzione delle responsabilità è descritta in `configuration-patterns`.
 
 ## Ruoli dei client
@@ -40,7 +42,7 @@ invisibile ai cicli autonomi (custode, 2026-11-07). La distribuzione dei mount p
 - **editor e configurazione utente** — `o3/modules/home/helix.nix`, `o3/modules/home/zed.nix`
 - **accesso SSH** — `o3/modules/home/ssh-common.nix`, `ssh-home-lan.nix`, `ssh-work-lan.nix`, `ssh-github-familiare.nix` (alias GitHub per il push di familiare da account condiviso)
 - **sync casa** — `o3/modules/home/syncthing-home-mesh.nix`, parametrizzato
-  dal profilo con `thisHost`
+  dalla baseline col nome dell'host
 - **Google Drive** — `o3/modules/home/rclone.nix`, `o3/modules/home/rimonta-drive.nix`
 
 Questo strato comune evita duplicazione, ma non cancella le differenze tra host:

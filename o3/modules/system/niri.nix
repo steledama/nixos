@@ -79,7 +79,6 @@
   '';
 in {
   options.services.niriDesktop = {
-    enable = lib.mkEnableOption "Niri compositor with Noctalia shell";
     autoLoginUser = lib.mkOption {
       type = lib.types.str;
       default = "";
@@ -87,7 +86,7 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
     programs.niri = {
       enable = true;
       # Use GTK portal for file chooser - file manager remains available as file manager

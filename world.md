@@ -67,9 +67,10 @@ condividono rete, sync e tooling ma non sono equivalenti tra loro.
   - Caratteristiche distintive: NVIDIA, gaming, OpenRGB, llama.cpp, whisper-cpp, dual boot Windows (default via systemd-boot — entry `windows_windows.conf`, cfr. hardware-inventory § Dual boot Windows)
 
 La baseline di sistema comune ai tre host vive in `o3/hosts/default.nix`:
-porta anche le policy desktop — stack Niri, GUI apps e toggle
-rete/firewall/user lingering — mentre i fatti per-host (hardware, utente e
-gruppi, porte aperte, `system.stateVersion`) restano nei file host. Il catalogo
+porta anche le policy desktop — stack Niri, GUI apps, utente `stele`, rete,
+firewall di base, lingering e accessi SSH — mentre i fatti per-host
+(hardware, gruppi extra, porte e servizi propri, `system.stateVersion`)
+restano nei file host. Il catalogo
 degli output NixOS e Home Manager vive in `flake.nix`.
 
 L'**identità** dell'infrastruttura — IP, chiavi pubbliche, email, endpoint
@@ -81,12 +82,15 @@ VPN — è isolata dalla configurazione strutturale nei file-dati
 
 ## Profili home-manager
 
+Tutti e tre partono dalla baseline (dev tools, SSH, rclone, Syncthing, Niri);
+il file del profilo porta solo le aggiunte:
+
 - **`stele@deck`** — `o3/home/stele/deck.nix`
-  - dev tools, SSH, rclone, Syncthing, Niri
+  - alias SSH dei server, presentazioni, PWA pressione, `remoto`, `bw`, `gog`
 - **`stele@neve`** — `o3/home/stele/neve.nix`
-  - dev tools, SSH, rclone, Syncthing, Niri, audio/display
+  - alias GitHub di familiare, audio/display
 - **`stele@game`** — `o3/home/stele/game.nix`
-  - dev tools, SSH, rclone, Syncthing, Niri
+  - alias GitHub di familiare, wrapper Steam, registrazione audio
 
 La baseline home comune vive in `o3/home/default.nix`; i moduli riutilizzabili
 vivono in `o3/modules/home/`.

@@ -1,9 +1,15 @@
 # o3/home/default.nix
-{identity, ...}: {
-  # Common home modules for every profile (deck, neve, game).
-  # IMPORTANT: Only add terminal-based tools here!
-  # GUI applications are now managed at system-level via o3/modules/system/gui-apps.nix
-  # User-specific configurations should go in the user's default.nix file
+{
+  config,
+  identity,
+  hostname,
+  username,
+  ...
+}: {
+  # Baseline of every profile: the three hosts are desktops of the same user,
+  # so everything they share lives here and a profile file only adds what its
+  # host has more. GUI packages stay at system level
+  # (o3/modules/system/gui-apps.nix); home modules carry their configuration.
   imports = [
     ../modules/home/shell.nix # Shell config + utilities (imports fish.nix, herdr.nix, yazi.nix)
     ../modules/home/helix.nix
@@ -13,7 +19,31 @@
     ../modules/home/stato-home.nix # Rev degli input della home attiva, letti da remoto stato
     ../modules/home/rclone.nix # Mount Google Drive (FUSE, streaming)
     ../modules/home/rimonta-drive.nix # rimonta-drive: stato e restart dei mount
+    ../modules/home/dev-tools.nix # LSP, formatter, agenti AI
+    ../modules/home/claude-code.nix
+    ../modules/home/ssh-common.nix
+    ../modules/home/ssh-home-lan.nix
+    ../modules/home/zed.nix
+    ../modules/home/syncthing-home-mesh.nix # Sync ~/sync con il resto della mesh casa
+    ../modules/home/niri.nix
   ];
+
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
+
+  programs.git.settings.user = {
+    name = identity.home.gitName;
+    email = identity.home.email;
+  };
+
+  services.syncthingHomeMesh = {
+    enable = true;
+    thisHost = hostname;
+    syncPath = "${config.home.homeDirectory}/sync";
+  };
+
+  # Tastiera italiana di default; il profilo cambia layout e output.
+  programs.niriConfig.enable = true;
 
   # Drive di custode e familiare montati uguali sui tre host (custode,
   # 2026-11-07). Ogni host ha un'autorizzazione propria per account: copiare

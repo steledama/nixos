@@ -1,19 +1,8 @@
 # modules/system/gui-apps.nix
 # System-level GUI applications
-# Controlled by services.guiApps.enable option
-# Used by: the home clients (deck, game, neve)
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-with lib; {
-  options.services.guiApps = {
-    enable = mkEnableOption "GUI applications" // {default = true;};
-  };
-
-  config = mkIf config.services.guiApps.enable {
+# Imported by the baseline o3/hosts/default.nix: every host is a desktop.
+{pkgs, ...}: {
+  config = {
     # UNFREE: chromium + chromium-unwrapped + widevine-cdm (enableWideVine
     # rende unfree anche chromium, la cui base è BSD-3)
     unfree.allowedNames = [

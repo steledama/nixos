@@ -10,16 +10,15 @@
 }:
 with lib; {
   options.services.userLinger = {
-    enable = mkEnableOption "Enable user service lingering";
     users = mkOption {
       type = types.listOf types.str;
       default = [];
       description = "List of users to enable lingering for";
-      example = ["sviluppo" "user2"];
+      example = ["stele"];
     };
   };
 
-  config = mkIf config.services.userLinger.enable {
+  config = {
     # Create linger file for each user using tmpfiles
     # This is the declarative way to enable lingering in NixOS
     systemd.tmpfiles.rules = map (user: "f /var/lib/systemd/linger/${user} 0644 root root - -") config.services.userLinger.users;

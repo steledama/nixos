@@ -138,7 +138,7 @@
     in
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {inherit inputs hostname pkgs-ai identity;};
+        extraSpecialArgs = {inherit inputs hostname username pkgs-ai identity;};
         modules = [
           ./o3/home/${username}/${hostname}.nix
         ];

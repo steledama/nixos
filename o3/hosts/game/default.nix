@@ -2,7 +2,6 @@
 # Gaming PC with NVIDIA RTX 4070 - dual boot with Windows
 {
   pkgs,
-  lib,
   identity,
   ...
 }: {
@@ -16,9 +15,6 @@
     ../../modules/system/gaming.nix
     ../../modules/system/hardware/openrgb.nix
   ];
-
-  # Syncthing user lingering (enable in o3/hosts/default.nix)
-  services.userLinger.users = ["stele"];
 
   # Pacchetti unfree dichiarati nei moduli che li installano:
   # nvidia.nix (driver + CUDA), gaming.nix (Steam), gui-apps.nix (chromium).
@@ -46,9 +42,6 @@
     ${pkgs.systemd}/bin/bootctl set-default windows_windows.conf
   '';
 
-  # Niri auto-login user (compositor enabled in o3/hosts/default.nix)
-  services.niriDesktop.autoLoginUser = "stele";
-
   # RGB lighting control (RAM, GPU, motherboard)
   hardware.openrgbControl.enable = true;
 
@@ -66,10 +59,6 @@
   networking = {
     hostName = "game";
     firewall = {
-      allowedTCPPorts = [
-        22 # SSH
-        22000 # Syncthing sync
-      ];
       # LAN-only services. I peer della VPN casa arrivano mascherati dal NAT
       # di deck, quindi con sorgente LAN.
       extraCommands = ''
@@ -85,20 +74,12 @@
   console.keyMap = "it";
   # Wayland keyboard layout configured in the Niri user config
 
-  # User: stele (custode e familiare), come su deck e neve. Fino al 2026-11-07
-  # era utente-precedente; i figli usano Windows (custode). L'UID è quello di utente-precedente, così
-  # la home spostata da /home/utente-precedente resta dell'utente senza chown.
+  # L'utente è nella baseline. Qui l'UID è fissato: fino al 2026-11-07 era
+  # utente-precedente, e la home spostata da /home/utente-precedente resta
+  # sua senza chown solo se l'UID non cambia.
   users.users.stele = {
-    isNormalUser = true;
     uid = 1000;
-    description = "stele";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "video"
-      "i2c" # RGB control via OpenRGB
-    ];
-    openssh.authorizedKeys.keys = lib.attrValues identity.home.gameAuthorizedKeys;
+    extraGroups = ["i2c"]; # RGB control via OpenRGB
   };
 
   # Docker containers

@@ -22,12 +22,6 @@ in {
     ../../modules/system/services/scan-ftp.nix
   ];
 
-  # Syncthing user lingering (enable in o3/hosts/default.nix)
-  services.userLinger.users = ["stele"];
-
-  # Niri auto-login user (compositor enabled in o3/hosts/default.nix)
-  services.niriDesktop.autoLoginUser = "stele";
-
   services.wireguardServer = {
     enable = true;
     interfaceName = "casa";
@@ -96,10 +90,6 @@ in {
       };
     };
     firewall = {
-      allowedTCPPorts = [
-        22000 # Syncthing sync
-      ];
-
       # Restrict local admin UIs to home LAN only.
       extraCommands = ''
         # aMule Web UI (4711)
@@ -119,18 +109,6 @@ in {
   # Keyboard configuration (US International layout with dead keys)
   console.keyMap = "us-acentos"; # US International with dead keys for console
   # Wayland keyboard layout configured in the Niri user config
-
-  # User
-  users.users.stele = {
-    isNormalUser = true;
-    description = "stele";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "video"
-    ];
-    openssh.authorizedKeys.keys = lib.attrValues identity.home.deckAuthorizedKeys;
-  };
 
   # aMule daemon (web UI: http://deck:4711)
   # amuleapi replaces amuleweb (deprecated upstream since aMule 3.1.0); it

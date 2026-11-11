@@ -1,16 +1,9 @@
 # home/stele/deck.nix
-# Standalone home-manager configuration for stele@deck
-{identity, ...}: {
+# stele@deck: ciò che deck ha in più della baseline o3/home/default.nix.
+{...}: {
   imports = [
-    ../default.nix # Config di base (shell, helix)
-    ../../modules/home/dev-tools.nix
-    ../../modules/home/claude-code.nix
-    ../../modules/home/ssh-common.nix
-    ../../modules/home/ssh-home-lan.nix
+    ../default.nix
     ../../modules/home/ssh-work-lan.nix
-    ../../modules/home/zed.nix
-    ../../modules/home/syncthing-home-mesh.nix # Sync ~/sync con il resto della mesh casa
-    ../../modules/home/niri.nix
     ../../modules/home/presentations.nix
     ../../modules/home/pressione-salute.nix
     ../../modules/home/remoto.nix # Atti fissi dell'agente su game e neve (stato, allinea)
@@ -24,25 +17,7 @@
     privilegedAs = "deck";
   };
 
-  services.syncthingHomeMesh = {
-    enable = true;
-    thisHost = "deck";
-    syncPath = "/home/stele/sync";
-  };
-
-  # Identificazione utente
-  home.username = "stele";
-  home.homeDirectory = "/home/stele";
-
-  # Git user configuration
-  programs.git.settings.user = {
-    name = identity.home.gitName;
-    email = identity.home.email;
-  };
-
-  # Niri is the default desktop on deck.
   programs.niriConfig = {
-    enable = true;
     keyboardLayout = "us";
     keyboardVariant = "intl";
     extraConfig = ''

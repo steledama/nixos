@@ -38,23 +38,22 @@ minima di un host deve includere:
 
   networking.hostName = "new-hostname";
 
-  users.users.username = {
-    isNormalUser = true;
-    description = "username";
-    extraGroups = ["networkmanager" "wheel" "video"];
-  };
-
   system.stateVersion = "<release-iniziale>";
 }
 ```
 
+La baseline cerca i dati del nuovo host nell'identità locale, col suo nome:
+prima della build aggiungere in `~/.config/nixos/identity/home.nix` (e nel
+template `o3/identity/home.example.nix`) l'indirizzo in `lan.hosts`, le
+chiavi in `<hostname>AuthorizedKeys` e il Device ID in
+`syncthing.deviceIds`.
+
 Importare il modulo hardware che corrisponde alla macchina reale: oggi
 esistono `intel.nix` e `nvidia.nix`, e un host AMD senza esigenze proprie non
-ne importa nessuno (come `game` per la CPU). La baseline assegna già lo stack
-desktop e i toggle di rete/firewall base; il file host dichiara invece i fatti
-per-host — utente con i suoi gruppi (i base `networkmanager`, `wheel`, `video`
-più gli extra specifici), `system.stateVersion`, porte, profili di rete o
-servizi propri.
+ne importa nessuno (come `game` per la CPU). La baseline assegna già stack
+desktop, utente `stele` con i gruppi base, firewall e accessi SSH; il file
+host dichiara solo i fatti per-host: gruppi extra dell'utente,
+`system.stateVersion`, porte, profili di rete o servizi propri.
 
 ### 3. Registrare l'output nel flake
 
@@ -84,19 +83,14 @@ simile:
 {...}: {
   imports = [
     ../default.nix
-    ../../modules/home/dev-tools.nix
-    ../../modules/home/ssh-common.nix
   ];
-
-  home.username = "new-user";
-  home.homeDirectory = "/home/new-user";
 
   home.stateVersion = "<release-iniziale>";
 }
 ```
 
-Importare solo i moduli effettivamente necessari al profilo. Per un desktop,
-seguire i profili client reali.
+La baseline porta già tutto l'ambiente comune e ricava utente e host dal
+flake; aggiungere agli import solo i moduli che questo profilo ha in più.
 Per `stateVersion`, usare la release NixOS o Home Manager con cui il nuovo host
 o profilo nasce realmente. Il valore registra l'epoca iniziale e non va
 derivato dalla release corrente né alzato retroattivamente sui profili

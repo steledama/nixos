@@ -1,5 +1,6 @@
 # o3/hosts/default.nix
 {
+  config,
   pkgs,
   lib,
   self,
@@ -46,23 +47,25 @@
     ../modules/system/hardware/printer-ricoh-im550.nix
   ];
 
-  # Niri compositor with greetd auto-login is the desktop on every host; only
-  # the login user differs per host (set in each host file).
-  services.niriDesktop.enable = true;
-
-  # System-level GUI apps on every host.
-  services.guiApps.enable = true;
-
-  # User lingering keeps Syncthing running without an interactive login; the
-  # user list differs per host (set in each host file).
-  services.userLinger.enable = true;
+  # The three hosts are desktops of the same user: account, auto-login into
+  # Niri, lingering (Syncthing without an interactive login) and who may log
+  # in over SSH are declared once. A host file only adds its extra groups.
+  users.users.stele = {
+    isNormalUser = true;
+    description = "stele";
+    extraGroups = ["networkmanager" "wheel" "video"];
+    openssh.authorizedKeys.keys = lib.attrValues identity.home."${config.networking.hostName}AuthorizedKeys";
+  };
+  services.niriDesktop.autoLoginUser = "stele";
+  services.userLinger.users = ["stele"];
 
   # NetworkManager plus a ping-friendly firewall on every host; host files add
-  # their own ports, static profiles and extra rules.
+  # their own ports, static profiles and extra rules. SSH opens its own port.
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
     allowPing = true;
+    allowedTCPPorts = [22000]; # Syncthing sync
     # serve.py lanciato a mano (o3/presentations.nix) dalla LAN casa: i peer della
     # VPN casa arrivano mascherati dal NAT di deck, con la sua sorgente LAN.
     extraCommands = ''

@@ -11,10 +11,10 @@ generico di Nix: descrive le convenzioni oggi realmente incarnate nel codice.
 ## Livelli della configurazione
 
 - **output** — `flake.nix`: catalogo di host NixOS e profili `user@host`
-- **baseline sistema** — `o3/hosts/default.nix`: configurazione comune a tutti gli host (`deck`, `game`, `neve`), stack desktop compreso
-- **host** — `o3/hosts/<host>/default.nix`: differenze fisiche e funzionali del singolo host
-- **baseline home** — `o3/home/default.nix`: configurazione CLI comune a tutti gli utenti
-- **profilo home** — `o3/home/<user>/<host>.nix`: differenze del profilo utente su uno specifico host
+- **baseline sistema** — `o3/hosts/default.nix`: tutto ciò che i tre host condividono, compresi stack desktop, utente `stele` con auto-login e lingering, chi entra via SSH
+- **host** — `o3/hosts/<host>/default.nix`: solo ciò che l'host ha in più (hardware, servizi, gruppi extra, rete propria)
+- **baseline home** — `o3/home/default.nix`: l'ambiente utente comune ai tre profili: shell, editor, tooling di sviluppo, SSH, Syncthing, mount Drive, configurazione Niri
+- **profilo home** — `o3/home/<user>/<host>.nix`: solo ciò che il profilo ha in più sul suo host
 - **moduli riutilizzabili** — `o3/modules/system/`, `o3/modules/home/`: policy e funzionalità condivise
 
 La lettura corretta va dall'esterno verso l'interno: prima gli output del flake,
@@ -111,25 +111,35 @@ imports = [
 ];
 ```
 
-Stack desktop e toggle di rete/firewall arrivano dalla baseline; l'host
-aggiunge solo differenze fisiche o funzionali, e
-mantiene i fatti per-host come i gruppi utente e `system.stateVersion`.
+Stack desktop, utente, firewall di base e accessi SSH arrivano dalla
+baseline; l'host aggiunge solo differenze fisiche o funzionali, i gruppi
+extra dell'utente e `system.stateVersion`. Le chiavi autorizzate si leggono
+da `identity.home.<host>AuthorizedKeys`, scelte col nome dell'host.
 
-La forma comune di un profilo Home Manager è: baseline home e moduli espliciti
-necessari a quel profilo:
+Un profilo Home Manager è la baseline più i moduli che solo quell'host usa.
+Il profilo di `game`, per intero:
 
 ```nix
 imports = [
   ../default.nix
-  ../../modules/home/dev-tools.nix
-  ../../modules/home/ssh-common.nix
-  ../../modules/home/rclone.nix
+  ../../modules/home/ssh-github-familiare.nix
+  ../../modules/home/steam-pipewire-wrapper.nix
+  ../../modules/home/game-audio-rec.nix
 ];
+
+home.stateVersion = "25.11";
 ```
 
+La baseline ricava dal flake nome utente e host (`username`, `hostname` in
+`extraSpecialArgs`), quindi il profilo non li ripete. Fino al 2026-11-11 la
+baseline home era solo terminale e ogni profilo importava da sé desktop e
+tooling: serviva ai server, che non avevano desktop. Con tre host tutti
+desktop dello stesso utente quella distinzione non separava più nulla.
+
 Gli import devono restare espliciti: la presenza nel repository non implica
-attivazione. Questo rende visibile chi usa cosa e sostiene il principio zero
-dead code.
+attivazione, e un modulo importato è attivo senza un secondo interruttore
+`enable` da accendere altrove. Questo rende visibile chi usa cosa e sostiene
+il principio zero dead code.
 
 ## Vocabolario dei nomi
 
@@ -154,9 +164,10 @@ interfacce WireGuard sono diventate `lavoro`/`casa` (italiano, sono comandi).
 
 - ogni modulo esistente deve essere importato da almeno un host o profilo;
 - i moduli hardware devono corrispondere all'hardware reale;
-- la baseline home resta terminal-first; pacchetti e app GUI non vanno
-  reintrodotti lì;
-- gli host dichiarano differenze, non copie della configurazione comune;
+- i pacchetti delle app GUI restano a livello system (§ Pacchetti: un solo
+  livello); la baseline home ne porta solo la configurazione;
+- host e profili dichiarano differenze, non copie della configurazione
+  comune: ciò che vale per tutti e tre sta nelle baseline;
 - gli esempi documentali devono derivare da pattern vivi nel codice, non da
   schemi plausibili ma non adottati;
 - i nomi nuovi seguono il vocabolario sopra: inglese per il codice, italiano

@@ -84,7 +84,7 @@ portabili tra i tre host.
 ## Fonti di verità
 
 - **implementazione dei mount** — `o3/modules/home/rclone.nix`
-- **mount attivati per profilo** — `o3/home/stele/deck.nix`, `o3/home/stele/neve.nix`, `o3/home/stele/game.nix`
+- **mount attivati** — `o3/home/default.nix`, uguali sui tre profili, con l'elenco in `identity.home.rcloneMounts`
 - **helper utente** — `o3/modules/home/rimonta-drive.nix`
 - **credenziali OAuth** — `~/.config/rclone/rclone.conf`
 

@@ -1,9 +1,5 @@
 # hosts/neve/default.nix
-{
-  pkgs,
-  identity,
-  ...
-}: {
+{pkgs, ...}: {
   # UNFREE: unrar for extracting .rar archives (torrent downloads)
   # (chromium/widevine arrivano da gui-apps.nix)
   unfree.allowedNames = ["unrar"];
@@ -15,12 +11,6 @@
     ../../modules/system/hardware/intel.nix
     ../../modules/system/hardware/scanner.nix
   ];
-
-  # Syncthing user lingering (enable in o3/hosts/default.nix)
-  services.userLinger.users = ["stele"];
-
-  # Niri auto-login user (compositor enabled in o3/hosts/default.nix)
-  services.niriDesktop.autoLoginUser = "stele";
 
   # Bluetooth support for external speakers
   hardware.bluetooth = {
@@ -98,32 +88,14 @@
     };
   };
 
-  # Network (networkmanager + firewall enable in o3/hosts/default.nix)
-  networking = {
-    hostName = "neve";
-    firewall.allowedTCPPorts = [
-      22 # ssh
-      22000 # Syncthing sync
-    ];
-  };
+  networking.hostName = "neve";
 
   # Keyboard configuration (Italian layout)
   console.keyMap = "it";
-  # Wayland keyboard layout configured in Niri user config
+  # Wayland keyboard layout configured in the Niri user config
 
-  # User
-  users.users.stele = {
-    isNormalUser = true;
-    description = "stele";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "video"
-      "scanner"
-      "lp" # Required for scanner access
-    ];
-    openssh.authorizedKeys.keys = builtins.attrValues identity.home.neveAuthorizedKeys;
-  };
+  # Scanner access (l'utente è nella baseline)
+  users.users.stele.extraGroups = ["scanner" "lp"];
 
   system.stateVersion = "25.11";
 }
