@@ -10,4 +10,3 @@ in [tasks](../method/tasks.md).
 ## Contenuti
 
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo fix upstream
-- [ciclo-fallback-codex.md](ciclo-fallback-codex.md) — Rendere utile Codex come riserva del ciclo nixos

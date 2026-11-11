@@ -325,11 +325,12 @@ con Codex primo, è riuscito dall'unità `ciclo-method` (commit `3b618dc`,
 push in rete, nessun diniego). Il secondo motore si accende repo per repo nel suo
 profilo, dopo un primo giro a mano col custode. In `nixos` è acceso di riserva
 dal 2026-11-11. Dopo il limite osservato alle 18:23, il contratto canonico
-`--recinto-host` usa il solo recinto dell'host; il profilo corrente mette
-Codex primo per il collaudo manuale. Nel giro delle 20:14:17 accesso a Nix
-e bus, derive e unità utente sono verificabili. Switch e fallback fra motori
-veri restano aperti (`i2/codex-recinto-host.md`,
-`o2/ciclo-fallback-codex.md`).
+`--recinto-host` usa il solo recinto dell'host. Il giro a mano delle
+20:14:17 con Codex primo ha verificato derive, flake e bus utente, poi
+commit e push (`5769c3c`); dopo il collaudo Claude è tornato primo
+(`892df63`). Il fallback per credito davvero esaurito non è ancora
+accaduto: il custode ha chiuso il task il 2026-11-11, da riaprire se
+quando accade qualcosa non va (`i2/codex-recinto-host.md`).
 
 ## Sessioni concorrenti
 

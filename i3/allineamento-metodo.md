@@ -24,12 +24,11 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
   rende `~/.codex` scrivibile nel recinto dei cicli col lanciatore e non
   tiene più minuti né budget degli altri repo: un solo paracadute in
   `registry.nix` (`kb/cicli.md`, «Lanciatore canonico»). Come adottante,
-  `nixos` gira col lanciatore dal 2026-11-11; il profilo corrente mette
-  Codex primo per il collaudo manuale (`287f9ed`). Il contratto canonico
-  `--recinto-host` e le misure del giro delle 20:14:17 superano il blocco
-  su cache Nix e bus utente; switch e fallback reale restano da collaudare
-  ([lettura locale](../i2/codex-recinto-host.md),
-  `o2/ciclo-fallback-codex.md`). Il gate
+  `nixos` gira col lanciatore dal 2026-11-11, Claude primo e Codex di
+  riserva. Col contratto canonico `--recinto-host` il giro a mano con
+  Codex primo delle 20:14:17 ha chiuso con commit e push (`5769c3c`);
+  il fallback per credito esaurito resta non osservato, task chiuso dal
+  custode ([lettura locale](../i2/codex-recinto-host.md)). Il gate
   col perimetro (`7485488`) è recepito nei fork di `/commit` e `/cycle`.
 - Prova locale dell'ingresso selettivo di `/exec` (2026-10-24): nucleo
   in `SKILL.md`, procedure `plan.md`, `specify.md`, `perform.md` nella

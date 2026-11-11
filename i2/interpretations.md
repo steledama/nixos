@@ -9,7 +9,7 @@ vive in `../presentation/presentation.md` ([presentation](../method/presentation
 
 ## Contenuti
 
-- [Codex nel recinto dell'host](codex-recinto-host.md) — accesso a Nix e bus
+- [Codex nel recinto dell'host](codex-recinto-host.md) — giro nixos completo con Codex, fallback reale non ancora osservato
   riscontrato su deck; switch e fallback reale restano da collaudare.
 
 - [Ipotesi sulla clipboard di Chromium](ipotesi-clipboard-chromium.md) —

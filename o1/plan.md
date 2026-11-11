@@ -19,9 +19,9 @@ la vecchia storia resta solo nel bundle privato di deck. I cicli autonomi di
 deck passano al lanciatore canonico, che registra il credito esaurito di
 Claude: tutti e quattro dal 2026-11-11. L'host è pronto anche per Codex
 come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
-di riserva, ora primo nel profilo per il collaudo manuale. L'accesso a Nix e
-bus è riscontrato; switch e fallback reale restano da verificare. Gli altri
-task attendono upstream.
+di riserva, collaudato con un giro completo fino al push. Il fallback reale
+per credito esaurito si verificherà quando accade. Gli altri task attendono
+upstream.
 
 ## Task
 
@@ -29,7 +29,6 @@ task attendono upstream.
 | ------- | --- | -------------------------------------------------- | ---- |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
 | runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
-| dev     | S   | Rendere utile Codex come riserva del ciclo nixos   | w5   |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
@@ -43,12 +42,6 @@ riesame (`method/plan.md`, «Risveglio»):
   `o3/scripts/home-versions.sh` nella diagnosi `ia` del giro; rimozione di
   input e override in sessione col custode (`kb/development-environment.md`);
   by: 2026-12
-- `w5` — upstream: forma reale di un errore di quota di Codex e fallback
-  fra motori veri. Accesso a Nix e bus riscontrato su deck
-  (`i2/codex-recinto-host.md`); switch locale ancora da collaudare in
-  sessione. arrival: riscontro nel contratto canonico
-  `method/../o3/ciclo/fallback.md`, sezione «Verified and still open», o
-  chiusura locale con fallback fra motori veri; by: 2027-01
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 

@@ -2,6 +2,6 @@
 # Claude primo e Codex di riserva, ordine voluto dal custode (2026-11-11).
 # Dopo method 0eeb2db Codex gira nel recinto dell'host senza la propria
 # sandbox: il giro a mano con Codex primo del 2026-11-11 (5769c3c) ha
-# verificato flake, bus utente, commit e push. Switch e fallback reale fra
-# motori restano da collaudare (o2/ciclo-fallback-codex.md).
+# verificato flake, bus utente, commit e push. Il fallback per credito
+# esaurito si vedrà quando accade (kb/cicli.md, «Lanciatore canonico»).
 motori = ["claude", "codex"]
