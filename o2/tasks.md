@@ -10,4 +10,5 @@ in [tasks](../method/tasks.md).
 ## Contenuti
 
 - [identita-nel-seed.md](identita-nel-seed.md) — Mettere l'identità locale nel seed
+- [rebuild-dopo-pulizia.md](rebuild-dopo-pulizia.md) — Portare i tre host sulla configurazione ripulita
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo fix upstream
