@@ -87,13 +87,17 @@ a `1c9da16`, identità e regole privacy identiche a deck con permessi privati,
 controllo privacy senza riscontri, switch Home Manager riuscito e deriva
 home allineata. SSH, mount Drive e Syncthing funzionano, senza unità utente
 fallite. Sono riscontri delle sessioni locali, non verifiche remote ripetute
-da deck. La manutenzione completa su game non è stata provata durante il
-collaudo; resta al normale uso della ricorrenza.
+da deck. La successiva manutenzione su game e il rebuild del custode hanno
+collaudato anche Whisper 1.9.5 e la cache CUDA. La tracciabilità è verificata
+dal rebuild di `8827fd7`: revisione `nar:sha256-…` e deriva allineata
+(`kb/development-workflow.md`, «Tracciabilità»).
 
 Su game e neve il vecchio checkout è in `~/nixos-archivio-privato`, con
 origin rivolto all'archivio remoto. I worktree precedenti sono stati
 ricollegati. Quello di game conserva il commit locale non pubblicato
 `6fb3d265`: il passaggio al repo pubblico non lo ha integrato né eliminato.
+Il suo intento è stato ripreso con una nuova modifica per la cache CUDA,
+senza cherry-pick dalla storia privata.
 Il materiale va conservato privato insieme al vecchio checkout.
 
 I sistemi attivi conservavano una revisione privata non risolvibile nel nuovo

@@ -104,6 +104,11 @@ l'identità locale. Ha tre forme (`o3/hosts/default.nix`):
   allora `rev` da `self` anche a checkout pulito; resta il `narHash` dei
   soli file tracciati, identico a quello di `nix flake metadata` sul commit.
 
+Collaudo runtime su game, output inoltrato dal custode il 2026-11-11 dopo
+il rebuild di `8827fd7`: revisione `nar:sha256-…`, contenuto corrispondente
+al commit e verdetto `allineato`. Deck e neve ricevono la nuova forma al
+proprio prossimo rebuild ordinario, senza implicare un atto remoto da deck.
+
 La revisione attiva si legge con `nixos-version --configuration-revision`
 (da `deck` per gli altri host, riga `revisione:` di `remoto stato`). Siccome
 entra nel toplevel, il toplevel cambia a ogni commit e non dice se il
