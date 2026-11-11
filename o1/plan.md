@@ -14,8 +14,9 @@ dipendenze.
 ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli strumenti
 e sorveglia il debito upstream. La pubblicazione e il passaggio dei tre host
 all'unico repo pubblico sono completati. Il rebuild di game ha fatto
-emergere un difetto di tracciabilità con l'identità locale, da correggere;
-gli altri task restano in attesa upstream.
+emergere un difetto di tracciabilità con l'identità locale: la correzione è
+nel codice e chiude con la verifica dopo il rebuild di game; gli altri task
+restano in attesa upstream.
 
 ## Task
 

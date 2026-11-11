@@ -94,16 +94,29 @@ non correlato.
 nixos-rebuild list-generations
 ```
 
-Una working tree pulita al momento del rebuild rende la revisione affidabile;
-una build dirty resta utile per collaudo, ma non offre la stessa provenienza.
+La revisione dice da quale codice pubblico viene il sistema, mai
+l'identità locale. Ha tre forme (`o3/hosts/default.nix`):
+
+- `<rev>`: checkout pulito valutato senza override;
+- `<rev>-dirty`: albero con modifiche non committate, con o senza identità;
+- `nar:<narHash>`: checkout pulito con l'identità locale. L'override
+  dell'input `identity` impedisce a Nix di scrivere il lock, e Nix toglie
+  allora `rev` da `self` anche a checkout pulito; resta il `narHash` dei
+  soli file tracciati, identico a quello di `nix flake metadata` sul commit.
 
 La revisione attiva si legge con `nixos-version --configuration-revision`
 (da `deck` per gli altri host, riga `revisione:` di `remoto stato`). Siccome
 entra nel toplevel, il toplevel cambia a ogni commit e non dice se il
-sistema è in deriva: lo dice `o3/scripts/system-drift.sh [host] [revisione]`,
-che confronta i drv alla revisione attiva e a `HEAD` con l'opzione fissata
-(solo valutazione) ed elenca i commit candidati quando differiscono. Dopo una
-build dirty la deriva non è misurabile.
+sistema è in deriva: lo dice `o3/scripts/system-drift.sh [host] [revisione]
+[sistema]`, solo valutazione. Riconduce la revisione al commit (un `narHash`
+lo cerca fra gli ultimi commit e non lo dà per buono se nessuno
+corrisponde), poi valuta `HEAD` con l'identità locale di oggi e la revisione
+forzata a quella attiva: allineato se e solo se ottiene esattamente il
+toplevel attivo. Il confronto vede codice, input e identità; se il sistema
+non coincide nemmeno col proprio commit, la causa è un'identità o un input
+cambiati dopo il build. Da `deck` il toplevel è la riga `sistema:` di
+`remoto stato`; senza, resta il confronto dei drv fra revisione attiva e
+`HEAD`, che non vede l'identità.
 
 Per la home il gemello è `o3/scripts/home-drift.sh [host] [generazione] [checkout]`: la
 generazione è l'`activationPackage` della configurazione, quindi il suo path

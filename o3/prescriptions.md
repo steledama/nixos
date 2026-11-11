@@ -69,9 +69,10 @@ o3/tools/tests`. Non sostituisce uno scanner di segreti come gitleaks.
   `overlay`, fusa qui il 2026-08-02), diagnostica su `casa`, sorveglia il
   debito upstream tracciato (`world`). I rami `lavoro` e `docker` sono
   passati a `example-org/nixos-ufficio` il 2026-11-04.
-- `scripts/system-drift.sh [host rev]` e `scripts/home-drift.sh [host riga]`
+- `scripts/system-drift.sh [host rev sistema]` e `scripts/home-drift.sh [host riga]`
   — deriva di configurazione: il sistema e la home che il flake costruisce a
-  `HEAD` sono quelli attivi sull'host?
+  `HEAD` sono quelli attivi sull'host? Il sistema si confronta sul toplevel,
+  identità locale compresa; test in `scripts/tests/test_system_drift.py`.
 - `scripts/registro.sh '<filtro jq>'` — scrive `i1/manutenzione.json` in
   place; `scripts/ripristina-lock.sh` riporta `flake.lock` a `HEAD` dopo un
   bump fallito; `scripts/probe.sh` valuta le `probe:` della legenda del plan

@@ -34,6 +34,38 @@ pulito, modifiche locali, revisione precedente con override, identità
 locale modificata e identità assente. Aggiornare documentazione e test.
 Non ampliare i permessi del ciclo autonomo implicitamente.
 
+## Correzione
+
+Preparata e verificata su game il 2026-11-11, senza build né attivazioni.
+Causa confermata in valutazione: con l'override `self.sourceInfo` perde
+`rev`, `shortRev` e `revCount` (il lock non scritto rende il flake
+«forzato sporco»), conserva `narHash`, identico a quello di `nix flake
+metadata` sul commit; con l'albero modificato resta invece `dirtyRev`.
+
+- `o3/hosts/default.nix`: la revisione è `self.rev`, altrimenti
+  `self.dirtyRev`, altrimenti `nar:` seguito da `self.narHash`. Il
+  `narHash` copre i soli file tracciati: dice il codice pubblico, non
+  l'identità.
+- `o3/scripts/system-drift.sh [host] [revisione] [sistema]`: riconduce
+  `nar:` al commit fra gli ultimi 40 (nessuna corrispondenza = albero
+  modificato, mai HEAD per difetto); il verdetto confronta il toplevel
+  attivo con `HEAD` valutato con l'identità di oggi e la revisione attiva,
+  così un'identità cambiata non passa per allineamento. Test in
+  `o3/scripts/tests/test_system_drift.py`.
+- Prove reali su un clone di prova: checkout pulito (allineato, provenienza
+  dal narHash), revisione precedente con commit di soli testi (allineato) o
+  che cambia il sistema (deriva, candidato giusto), albero modificato
+  (`<rev>-dirty`, deriva o allineato secondo l'effetto), identità diversa
+  (deriva, causa identità o input), identità assente (non misurabile).
+- Sul sistema attivo di game (`dirty`, build del 2026-11-11) lo script
+  dice: allineato a HEAD, provenienza sconosciuta.
+
+Resta il rebuild ordinario di game, al custode: dopo, `nixos-version
+--configuration-revision` deve dare `nar:sha256-…` e `system-drift.sh`
+`provenienza: commit <HEAD>` e «allineato». Deck e neve ricevono la stessa
+forma al loro prossimo rebuild; da deck il confronto completo richiede la
+riga `sistema:` di `remoto stato` come terzo argomento.
+
 ## Chiusura
 
 La valutazione conserva la provenienza corretta e le differenze

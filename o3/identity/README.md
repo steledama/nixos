@@ -96,9 +96,11 @@ ricollegati. Quello di game conserva il commit locale non pubblicato
 `6fb3d265`: il passaggio al repo pubblico non lo ha integrato né eliminato.
 Il materiale va conservato privato insieme al vecchio checkout.
 
-I sistemi attivi conservano una revisione privata non risolvibile nel nuovo
-clone: `system-drift.sh` può dichiararla non misurabile fino al prossimo
-rebuild ordinario, che resta un atto separato del custode. Non impedisce la
+I sistemi attivi conservavano una revisione privata non risolvibile nel nuovo
+clone. Il primo rebuild col wrapper ha poi registrato `dirty`, perché
+l'override toglie `rev` a `self`: la revisione ora usa il `narHash` del
+codice pubblico, e `system-drift.sh` confronta comunque il toplevel attivo
+con `HEAD` (`kb/development-workflow.md`, «Tracciabilità»). Non impedisce la
 chiusura della migrazione: i sistemi con revisione fissata erano identici
 prima del taglio, e le home sono ora applicate e verificate.
 

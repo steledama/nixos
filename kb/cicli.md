@@ -127,7 +127,7 @@ notturno non lo usa: alle 04:30 `game` e `neve` sono spenti, e
 
 - `remoto stato <host>`: `nixos-version`, generazioni di sistema e
   home (la riga `home:` è l'input di `o3/scripts/home-drift.sh`),
-  revisione del sistema attivo (input di `o3/scripts/system-drift.sh`), albero inviato, `HEAD` e stato di `~/nixos`, unità fallite di
+  revisione e toplevel del sistema attivo (righe `revisione:` e `sistema:`, input di `o3/scripts/system-drift.sh`), albero inviato, `HEAD` e stato di `~/nixos`, unità fallite di
   sistema e utente, e `~/.local/state/nixos/home.json`: i rev degli input
   della home attiva e la versione di `gogcli` dove è installato, scritti
   da `stato-home.nix` a ogni switch, di chiunque. È il fatto da cui

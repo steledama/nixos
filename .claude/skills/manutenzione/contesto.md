@@ -77,13 +77,15 @@ Anche con tutti i rami bloccati esegui entrambi i controlli locali; da
 ```bash
 o3/scripts/system-drift.sh
 # da deck, revisione letta da remoto stato:
-o3/scripts/system-drift.sh <host> <revisione>
+o3/scripts/system-drift.sh <host> <revisione> <sistema>
 o3/scripts/home-drift.sh
 # da deck, riga home: di remoto stato, copiata fra apici:
 o3/scripts/home-drift.sh <host> '<riga home:>'
 ```
 
-`system-drift.sh` confronta i drv con `configurationRevision` fissata.
+`system-drift.sh` riconduce la revisione attiva al commit e confronta il
+toplevel attivo con `HEAD` valutato con l'identità locale e la stessa
+revisione (righe `revisione:` e `sistema:` di `remoto stato` da deck).
 Riporta `allineato`, `deriva` con commit candidati e comando minimo, oppure
 `non misurabile` (build dirty/revisione sconosciuta), senza stimare dalla
 data. Per il significato della misura home e il limite sul candidato
