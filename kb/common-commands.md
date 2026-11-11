@@ -19,8 +19,8 @@ nix flake update home-manager    # moduli Home Manager
 nix flake update nixpkgs-whisper # aggiorna il lock alla revisione scelta
 o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake .
 o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake .#hostname
-sudo nixos-rebuild boot --flake .
-nixos-rebuild build --flake .
+o3/scripts/con-identita.sh sudo nixos-rebuild boot --flake .
+o3/scripts/con-identita.sh nixos-rebuild build --flake .
 nix-collect-garbage --delete-old
 sudo nix-collect-garbage -d
 sudo /run/current-system/bin/switch-to-configuration boot

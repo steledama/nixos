@@ -65,7 +65,7 @@ nixosConfigurations.new-hostname = mkHost inputs.nixpkgs "new-hostname";
 
 ```bash
 git add o3/hosts/new-hostname/default.nix o3/hosts/new-hostname/hardware.nix
-nixos-rebuild build --flake .#new-hostname
+o3/scripts/con-identita.sh nixos-rebuild build --flake .#new-hostname
 ```
 
 ## Aggiungere un profilo Home Manager
@@ -144,7 +144,7 @@ aggiungerlo.
 ```bash
 # Aggiungi individualmente il nuovo modulo e il file che lo importa.
 git add o3/modules/system/services/example.nix o3/hosts/example/default.nix
-nixos-rebuild build --flake .#hostname
+o3/scripts/con-identita.sh nixos-rebuild build --flake .#hostname
 # oppure, per soli moduli home:
 nix build '.#homeConfigurations."user@hostname".activationPackage'
 ```

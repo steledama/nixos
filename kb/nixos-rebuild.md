@@ -27,6 +27,13 @@ Solo `switch` e `boot` toccano il sistema e richiedono `sudo`: `build` produce
 un risultato nello store e un symlink `result` nella directory corrente, quindi
 è la verifica che un agente può eseguire da solo.
 
+Il wrapper non è facoltativo: senza, il flake costruisce i template pubblici
+di `o3/identity/`, con chiavi SSH e indirizzi segnaposto. La build nuda resta
+utile solo come controllo dei template; l'attivazione la ferma
+`system.preSwitchChecks` in `o3/hosts/default.nix`, che riconosce i template
+dall'attributo `template` e interrompe `switch`, `boot` e `test` prima di
+toccare il sistema.
+
 ## Scope
 
 Si applica ai file in `o3/modules/system/` e `o3/hosts/`. Modifiche in `o3/modules/home/` e `o3/home/` usano invece `home-manager switch` (senza sudo, ~10s).

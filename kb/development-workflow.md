@@ -39,7 +39,7 @@ o3/scripts/con-identita.sh home-manager switch --flake .#<user>@<host>
 Modifiche NixOS:
 
 ```bash
-nixos-rebuild build --flake .#<host>
+o3/scripts/con-identita.sh nixos-rebuild build --flake .#<host>
 o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake .#<host>
 ```
 

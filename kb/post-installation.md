@@ -140,10 +140,13 @@ Alla fine: `bw lock` e `bw logout` sull'host ripristinato, se non deve
 tenere l'accesso alla cassaforte (oggi solo `deck` ha `bw` installato).
 I dati locali seguono il loro backup distinto.
 
-Preparare quindi la generazione e riavviare:
+Preparare quindi la generazione e riavviare. Il wrapper richiede l'identità
+locale in `~/.config/nixos/identity/` (`o3/identity/README.md`) e si ferma se
+manca; senza wrapper il flake costruisce i template pubblici, che
+l'attivazione rifiuta:
 
 ```bash
-sudo nixos-rebuild boot --flake .#<host>
+o3/scripts/con-identita.sh sudo nixos-rebuild boot --flake .#<host>
 sudo reboot
 ```
 

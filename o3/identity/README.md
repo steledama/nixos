@@ -8,6 +8,9 @@ al flake come input esplicito. Non serve un secondo repository operativo.
 
 - `default.nix` qui importa `home.example.nix` e `work.example.nix`: sono
   esempi pubblici, non la configurazione da attivare sui tre host reali.
+  Porta `template = true`: con quell'attributo gli host rifiutano
+  l'attivazione (`system.preSwitchChecks` in `o3/hosts/default.nix`). Il
+  `default.nix` locale non deve averlo.
 - La directory locale contiene `default.nix`, `home.nix` e `work.nix` con
   la stessa forma dei template. Il suo `default.nix` importa i due file
   reali e restituisce `{ home = …; work = …; }`.

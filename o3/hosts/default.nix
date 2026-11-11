@@ -1,10 +1,24 @@
 # o3/hosts/default.nix
 {
   pkgs,
+  lib,
   self,
   identity,
   ...
 }: {
+  # Il flake senza override valuta e costruisce i template pubblici
+  # (nix flake check), ma non deve mai attivarli: con chiavi e indirizzi
+  # segnaposto un host reale resterebbe senza accesso SSH. Il controllo
+  # ferma switch, boot e test prima di toccare il sistema; con l'identità
+  # locale non esiste e il toplevel non cambia.
+  system.preSwitchChecks = lib.mkIf (identity.template or false) {
+    identitaReale = ''
+      echo "Identità di esempio: questa configurazione usa i template pubblici di o3/identity." >&2
+      echo "Attivare con o3/scripts/con-identita.sh sudo nixos-rebuild ... (o3/identity/README.md)." >&2
+      exit 1
+    '';
+  };
+
   # Provenienza del codice pubblico, letta da o3/scripts/system-drift.sh.
   # Con l'identità locale (con-identita.sh: --override-input, lock non
   # scritto) Nix toglie rev da self anche a checkout pulito; resta narHash,

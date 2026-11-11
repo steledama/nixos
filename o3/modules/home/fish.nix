@@ -49,9 +49,10 @@
 
       # NixOS abbreviations
       nd = "nix develop";
-      nrs = "sudo nixos-rebuild switch --flake .";
+      # Sempre col wrapper: il flake nudo costruisce i template pubblici.
+      nrs = "./o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake .";
       hms = "./o3/scripts/con-identita.sh home-manager switch --flake .#$USER@(hostname)";
-      nrb = "sudo nixos-rebuild boot --flake .";
+      nrb = "./o3/scripts/con-identita.sh sudo nixos-rebuild boot --flake .";
       # Update mirati per i tre input indipendenti: mai `nix flake update` bare,
       # che muoverebbe anche i server. Ogni input ha la sua cadenza.
       nfu = "nix flake update nixpkgs"; # casa: deck, game, neve

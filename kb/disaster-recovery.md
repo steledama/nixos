@@ -72,8 +72,16 @@ attivare completamente servizi e sessioni dentro l'ambiente live.
 
 ```bash
 cd /home/<utente>/nixos
-nixos-rebuild boot --flake .#<host>
+NIXOS_IDENTITY_DIR=/home/<utente>/.config/nixos/identity \
+  o3/scripts/con-identita.sh nixos-rebuild boot --flake .#<host>
 ```
+
+Il wrapper passa al flake l'identità locale dell'host; dentro `nixos-enter`
+si è root, quindi la directory va indicata con `NIXOS_IDENTITY_DIR`. Senza
+wrapper il flake costruisce i template pubblici, con chiavi e indirizzi
+segnaposto: l'attivazione li rifiuta (`system.preSwitchChecks` in
+`o3/hosts/default.nix`). Se la directory dell'identità è andata persa,
+ripristinarla prima di ricostruire.
 
 Il target deve essere uno degli host dichiarati nel flake: `deck`, `game` o
 `neve`.

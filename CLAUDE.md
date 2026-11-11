@@ -148,7 +148,7 @@ Per ogni intento ricorrente, lo strumento da usare con il comando minimo sicuro 
   - Comando minimo: `o3/scripts/con-identita.sh home-manager switch --flake .#user@host`
   - Approfondimento: `kb/home-manager.md`
 - **rebuild sistema (richiede autorizzazione)** — `nixos-rebuild`
-  - Comando minimo: `sudo nixos-rebuild switch --flake .#<host>`
+  - Comando minimo: `o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake .#<host>`
   - Approfondimento: `kb/nixos-rebuild.md`
 
 Formatter e controlli prima di ogni commit li lancia il gate di `/commit`,
