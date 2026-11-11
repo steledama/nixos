@@ -1,11 +1,16 @@
 {
   "ultima_esecuzione": {
     "data": "2026-11-11",
-    "ora": "04:32",
-    "host": "deck",
-    "rami": ["ia"]
+    "ora": "15:13",
+    "host": "game",
+    "rami": ["casa", "ia"]
   },
-  "autovalutazione": {},
+  "autovalutazione": {
+    "data": "2026-11-11",
+    "proposta": "Aggiungere a cache-status.sh una modalità closure (risale i References dei narinfo, salta i path già in store) e usarla in overlay.md come validazione di whisper-cpp quando il path è in cache, invece della build locale.",
+    "motivo": "Il passo 5 di overlay (build dell espressione) su game compila CUDA per ore o, da utente non trusted, non può usare cache non ancora attive; la verifica della closure l ho scritta a mano in questo run.",
+    "volte": 1
+  },
   "ia": {
     "cadenza_giorni": 1,
     "data": "2026-11-11",
@@ -15,7 +20,7 @@
     "rev_ai": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
     "pacchetti": [],
     "nota": "Nessun delta su ai f4a03c0: claude-code 2.1.318, pi 1.5.0, herdr 0.9.5 pari a unstable; codex 0.166.0 sul pin nixpkgs-codex, 0.167.0 su unstable senza cache (NixOS/nixpkgs #585124 chiusa il 2026-11-09), pin conservato, attesa w4 nel plan. Niente bump ne switch, applicato_su conservato.",
-    "applicato_su": ["deck"]
+    "applicato_su": ["deck", "game"]
   },
   "home-manager": {
     "cadenza_giorni": 7,
@@ -99,10 +104,11 @@
         "pacchetti_dedicati": {
           "whisper-cpp": {
             "cadenza_giorni": 30,
-            "data": "2026-09-21",
-            "ora": "09:49",
+            "data": "2026-11-11",
+            "ora": "15:13",
+            "host_eseguito": "game",
             "esito": "aggiornato",
-            "nota": "1.8.7 -> 1.9.2 (release upstream 2026-08-04). Changelog senza breaking change (sync ggml, fix VAD, CJK utf-8, performance Android); pin dedicato nixpkgs-whisper spostato al commit nixpkgs 8d43d7f8d173 (bump reale, non backport - la versione nixpkgs corrisponde 1:1 all'upstream). Definizione bumpata e build CUDA validata (nix build su .#nixosConfigurations.game.pkgs.whisper-cpp, store path completo, commit 912777b). Attivazione: rebuild su game eseguito (dichiarato dall utente il 2026-09-29, non verificato da deck)"
+            "nota": "1.9.2 -> 1.9.5 (upstream ggml-org/whisper.cpp, release 2026-10-06; 1.9.3 e 1.9.4 intermedie). Note lette: patch senza breaking change della CLI, fix di robustezza (lettura oltre i limiti su audio molto corto, header di modelli malformati), sync ggml/CUDA. Pin nixpkgs-whisper spostato a f9a75f41, lo stesso rev del pin nixpkgs di casa (1.9.5 in nixpkgs = upstream). Validazione senza build locale (utente non trusted, cache CUDA non ancora attiva): path di game /nix/store/gbbdla2s...-whisper-cpp-1.9.5 presente in cache.nixos-cuda.org, nix store verify con la sola chiave della cache riuscito (download e firma); i 13 path della closure sono in locale o nelle cache configurate. Novità: whisper 1.9.5 referenzia a runtime un llama-cpp 0.8.0 con capability predefinite (lxpnw...), distinto da quello del servizio, anch esso in cache. Attivazione: rebuild di game pendente, al custode; il primo rebuild deve passare la cache CUDA con --option extra-substituters/extra-trusted-public-keys, altrimenti compila in locale whisper e quel llama-cpp."
           }
         }
       }
