@@ -32,7 +32,7 @@
     # `nixpkgs` al momento dell'introduzione (whisper-cpp 1.8.7, già in build
     # su game). Aggiornare col bump overlay di `/manutenzione` (passo 8)
     # quando la cadenza dedicata è dovuta.
-    nixpkgs-whisper.url = "github:nixos/nixpkgs/8d43d7f8d17371d1fb68f9145bb60858db481275";
+    nixpkgs-whisper.url = "github:nixos/nixpkgs/f9a75f41be3a74eab55d3a7679d34ad6cc0da977";
 
     # Home Manager
     home-manager = {

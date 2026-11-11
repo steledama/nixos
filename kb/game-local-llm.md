@@ -53,12 +53,20 @@ flake e non eredita automaticamente questa restrizione.
 per il solo `game` la cache del team CUDA di NixOS, `cache.nixos-cuda.org`
 (URL e chiave dalla wiki `CUDA` e dalla pagina della cache), accanto a
 `cache.nixos.org` e `nix-community.cachix.org`; i componenti CUDA di base
-erano già serviti da quest'ultima. Al 2026-11-11 la cache CUDA conteneva il
-path esatto di `whisper-cpp` 1.9.2 selezionato da game, non quello di
-llama.cpp 0.8.0: la causa dell'assenza non è verificata. La presenza di un
-path non garantisce i successivi, e una build locale dello stesso path può
-avere un NAR diverso da quello in cache. Lo stato di un path si legge con
-`o3/scripts/cache-status.sh -v`; la cache è attiva solo dopo il rebuild.
+erano già serviti da quest'ultima. Al 2026-11-11 la cache CUDA conteneva i
+path esatti di `whisper-cpp` 1.9.2 e 1.9.5 selezionati da game, non quello di
+llama.cpp 0.8.0 del servizio: la causa dell'assenza non è verificata.
+`whisper-cpp` 1.9.5 usa a runtime la libreria di un llama.cpp costruito
+dal suo pin con le capability predefinite, distinto da quello del servizio
+e presente in cache. La presenza di un path non garantisce i successivi, e
+una build locale dello stesso path può avere un NAR diverso da quello in
+cache. Lo stato di un path si legge con `o3/scripts/cache-status.sh -v`.
+
+La cache è attiva solo dopo il rebuild, e il rebuild che la introduce
+usa ancora le cache del sistema in corso: per non compilare in locale i
+path CUDA nuovi, quel primo rebuild passa la cache a mano con
+`--option extra-substituters` e `--option extra-trusted-public-keys`
+(sotto `sudo` le accetta il demone).
 
 Su `game`:
 
