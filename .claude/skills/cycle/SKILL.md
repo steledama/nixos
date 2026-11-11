@@ -128,11 +128,16 @@ caso, niente commit e working tree com'è. Il prompt del giro
 `Attenzione:` compresa, e rileggi ogni orario, numero e SHA contro l'output
 dello strumento che l'ha dato, nel fuso e nell'unità in cui lo scrivi; il
 corpo del commit si ricava dalla bozza, così un errore si vede prima della
-pubblicazione. Prima dello staging confronta `git status --short` con i file
+pubblicazione. Prima del gate confronta `git status --short` con i file
 toccati nel giro: un file modificato che non hai toccato vuol dire una
-sessione concorrente, e allora non committi e chiudi con lo stop. Le
-verifiche del repo, `python3 method/../o3/commit_gate.py prima`, devono
-passare; se una fallisce, niente commit e working tree lasciato com'è. Un
+sessione concorrente, e allora non committi e chiudi con lo stop. Poi le
+verifiche del repo, `python3 method/../o3/commit_gate.py prima --perimetro
+<file toccati nel giro>`, sempre col perimetro: senza, sotto il lanciatore,
+il gate esce con 4. Con 3 il gate ha trovato file fuori perimetro senza
+scrivere nulla, ed è lo stesso stop; se un controllo fallisce, niente commit
+e working tree lasciato com'è. Subito prima dello staging
+`python3 method/../o3/commit_gate.py verifica` conferma che dopo il gate
+nessun file è cambiato né comparso; con 3 è lo stop. Un
 solo commit per giro, anche vuoto (`--allow-empty`),
 con `Esiti:`, `Prossimo:`, `Autonomia: agente`, `Impatto` almeno medio e
 `Impatto-motivo:` col criterio di copertura, tutti nell'ultimo paragrafo e

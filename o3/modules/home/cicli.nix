@@ -147,6 +147,7 @@
   inaccessible = d: d.inaccessiblePaths ++ privatePaths;
 
   claude = "${pkgs-ai.claude-code}/bin/claude";
+  codex = "${pkgs-ai.codex}/bin/codex";
   python = "${pkgs.python3}/bin/python3";
 
   cfgFile = repo: d:
@@ -210,6 +211,10 @@
     ReadOnlyPaths = lib.optional (!d.homeWritable) r.h ++ readOnlyIn r d;
     ReadWritePaths =
       ["${r.h}/${d.checkout}" "${r.s}/ciclo/${repo}" "${r.h}/.claude" "-${r.h}/.claude.json"]
+      # Codex, when the repo's profile names it among motori: sessions,
+      # auth.json refresh and its state live in CODEX_HOME (method
+      # o3/motori-del-ciclo.md). Only launcher cycles can run Codex.
+      ++ lib.optional d.lanciatore "-${r.h}/.codex"
       ++ inHome r d.readWritePaths;
     # "-": a private path may not exist yet (account not authorized on
     # this host); the probe still checks it is unreadable.
@@ -373,6 +378,7 @@
     pkgs.writeShellScript "ciclo-${repo}-lanciatore" ''
       exec ${python} ${lib.escapeShellArg (lanciatorePy d)} \
         --claude ${claude} \
+        --codex ${codex} \
         --recinto ${lib.escapeShellArg (lib.escapeShellArgs (recinto repo d {
         unit = agentUnit repo;
         owner = "ciclo-${repo}.service";
@@ -459,11 +465,6 @@ in {
       message = "cicli.nix: ${repo} vuole state manuale|timer|esterno e host non nullo fuori da esterno";
     })
     registry
-    ++ lib.mapAttrsToList (repo: d: {
-      assertion = !d.lanciatore || d.agentMaxRuntime != null;
-      message = "cicli.nix: ${repo} usa il lanciatore e vuole agentMaxRuntime, sotto maxRuntime";
-    })
-    local
     ++ lib.mapAttrsToList (repo: _: {
       assertion = !(hasView repo) || viewHere repo;
       message = "cicli.nix: il ciclo autonomo di ${repo} gira su ${hostname}, che non ne serve la vista: ciclo autonomo e vista dello stesso repo stanno sullo stesso host";
@@ -471,7 +472,12 @@ in {
     local;
 
   # The full picture, for the home to compute missed starts against cadence.
-  home.file.".local/state/ciclo/decisioni.json".text = builtins.toJSON (import ../../cicli.nix {inherit identity;});
+  # Launcher cycles carry the parachute as maxRuntime: the view's late-close
+  # limit, since their minutes live in the repo's profile.
+  home.file.".local/state/ciclo/decisioni.json".text = builtins.toJSON (lib.mapAttrs (repo: e:
+    if e.lanciatore or false
+    then e // {inherit (registry.${repo}) maxRuntime;}
+    else e) (import ../../cicli.nix {inherit identity;}));
 
   systemd.user.services =
     lib.mapAttrs' (repo: d:

@@ -65,14 +65,23 @@ Dopo aver risolto le pre-check (o averle saltate), procedi con il commit:
 1. Leggi lo stato: `git status`, `git diff`, `git diff --cached` e
    `git log --oneline -5` per lo stile dei messaggi recenti.
 
-2. Lancia `python3 method/../o3/commit_gate.py prima`: formatta i file
-   cambiati (`alejandra`, `ruff`, `prettier`) e lancia i controlli del
-   profilo, ciascuno solo quando è dovuto (`o3/tools/check.sh`,
-   `build.py --check`, i test di `o3/view/` e `o3/scripts/`). Un controllo
-   fallito ferma il commit finché non è corretto; un formatter assente è
-   segnalato e saltato.
+2. Confronta `git status` con la modifica **prima del gate**, che formatta
+   i file cambiati: ogni file modificato o non tracciato deve appartenerle.
+   Un file estraneo, di un'altra sessione o uno scarto, ferma il commit: non
+   lo includi, non lo formatti e lo riferisci.
 
-3. Confronta `git status` con la modifica: ogni file modificato o non tracciato deve appartenerle. Un file estraneo, di un'altra sessione o uno scarto, ferma il commit: non lo includi e lo riferisci. Poi fai lo staging, anche intero (`git add -A`).
+3. Lancia `python3 method/../o3/commit_gate.py prima --perimetro <file della
+modifica>`: rifà il confronto prima di scrivere (uscita 3 con file fuori
+   perimetro, senza formattare nulla), formatta i file cambiati
+   (`alejandra`, `ruff`, `prettier`) e lancia i controlli del profilo,
+   ciascuno solo quando è dovuto (`o3/tools/check.sh`, `build.py --check`, i
+   test di `o3/view/` e `o3/scripts/`). Un controllo fallito ferma il commit
+   finché non è corretto; un formatter assente è segnalato e saltato. Senza
+   `--perimetro` il gate prende tutto il working tree: in sessione è
+   ammesso, in un giro del lanciatore esce con 4. Subito prima dello staging
+   lancia `python3 method/../o3/commit_gate.py verifica`: con 3 un file è
+   cambiato o comparso dopo il gate, e il commit si ferma. Poi fai lo
+   staging, anche intero (`git add -A`).
 
 4. Scrivi un messaggio di commit conciso:
    - Usa conventional commits: `type(scope): description`

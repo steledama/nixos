@@ -11,4 +11,4 @@ in [tasks](../method/tasks.md).
 
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo fix upstream
 - [ciclo-nixos-lanciatore.md](ciclo-nixos-lanciatore.md) — Portare il ciclo nixos sul lanciatore canonico
-- [ciclo-fallback-codex.md](ciclo-fallback-codex.md) — Abilitare il fallback Codex dei cicli di deck
+- [ciclo-fallback-codex.md](ciclo-fallback-codex.md) — Accendere Codex come secondo motore del ciclo nixos

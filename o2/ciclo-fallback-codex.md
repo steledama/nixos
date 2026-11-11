@@ -1,34 +1,38 @@
 ---
-sintesi: "Configurare --codex-adapter sui cicli di deck quando esiste un esecutore Codex con limiti equivalenti a quelli di Claude, secondo il contratto di method."
+sintesi: "Accendere Codex come secondo motore del ciclo autonomo di nixos, quando il ciclo passa al lanciatore canonico, con un primo giro a mano col custode."
 ciclo: dev
 ---
 
-# Abilitare il fallback Codex dei cicli di deck
+# Accendere Codex come secondo motore del ciclo nixos
 
 ## Stato
 
-Il lanciatore canonico (method `fce8afe`, `accb3b5`) riconosce il rifiuto
-per quota di Claude e ammette **un** tentativo Codex solo tramite
-`--codex-adapter`, un esecutore dell'host che imponga la stessa politica:
-comandi ammessi, percorsi protetti, hook di concorrenza al commit, tetto in
-USD, recinto e arresto. Il contratto è in `method/../o3/ciclo/fallback.md`.
-Dal 2026-11-11 (method `4341ff0`) il tetto in USD è preferibile ma non
-bloccante, per decisione del custode (account a tariffa flat): l'host lo
-sceglie con `--codex-senza-tetto-usd` e la chiusura dichiara
-`budget_usd_imposto: false`. L'esecutore Codex starà nel canone, in Python
-accanto al lanciatore, per valere anche su Windows (danea-auto); agli host
-restano recinto, arresto e percorso del binario Codex.
+Dal 2026-11-11 (method `201a6eb`, prescrizione `motori-del-ciclo`) il motore
+lo sceglie ciascun repo con `motori` nel proprio `o3/ciclo/lanciatore.toml`;
+Codex passa dall'esecutore canonico di method. La parte dell'host su `deck`
+è fatta per tutti i cicli col lanciatore (`kb/cicli.md`, «Quota e
+fallback»): `--codex` nello script, `~/.codex` scrivibile nel recinto, e
+nessuna politica degli altri repo nel registro. Accendere Codex per
+`method`, `salute` ed `economia` spetta alle loro sessioni, nei loro
+profili.
 
-## Dipendenza
+Qui resta `nixos` come adottante: il suo ciclo è ancora legacy e non
+riceve né l'osservazione della quota né il secondo motore.
 
-`w5`: esecutore Codex canonico in method (`o2/lanciatore-ciclo-nel-metodo.md`
-di method), validato con agenti finti sui casi del contratto: quota
-rifiutata, avviso consentito, autenticazione, eseguibile mancante, tetto di
-tempo, atti parziali, percorsi e comandi negati, concorrenza al commit.
+## Dipendenze
 
-## Atto quando arriva
+- `o2/ciclo-nixos-lanciatore.md`: il ciclo nixos passa al lanciatore.
+- `w5`: le verifiche aperte del contratto in method. Il giro completo con
+  Codex attraverso il lanciatore è riuscito il 2026-11-11 (method
+  `6d3938f`); restano la forma reale di un errore di quota di Codex, il
+  `git push` in rete dalla sandbox di Codex e un fallback fra motori veri.
 
-Per ogni ciclo con `lanciatore = true`: passare nello script `lancia` di
-`o3/modules/home/cicli.nix` l'esecutore canonico e il binario Codex, con
-`--codex-senza-tetto-usd`, dentro lo stesso `--recinto`; sonda, poi un giro a mano con quota rifiutata simulata. Il
-timer resta com'è: il fallback non è un'attivazione nuova.
+## Atto quando arrivano
+
+1. Creare `o3/ciclo/lanciatore.toml` con i soli valori diversi dai default,
+   `motori = ["claude", "codex"]`, in sessione col custode: il profilo è
+   protetto e il giro non lo cambia.
+2. Verificare che `o3/ciclo/permessi.json` regga per Codex: in Codex gli
+   strumenti senza regola di nome (`Skill(…)`) non esistono, e i comandi
+   con sostituzioni `$(…)` l'esecutore li rifiuta.
+3. Primo giro a mano col custode, poi il timer resta com'è.

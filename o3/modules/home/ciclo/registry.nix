@@ -20,14 +20,29 @@
     canone = "method";
     agentMaxRuntime = null;
   };
+  # With the canonical launcher, minutes and budget are the repo's policy, in
+  # its o3/ciclo/lanciatore.toml (method o3/motori-del-ciclo.md): the host
+  # keeps no value per repo, only one physical parachute above any profile,
+  # the same for all. The agent's unit ends first, so the launcher still
+  # writes the closing line. A profile above 80 minutes needs these raised.
+  paracadute = {
+    esterno = "90min";
+    agente = "85min";
+  };
 in
-  lib.mapAttrs (_: entry:
+  lib.mapAttrs (repo: entry:
     if entry.state == "esterno"
     then entry
     else let
       d = defaults // entry;
     in
+      lib.throwIf ((entry.lanciatore or false) && (entry ? maxRuntime || entry ? agentMaxRuntime || entry ? maxBudgetUsd))
+      "cicli.nix: ${repo} usa il lanciatore: minuti e budget stanno nel suo o3/ciclo/lanciatore.toml, non nel registro"
       d
+      // lib.optionalAttrs d.lanciatore {
+        maxRuntime = paracadute.esterno;
+        agentMaxRuntime = paracadute.agente;
+      }
       // {
         # Protect the cycle's own instructions even with a writable home. With
         # the canonical launcher, also what git runs from the launcher outside

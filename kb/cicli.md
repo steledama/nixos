@@ -217,12 +217,14 @@ Dal 2026-11-08 `method` e dal 2026-11-11 `salute` ed `economia`
 legacy fino al task `o2/ciclo-nixos-lanciatore.md`. Per `method`: l'unità
 esterna `ciclo-method`, senza namespace, lancia
 `o3/lanciatore.py` dal checkout del canone (`canone`, default `method`) con
-Python e Claude fissati da Nix. Sessioni, lock e `settings.json` in
+Python, Claude e Codex fissati da Nix (`--claude`, `--codex`). Sessioni, lock e `settings.json` in
 `.git/lanciatore/`, pull, righe `partenza` e `chiusura` in `i1/giri/` sono del
 lanciatore; restano all'unità `ciclo-fetch` e la `StateDirectory`
-(`fetch.json`, `sonde.jsonl`). Tetto e budget sono del profilo del repo
-(`o3/ciclo/lanciatore.toml`, default 45 minuti e 5 USD): `maxBudgetUsd` non
-si legge. Il task è `o2/lanciatore-ciclo-nel-metodo.md` di method, passo 2.
+(`fetch.json`, `sonde.jsonl`). Minuti, budget e motori sono del profilo del
+repo (`o3/ciclo/lanciatore.toml`, default 45 minuti, 5 USD e solo Claude):
+dal 2026-11-11 (method `201a6eb`, prescrizione `motori-del-ciclo`) il
+registro non tiene per questi cicli né `maxRuntime` né `agentMaxRuntime`
+né `maxBudgetUsd`, e `registry.nix` fallisce la valutazione se li trova. Il task è `o2/lanciatore-ciclo-nel-metodo.md` di method, passo 2.
 
 Solo l'agente sta nel recinto, passato con `--recinto`: un'unità transitoria
 `ciclo-method-agente` di `systemd-run --user --wait --pipe`, con lo stesso
@@ -242,9 +244,11 @@ esce e lo stop risponde `5`. Dal 2026-11-11 lo stop è `ciclo-recinto-ferma`
 l'unità `not-found`, vuole lo stato `inactive` o `failed` e il cgroup in
 `app.slice` (esplicito nel recinto) assente o vuoto. Provato su unità
 transitorie vere, uscita normale e unità viva, e su un `systemctl` finto
-per i tre rifiuti. I tetti sono
-annidati: lanciatore 45 minuti, agente 47 (`agentMaxRuntime`), unità esterna
-50 (`maxRuntime`, che la vista usa per il ritardo di chiusura).
+per i tre rifiuti. Sopra i minuti del profilo l'host tiene un solo
+paracadute fisico, uguale per tutti i cicli col lanciatore
+(`registry.nix`): agente 85 minuti, unità esterna 90, che la vista usa
+anche per il ritardo di chiusura (`decisioni.json`). Un profilo oltre gli 80
+minuti chiede di alzarlo.
 
 L'unità esterna ha `TimeoutStopSec=90s`, l'agente `30s`: lo scheduler lascia
 al lanciatore più tempo di quanto la sandbox ne lasci all'agente (method
@@ -298,13 +302,22 @@ lanciatore legge il cambio di `HEAD`, non chi ha committato.
 
 Da method `fce8afe` la chiusura porta `engine`, `engine_attempts` con
 l'osservazione del provider di ogni tentativo e `costo_usd` cumulato: un
-rifiuto per quota esaurita di Claude resta leggibile in
-`i1/giri/tentativi.jsonl` di ogni ciclo col lanciatore. Il percorso legacy
-non riceve questa osservazione. Il tentativo Codex che segue un rifiuto
-richiede `--codex-adapter`, un esecutore con limiti equivalenti a quelli di
-Claude (`method/../o3/ciclo/fallback.md`), che oggi nessun host ha: su
-`deck` l'opzione non è passata e il fallback resta spento
-(`o2/ciclo-fallback-codex.md`).
+rifiuto per quota esaurita resta leggibile in `i1/giri/tentativi.jsonl` di
+ogni ciclo col lanciatore. Il percorso legacy non riceve questa
+osservazione.
+
+Da method `201a6eb` il motore lo sceglie il repo, con `motori` nel proprio
+profilo (per esempio `["claude", "codex"]`, anche al contrario). Il secondo
+subentra una volta sola, se il primo è indisponibile prima di qualunque
+atto. Codex passa dall'esecutore canonico `o3/esecutore_codex.py` di
+method, che traduce `permessi.json` e l'hook sul commit; senza tetto in USD
+la chiusura dichiara `budget_usd_imposto: false`. La parte dell'host su
+`deck`, dal 2026-11-11: lo script `lancia` passa `--codex` col binario di
+`pkgs-ai`, e il recinto dei cicli col lanciatore ha `~/.codex` scrivibile
+(sessioni, rinnovo di `auth.json`). Interprete Python nello store e rete
+sono già raggiungibili. Provato: `codex login status` riesce in un
+recinto equivalente. Il secondo motore si accende repo per repo nel suo
+profilo, dopo un primo giro a mano col custode.
 
 ## Sessioni concorrenti
 

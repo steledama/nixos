@@ -16,7 +16,8 @@
 # - checkout: path of the checkout relative to the home;
 # - branch: the branch the round expects; any other stops it;
 # - cadence + time: OnCalendar of the timer, "<cadence> <time>";
-# - maxRuntime: RuntimeMaxSec of the unit; maxBudgetUsd: --max-budget-usd;
+# - maxRuntime: RuntimeMaxSec of the unit; maxBudgetUsd: --max-budget-usd
+#   (legacy cycles only: a launcher cycle that sets them fails evaluation);
 # - state: "manuale" (unit present, started only by hand with systemctl
 #   --user start), "timer" (scheduled), "esterno" (outside nixos, no unit);
 # - settings, prompt: paths in the repo; defaults o3/ciclo/permessi.json and
@@ -41,10 +42,13 @@
 # - lanciatore: the unit runs method's canonical launcher (o3/lanciatore.py
 #   of the checkout `canone`, default "method") instead of ciclo-avvio:
 #   sessions, pull, traces in i1/giri and closing line are the launcher's,
-#   time cap and budget come from the repo's o3/ciclo/lanciatore.toml
-#   (defaults 45 minutes, 5 USD), so maxBudgetUsd is not read. The outer
-#   unit has no namespace; the agent alone runs in the fence, a transient
-#   unit ciclo-<repo>-agente capped at agentMaxRuntime, below maxRuntime.
+#   time cap, budget and engines (motori) come from the repo's
+#   o3/ciclo/lanciatore.toml (defaults 45 minutes, 5 USD, claude only):
+#   the registry holds no maxRuntime, agentMaxRuntime or maxBudgetUsd for
+#   it. The outer unit has no namespace; the agent alone runs in the fence,
+#   a transient unit ciclo-<repo>-agente; both carry the single parachute
+#   of modules/home/ciclo/registry.nix. The script passes --claude and
+#   --codex: the repo's profile decides whether Codex ever runs.
 {identity ? import ./identity}: {
   salute = {
     host = "deck";
@@ -58,13 +62,9 @@
     # from 2026-10-11).
     cadence = "*-*-*";
     time = "09:00";
-    # Canonical launcher from 2026-11-11 (custodian; method fce8afe,
-    # o3/ciclo/fallback.md): quota observation in the closing line. Caps
-    # nested as in method: launcher 45 minutes, agent unit 47, outer 50.
+    # Canonical launcher from 2026-11-11 (custodian; method fce8afe):
+    # minutes, budget and engines in salute's o3/ciclo/lanciatore.toml.
     lanciatore = true;
-    maxRuntime = "50min";
-    agentMaxRuntime = "47min";
-    maxBudgetUsd = 5;
     state = "timer";
     readWritePaths = [
       "${identity.home.personalDrive}/salute"
@@ -89,14 +89,11 @@
     branch = "main";
     cadence = "*-*-*";
     # 14:00 from 2026-10-21 (custodian): at 13:00 the custodian's open
-    # session stopped the round; with maxRuntime it ends before method.
+    # session stopped the round; its 45 minutes end before method.
     time = "14:00";
-    # Canonical launcher from 2026-11-11, as salute; 50 minutes still end
-    # before method at 15:00.
+    # Canonical launcher from 2026-11-11, as salute: the profile's default
+    # 45 minutes end before method at 15:00.
     lanciatore = true;
-    maxRuntime = "50min";
-    agentMaxRuntime = "47min";
-    maxBudgetUsd = 5;
     # Step 1 from 2026-10-16 (custodian): four manual rounds (economia
     # 368bf9a, 2430f5a, 882601a, 086f13b); the last two clean, the second
     # one's misfiled bill fixed by the custodian (cda8da0).
@@ -141,11 +138,9 @@
     time = "15:00";
     # Canonical launcher from 2026-11-08 (custodian; method
     # o2/lanciatore-ciclo-nel-metodo.md, step 2, launcher at 477b442 or
-    # later). Caps nested so each layer ends before the one around it:
-    # launcher 45 minutes (profile), agent unit 47, outer unit 50.
+    # later). Minutes and budget in method's o3/ciclo/lanciatore.toml; the
+    # units keep only the parachute of registry.nix.
     lanciatore = true;
-    maxRuntime = "50min";
-    agentMaxRuntime = "47min";
     # Step 1 from 2026-10-17 (custodian; method 519d162).
     state = "timer";
     # Fetch adopters' markers before the round, outside its read-only home.
