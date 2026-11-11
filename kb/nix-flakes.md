@@ -42,14 +42,15 @@ copia del mondo: isolano un pacchetto dalla cadenza del suo input naturale.
 `o3/modules/system/nix.nix` lo usa per allineare `nix.nixPath` al pin che
 costruisce realmente l'host, anche per i comandi Nix non-flake.
 
-## Due repo, casa e lavoro
+## Identità locale
 
-Casa vive in `steledama/nixos`, la coppia server di lavoro in
-`example-org/nixos-ufficio` (`goal.md`, «Solo casa, confine netto»). La base comune (`o3/hosts/default.nix`,
-`o3/home/default.nix`, i moduli condivisi) è duplicata e i due repo la fanno
-divergere liberamente, senza input incrociati. Le sole identità incrociate
-sono dichiarate nei file-dati `o3/identity/{home,work}.nix`; la loro
-pubblicabilità è in `secrets-management`.
+Il flake non ha input verso altri repository. L'input `identity` punta ai
+template pubblici di `o3/identity/` (`home.example.nix`, `work.example.nix`);
+indirizzi, chiavi e account reali stanno nei file-dati locali
+`~/.config/nixos/identity/{home,work}.nix`, che `o3/scripts/con-identita.sh`
+passa come override senza scriverli nel lock. `work.nix` porta solo la VPN
+esterna di `deck`. Bootstrap in `o3/identity/README.md`, pubblicabilità in
+`secrets-management`.
 
 ## Comandi principali
 
