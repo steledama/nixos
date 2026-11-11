@@ -212,9 +212,12 @@ una vista permanente in `presentations.nix` che quell'host non serve.
 
 ## Lanciatore canonico
 
-Dal 2026-11-08 `method` e dal 2026-11-11 `salute` ed `economia`
-(`lanciatore = true` nel registro) non usano più `ciclo-avvio`; `nixos` resta
-legacy fino al task `o2/ciclo-nixos-lanciatore.md`. Per `method`: l'unità
+Dal 2026-11-08 `method` e dal 2026-11-11 `salute`, `economia` e `nixos`
+(`lanciatore = true` nel registro) non usano più `ciclo-avvio`. Per `nixos`
+il recinto dell'agente tiene la home scrivibile (`homeWritable`, lo switch
+di `/manutenzione`) più i percorsi protetti del lanciatore; i permessi del
+giro negano già la scrittura su quelli canonici (`CLAUDE.md`, `AGENTS.md`,
+`autonomy.md`, `.claude/`, `.codex/`, `o3/ciclo/`). Per `method`: l'unità
 esterna `ciclo-method`, senza namespace, lancia
 `o3/lanciatore.py` dal checkout del canone (`canone`, default `method`) con
 Python, Claude e Codex fissati da Nix (`--claude`, `--codex`). Sessioni, lock e `settings.json` in

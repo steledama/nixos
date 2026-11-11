@@ -28,6 +28,12 @@ lanciatore `method`, dal 2026-11-08, e `salute` ed `economia`, dal
 - Tetti annidati come gli altri: lanciatore 45, agente 47, unità esterna 50
   minuti. Il giro delle 04:30 finisce comunque prima delle 09:00.
 
+## Stato
+
+Registro aggiornato il 2026-11-11: `lanciatore = true`, nessun valore di
+durata o budget nel registro, recinto con home scrivibile e percorsi
+protetti del lanciatore. Manca il primo giro riuscito.
+
 ## Criterio di chiusura
 
 `lanciatore = true` per `nixos` in `o3/cicli.nix`, sonda superata e un giro

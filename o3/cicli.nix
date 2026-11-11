@@ -115,11 +115,12 @@
     checkout = "nixos";
     branch = "main";
     cadence = "*-*-*";
-    # 04:30 from 2026-10-18 (custodian): the report is ready on waking, and
-    # the round ends by 05:15 at worst.
+    # 04:30 from 2026-10-18 (custodian): the report is ready on waking.
     time = "04:30";
-    maxRuntime = "45min";
-    maxBudgetUsd = 5;
+    # Canonical launcher from 2026-11-11 (custodian; o2/ciclo-nixos-lanciatore.md):
+    # minutes, budget and engines in o3/ciclo/lanciatore.toml, defaults
+    # 45 minutes, 5 USD, Claude only.
+    lanciatore = true;
     # Step 1 from 2026-10-17 (custodian), without waiting for a round with
     # real bumps and switch: that part of the perimeter is tested by the
     # first round that finds them due (method o2/pilota-ciclo-autonomo.md).
