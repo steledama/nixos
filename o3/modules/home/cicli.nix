@@ -115,7 +115,7 @@
   fetchTimeout = 15;
   startTimeout = d: 90 + fetchTimeout * builtins.length d.fetch;
 
-  # Relative to the home, or absolute for a path outside it (/srv/bi). An
+  # Relative to the home, or absolute for a path outside it. An
   # absolute one comes from a system module, and a home switch may land
   # before its rebuild: "-" keeps the namespace up, the probe still checks it.
   inHome = r: paths:

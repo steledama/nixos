@@ -110,7 +110,8 @@ vivono in `o3/modules/home/`.
   - Nodi KB: secrets-management
 - **estensione del sistema**
   - Fonte di verità tecnica: `o3/hosts/`, `o3/home/`, `o3/modules/`
-  - Nodi KB: configuration-patterns, project-extension, design-principles
+  - Nodi KB: configuration-patterns, project-extension
+  - Principi, nel canone: `method/design-principles.md`
 - **tooling di sviluppo**
   - Fonte di verità tecnica: `o3/modules/home/dev-tools.nix`, `o3/modules/home/shell.nix`
   - Nodi KB: development-environment, development-workflow

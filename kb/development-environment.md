@@ -16,7 +16,7 @@ claude
 codex
 pi
 
-# Google Workspace — su tutti i profili
+# Google Workspace — solo su deck
 gog
 
 # Formatter — su tutti i profili
@@ -37,8 +37,8 @@ md2pdf report.md        # Markdown -> PDF con Pandoc, Mermaid e LaTeX
 ffprobe file.mp4        # metadata audio/video
 ```
 
-`gog` non viene da `dev-tools.nix`: ha un modulo home proprio, importato dalla
-baseline `o3/home/default.nix`. Dettaglio in `google-workspace-cli`.
+`gog` non viene da `dev-tools.nix`: ha un modulo home proprio, importato dal
+solo profilo di `deck`. Dettaglio in `google-workspace-cli`.
 
 ## Python e strumenti di parsing
 
@@ -113,9 +113,10 @@ Il confronto funzionale tra CLI e MCP vive in `google-workspace-cli`.
 - **`o3/modules/home/pi.nix`** — estensione web di Pi, importata da
   `dev-tools.nix`; configurazione e dipendenze fissate in Nix.
 - **`o3/modules/home/herdr.nix`** — Herdr da `pkgs-ai`, con la propria config
-  TOML. Importato da `o3/home/default.nix`, quindi presente ovunque.
+  TOML. Importato da `shell.nix`, che è nella baseline `o3/home/default.nix`:
+  presente ovunque.
 - **`o3/modules/home/google-workspace-cli.nix`** — `gogcli`. Importato da
-  `o3/home/default.nix`, quindi presente ovunque.
+  `o3/home/stele/deck.nix`: solo su `deck`.
 
 La separazione conta: cercare `gogcli` o `herdr` dentro `dev-tools.nix` non
 porta da nessuna parte.

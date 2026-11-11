@@ -82,12 +82,11 @@ services.llamaCppServer = {
 
 `openFirewall = false` è intenzionale: l'accesso non viene aperto a tutti. Le
 regole in `networking.firewall.extraCommands` permettono la porta `11434` solo
-da subnet LAN/VPN:
-
-```text
-192.168.0.0/24
-172.16.0.0/12
-```
+dalla LAN casa `192.168.0.0/24`. I peer della VPN casa ci arrivano mascherati
+dal NAT di `deck`, quindi con sorgente LAN. Fino al 2026-11-11 era ammessa
+anche `172.16.0.0/12`, che non corrisponde a nessuna rete di casa: è la
+fascia dei bridge Docker. Se un container su `game` dovesse chiamare
+llama.cpp e trovasse la porta chiusa, la causa è questa rimozione.
 
 ## Endpoint
 

@@ -28,10 +28,9 @@
     # ricompilerebbe a ogni bump di `nixpkgs` non correlato (es. i bump di
     # sicurezza di kernel/Docker/Chromium). Cadenza di bump propria, non
     # quella di `nixpkgs` — cfr. skill `manutenzione`, `casa.game.
-    # pacchetti_dedicati.whisper-cpp`. Pin iniziale = rev correntemente in
-    # `nixpkgs` al momento dell'introduzione (whisper-cpp 1.8.7, già in build
-    # su game). Aggiornare col bump overlay di `/manutenzione` (passo 8)
-    # quando la cadenza dedicata è dovuta.
+    # pacchetti_dedicati.whisper-cpp` in i1/manutenzione.json, che registra
+    # anche la versione corrente. Aggiornare col bump overlay di
+    # `/manutenzione` quando la cadenza dedicata è dovuta.
     nixpkgs-whisper.url = "github:nixos/nixpkgs/f9a75f41be3a74eab55d3a7679d34ad6cc0da977";
 
     # Home Manager
@@ -108,13 +107,11 @@
       inherit system overlays;
     };
 
-    # Helper function for all hosts. nixpkgsInput feeds nix.nix (nix-path).
-    mkHost = hostname: let
-      nixpkgsInput = inputs.nixpkgs;
-    in
-      nixpkgsInput.lib.nixosSystem {
+    # Helper function for all hosts.
+    mkHost = hostname:
+      nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs self nixpkgsInput identity;};
+        specialArgs = {inherit inputs self identity;};
         modules = [
           ./o3/hosts/${hostname}
           {nixpkgs.overlays = overlays;}

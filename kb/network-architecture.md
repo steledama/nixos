@@ -96,12 +96,12 @@ Il server della VPN ufficio, i peer e il firewall dei server sono nel repo
 
 - **deck** — servizio: WireGuard; porta: 51820/UDP; accesso: Pubblico
 - **deck** — servizio: aMule; porta: 4711; accesso: LAN/VPN
-- **game** — porta predisposta per ComfyUI: 8188; sorgenti ammesse:
-  `192.168.0.0/24` e `172.16.0.0/12`; servizio esterno al flake, da verificare
-  sull'host secondo `client-desktop-architecture`
+- **game** — porta predisposta per ComfyUI: 8188; sorgente ammessa: la LAN
+  casa `192.168.0.0/24`; servizio esterno al flake, da verificare sull'host
+  secondo `client-desktop-architecture`
 - **game** — servizio dichiarato: llama.cpp (LLM/OCR); porta: 11434;
-  sorgenti ammesse: `192.168.0.0/24` e `172.16.0.0/12`; l'accesso dai peer VPN
-  dipende anche da routing e NAT su deck
+  sorgente ammessa: la LAN casa `192.168.0.0/24`; i peer VPN arrivano
+  mascherati dal NAT di deck, con sorgente LAN
 
 ## Presentazione sulla LAN
 

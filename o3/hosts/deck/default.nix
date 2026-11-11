@@ -17,7 +17,6 @@ in {
     ../../modules/system/hardware/touchpad.nix
     ../../modules/system/hardware/laptop-lid.nix
     ../../modules/system/hardware/deck.nix
-    ../../modules/system/services/docker.nix
     ../../modules/system/services/wireguard.nix
     ../../modules/system/services/wireguard-work-client.nix
     ../../modules/system/services/scan-ftp.nix
@@ -119,7 +118,7 @@ in {
 
   # Keyboard configuration (US International layout with dead keys)
   console.keyMap = "us-acentos"; # US International with dead keys for console
-  # Wayland keyboard layout configured in Sway/Niri user configs
+  # Wayland keyboard layout configured in the Niri user config
 
   # User
   users.users.stele = {
@@ -128,7 +127,6 @@ in {
     extraGroups = [
       "networkmanager"
       "wheel"
-      "libvirtd"
       "video"
     ];
     openssh.authorizedKeys.keys = lib.attrValues identity.home.deckAuthorizedKeys;
@@ -186,12 +184,6 @@ in {
     directory = "/home/stele/sync/scansioni";
     sourceAddress = identity.home.printers.im550;
     interface = "home0";
-  };
-
-  # Docker containers
-  virtualisation.dockerSetup = {
-    enable = true;
-    user = "stele";
   };
 
   system.stateVersion = "25.11";

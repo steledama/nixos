@@ -25,9 +25,8 @@ in {
       type = lib.types.str;
       example = "casa";
       description = ''
-        WireGuard interface name for this server. Set per host to the world it
-        faces (`casa` on deck, `lavoro` on the work server pair): the module is
-        shared, so it has no single default.
+        WireGuard interface name for this server: a runtime name the operator
+        types (`casa` on deck), so it is set by the host and has no default.
       '';
     };
 

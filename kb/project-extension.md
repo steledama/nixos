@@ -48,8 +48,9 @@ minima di un host deve includere:
 }
 ```
 
-Scegliere `intel.nix` o `amd.nix` in base all'hardware reale, verificando
-`boot.kernelModules` in `hardware.nix`. La baseline assegna già lo stack
+Importare il modulo hardware che corrisponde alla macchina reale: oggi
+esistono `intel.nix` e `nvidia.nix`, e un host AMD senza esigenze proprie non
+ne importa nessuno (come `game` per la CPU). La baseline assegna già lo stack
 desktop e i toggle di rete/firewall base; il file host dichiara invece i fatti
 per-host — utente con i suoi gruppi (i base `networkmanager`, `wheel`, `video`
 più gli extra specifici), `system.stateVersion`, porte, profili di rete o
@@ -58,7 +59,7 @@ servizi propri.
 ### 3. Registrare l'output nel flake
 
 ```nix
-nixosConfigurations.new-hostname = mkHost inputs.nixpkgs "new-hostname";
+nixosConfigurations.new-hostname = mkHost "new-hostname";
 ```
 
 ### 4. Verificare

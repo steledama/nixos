@@ -1,16 +1,11 @@
 # modules/system/nix.nix
 {
-  nixpkgsInput,
+  inputs,
   pkgs,
   ...
 }: {
   # Protezione software proprietario: blocca installazioni accidentali
   nixpkgs.config.allowUnfree = false;
-
-  # nvd: diff leggibile (pacchetto per pacchetto, versioni vecchie→nuove) tra
-  # due closure di sistema. Verifica pre-switch sui server: confrontare
-  # /run/current-system con ./result prima di applicare a caldo.
-  environment.systemPackages = [pkgs.nvd];
 
   nix = {
     settings = {
@@ -37,7 +32,7 @@
       ];
       # Set nixpkgs path to match the one from flake inputs
       # This ensures consistency between flake and non-flake commands
-      nix-path = ["nixpkgs=${nixpkgsInput}"];
+      nix-path = ["nixpkgs=${inputs.nixpkgs}"];
     };
     # garbage collection automation
     gc = {

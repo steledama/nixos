@@ -13,7 +13,7 @@
     onboarding = false
 
     [theme]
-    # Coerenza con il resto del sistema (Catppuccin Mocha, cfr. catppuccin.nix)
+    # Coerenza con il resto del sistema (Catppuccin Mocha)
     name = "catppuccin"
 
     [keys]

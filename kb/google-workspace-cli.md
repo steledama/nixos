@@ -6,9 +6,8 @@ stato: maturo
 
 Il CLI Google Workspace `gogcli` (binario `gog`) fornisce accesso agente a
 Gmail, Calendar, Drive, Docs e Sheets. È installato via Home Manager in
-`o3/modules/home/google-workspace-cli.nix`,
-importato dalla baseline `o3/home/default.nix` e quindi presente su tutti i
-profili.
+`o3/modules/home/google-workspace-cli.nix`, importato dal solo profilo
+`stele@deck` (`o3/home/stele/deck.nix`).
 La versione corrente arriva da un overlay locale permanente in `flake.nix`, che
 segue le release di `openclaw/gogcli` più velocemente di nixpkgs. Versione e
 hash hanno lì la loro fonte unica; i bump li fa il ramo `casa` di

@@ -53,8 +53,8 @@
       nrs = "./o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake .";
       hms = "./o3/scripts/con-identita.sh home-manager switch --flake .#$USER@(hostname)";
       nrb = "./o3/scripts/con-identita.sh sudo nixos-rebuild boot --flake .";
-      # Update mirati per i tre input indipendenti: mai `nix flake update` bare,
-      # che muoverebbe anche i server. Ogni input ha la sua cadenza.
+      # Update mirati per input: mai `nix flake update` bare, che muoverebbe
+      # insieme sistema e stack agentico. Ogni input ha la sua cadenza.
       nfu = "nix flake update nixpkgs"; # casa: deck, game, neve
       nfua = "nix flake update ai"; # stack agentico: claude-code, codex, pi, herdr
       ngc = "nix-collect-garbage -d && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";

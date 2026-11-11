@@ -11,7 +11,6 @@
     ../default.nix
     ../../modules/system/home-vpn-route.nix
     ../../modules/system/hardware/nvidia.nix
-    ../../modules/system/hardware/touchpad.nix # Remove if no touchpad
     ../../modules/system/services/docker.nix
     ../../modules/system/services/llama-cpp.nix
     ../../modules/system/gaming.nix
@@ -71,21 +70,20 @@
         22 # SSH
         22000 # Syncthing sync
       ];
-      # LAN-only services (deck, game stesso)
+      # LAN-only services. I peer della VPN casa arrivano mascherati dal NAT
+      # di deck, quindi con sorgente LAN.
       extraCommands = ''
         # llama.cpp (11434)
         iptables -A nixos-fw -s ${identity.home.lan.subnet} -p tcp --dport 11434 -j nixos-fw-accept
-        iptables -A nixos-fw -s 172.16.0.0/12 -p tcp --dport 11434 -j nixos-fw-accept
         # ComfyUI (8188)
         iptables -A nixos-fw -s ${identity.home.lan.subnet} -p tcp --dport 8188 -j nixos-fw-accept
-        iptables -A nixos-fw -s 172.16.0.0/12 -p tcp --dport 8188 -j nixos-fw-accept
       '';
     };
   };
 
   # Keyboard configuration (Italian layout)
   console.keyMap = "it";
-  # Wayland keyboard layout configured in Niri/Sway user configs
+  # Wayland keyboard layout configured in the Niri user config
 
   # User: stele (custode e familiare), come su deck e neve. Fino al 2026-11-07
   # era utente-precedente; i figli usano Windows (custode). L'UID è quello di utente-precedente, così
@@ -97,7 +95,6 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "libvirtd"
       "video"
       "i2c" # RGB control via OpenRGB
     ];

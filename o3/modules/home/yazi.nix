@@ -21,7 +21,5 @@
         max_height = 1000;
       };
     };
-
-    # Theme managed by catppuccin module (modules/home/catppuccin.nix)
   };
 }

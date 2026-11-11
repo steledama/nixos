@@ -649,7 +649,6 @@ def important_module(module: str) -> bool:
     if module.startswith("o3/modules/system/services/"):
         return True
     return path.name in {
-        "server-role.nix",
         "gaming.nix",
         "niri.nix",
         "rclone.nix",

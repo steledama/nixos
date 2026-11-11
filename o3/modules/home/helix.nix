@@ -6,7 +6,6 @@
     defaultEditor = true;
 
     settings = {
-      # Theme managed by catppuccin module (modules/home/catppuccin.nix)
       keys.normal = {
         "C-r" = ":reload"; # ricarica il buffer se il file è cambiato fuori da Helix
       };
@@ -27,7 +26,7 @@
     };
 
     # Language-specific formatter configuration
-    # Formatters are installed in modules/home/dev-tools.nix (prettier matches ~/bi projects)
+    # Formatters are installed in modules/home/dev-tools.nix
     languages = {
       language = [
         {

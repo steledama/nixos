@@ -121,8 +121,10 @@ cat /tmp/test-mic.txt
 
 ## Streaming live
 
-Prima della call individuare l’indice SDL. Nella versione di riferimento
-whisper.cpp 1.8.7, `whisper-stream` stampa all’avvio l’elenco
+Prima della call individuare l’indice SDL. Nel sorgente di whisper.cpp
+1.8.7, la versione su cui è stato fatto il riscontro (il pacchetto è
+avanzato da allora: versione corrente in `i1/manutenzione.json`),
+`whisper-stream` stampa all’avvio l’elenco
 `Capture device #N` prima di aprire la sorgente. Eseguire una breve sessione
 di prova, senza `--capture`, e interromperla con `Ctrl+C` dopo aver annotato
 l’indice del Blue Snowflake:
