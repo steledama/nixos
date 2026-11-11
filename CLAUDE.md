@@ -2,29 +2,24 @@
 
 Costituzione operativa per agenti che lavorano su questo repository NixOS multi-host. Contiene solo regole d'azione: la conoscenza di dominio (architettura, host, servizi, pattern, comandi) vive nei nodi `kb/`. Quando un'istruzione qui rimanda a un nodo, leggi il nodo prima di agire.
 
-## Separazione da lavoro
+## Confine con il repo di lavoro
 
-Fino al 2026-11-04 questo era il repo unico di casa e lavoro. Il custode ha
-deciso di separarlo: casa resta qui, la coppia server `norvegia`/`svezia`
-passa a `example-org/nixos-ufficio`. Lo stesso giorno i checkout `~/nixos` dei due
-server sono passati al repo di lavoro, a sistema invariato, e questo repo è
-stato potato di output, moduli, nodi KB, skill e procedure dei server.
+Questo repo descrive i tre host di casa. La coppia server
+`norvegia`/`svezia` vive in `example-org/nixos-ufficio` dal 2026-11-04 (la
+storia della separazione è in git).
 
-La divisione è chiusa dal 2026-11-05; gli accessi e i checkout incrociati
-restano per decisione del custode del 2026-11-04 (storia di `goal.md`).
-Leggi in quest'ottica ciò che ancora nomina i server:
-
-- è un residuo o un legame dichiarato (la VPN ufficio di `deck`, gli alias
-  SSH, la VPN casa dello standby), non un invito ad agire: il lavoro sui
-  server si fa in `example-org/nixos-ufficio`. Modificare quel repo dal suo
-  checkout su `deck` (`~/nixos-lavoro`) non è un atto sui server ed è
-  ammesso; gli atti sui server restano alle sessioni lì;
-- un'istruzione che presuppone ancora il repo unico va verificata prima di
-  applicarla; nel dubbio chiedi al custode.
+- Ciò che qui nomina ancora i server è un legame dichiarato, non un invito
+  ad agire: la VPN ufficio di `deck`, gli alias SSH di `deck`, il peer e la
+  chiave di `norvegia` sulla VPN casa.
+- Il lavoro sui server si fa nell'altro repo. Modificarlo dal suo checkout
+  su `deck` (`~/nixos-lavoro`) è ammesso; gli atti sui server restano alle
+  sessioni lì.
+- Un'istruzione che presuppone il repo unico è un residuo: verificala prima
+  di applicarla e, nel dubbio, chiedi al custode.
 
 ## Rilevamento host
 
-Esegui `hostname` all'inizio di ogni sessione, prima del primo atto e quindi anche prima del pull. Host validi: `deck`, `game`, `neve`. `norvegia` e `svezia` non sono più target di questo repo dal 2026-11-04 (§ Separazione da lavoro). Menziona l'host rilevato nel primo aggiornamento dopo il rilevamento. Usalo come target predefinito per rebuild e comandi host-specifici, salvo override esplicito. Se l'utente dice "questo sistema" o "qui" senza specificare, vale l'host rilevato.
+Esegui `hostname` all'inizio di ogni sessione, prima del primo atto e quindi anche prima del pull. Host validi: `deck`, `game`, `neve`. `norvegia` e `svezia` non sono più target di questo repo dal 2026-11-04 (§ Confine con il repo di lavoro). Menziona l'host rilevato nel primo aggiornamento dopo il rilevamento. Usalo come target predefinito per rebuild e comandi host-specifici, salvo override esplicito. Se l'utente dice "questo sistema" o "qui" senza specificare, vale l'host rilevato.
 
 L'host distingue anche il ruolo del checkout: su `deck` `~/nixos` è servito, perché la path unit ripubblica le viste in LAN a ogni spostamento di `HEAD`; sugli altri host nessun processo esegue o pubblica i suoi file. La delega del ciclo vale in entrambi i casi (`autonomy.md`).
 
@@ -169,7 +164,7 @@ profilo `o3/commit_gate.toml` (`alejandra`, `ruff format`, `prettier`,
 ## Comportamenti vincolati
 
 - **Secrets**: `.env`, `rclone.conf` e chiavi private sono gitignored. Mai committarli. Mappa completa dei segreti del progetto: `kb/secrets-management.md`.
-- **Presentazione sulle reti private**: decisione del custode del 2026-10-03, canone `method/presentation.md § Vincolo conservato`. `serve.py` a mano ascolta sulla 8000 su ogni host; `deck` serve in modo permanente `nixos` sulla 8002 (e `method`, `salute`, `economia` sulle 8001, 8003, 8004). Solo reti private, mai la rete pubblica. Il server è senza autenticazione e, una volta permanente, espone in modo continuo le viste pubblicate da commit: lì entrano le pagine 1:1 di register e di ogni item delle sei collezioni e il deck, con hostname, IP privati e topologia delle reti, mai segreti, chiavi, password o contenuti di `.env`/`rclone.conf`. Servizi utente, firewall, rotta statica e stato del collaudo: `kb/network-architecture.md § Presentazione sulla LAN`.
+- **Presentazione sulle reti private**: decisione del custode del 2026-10-03, canone `method/presentation.md § Vincolo conservato`. `serve.py` a mano ascolta sulla 8000 su ogni host; `deck` serve in modo permanente `nixos` sulla 8002 (e `method`, `salute`, `economia` sulle 8001, 8003, 8004). Solo reti private, mai la rete pubblica. Il server è senza autenticazione e, una volta permanente, espone in modo continuo le viste pubblicate da commit: lì entrano le pagine 1:1 di register e di ogni item delle sei collezioni e il deck, con hostname, IP privati e topologia delle reti, mai segreti, chiavi, password o contenuti di `.env`/`rclone.conf`. Servizi utente, firewall, rotta statica e stato del collaudo: `kb/deck-user-services.md § Presentazione sulla LAN`.
 - **Pacchetti unfree**: dichiarazione esplicita in `unfree.allowedNames` (nel modulo che installa il pacchetto) con commento `# UNFREE:`; il predicate vive solo in `o3/modules/system/unfree.nix`. Lista corrente per host: `kb/unfree-packages.md`.
 - **Push remoto**: dal 2026-10-08 il custode autorizza il push del branch
   corrente su `origin` dopo ogni commit riuscito. Restano su richiesta

@@ -62,30 +62,9 @@ sono piccole.
 - **`.10`** — `deck` (CHUWI MiniBook X, nel foglio `minibook`), interfaccia
   cablata `home0`, MAC `48:65:ee:18:1c:45`
 - **`.11`** — `telefono`, il telefono; in VPN casa è `10.20.0.3`
-- **`.15`** — Ricoh IM 550, MAC `58:38:79:33:04:e5`; consumata da
-  `o3/modules/system/hardware/printer-ricoh-im550.nix` su `deck`, `game` e
-  `neve`. Era in DHCP su `.30`, statico impostato sul dispositivo il 2026-10-16
-  (ping, 80, 631 e 9100 verificati da `neve`). La coda CUPS usa IPP e il PPD
-  `Ricoh-IM_550_PDF`: col PPD PostScript la stampante scarta il lavoro (via
-  9100 in silenzio, via IPP con `document-unprintable-error`), mentre il PDF
-  esce. CUPS converte in PDF anche testo, immagini e PostScript in ingresso;
-  stampa verificata da AbiWord e Chromium su `neve`, coda presente su
-  `deck` e `game`. Dopo un rebuild CUPS
-  aggiorna la coda solo alla prima richiesta (`lpstat`, una stampa): è
-  attivato da socket. Sotto Windows `game` la usa come coda `RICOH IM 550`
-  (IPP `http://192.168.0.15:631/ipp/print`, Microsoft IPP Class Driver,
-  nessun driver Ricoh), A4 e predefinita, aggiunta il 2026-10-16 con
-  `Add-Printer -IppURL`; pagina di prova uscita lo stesso giorno. Web Image
-  Monitor (`http://192.168.0.15/`): amministratore `admin` senza password,
-  il default di fabbrica lasciato così per scelta del custode (2026-10-16).
-  Firmware aggiornato lo stesso giorno da RICOH Application Site (Always
-  Current Technology) sul pannello: Sistema 1.03 → 9.02, NIB 18.48 → 19.00,
-  Web Image Monitor 1.02 → 8.03, PDF Emulation 1.01 → 1.18. Scan-to-FTP
-  verso `deck` (`o3/modules/system/services/scan-ftp.nix`, aggiunto il
-  2026-10-25): login `scansioni` senza shell, rimappato da vsftpd su `stele`;
-  i file arrivano in `~/sync/scansioni` e Syncthing li porta su `neve` e
-  `game`. Porta 21 e porte passive 50000-50009 aperte solo da `.15` su
-  `home0`. Procedura in § Scan-to-FTP dalla Ricoh
+- **`.15`** — Ricoh IM 550, MAC `58:38:79:33:04:e5`, statico impostato sul
+  dispositivo il 2026-10-16 (prima in DHCP su `.30`). Dettagli in § Ricoh
+  IM 550
 - **`.19`** — PS5
 
 Il foglio riportava anche `telefono` su `.3`, `svezia` su `.4` e
@@ -122,6 +101,30 @@ Per una stampante Ricoh l'indirizzo si imposta da Web Image Monitor
 Configurazione → Interfaccia → Impostazioni interfaccia**, oppure dal
 pannello (**Impostazioni**, poi la voce rete/interfaccia e **Indirizzo IPv4
 macchina**; i nomi esatti dipendono dal firmware), scegliendo l'assegnazione manuale al posto di DHCP.
+
+## Ricoh IM 550
+
+- **Consumer** — `o3/modules/system/hardware/printer-ricoh-im550.nix` su
+  `deck`, `game` e `neve`; ping, 80, 631 e 9100 verificati da `neve`.
+- **Coda CUPS** — IPP col PPD `Ricoh-IM_550_PDF`. Col PPD PostScript la
+  stampante scarta il lavoro (via 9100 in silenzio, via IPP con
+  `document-unprintable-error`), mentre il PDF esce; CUPS converte in PDF
+  anche testo, immagini e PostScript in ingresso. Stampa verificata da
+  AbiWord e Chromium su `neve`, coda presente su `deck` e `game`.
+- **Dopo un rebuild** — CUPS aggiorna la coda solo alla prima richiesta
+  (`lpstat`, una stampa): è attivato da socket.
+- **Windows su `game`** — coda `RICOH IM 550`, IPP
+  `http://192.168.0.15:631/ipp/print` col Microsoft IPP Class Driver, senza
+  driver Ricoh; A4 e predefinita, aggiunta con `Add-Printer -IppURL`.
+- **Web Image Monitor** — `http://192.168.0.15/`, amministratore `admin`
+  senza password: il default di fabbrica, lasciato così per scelta del
+  custode (2026-10-16).
+- **Firmware** — aggiornato il 2026-10-16 dal pannello (RICOH Application
+  Site): Sistema 9.02, NIB 19.00, Web Image Monitor 8.03, PDF Emulation 1.18.
+- **Scan-to-FTP verso `deck`** — `o3/modules/system/services/scan-ftp.nix`:
+  login `scansioni` senza shell, rimappato da vsftpd su `stele`; i file
+  arrivano in `~/sync/scansioni` e Syncthing li porta su `neve` e `game`.
+  Porta 21 e porte passive 50000-50009 aperte solo da `.15` su `home0`.
 
 ## Scan-to-FTP dalla Ricoh
 

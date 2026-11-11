@@ -1,7 +1,7 @@
 # presentations.nix
 #
 # Registry of project presentations served on the private networks
-# (kb/network-architecture.md § Presentazione sulla LAN). Single source of
+# (kb/deck-user-services.md § Presentazione sulla LAN). Single source of
 # truth for the ports: the home module modules/home/presentations.nix reads
 # which repo to serve where, the host firewalls read which ports to admit.
 {

@@ -302,10 +302,8 @@ Convenzioni comuni alle voci sotto:
 ### Telefono `telefono`
 
 Voce unica per le chiavi del telefono: WireGuard del tunnel `casa` e SSH
-Sherpr verso `deck`. Accesso da Sherpr confermato dal custode il 2026-11-10,
-dopo il rebuild, scrivendo nella sessione dal telefono. La chiave JuiceSSH
-è rimossa dalla configurazione per decisione del custode; la revoca richiede
-un nuovo rebuild di deck.
+Sherpr verso `deck`. Accesso e revoca della vecchia chiave JuiceSSH:
+`ssh-matrix`, «Dal telefono».
 
 - **Host/path/modo:** private nelle app del telefono, fuori dalla rilevazione
   sui tre host. Pubblica WireGuard e indirizzo in

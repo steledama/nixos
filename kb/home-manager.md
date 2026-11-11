@@ -40,7 +40,7 @@ di autorità dichiarati in `CLAUDE.md`.
 Lo switch porta anche i servizi utente delle presentazioni permanenti
 (`presentazione-<repo>`, modulo `o3/modules/home/presentations.nix`): su
 `stele@deck`, gestibili con `systemctl --user`
-(`network-architecture § Presentazione sulla LAN`).
+(`deck-user-services § Presentazione sulla LAN`).
 
 Porta anche le unità dei cicli autonomi (`ciclo-<repo>`, modulo
 `o3/modules/home/cicli.nix`, decisioni in `o3/cicli.nix`), generate solo

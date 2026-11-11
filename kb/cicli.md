@@ -229,18 +229,9 @@ la sola `partenza`. Con `90s` la chiusura arriva dopo la morte dell'agente: `143
 interrotto, oppure `23` se l'agente finto ha committato in `o3/ciclo/`, sia al
 tetto sia allo stop.
 
-Sequenza di switch su `deck`, al custode:
-
-1. `git -C ~/method pull --ff-only`: un lanciatore precedente a `477b442` esce
-   con `2` su `--recinto-ferma` prima di scrivere qualunque traccia;
-2. `o3/scripts/con-identita.sh home-manager switch --flake .#stele@deck` da `~/nixos`, aggiornato;
-3. `systemctl --user start ciclo-method-sonda` e lettura di `sonde.jsonl`;
-4. un giro a mano, `systemctl --user start ciclo-method`, col Claude vero.
-
-Collaudo del 2026-11-08 su `deck`, con la sequenza qui sopra: sonda superata e
-giro a mano riuscito col lanciatore (`87eac6f5`, commit e push, 2,55 USD, nessun
-`fermo`), senza che `ciclo-method-agente` restasse in vita. Il tetto di tempo è
-provato solo su unità transitorie.
+Collaudato su `deck` con sonda e giro a mano: `method` il 2026-11-08, gli
+altri tre il 2026-11-11, senza `fermo` e senza che l'unità dell'agente
+restasse in vita. Il tetto di tempo è provato solo su unità transitorie.
 
 Il recinto aggiunge in sola lettura ciò che git esegue dal lanciatore fuori
 dal recinto: `o3/lanciatore.py` e, da method `de73101`,
@@ -254,16 +245,14 @@ namespace come il lanciatore, più `ciclo-recinto` in un'unità transitoria
 (`15`) con un recinto sano salta la sonda con codice `0`. La riduzione
 della sonda è una proposta della sessione di casa: la decide il custode.
 
-Collaudo di `salute` ed `economia` del 2026-11-11 su `deck`: sonde superate,
-poi un giro a mano di ciascuno, avviati insieme alle 17:19:55. Entrambi
-riusciti (1,36 e 1,16 USD), stop verificato (`stato_finale_verificato`),
-nessun `fermo`. Il pull del canone è fallito in tutti e due: i due
-lanciatori hanno tirato `~/method` nello stesso istante, mentre un pull
-singolo nello stesso contesto riesce. I timer non si sovrappongono. In
-`economia` il giro ha trovato le modifiche di una sessione del custode,
-non ha committato e l'ha scritto nell'avviso. La chiusura però riporta
-`commit: true` con l'oggetto del commit del custode (`5622e30`): il
-lanciatore legge il cambio di `HEAD`, non chi ha committato.
+Due lezioni dai collaudi di `salute` ed `economia` del 2026-11-11:
+
+- due lanciatori avviati nello stesso istante falliscono entrambi il pull
+  del canone `~/method`, che da solo riesce; i timer non si sovrappongono,
+  il caso riguarda solo gli avvii a mano;
+- la chiusura riporta `commit: true` quando `HEAD` cambia durante il giro,
+  anche se il commit è di una sessione del custode: il lanciatore legge il
+  cambio di `HEAD`, non chi ha committato. L'avviso del giro dice chi.
 
 ### Quota e fallback
 
@@ -278,21 +267,16 @@ subentra una volta sola, se il primo è indisponibile prima di qualunque
 atto. Codex passa dall'esecutore canonico `o3/esecutore_codex.py` di
 method, che traduce `permessi.json` e l'hook sul commit; senza tetto in USD
 la chiusura dichiara `budget_usd_imposto: false`. La parte dell'host su
-`deck`, dal 2026-11-11: lo script `lancia` passa `--codex` col binario di
-`pkgs-ai`, e il recinto dei cicli ha `~/.codex` scrivibile
-(sessioni, rinnovo di `auth.json`). Interprete Python nello store e rete
-sono già raggiungibili. Provato: `codex login status` riesce in un
-recinto equivalente, e il giro a mano di method del 2026-11-11 alle 18:17,
-con Codex primo, è riuscito dall'unità `ciclo-method` (commit `3b618dc`,
-push in rete, nessun diniego). Il secondo motore si accende repo per repo nel suo
-profilo, dopo un primo giro a mano col custode. In `nixos` è acceso di riserva
-dal 2026-11-11. Dopo il limite osservato alle 18:23, il contratto canonico
-`--recinto-host` usa il solo recinto dell'host. Il giro a mano delle
-20:14:17 con Codex primo ha verificato derive, flake e bus utente, poi
-commit e push (`5769c3c`); dopo il collaudo Claude è tornato primo
-(`892df63`). Il fallback per credito davvero esaurito non è ancora
-accaduto: il custode ha chiuso il task il 2026-11-11, da riaprire se
-quando accade qualcosa non va (`i2/codex-recinto-host.md`).
+`deck`: lo script `lancia` passa `--codex` col binario di `pkgs-ai`, e il
+recinto dei cicli ha `~/.codex` scrivibile (sessioni, rinnovo di
+`auth.json`). Con Codex il contratto canonico `--recinto-host` usa il solo
+recinto dell'host (`i2/codex-recinto-host.md`).
+
+Il secondo motore si accende repo per repo nel suo profilo, dopo un primo
+giro a mano col custode. In `nixos` è acceso di riserva dal 2026-11-11, con
+Claude primo; giri a mano con Codex primo riusciti lo stesso giorno in
+method e in nixos, fino al push. Il fallback per credito davvero esaurito
+non è ancora accaduto: da riaprire se quando accade qualcosa non va.
 
 ## Sessioni concorrenti
 
@@ -360,33 +344,23 @@ journalctl --user -fu ciclo-salute
 jq . ~/salute/i1/giri/ultimo.json
 ```
 
-Salute è al gradino 1 dal 2026-10-11: timer ogni giorno alle 09:00 dal
-2026-10-24 (alle 08:30 dal 2026-10-20, prima alle 12:00), quando di solito
-sono arrivati la notte e lo yoga o la meditazione del primo mattino; l'invio
-manuale dal lavoro entra nel giro del giorno dopo (custode, salute `48497e8`).
-La mezz'ora in più dà tempo alla sincronizzazione automatica dell'orologio su
-Android, che arriva tardi (custode, salute `1e599e7`). Il timer ha `Persistent=false`. Se `deck` è spento all'orario,
-il giro non recupera all'avvio e dopo un'ora la home lo segna rosso come
-partenza mancata, ed è vero. Se `deck` è sospeso, systemd fa partire il timer
-scaduto alla ripresa (con `Persistent` o senza), e quella partenza tardiva
-spegne il rosso. Una sessione Claude o Codex aperta in `~/salute` non ferma
-il giro; ne blocca il commit solo se lavora mentre il giro gira (codice 15).
+Orari, gradini e il motivo di ogni spostamento vivono accanto alle decisioni,
+nei commenti di `o3/cicli.nix`: nixos alle 04:30, salute alle 09:00, economia
+alle 14:00 e method per ultimo alle 15:00, perché il suo perceive trovi i
+giri degli adottanti del giorno. Tutti al gradino 1.
 
-Nixos e method sono al gradino 1 dal 2026-10-17, su `deck`: timer ogni
-giorno alle 04:30 e alle 15:00. Method gira dopo nixos, salute (09:00) ed
-economia (14:00), perché il suo perceive trovi i giri degli adottanti del
-giorno. Economia è passata dalle 13:00 alle 14:00 il 2026-10-21, su scelta
-del custode: alle 13:00 il giro si era fermato per la sessione aperta del
-custode in `~/economia`, e con il tetto di 45 minuti chiude prima di method.
-Nixos è passato dalle 14:00 alle 04:30 il 2026-10-18, su scelta del
-custode: il resoconto è pronto al risveglio, `deck` resta acceso di notte e
-il giro finisce entro le 05:15 anche al tetto. Il
-custode ha acceso il timer di nixos senza attendere un giro con bump e
-switch veri; quella parte del perimetro si è collaudata al giro schedulato
-del 2026-10-18 (bump di `ai`, `home-manager` e `gogcli`, switch su `deck`
-riuscito, unità del giro non riavviata dallo switch). Prompt e criterio `ciclo-autonomo` passano al gradino 1 con il
-timer, perché il giro si firmi col gradino giusto (regola nata dal primo giro
-schedulato di economia).
+I timer hanno `Persistent=false`. Se `deck` è spento all'orario, il giro non
+recupera all'avvio e dopo un'ora la home lo segna rosso come partenza
+mancata, ed è vero. Se `deck` è sospeso, systemd fa partire il timer scaduto
+alla ripresa (con `Persistent` o senza), e quella partenza tardiva spegne il
+rosso. Una sessione Claude o Codex aperta nel checkout non ferma il giro; ne
+blocca il commit solo se lavora mentre il giro gira (codice 15).
+
+Prompt e criterio `ciclo-autonomo` passano al gradino 1 insieme al timer,
+perché il giro si firmi col gradino giusto (regola nata dal primo giro
+schedulato di economia). Uno switch Home Manager eseguito dal giro non
+riavvia l'unità del giro stesso (giro di nixos del 2026-10-18, con bump e
+switch veri).
 
 ## Esiti del gradino 0 e delle sonde
 
@@ -460,11 +434,9 @@ Allargarla spetta al canone di `method`.
 
 ## Da verificare
 
-- il ciclo di `method` col lanciatore alla prima partenza dal timer
-  (2026-11-09 alle 15:00);
 - rimontaggio del Drive durante un giro, e col lanciatore un namespace
   dell'agente che fallisce (`226` sull'unità transitoria): come lo chiude
-  il lanciatore non è ancora visto in un fallimento reale;
+  il lanciatore non è ancora visto in un fallimento reale.
 
 Connessioni:
 

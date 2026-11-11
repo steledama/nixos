@@ -46,10 +46,8 @@ raggiunge solo deck (`network-architecture`).
 
 Il server VPN casa usa `o3/modules/system/services/wireguard.nix` su `deck`,
 con interfaccia `casa` (assegnata in `o3/hosts/deck/default.nix`).
-Lo standby è client della VPN casa con il modulo
-`wireguard-home-client.nix` del repo `example-org/nixos-ufficio`, anch'esso con
-interfaccia `casa` e avvio manuale. Il peer client ha `name = "home"`
-esplicito, quindi l'unità systemd è `wireguard-casa-peer-home`.
+Il client dello standby, ad avvio manuale, è dichiarato nel repo
+`example-org/nixos-ufficio`: qui c'è solo il suo peer.
 
 In `o3/hosts/deck/default.nix`:
 
@@ -94,11 +92,10 @@ WireGuard però risolve l'hostname quando imposta il peer e poi conserva l'IP
 numerico: se l'IP di casa cambia, il tunnel può restare puntato all'indirizzo
 vecchio fino al restart.
 
-Prevenzione in config: `wireguard-home-client.nix` (repo
-`example-org/nixos-ufficio`) abilita `dynamicEndpointRefreshSeconds = 3600` sul peer `home`. NixOS genera un
-servizio peer refresh che riesegue ogni ora `wg set ... endpoint
-home.example.com:51820`, forzando la nuova risoluzione DNS senza
-riavviare l'intero tunnel.
+Su un client NixOS la prevenzione è `dynamicEndpointRefreshSeconds` sul
+peer, che riesegue periodicamente la risoluzione DNS senza riavviare il
+tunnel; lo usa il client dello standby, nel repo `example-org/nixos-ufficio`.
+Su un telefono basta spegnere e riaccendere il tunnel.
 
 ## Gestione
 

@@ -104,7 +104,7 @@ esplicita): [`method/design-principles.md`](method/design-principles.md).
 - `presentation/` e `view/` — il deck e le viste HTML generate (non
   versionate). `python3 o3/view/build.py` le costruisce come anteprima e
   `python3 o3/view/serve.py` le serve sulle reti private; `deck` le pubblica
-  in modo permanente ([`kb/network-architecture.md`](kb/network-architecture.md)).
+  in modo permanente ([`kb/deck-user-services.md`](kb/deck-user-services.md)).
 
 Le regole operative e i confini di autorità per gli agenti sono in
 [`CLAUDE.md`](CLAUDE.md); la delega del ciclo in [`autonomy.md`](autonomy.md);

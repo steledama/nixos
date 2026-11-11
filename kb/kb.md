@@ -46,6 +46,7 @@ sono duplicati qui.
 - [home-cli-helpers](home-cli-helpers.md) — Wrapper Home Manager per audio, display, rclone e Steam
 - [md2pdf](md2pdf.md) — Conversione Markdown in PDF con Pandoc, Mermaid e LaTeX
 - [google-workspace-cli](google-workspace-cli.md) — Installazione e autenticazione per-host di `gog`
+- [deck-user-services](deck-user-services.md) — Viste dei repo e PWA pressione servite da `deck` sulle reti private: unità, pubblicazione, firewall
 - [game-local-llm](game-local-llm.md) — Endpoint llama.cpp, modelli LLM/OCR dichiarativi su `game`
 - [game-live-transcription](game-live-transcription.md) — Modello Whisper, streaming e fallback di trascrizione su `game`
 

@@ -58,10 +58,9 @@ host `10.20.0.1` (o `192.168.0.10` in LAN), porta 22, utente `stele`,
 identità con chiave Ed25519 generata nell'app e dichiarata in
 `identity.home.deckAuthorizedKeys.telefono-sherpr`.
 
-Il custode ha eseguito il rebuild di deck e confermato il collaudo riuscito
-il 2026-11-10, scrivendo nella sessione dal telefono. La precedente chiave
-JuiceSSH è rimossa dalla configurazione per decisione del custode: la
-revoca diventa effettiva al rebuild successivo.
+Accesso collaudato dal custode il 2026-11-10. La precedente chiave JuiceSSH
+è revocata: tolta dalla configurazione, non è più fra le chiavi del sistema
+attivo dal rebuild del 2026-11-11.
 
 Chi entra su deck come `stele` è dichiarato per intero in
 `identity.home.deckAuthorizedKeys` (`norvegia`, `game`, `neve`,

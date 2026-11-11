@@ -110,7 +110,7 @@ o3/tools/tests`. Non sostituisce uno scanner di segreti come gitleaks.
     `build.py --publish`: fonti esportate con `git archive`, una cartella per
     versione, puntatore `current` scambiato solo a build riuscita,
     `status.json`, lock col PID. La usa il servizio di `deck`
-    (`kb/network-architecture.md § Presentazione sulla LAN`). Test:
+    (`kb/deck-user-services.md § Presentazione sulla LAN`). Test:
     `python3 -m unittest discover -s o3/view/tests -p 'test_publish.py'`;
   - `project.py` — l'unico file parametrizzato: sigla «NixOS», etichette in
     inglese, accento `#c2410c`, il CSS di dominio `nixos.css` (in

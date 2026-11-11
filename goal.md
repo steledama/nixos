@@ -74,7 +74,7 @@ umano **in-the-loop** sui rebuild di sistema e sugli atti sugli host,
 generate). Segnali: `o3/tools/check.sh`, `kb_tools.py fidelity`,
 `python3 o3/view/build.py --check`, filo
 [allineamento-metodo](i3/allineamento-metodo.md), assetto delle viste in
-`kb/network-architecture.md` § Presentazione sulla LAN. Il lavoro è
+`kb/deck-user-services.md` § Presentazione sulla LAN. Il lavoro è
 raggiungibile dalla colonna `Ob. S` di [`o1/plan.md`](o1/plan.md).
 
 ## Disciplina

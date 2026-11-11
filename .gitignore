@@ -40,7 +40,7 @@ secrets/
 backup-ssh-uniformazione/
 
 # viste derivate: si generano con python3 o3/view/build.py come anteprima e
-# deck le pubblica da commit pulito (kb/network-architecture.md)
+# deck le pubblica da commit pulito (kb/deck-user-services.md)
 /view/
 
 # grezzo del ciclo autonomo: tentativi, esiti e trascrizioni dei giri, scritti
