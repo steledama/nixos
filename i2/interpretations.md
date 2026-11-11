@@ -9,6 +9,9 @@ vive in `../presentation/presentation.md` ([presentation](../method/presentation
 
 ## Contenuti
 
+- [Codex nel recinto dell'host](codex-recinto-host.md) — accesso a Nix e bus
+  riscontrato su deck; switch e fallback reale restano da collaudare.
+
 - [Ipotesi sulla clipboard di Chromium](ipotesi-clipboard-chromium.md) —
   incolla disattivato su `deck`, risolto riavviando Chromium; il doppione di
   xwayland-satellite è escluso come causa ma non isolato; riesame alla

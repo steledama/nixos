@@ -1,5 +1,5 @@
 ---
-sintesi: "Rendere Codex una riserva completa del ciclo nixos: oggi la sua sandbox scrive solo nel checkout e il giro non può verificare il flake né fare lo switch."
+sintesi: "Completare il collaudo Codex del ciclo nixos: accesso a Nix e bus riscontrato, switch e fallback fra motori veri ancora da verificare."
 ciclo: dev
 ---
 
@@ -21,16 +21,26 @@ systemd ha la home scrivibile, la sandbox di Codex no. Uno switch home di
 `/manutenzione` fallirebbe allo stesso modo. Il lanciatore ha chiuso con
 `esito: riuscito` e `commit_giro: []`.
 
+Il contratto canonico aggiornato usa il recinto dell'host senza aggiungere
+la sandbox propria di Codex (`--recinto-host`, recepimento citato nel profilo
+locale `0eeb2db`). Nel giro delle 20:14:17 accesso a Nix e bus riusciti,
+derive allineate e nessuna unità fallita: il limite delle 18:23 è superato
+per questi controlli, non ancora per uno switch. Lettura in
+`i2/codex-recinto-host.md`, verdetto in `i3/allineamento-metodo.md`.
+
 ## Dipendenza
 
-`w5`: in method, una via dichiarata nel profilo del repo per aprire alla
-sandbox di Codex altre radici scrivibili e i socket necessari (cache Nix,
-demone Nix, bus utente), o per un giro Codex che scelga la sandbox del
-recinto di systemd al posto della propria. Richiesta inoltrata a method il
-2026-11-11.
+`w5`: forma reale di un errore di quota Codex e fallback fra motori veri,
+ancora aperti nel contratto canonico riletto il 2026-11-11. Il push in rete
+da Codex è già verificato in method (`3b618dc` nella stessa fonte).
 
 ## Atto quando arriva
 
-Dichiarare nel profilo di nixos ciò che serve, poi un giro a mano con
-Codex primo, col custode, fino a commit e push riusciti; infine di nuovo
-`["claude", "codex"]`.
+In sessione col custode completare il giro a mano con Codex primo fino a
+commit e push; verificare uno switch home dovuto su deck con
+`o3/scripts/con-identita.sh home-manager switch --flake .#stele@deck`,
+seguito da `systemctl --user --failed` senza unità fallite. Nessun atto
+sugli altri host né modifica system-level. Verificare il fallback reale
+secondo il contratto canonico, senza ripetere atti parziali; infine riportare
+il profilo a `["claude", "codex"]` in sessione autorizzata. Il giro autonomo
+aggiorna la specifica ma non esegue questi passi di task.

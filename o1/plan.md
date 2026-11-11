@@ -19,8 +19,9 @@ la vecchia storia resta solo nel bundle privato di deck. I cicli autonomi di
 deck passano al lanciatore canonico, che registra il credito esaurito di
 Claude: tutti e quattro dal 2026-11-11. L'host è pronto anche per Codex
 come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
-di riserva ma fa solo la diagnosi finché la sua sandbox non scrive fuori
-dal checkout. Gli altri task attendono upstream.
+di riserva, ora primo nel profilo per il collaudo manuale. L'accesso a Nix e
+bus è riscontrato; switch e fallback reale restano da verificare. Gli altri
+task attendono upstream.
 
 ## Task
 
@@ -43,13 +44,12 @@ riesame (`method/plan.md`, «Risveglio»):
   `o3/scripts/home-versions.sh` nella diagnosi `ia` del giro; rimozione di
   input e override in sessione col custode (`kb/development-environment.md`);
   by: 2026-12
-- `w5` — upstream: in method, scritture fuori dal checkout per la sandbox
-  di Codex (`~/.cache/nix`, demone Nix, bus utente), senza le quali un giro
-  nixos con Codex non verifica il flake né fa lo switch; poi la forma reale
-  di un errore di quota di Codex e un fallback fra motori veri. Il giro
-  completo e il push in rete da Codex sono verificati (method `6d3938f`,
-  `3b618dc`). probe: sezione «Verified and still open» di method
-  `o3/ciclo/fallback.md`; by: 2027-01
+- `w5` — upstream: forma reale di un errore di quota di Codex e fallback
+  fra motori veri. Accesso a Nix e bus riscontrato su deck
+  (`i2/codex-recinto-host.md`); switch locale ancora da collaudare in
+  sessione. arrival: riscontro nel contratto canonico
+  `method/../o3/ciclo/fallback.md`, sezione «Verified and still open», o
+  chiusura locale con fallback fra motori veri; by: 2027-01
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 
