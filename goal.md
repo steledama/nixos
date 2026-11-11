@@ -19,22 +19,14 @@ workaround upstream solo temporanei e tracciati.
   una condizione di rimozione e una dipendenza `w<n>` nel plan. Segnali: filo
   [workaround-desktop-upstream](i3/workaround-desktop-upstream.md), aggregato
   `kb_tools.py fidelity`, sorveglianza di `/manutenzione world`.
-- **Due repo, confine netto** — casa in `steledama/nixos`, lavoro in
-  `example-org/nixos-ufficio`: l'infrastruttura aziendale non dipende dall'account
-  personale, e ogni repo ha i suoi pin, i suoi segreti e il suo ciclo. Le
-  sole identità incrociate sono dichiarate: il client VPN lavoro di `deck`
-  nel repo di casa (`~/.config/nixos/identity/work.nix`), il client VPN casa dello
-  standby in quello di lavoro. Decisione del custode del 2026-11-04, che
-  chiude la sospensione del 2026-10-31; separazione chiusa il 2026-11-05.
-  Accessi e checkout incrociati restano (`~/nixos-lavoro` su `deck`, il
-  checkout di casa sulla production) e l'ufficio si raggiunge solo da
-  `deck`. Segnali: i consumer di `identity.work` in questo repo.
+- **Solo casa, confine netto** — il repo descrive i tre host di casa e
+  nient'altro. L'unico legame esterno è un client VPN di `deck`, con la sua
+  identità in un file locale separato (`identity.work`). Segnali: i
+  consumer di `identity.work` in questo repo.
 
 ### 2. Affidabilità multi-host
 
 I tre host di casa restano replicabili e i loro servizi ripartono da soli.
-L'alta affidabilità della coppia production/standby è passata al goal del
-repo `example-org/nixos-ufficio` il 2026-11-04.
 
 - **Replicabilità piena dal repository** — ogni host si ricostruisce dal
   repository e dal seed dei segreti nella cassaforte personale, con una

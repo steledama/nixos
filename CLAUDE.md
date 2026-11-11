@@ -11,7 +11,7 @@ server sono passati al repo di lavoro, a sistema invariato, e questo repo è
 stato potato di output, moduli, nodi KB, skill e procedure dei server.
 
 La divisione è chiusa dal 2026-11-05; gli accessi e i checkout incrociati
-restano per decisione del custode (`goal.md`, «Due repo, confine netto»).
+restano per decisione del custode del 2026-11-04 (storia di `goal.md`).
 Leggi in quest'ottica ciò che ancora nomina i server:
 
 - è un residuo o un legame dichiarato (la VPN ufficio di `deck`, gli alias

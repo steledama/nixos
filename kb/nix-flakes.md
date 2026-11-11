@@ -45,7 +45,7 @@ costruisce realmente l'host, anche per i comandi Nix non-flake.
 ## Due repo, casa e lavoro
 
 Casa vive in `steledama/nixos`, la coppia server di lavoro in
-`example-org/nixos-ufficio` (`goal.md`, «Due repo, confine netto»). La base comune (`o3/hosts/default.nix`,
+`example-org/nixos-ufficio` (`goal.md`, «Solo casa, confine netto»). La base comune (`o3/hosts/default.nix`,
 `o3/home/default.nix`, i moduli condivisi) è duplicata e i due repo la fanno
 divergere liberamente, senza input incrociati. Le sole identità incrociate
 sono dichiarate nei file-dati `o3/identity/{home,work}.nix`; la loro

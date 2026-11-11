@@ -8,9 +8,7 @@ agisce.
 - **neve** — desktop, rete casa
 - **game** — gaming + workstation GPU, rete casa
 
-La coppia server di lavoro, `norvegia`/`svezia`, non è di questo Mondo: vive
-nel repo `example-org/nixos-ufficio`. Il Mondo di sviluppo è
-l'artefatto stesso — KB, strumenti e viste.
+Il Mondo di sviluppo è l'artefatto stesso: KB, strumenti e viste.
 
 ## Superfici della membrana
 
@@ -56,13 +54,11 @@ prescindere da `nixos`. Divergenza dal canone chiusa.
 ## Host e ruoli
 
 Tre client con responsabilità distinte, `deck`, `neve` e `game`, che
-condividono rete, sync e tooling ma non sono equivalenti tra loro. Verso
-l'ufficio resta un solo legame dichiarato: `deck` è client della VPN
-ufficio, ed è l'unico host di casa che lo raggiunge.
+condividono rete, sync e tooling ma non sono equivalenti tra loro.
 
 - **deck** — laptop + server casa
   - Fonte di verità: `o3/hosts/deck/default.nix`
-  - Caratteristiche distintive: WireGuard casa, client WireGuard lavoro, aMule, presentazioni permanenti di `method`, `nixos`, `salute`, `economia` (8001-8004)
+  - Caratteristiche distintive: WireGuard casa, client di una VPN esterna, aMule, presentazioni permanenti di `method`, `nixos`, `salute`, `economia` (8001-8004)
 - **neve** — desktop casa
   - Fonte di verità: `o3/hosts/neve/default.nix`
   - Caratteristiche distintive: scanner, fancontrol, audio/display workflow
@@ -78,7 +74,7 @@ degli output NixOS e Home Manager vive in `flake.nix`.
 
 L'**identità** dell'infrastruttura — IP, chiavi pubbliche, email, endpoint
 VPN — è isolata dalla configurazione strutturale nei file-dati
-`~/.config/nixos/identity/home.nix` e `~/.config/nixos/identity/work.nix` (locali, fuori da Git; template pubblici in `o3/identity/`); il secondo porta solo ciò che usa `deck` verso l'ufficio.
+`~/.config/nixos/identity/home.nix` e `~/.config/nixos/identity/work.nix` (locali, fuori da Git; template pubblici in `o3/identity/`); il secondo porta solo la VPN esterna di `deck`.
 `flake.nix` li passa come `specialArgs.identity` /
 `extraSpecialArgs.identity`; ogni consumer legge `identity.home.*` o
 `identity.work.*`. Approfondimento: nodo secrets-management.
