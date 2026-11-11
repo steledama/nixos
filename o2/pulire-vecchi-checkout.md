@@ -11,7 +11,9 @@ Su deck un solo bundle privato conserva la vecchia storia e tutti i commit
 raggiungibili da ref e reflog letti sui tre host il 2026-11-11. Sono 2316
 commit, incluso `6fb3d265` di game; clone mirror e `git fsck --full`
 verificati. Posizione e uso in `o3/identity/README.md`. I doppioni di deck
-sono già eliminati. L'archivio GitHub resta privato e archiviato.
+sono già eliminati. Su richiesta del custode anche l'archivio GitHub è
+stato eliminato, dopo nuova verifica del bundle: la conservazione finale
+è soltanto su deck, non su game, neve o GitHub.
 
 ## Atti nelle sessioni locali
 
@@ -23,9 +25,10 @@ anche quelli esterni sotto `~/.herdr/worktrees/`.
 Confrontare ref e reflog attuali col bundle consolidato, e controllare
 stash, modifiche, file nuovi e ignorati: il bundle non copre file mai
 committati né cambiamenti successivi al consolidamento. Se emerge
-materiale unico, conservarlo privatamente prima della rimozione, senza
-metterlo nel repo pubblico o stamparne i valori. Non aggiornare l'archivio
-GitHub statico per fare pulizia.
+materiale unico, trasferirlo privatamente su deck e farlo integrare nel
+bundle verificato prima della rimozione, senza metterlo nel repo pubblico
+o stamparne i valori. Rimuovere le copie temporanee di verifica; non lasciare
+bundle o archivi privati permanenti su game o neve e non ricrearli su GitHub.
 
 Quando è tutto preservato, rimuovere i worktree tramite Git, senza forzare
 worktree sporchi o bloccati; poi rimuovere il vecchio checkout. Non toccare
