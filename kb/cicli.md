@@ -276,7 +276,8 @@ giro a mano riuscito col lanciatore (`87eac6f5`, commit e push, 2,55 USD, nessun
 provato solo su unità transitorie.
 
 Il recinto aggiunge in sola lettura ciò che git esegue dal lanciatore fuori
-dal recinto: `o3/lanciatore.py` del canone, `.git/config`, `.git/hooks` e
+dal recinto: `o3/lanciatore.py` e, da method `de73101`,
+`o3/esecutore_codex.py` del canone, `.git/config`, `.git/hooks` e
 `.git/lanciatore` del checkout (criterio di method `477b442`). Il lanciatore
 dev'essere almeno a `477b442`, che introduce `--recinto-ferma`.
 
@@ -316,7 +317,9 @@ la chiusura dichiara `budget_usd_imposto: false`. La parte dell'host su
 `pkgs-ai`, e il recinto dei cicli col lanciatore ha `~/.codex` scrivibile
 (sessioni, rinnovo di `auth.json`). Interprete Python nello store e rete
 sono già raggiungibili. Provato: `codex login status` riesce in un
-recinto equivalente. Il secondo motore si accende repo per repo nel suo
+recinto equivalente, e il giro a mano di method del 2026-11-11 alle 18:17,
+con Codex primo, è riuscito dall'unità `ciclo-method` (commit `3b618dc`,
+push in rete, nessun diniego). Il secondo motore si accende repo per repo nel suo
 profilo, dopo un primo giro a mano col custode.
 
 ## Sessioni concorrenti

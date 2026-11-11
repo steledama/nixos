@@ -51,6 +51,9 @@ in
           ++ ["${d.checkout}/o3/ciclo"]
           ++ lib.optionals d.lanciatore [
             "${d.canone}/o3/lanciatore.py"
+            # Canonical protected path from method de73101: a round that
+            # changed it would weaken the policy of the next ones.
+            "${d.canone}/o3/esecutore_codex.py"
             "${d.checkout}/.git/config"
             "${d.checkout}/.git/hooks"
             "${d.checkout}/.git/lanciatore"

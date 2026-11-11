@@ -1,6 +1,6 @@
 ---
 ciclo: dev
-method_commit: 6d3938f9cb316ac40b094e24ee92885fbe03adc0
+method_commit: 6aa4ea82222f5c3c289938f2eb87c97f2ea57521
 reviewed_at: 2026-11-11
 status: aligned
 obiettivo: S
@@ -16,10 +16,11 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
 ## Adattamenti intenzionali
 
 - Lanciatore e motori (method `fce8afe`, `accb3b5`, `4341ff0`, `201a6eb`,
-  `6d3938f`, prescrizione `motori-del-ciclo`, recepiti il 2026-11-11). Lo stop
+  `6d3938f`, `de73101`, prescrizione `motori-del-ciclo`, recepiti il 2026-11-11). Lo stop
   verificato di `accb3b5` ha chiesto un adattamento sull'host:
   `ciclo-recinto-ferma` al posto di `systemctl stop`, che su un'unità
-  transitoria già scaricata risponde `5`. Come host, `deck` passa `--codex`,
+  transitoria già scaricata risponde `5`. Il recinto tiene in sola lettura
+  anche `o3/esecutore_codex.py` del canone (`de73101`). Come host, `deck` passa `--codex`,
   rende `~/.codex` scrivibile nel recinto dei cicli col lanciatore e non
   tiene più minuti né budget degli altri repo: un solo paracadute in
   `registry.nix` (`kb/cicli.md`, «Lanciatore canonico»). Come adottante,
