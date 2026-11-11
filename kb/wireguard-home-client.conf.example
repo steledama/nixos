@@ -1,0 +1,19 @@
+[Interface]
+# Replace with the client's private key
+PrivateKey = <client-private-key>
+
+# Pick a unique /32 for each client
+Address = 10.20.0.X/32
+
+[Peer]
+# Server public key from /etc/wireguard/casa-vpn.pub on deck
+PublicKey = REPLACE_WITH_HOME_VPN_SERVER_PUBKEY=
+
+# Replace with the current home public IP or dedicated DDNS name
+Endpoint = <home-endpoint>:51820
+
+# Split tunnel: only home VPN and home LAN go through WireGuard
+AllowedIPs = 10.20.0.0/24, 192.168.0.0/24
+
+# Keeps NAT mappings alive on mobile and remote networks
+PersistentKeepalive = 25

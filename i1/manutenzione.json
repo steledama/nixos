@@ -1,0 +1,122 @@
+{
+  "ultima_esecuzione": {
+    "data": "2026-11-11",
+    "ora": "04:32",
+    "host": "deck",
+    "rami": ["ia"]
+  },
+  "autovalutazione": {},
+  "ia": {
+    "cadenza_giorni": 1,
+    "data": "2026-11-11",
+    "ora": "04:32",
+    "host_eseguito": "deck",
+    "esito": "nessun delta",
+    "rev_ai": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
+    "pacchetti": [],
+    "nota": "Nessun delta su ai f4a03c0: claude-code 2.1.318, pi 1.5.0, herdr 0.9.5 pari a unstable; codex 0.166.0 sul pin nixpkgs-codex, 0.167.0 su unstable senza cache (NixOS/nixpkgs #585124 chiusa il 2026-11-09), pin conservato, attesa w4 nel plan. Niente bump ne switch, applicato_su conservato.",
+    "applicato_su": ["deck"]
+  },
+  "home-manager": {
+    "cadenza_giorni": 7,
+    "data": "2026-11-08",
+    "ora": "04:33",
+    "host_eseguito": "deck",
+    "esito": "eseguito",
+    "rev": "2c0c1f01521469cf0271180c453c79782d53c2f6",
+    "nota": "095fef2 (2026-10-28) -> 2c0c1f0 (2026-11-06), in linea (7/7). 3 commit letti per titolo: i18n.inputMethod senza cache gtk2 rotta, flavor purelymail per accounts.email, radicle con default.target; nessuno tocca moduli in uso (grep vuoto su o3/modules/home e o3/home). Tre homeConfigurations (deck, game, neve) valutate senza warning ne errori, nessun adeguamento. Switch su deck riuscito, nessuna unita utente fallita. home-manager news non letto (42 novita).",
+    "applicato_su": ["deck", "neve", "game"]
+  },
+  "casa": {
+    "cadenza_giorni": 7,
+    "data": "2026-11-08",
+    "ora": "09:37",
+    "host_controllato": "deck",
+    "nixpkgs_rev": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+    "esito": "diagnosticato",
+    "pacchetti": [
+      {
+        "nome": "kernel",
+        "da": "7.3",
+        "a": "7.3.1",
+        "rischio": "non valutato",
+        "nota": "patch del kernel, riavvio dopo il rebuild; changelog non consultato"
+      },
+      {
+        "nome": "chromium",
+        "da": "156.0.8078.73",
+        "a": "157.0.8103.38",
+        "rischio": "non valutato",
+        "nota": "major stable 157, uscita come early stable il 2026-10-28 (Chrome Releases, dichiarato da terzi); elenco dei fix di sicurezza non trovato nel giro"
+      },
+      {
+        "nome": "noctalia",
+        "da": "5.4.0",
+        "a": "5.4.1",
+        "rischio": "basso",
+        "nota": "patch, changelog non consultato"
+      }
+    ],
+    "raccomandazione": "bump del pin 1c89083 -> f9a75f4 deciso dal custode il 2026-11-08 a prescindere dal rischio, bollettini di kernel e Chromium non letti. Toplevel di deck e neve compilati su deck senza sudo; rebuild nell ordine neve, game, deck, e riavvio per il kernel 7.3.1.",
+    "promosso": null,
+    "applicato_su": ["neve", "game", "deck"],
+    "gogcli": {
+      "data": "2026-11-08",
+      "ora": "04:36",
+      "host_eseguito": "deck",
+      "da": "0.47.1",
+      "a": "0.48.0",
+      "esito": "aggiornato",
+      "nota": "pin a v0.48.0 (release 2026-11-05), hash sorgente e vendorHash rifatti, nessun gap di toolchain Go, build e passthru.tests.version riusciti, switch su deck, gog --version v0.48.0. Changelog senza breaking: backup nuovi locali finche non si configura un remoto (gli esistenti invariati), chiavi service-account nel keyring opzionali, --ids-only per gmail search, fix Calendar, dipendenze di sicurezza.",
+      "applicato_su": ["deck"]
+    },
+    "host_specifico": {
+      "neve": {
+        "pacchetti_host": {
+          "nixpkgs_rev_valutato": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+          "data": "2026-11-08",
+          "ora": "09:37",
+          "esito": "nessun_delta",
+          "pacchetti": []
+        }
+      },
+      "game": {
+        "pacchetti_host": {
+          "nixpkgs_rev_valutato": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+          "data": "2026-11-08",
+          "ora": "09:37",
+          "esito": "delta_trovato",
+          "pacchetti": [
+            {
+              "nome": "llama-cpp",
+              "da": "0.7.0",
+              "a": "0.8.0",
+              "rischio": "medio",
+              "nota": "backend LLM/OCR della LAN, build CUDA; changelog non consultato, dopo il rebuild verificare /models. steam, heroic, mangohud invariati."
+            }
+          ]
+        },
+        "pacchetti_dedicati": {
+          "whisper-cpp": {
+            "cadenza_giorni": 30,
+            "data": "2026-09-21",
+            "ora": "09:49",
+            "esito": "aggiornato",
+            "nota": "1.8.7 -> 1.9.2 (release upstream 2026-08-04). Changelog senza breaking change (sync ggml, fix VAD, CJK utf-8, performance Android); pin dedicato nixpkgs-whisper spostato al commit nixpkgs 8d43d7f8d173 (bump reale, non backport - la versione nixpkgs corrisponde 1:1 all'upstream). Definizione bumpata e build CUDA validata (nix build su .#nixosConfigurations.game.pkgs.whisper-cpp, store path completo, commit 912777b). Attivazione: rebuild su game eseguito (dichiarato dall utente il 2026-09-29, non verificato da deck)"
+          }
+        }
+      }
+    },
+    "host_eseguito": "deck"
+  },
+  "world": {
+    "Rimuovere steam-pipewire-wrapper dopo fix upstream": {
+      "cadenza_giorni": 30,
+      "data": "2026-10-27",
+      "ora": "04:30",
+      "esito": "invariato",
+      "dipendenza": "ValveSoftware/steam-for-linux #9289",
+      "nota": "issue ancora OPEN, 11 commenti, ultimo aggiornamento 2025-02-19, nessun fix"
+    }
+  }
+}

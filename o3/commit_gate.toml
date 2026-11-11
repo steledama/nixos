@@ -1,0 +1,54 @@
+# Profilo locale del gate di /commit: formatter e controlli di nixos.
+# Lo script vive nel canone: python3 method/../o3/commit_gate.py prima|dopo.
+# Il nix flake check resta fuori: il giro lo lancia a parte, una volta,
+# con o3/tools/check.sh --flake prima di remoto allinea.
+
+[[formatter]]
+glob = "*.nix"
+comando = ["alejandra", "--quiet"]
+
+[[formatter]]
+glob = "*.py"
+comando = ["ruff", "format"]
+
+[[formatter]]
+glob = "*.md"
+comando = ["prettier", "--write", "--log-level", "warn"]
+
+[[formatter]]
+glob = "*.json"
+comando = ["prettier", "--write", "--log-level", "warn"]
+
+[[formatter]]
+glob = "*.yml"
+comando = ["prettier", "--write", "--log-level", "warn"]
+
+[[formatter]]
+glob = "*.yaml"
+comando = ["prettier", "--write", "--log-level", "warn"]
+
+# alejandra --check, audit, facts, coverage e fidelity della KB.
+[[controllo]]
+comando = ["o3/tools/check.sh"]
+
+[[controllo]]
+comando = ["python3", "o3/view/build.py", "--check"]
+
+[[controllo]]
+comando = ["python3", "o3/tools/privacy.py", "--if-configured"]
+
+[[controllo]]
+quando = "o3/tools/privacy.py"
+comando = ["python3", "-m", "unittest", "discover", "-s", "o3/tools/tests"]
+
+[[controllo]]
+quando = "o3/view/*"
+comando = ["python3", "-m", "unittest", "discover", "-s", "o3/view/tests"]
+
+[[controllo]]
+quando = "o3/scripts/*"
+comando = ["python3", "-m", "unittest", "discover", "-s", "o3/scripts/tests"]
+
+[[controllo]]
+quando = "o3/modules/home/ciclo/*"
+comando = ["python3", "-m", "unittest", "discover", "-s", "o3/modules/home/ciclo/tests"]

@@ -1,0 +1,49 @@
+# Nix build result
+result
+result-*
+
+# Host-local runtime membrane
+world
+
+# Local dependency/cache directories
+cache/
+node_modules/
+.ruff_cache/
+__pycache__/
+
+# Editor metadata
+.claude/settings.local.json
+.claude/settings.local.json.tmp.*
+.agents/
+.zed/
+.vscode/
+
+# LibreOffice temporary files
+.~lock.*
+
+# System temporary files
+.DS_Store
+*~
+.cache/
+.tmp/
+
+# Credential files
+rclone.conf
+gcp-oauth*.json
+client_secret*.json
+*credentials*.json
+*token*.json
+
+# Secrets (password hash e altri segreti non versionati)
+secrets/
+
+backup-ssh-uniformazione/
+
+# viste derivate: si generano con python3 o3/view/build.py come anteprima e
+# deck le pubblica da commit pulito (kb/network-architecture.md)
+/view/
+
+# grezzo del ciclo autonomo: tentativi, esiti e trascrizioni dei giri, scritti
+# dall'unità ciclo-nixos (campo giri in o3/cicli.nix); locale all'host, mai
+# versionato né pubblicato (method kb/perceive.md)
+/i1/giri/

@@ -1,0 +1,47 @@
+---
+ciclo: runtime
+---
+
+# Plan
+
+Lo stadio Plan del ciclo di sviluppo: i task aperti in ordine di esecuzione.
+La conoscenza stabile vive in `kb/`; qui restano solo il lavoro futuro e le sue
+dipendenze.
+
+## Direzione
+
+`nixos` è a regime sui tre host di casa: il peso prevalente sta nelle
+ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli strumenti
+e sorveglia il debito upstream. Il lavoro ancora aperto è
+l'allineamento di game e neve all'unico repo pubblico, con identità locali e
+storia nuova.
+
+## Task
+
+| Ciclo   | Ob. | Task                                               | Dip. |
+| ------- | --- | -------------------------------------------------- | ---- |
+| runtime | 1   | Allineare game e neve al repo pubblico             | —    |
+| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
+| runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
+
+Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
+riesame (`method/plan.md`, «Risveglio»):
+
+- `w3` — upstream: ValveSoftware/steam-for-linux #9289, aperta dal 2025
+  senza fix. probe: github ValveSoftware/steam-for-linux#9289 closed;
+  by: 2027-01
+- `w4` — upstream: codex 0.167.0 su `ai` senza cache al 2026-11-11,
+  NixOS/nixpkgs #585124 chiusa il 2026-11-09. arrival: cache binaria o build
+  riuscita di Codex sull'input `ai` aggiornato, letta da
+  `o3/scripts/home-versions.sh` nella diagnosi `ia` del giro; rimozione di
+  input e override in sessione col custode (`kb/development-environment.md`);
+  by: 2026-12
+
+Dettagli in [o2/tasks.md](../o2/tasks.md).
+
+## Ricorrenze
+
+| Prossima | Cadenza    | Esecutore | Ob. | Ricorrenza                                                                   |
+| -------- | ---------- | --------- | --- | ---------------------------------------------------------------------------- |
+| config   | quotidiano | scheduler | S   | [Ciclo autonomo](../o3/ciclo/prompt.md)                                      |
+| 2027-11  | annuale    | sessione  | 2   | [Prova annuale del seed](../kb/secrets-management.md#prova-annuale-del-seed) |

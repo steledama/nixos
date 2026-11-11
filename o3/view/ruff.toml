@@ -1,0 +1,6 @@
+# I builder si copiano dal canone `method` negli adottanti: la cartella porta
+# la propria configurazione, così il formatter locale non riscrive le copie e
+# il confronto col canone mostra solo gli adattamenti.
+line-length = 100
+target-version = "py312"
+cache-dir = "../../cache/.ruff_cache"

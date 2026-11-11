@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 600" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Rete di casa e legami con l'ufficio</title>
+  <desc id="d">La LAN casa con deck, neve e game. La VPN casa ha il server su deck e come client il telefono e lo standby dell'ufficio; deck è client della VPN ufficio, che vive nel repo example-org/nixos-ufficio.</desc>
+  <defs>
+    <marker id="a-casa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+    <marker id="a-uff" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/></marker>
+  </defs>
+
+  <!-- Casa -->
+  <rect x="20" y="100" width="640" height="440" rx="18" fill="#f3f8f7" stroke="#0f766e" stroke-width="2"/>
+  <text x="40" y="130" font-size="17" font-weight="800" fill="#0f766e" letter-spacing="1">CASA · LAN 192.168.0.0/24</text>
+
+  <rect x="40" y="145" width="600" height="46" rx="10" fill="#fff" stroke="#cfd8df"/>
+  <text x="56" y="165" font-size="15" font-weight="700" fill="#1a2230">Router casa</text>
+  <text x="56" y="183" font-size="13" fill="#4a5a6a">home.example.com → deck :51820/UDP</text>
+
+  <rect x="40" y="205" width="600" height="125" rx="12" fill="#fff" stroke="#0f766e" stroke-width="2.5"/>
+  <text x="56" y="232" font-size="20" font-weight="800" fill="#1a2230">deck <tspan font-size="14" font-weight="400" fill="#4a5a6a">192.168.0.10 · capogruppo</tspan></text>
+  <text x="56" y="258" font-size="14" fill="#1a2230">● server VPN casa <tspan fill="#0f766e" font-weight="700">10.20.0.1</tspan></text>
+  <text x="56" y="280" font-size="14" fill="#1a2230">● client VPN ufficio <tspan fill="#c2410c" font-weight="700">10.0.1.20</tspan>, al boot</text>
+  <text x="56" y="302" font-size="14" fill="#1a2230">● ciclo autonomo 04:30 · viste in LAN 8001-8004</text>
+  <text x="56" y="320" font-size="12" fill="#4a5a6a">unico host di casa che raggiunge l'ufficio</text>
+
+  <rect x="40" y="345" width="290" height="80" rx="12" fill="#fff" stroke="#cfd8df" stroke-width="1.5"/>
+  <text x="56" y="372" font-size="18" font-weight="800" fill="#1a2230">neve <tspan font-size="13" font-weight="400" fill="#4a5a6a">.8</tspan></text>
+  <text x="56" y="395" font-size="13" fill="#4a5a6a">desktop, media center</text>
+  <text x="56" y="413" font-size="13" fill="#4a5a6a">scanner</text>
+
+  <rect x="350" y="345" width="290" height="80" rx="12" fill="#fff" stroke="#cfd8df" stroke-width="1.5"/>
+  <text x="366" y="372" font-size="18" font-weight="800" fill="#1a2230">game <tspan font-size="13" font-weight="400" fill="#4a5a6a">.9</tspan></text>
+  <text x="366" y="395" font-size="13" fill="#4a5a6a">GPU, llama.cpp, OCR</text>
+  <text x="366" y="413" font-size="13" fill="#4a5a6a">trascrizione, gaming</text>
+
+  <text x="40" y="455" font-size="13" fill="#4a5a6a">game e neve instradano 10.20.0.0/24 via deck</text>
+
+  <rect x="40" y="478" width="190" height="44" rx="10" fill="#fff" stroke="#cfd8df" stroke-dasharray="4 3"/>
+  <text x="56" y="505" font-size="13" fill="#4a5a6a">Ricoh IM 550 · .15</text>
+
+  <!-- Ufficio, fuori da questo repo -->
+  <rect x="780" y="100" width="300" height="440" rx="18" fill="#fdf6f2" stroke="#c2410c" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="800" y="130" font-size="17" font-weight="800" fill="#c2410c" letter-spacing="1">UFFICIO</text>
+  <text x="800" y="150" font-size="13" fill="#4a5a6a">repo example-org/nixos-ufficio</text>
+  <text x="800" y="168" font-size="13" fill="#4a5a6a">LAN 10.0.0.0/24</text>
+
+  <rect x="800" y="205" width="260" height="105" rx="12" fill="#fff" stroke="#c2410c" stroke-width="2"/>
+  <text x="816" y="232" font-size="17" font-weight="800" fill="#1a2230">production</text>
+  <text x="816" y="256" font-size="13" fill="#1a2230">server VPN ufficio <tspan fill="#c2410c" font-weight="700">10.0.1.1</tspan></text>
+  <text x="816" y="276" font-size="13" fill="#4a5a6a">192.0.2.20:51820/UDP</text>
+  <text x="816" y="296" font-size="13" fill="#4a5a6a">ssh svezia, presentazioni</text>
+
+  <rect x="800" y="345" width="260" height="80" rx="12" fill="#fff" stroke="#0f766e" stroke-width="2" stroke-dasharray="7 4"/>
+  <text x="816" y="372" font-size="17" font-weight="800" fill="#1a2230">standby</text>
+  <text x="816" y="395" font-size="13" fill="#1a2230">client VPN casa, manuale</text>
+  <text x="816" y="413" font-size="13" fill="#4a5a6a">norvegia o svezia</text>
+
+  <text x="800" y="460" font-size="12" fill="#4a5a6a">server, ruoli e LAN ufficio</text>
+  <text x="800" y="477" font-size="12" fill="#4a5a6a">documentati nel repo di lavoro</text>
+
+  <!-- Telefono -->
+  <rect x="470" y="20" width="170" height="62" rx="12" fill="#fff" stroke="#0f766e" stroke-width="2"/>
+  <text x="555" y="45" font-size="16" font-weight="800" fill="#1a2230" text-anchor="middle">telefono</text>
+  <text x="555" y="66" font-size="13" fill="#4a5a6a" text-anchor="middle">10.20.0.3 · JuiceSSH</text>
+
+  <!-- Tunnel -->
+  <path d="M470,52 C380,52 380,170 352,202" fill="none" stroke="#0f766e" stroke-width="3" marker-end="url(#a-casa)"/>
+  <path d="M642,262 C700,262 730,262 798,262" fill="none" stroke="#c2410c" stroke-width="5" marker-end="url(#a-uff)"/>
+  <text x="720" y="246" font-size="13" font-weight="700" fill="#c2410c" text-anchor="middle">VPN ufficio</text>
+  <text x="720" y="285" font-size="12" fill="#c2410c" text-anchor="middle">sempre attiva</text>
+  <path d="M798,385 C730,385 720,318 642,318" fill="none" stroke="#0f766e" stroke-width="3" stroke-dasharray="9 6" marker-end="url(#a-casa)"/>
+  <text x="720" y="432" font-size="13" font-weight="700" fill="#0f766e" text-anchor="middle">VPN casa</text>
+  <text x="720" y="450" font-size="12" fill="#0f766e" text-anchor="middle">solo standby</text>
+
+  <!-- Legenda -->
+  <line x1="30" y1="572" x2="80" y2="572" stroke="#0f766e" stroke-width="3"/>
+  <text x="90" y="577" font-size="13" fill="#1a2230">VPN casa 10.20.0.0/24, server deck</text>
+  <line x1="370" y1="572" x2="420" y2="572" stroke="#c2410c" stroke-width="5"/>
+  <text x="430" y="577" font-size="13" fill="#1a2230">VPN ufficio 10.0.1.0/24, client deck</text>
+  <line x1="770" y1="572" x2="820" y2="572" stroke="#4a5a6a" stroke-width="3" stroke-dasharray="9 6"/>
+  <text x="830" y="577" font-size="13" fill="#1a2230">avvio manuale · la freccia va dal client</text>
+</svg>

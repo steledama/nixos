@@ -1,0 +1,23 @@
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"controllo-negato","comando":"find o1 -maxdepth 0","esito":"negato","costo_usd":0.0178648}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"semplice","comando":"ls o1","esito":"concesso","costo_usd":0.1083828}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"graffe","comando":"ls {o1,o2}","esito":"negato","costo_usd":0.11100779999999999}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"cd-and","comando":"cd o1 && ls","esito":"negato","costo_usd":0.1102476}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"and","comando":"ls o1 && ls o2","esito":"concesso","costo_usd":0.10976}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"punto-e-virgola","comando":"ls o1; ls o2","esito":"concesso","costo_usd":0.1098318}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"pipe","comando":"ls o1 | wc -l","esito":"concesso","costo_usd":0.108632}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"redirezione","comando":"ls o1 2>/dev/null","esito":"concesso","costo_usd":0.11200039999999999}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"sostituzione","comando":"wc -l $(ls o1/plan.md)","esito":"negato","costo_usd":0.1105652}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"for","comando":"for d in o1 o2; do ls \"$d\"; done","esito":"negato","costo_usd":0.11074959999999999}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"heredoc-cat","comando":"cat <<'EOF'\nprova\nEOF","esito":"concesso","costo_usd":0.1088292}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"commit-m-ripetuti","comando":"git commit --dry-run --allow-empty -m \"prova\" -m \"corpo\"","esito":"concesso","costo_usd":0.1177994}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"commit-heredoc-m","comando":"git commit --dry-run --allow-empty -m \"$(cat <<'EOF'\nprova\n\ncorpo\nEOF\n)\"","esito":"concesso","costo_usd":0.1125704}
+{"tornata":"2026-10-28T10:39:32+01:00","claude_code":"2.1.311","forma":"commit-heredoc-F","comando":"git commit --dry-run --allow-empty -F - <<'EOF'\nprova\nEOF","esito":"concesso","costo_usd":0.11219620000000001}
+{"tornata":"2026-10-28T10:41:12+01:00","claude_code":"2.1.311","forma":"graffe-quotate","comando":"jq -n '{a: 1}'","esito":"concesso","costo_usd":0.1088044}
+{"tornata":"2026-10-28T10:41:17+01:00","claude_code":"2.1.311","forma":"cd-solo","comando":"cd o1","esito":"concesso","costo_usd":0.10878679999999999}
+{"tornata":"2026-10-28T10:41:24+01:00","claude_code":"2.1.311","forma":"commit-heredoc-F-and","comando":"git commit --dry-run --allow-empty -F - <<'EOF' && git log -1 --format=%h\nprova\nEOF","esito":"negato","costo_usd":0.1141384}
+{"tornata":"2026-10-28T10:41:38+01:00","claude_code":"2.1.311","forma":"pipe-quotata","comando":"jq -n '[1, 2] | length'","esito":"concesso","costo_usd":0.10874479999999999}
+{"tornata":"2026-10-28T10:41:49+01:00","claude_code":"2.1.311","forma":"gh-jq","comando":"gh issue view 784 -R cyanfish/naps2 --json state --jq '.state'","esito":"concesso","costo_usd":0.109468}
+{"tornata":"2026-10-28T10:42:02+01:00","claude_code":"2.1.311","forma":"graffe-quotate-virgola","comando":"jq -n '{a: 1, b: 2}'","esito":"concesso","costo_usd":0.10907340000000001}
+{"tornata":"2026-10-28T10:42:14+01:00","claude_code":"2.1.311","forma":"gh-jq-giro","comando":"gh issue view 784 -R cyanfish/naps2 --json state,updatedAt,comments --jq '{state,updatedAt,n:(.comments|length)}'","esito":"concesso","costo_usd":0.1107972}
+{"tornata":"2026-11-02T08:47:08+01:00","claude_code":"2.1.312","forma":"log-trailer-quotato","comando":"git log -1 --format='%h %(trailers:key=Prossimo,valueonly)'","esito":"concesso","costo_usd":0.12287880000000001}
+{"tornata":"2026-11-02T08:47:15+01:00","claude_code":"2.1.312","forma":"log-trailer-nudo","comando":"git log -1 --format=%h%n%(trailers:key=Prossimo,valueonly)","esito":"negato","costo_usd":0.11617460000000002}
