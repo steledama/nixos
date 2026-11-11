@@ -27,12 +27,16 @@ upstream.
 
 | Ciclo   | Ob. | Task                                               | Dip. |
 | ------- | --- | -------------------------------------------------- | ---- |
+| runtime | 2   | Mettere l'identità locale nel seed                 | p1   |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
 | runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
 
+- `p1` — custode: le note `casa/identity/…` si creano e si rileggono con
+  `bw` nel suo terminale, e il confronto fra i tre host chiede `game` e
+  `neve` accesi; by: 2026-11
 - `w3` — upstream: ValveSoftware/steam-for-linux #9289, aperta dal 2025
   senza fix. probe: github ValveSoftware/steam-for-linux#9289 closed;
   by: 2027-01
