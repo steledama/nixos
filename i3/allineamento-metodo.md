@@ -1,7 +1,7 @@
 ---
 ciclo: dev
-method_commit: 18a9f5a0be70648dc699020cd248e2ca8487308d
-reviewed_at: 2026-11-10
+method_commit: 089a5e63409c21aa0f682dc2da6077f5f2b8b52e
+reviewed_at: 2026-11-11
 status: aligned
 obiettivo: S
 ---
@@ -15,6 +15,17 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
 
 ## Adattamenti intenzionali
 
+- Lanciatore e fallback (method `fce8afe`, `accb3b5`, recepiti il
+  2026-11-11). L'osservazione della quota arriva da sé ai cicli col
+  lanciatore, che lo leggono dal checkout del canone; `salute` ed `economia`
+  passano al lanciatore lo stesso giorno, `nixos` è affidato a
+  `o2/ciclo-nixos-lanciatore.md`. Lo stop verificato di `accb3b5` ha chiesto
+  un adattamento sull'host: `ciclo-recinto-ferma` al posto di `systemctl
+stop`, che su un'unità transitoria già scaricata risponde `5`
+  (`kb/cicli.md`, «Lanciatore canonico»). `--codex-adapter` resta non
+  passato finché non esiste un esecutore equivalente
+  (`o2/ciclo-fallback-codex.md`, `w5`). `089a5e6`, giro di method, non è
+  pertinente.
 - Prova locale dell'ingresso selettivo di `/exec` (2026-10-24): nucleo
   in `SKILL.md`, procedure `plan.md`, `specify.md`, `perform.md` nella
   stessa cartella, con oggetto esplicito `specify <task>`. Mappa, confronto

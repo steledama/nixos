@@ -28,7 +28,10 @@
 # tie the agent to the outer unit, --expand-environment=no keeps the prompt
 # as written, and --recinto-ferma lets the launcher stop the agent's unit
 # and wait for it before the closing line (method 477b442; trials of the
-# nixos home session, 2026-11-08).
+# nixos home session, 2026-11-08). From method accb3b5 the stop runs after
+# every agent and a nonzero exit is code 25 with a persistent fermo, so it
+# is ciclo-recinto-ferma, which verifies the unit and its cgroup are gone
+# instead of failing on a unit --collect already unloaded.
 {
   config,
   lib,
@@ -76,6 +79,11 @@
     name = "ciclo-recinto";
     inherit runtimeInputs;
     text = builtins.readFile ./ciclo/ciclo-recinto.sh;
+  };
+  recintoFerma = pkgs.writeShellApplication {
+    name = "ciclo-recinto-ferma";
+    inherit runtimeInputs;
+    text = builtins.readFile ./ciclo/ciclo-recinto-ferma.sh;
   };
   sondaLanciatore = pkgs.writeShellApplication {
     name = "ciclo-sonda-lanciatore";
@@ -306,6 +314,8 @@
       "--pipe"
       "--quiet"
       "--collect"
+      # Explicit, since ciclo-recinto-ferma looks for the cgroup there.
+      "--slice=app.slice"
       "--same-dir"
       "--expand-environment=no"
       "--service-type=exec"
@@ -368,7 +378,7 @@
         owner = "ciclo-${repo}.service";
         runtime = d.agentMaxRuntime;
       }))} \
-        --recinto-ferma ${lib.escapeShellArg "${systemctl} --user stop ${agentUnit repo}"}
+        --recinto-ferma ${lib.escapeShellArg (lib.escapeShellArgs ["${recintoFerma}/bin/ciclo-recinto-ferma" systemctl "${agentUnit repo}.service"])}
     '';
 
   # Outside the fence: the launcher needs git and ssh for fetch and pull.

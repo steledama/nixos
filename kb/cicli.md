@@ -212,8 +212,10 @@ una vista permanente in `presentations.nix` che quell'host non serve.
 
 ## Lanciatore canonico
 
-Dal 2026-11-08 `method` (`lanciatore = true` nel registro) non usa più
-`ciclo-avvio`: l'unità esterna `ciclo-method`, senza namespace, lancia
+Dal 2026-11-08 `method` e dal 2026-11-11 `salute` ed `economia`
+(`lanciatore = true` nel registro) non usano più `ciclo-avvio`; `nixos` resta
+legacy fino al task `o2/ciclo-nixos-lanciatore.md`. Per `method`: l'unità
+esterna `ciclo-method`, senza namespace, lancia
 `o3/lanciatore.py` dal checkout del canone (`canone`, default `method`) con
 Python e Claude fissati da Nix. Sessioni, lock e `settings.json` in
 `.git/lanciatore/`, pull, righe `partenza` e `chiusura` in `i1/giri/` sono del
@@ -229,8 +231,18 @@ prima, scritte con percorsi letterali perché `systemd-run` non espande gli
 specificatori. `BindsTo` e `After` verso `ciclo-method.service` e
 `--expand-environment=no` sono le condizioni trovate dalle prove della
 sessione di casa del 2026-11-08: senza, al tetto unità e agente restano vivi.
-`--recinto-ferma` (`systemctl --user stop ciclo-method-agente`) fa fermare
-l'unità interna al lanciatore prima di scrivere la chiusura. I tetti sono
+`--recinto-ferma` fa fermare l'unità interna al lanciatore prima di scrivere
+la chiusura. Da method `accb3b5` lo stop gira dopo **ogni** agente, anche a
+uscita normale, e un'uscita diversa da 0 è il codice `25`
+(`recinto-arresto-non-verificato`) con `fermo` persistente: i giri seguenti
+escono con `24` finché il custode non lo toglie. Un semplice `systemctl
+--user stop` lì sbaglia, perché `--collect` scarica l'unità appena l'agente
+esce e lo stop risponde `5`. Dal 2026-11-11 lo stop è `ciclo-recinto-ferma`
+(`o3/modules/home/ciclo/ciclo-recinto-ferma.sh`): accetta il `5` solo con
+l'unità `not-found`, vuole lo stato `inactive` o `failed` e il cgroup in
+`app.slice` (esplicito nel recinto) assente o vuoto. Provato su unità
+transitorie vere, uscita normale e unità viva, e su un `systemctl` finto
+per i tre rifiuti. I tetti sono
 annidati: lanciatore 45 minuti, agente 47 (`agentMaxRuntime`), unità esterna
 50 (`maxRuntime`, che la vista usa per il ritardo di chiusura).
 
@@ -270,6 +282,29 @@ namespace come il lanciatore, più `ciclo-recinto` in un'unità transitoria
 (`15`) con un recinto sano salta la sonda con codice `0`, come faceva
 l'`ExecCondition`. La riduzione della sonda è una proposta della sessione di
 casa: la decide il custode.
+
+Collaudo di `salute` ed `economia` del 2026-11-11 su `deck`: sonde superate,
+poi un giro a mano di ciascuno, avviati insieme alle 17:19:55. Entrambi
+riusciti (1,36 e 1,16 USD), stop verificato (`stato_finale_verificato`),
+nessun `fermo`. Il pull del canone è fallito in tutti e due: i due
+lanciatori hanno tirato `~/method` nello stesso istante, mentre un pull
+singolo nello stesso contesto riesce. I timer non si sovrappongono. In
+`economia` il giro ha trovato le modifiche di una sessione del custode,
+non ha committato e l'ha scritto nell'avviso. La chiusura però riporta
+`commit: true` con l'oggetto del commit del custode (`5622e30`): il
+lanciatore legge il cambio di `HEAD`, non chi ha committato.
+
+### Quota e fallback
+
+Da method `fce8afe` la chiusura porta `engine`, `engine_attempts` con
+l'osservazione del provider di ogni tentativo e `costo_usd` cumulato: un
+rifiuto per quota esaurita di Claude resta leggibile in
+`i1/giri/tentativi.jsonl` di ogni ciclo col lanciatore. Il percorso legacy
+non riceve questa osservazione. Il tentativo Codex che segue un rifiuto
+richiede `--codex-adapter`, un esecutore con limiti equivalenti a quelli di
+Claude (`method/../o3/ciclo/fallback.md`), che oggi nessun host ha: su
+`deck` l'opzione non è passata e il fallback resta spento
+(`o2/ciclo-fallback-codex.md`).
 
 ## Sessioni concorrenti
 

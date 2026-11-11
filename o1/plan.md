@@ -15,15 +15,19 @@ ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli strumenti
 e sorveglia il debito upstream. La pubblicazione e il passaggio dei tre host
 all'unico repo pubblico sono completati. La tracciabilità con l'identità
 locale è corretta e collaudata su game. La pulizia degli archivi è conclusa:
-la vecchia storia resta solo nel bundle privato di deck. I task aperti sono
-in attesa upstream.
+la vecchia storia resta solo nel bundle privato di deck. I cicli autonomi di
+deck passano al lanciatore canonico, che registra il credito esaurito di
+Claude: salute ed economia dal 2026-11-11, nixos è il prossimo. Il fallback
+su Codex e gli altri task attendono upstream.
 
 ## Task
 
 | Ciclo   | Ob. | Task                                               | Dip. |
 | ------- | --- | -------------------------------------------------- | ---- |
+| dev     | S   | Portare il ciclo nixos sul lanciatore canonico     |      |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
 | runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
+| dev     | S   | Abilitare il fallback Codex dei cicli di deck      | w5   |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
@@ -37,6 +41,10 @@ riesame (`method/plan.md`, «Risveglio»):
   `o3/scripts/home-versions.sh` nella diagnosi `ia` del giro; rimozione di
   input e override in sessione col custode (`kb/development-environment.md`);
   by: 2026-12
+- `w5` — upstream: esecutore Codex con limiti equivalenti a Claude
+  (method `o3/ciclo/fallback.md`), assente presso ogni adottante al
+  2026-11-11. probe: `--codex-adapter` documentato come verificato in
+  method o in `example-org/nixos-ufficio`; by: 2027-01
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 

@@ -58,7 +58,12 @@
     # from 2026-10-11).
     cadence = "*-*-*";
     time = "09:00";
-    maxRuntime = "45min";
+    # Canonical launcher from 2026-11-11 (custodian; method fce8afe,
+    # o3/ciclo/fallback.md): quota observation in the closing line. Caps
+    # nested as in method: launcher 45 minutes, agent unit 47, outer 50.
+    lanciatore = true;
+    maxRuntime = "50min";
+    agentMaxRuntime = "47min";
     maxBudgetUsd = 5;
     state = "timer";
     readWritePaths = [
@@ -86,7 +91,11 @@
     # 14:00 from 2026-10-21 (custodian): at 13:00 the custodian's open
     # session stopped the round; with maxRuntime it ends before method.
     time = "14:00";
-    maxRuntime = "45min";
+    # Canonical launcher from 2026-11-11, as salute; 50 minutes still end
+    # before method at 15:00.
+    lanciatore = true;
+    maxRuntime = "50min";
+    agentMaxRuntime = "47min";
     maxBudgetUsd = 5;
     # Step 1 from 2026-10-16 (custodian): four manual rounds (economia
     # 368bf9a, 2430f5a, 882601a, 086f13b); the last two clean, the second
