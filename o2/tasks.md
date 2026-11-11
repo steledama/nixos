@@ -9,5 +9,4 @@ in [tasks](../method/tasks.md).
 
 ## Contenuti
 
-- [allineare-host-repo-pubblico.md](allineare-host-repo-pubblico.md) — Allineare game e neve al repo pubblico
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo fix upstream

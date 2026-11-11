@@ -80,10 +80,27 @@ pubblico, neppure come allegato, branch o tag.
 Il vecchio `.git` di deck è conservato nello stesso archivio come
 `git-prima-pubblicazione/`, con origin rivolto all'archivio remoto privato.
 Nel checkout operativo non rimangono ref o oggetti della storia precedente.
-Il passaggio degli altri host è descritto nel task
-`o2/allineare-host-repo-pubblico.md` finché non è completato; i sistemi
-attivi possono conservare una revisione privata non risolvibile nel nuovo
-clone fino al prossimo rebuild ordinario.
+
+Il passaggio è completato sui tre host. Per game e neve, i resoconti delle
+sessioni locali inoltrati dal custode il 2026-11-11 attestano: clone pubblico
+a `1c9da16`, identità e regole privacy identiche a deck con permessi privati,
+controllo privacy senza riscontri, switch Home Manager riuscito e deriva
+home allineata. SSH, mount Drive e Syncthing funzionano, senza unità utente
+fallite. Sono riscontri delle sessioni locali, non verifiche remote ripetute
+da deck. La manutenzione completa su game non è stata provata durante il
+collaudo; resta al normale uso della ricorrenza.
+
+Su game e neve il vecchio checkout è in `~/nixos-archivio-privato`, con
+origin rivolto all'archivio remoto. I worktree precedenti sono stati
+ricollegati. Quello di game conserva il commit locale non pubblicato
+`6fb3d265`: il passaggio al repo pubblico non lo ha integrato né eliminato.
+Il materiale va conservato privato insieme al vecchio checkout.
+
+I sistemi attivi conservano una revisione privata non risolvibile nel nuovo
+clone: `system-drift.sh` può dichiararla non misurabile fino al prossimo
+rebuild ordinario, che resta un atto separato del custode. Non impedisce la
+chiusura della migrazione: i sistemi con revisione fissata erano identici
+prima del taglio, e le home sono ora applicate e verificate.
 
 ## Controllo prima dei commit
 

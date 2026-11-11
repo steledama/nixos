@@ -12,15 +12,13 @@ dipendenze.
 
 `nixos` è a regime sui tre host di casa: il peso prevalente sta nelle
 ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli strumenti
-e sorveglia il debito upstream. Il lavoro ancora aperto è
-l'allineamento di game e neve all'unico repo pubblico, con identità locali e
-storia nuova.
+e sorveglia il debito upstream. La pubblicazione e il passaggio dei tre host
+all'unico repo pubblico sono completati; restano le attese upstream.
 
 ## Task
 
 | Ciclo   | Ob. | Task                                               | Dip. |
 | ------- | --- | -------------------------------------------------- | ---- |
-| runtime | 1   | Allineare game e neve al repo pubblico             | —    |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
 | runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
 
