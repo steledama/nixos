@@ -49,6 +49,17 @@ RTX 4070, per i pacchetti del pin principale, incluso llama.cpp. Gli import
 nixpkgs isolati hanno una configurazione propria: Whisper dichiara CUDA nel
 flake e non eredita automaticamente questa restrizione.
 
+`cache.nixos.org` non distribuisce pacchetti CUDA. Il modulo NVIDIA aggiunge
+per il solo `game` la cache del team CUDA di NixOS, `cache.nixos-cuda.org`
+(URL e chiave dalla wiki `CUDA` e dalla pagina della cache), accanto a
+`cache.nixos.org` e `nix-community.cachix.org`; i componenti CUDA di base
+erano già serviti da quest'ultima. Al 2026-11-11 la cache CUDA conteneva il
+path esatto di `whisper-cpp` 1.9.2 selezionato da game, non quello di
+llama.cpp 0.8.0: la causa dell'assenza non è verificata. La presenza di un
+path non garantisce i successivi, e una build locale dello stesso path può
+avere un NAR diverso da quello in cache. Lo stato di un path si legge con
+`o3/scripts/cache-status.sh -v`; la cache è attiva solo dopo il rebuild.
+
 Su `game`:
 
 ```nix

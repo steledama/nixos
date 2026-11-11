@@ -56,7 +56,12 @@ o3/tools/tests`. Non sostituisce uno scanner di segreti come gitleaks.
 - `scripts/home-versions.sh` — confronta gli agenti AI installati da `pkgs-ai`
   (input `ai` lockato) con nixpkgs unstable e segnala disponibilita' in cache.
 - `scripts/system-versions.sh` — confronta pacchetti di sistema dell'host
-  corrente con nixpkgs unstable, includendo input host, peso closure e cache.
+  corrente con nixpkgs unstable, includendo input host, peso closure e cache;
+  la cache si cerca in quelle configurate per l'host nel checkout, e
+  l'intestazione mostra anche quelle attive.
+- `scripts/cache-status.sh [-v] <store-path> <cache…>` — stato di uno store
+  path nelle cache indicate, dal narinfo: presente, assente, accesso negato
+  o non verificata. Test in `scripts/tests/test_cache_status.py`.
 - skill `manutenzione` — orchestra gli script sopra per ramo di scope
   (`ia|home-manager|casa|world|all`) e aggiunge la parte di
   giudizio (changelog upstream, rischi, ordine, stato issue upstream);

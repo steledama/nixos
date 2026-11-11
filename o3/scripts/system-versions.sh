@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Script per confrontare versioni attuali vs disponibili su nixpkgs unstable.
-# Verifica anche la disponibilita' nella cache binaria.
+# Verifica anche la disponibilita' nelle cache binarie configurate per l'host.
 # Uso: ./system-versions.sh
 
 set -euo pipefail
@@ -21,6 +21,18 @@ host_input() {
 
 HOST_INPUT="$(host_input "$HOST")"
 
+# Cache configurate per l'host nel checkout (configurazione committata, non
+# quella attiva): con l'identità reale se predisposta, altrimenti coi
+# template pubblici, che non cambiano nix.settings.
+host_caches() {
+    local attr=".#nixosConfigurations.${HOST}.config.nix.settings.substituters"
+    local apply='l: builtins.concatStringsSep "\n" l'
+    "$FLAKE_DIR/o3/scripts/con-identita.sh" nix eval --raw "$attr" --apply "$apply" 2>/dev/null \
+        || nix eval --raw "$attr" --apply "$apply" 2>/dev/null \
+        || true
+}
+mapfile -t HOST_CACHES < <(host_caches | awk 'NF && !seen[$0]++')
+
 # Colori
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -33,6 +45,14 @@ echo -e "${BOLD}Confronto versioni: Attuale vs Nixpkgs Unstable${NC}"
 echo -e "${BLUE}Flake directory: $FLAKE_DIR${NC}"
 echo -e "${BLUE}Host: $HOST${NC}"
 echo -e "${BLUE}Input host: $HOST_INPUT${NC}"
+if ((${#HOST_CACHES[@]})); then
+    echo -e "${BLUE}Cache configurate (checkout): ${HOST_CACHES[*]}${NC}"
+else
+    echo -e "${YELLOW}Cache configurate non lette: colonna C non verificata${NC}"
+fi
+if [[ "$HOST" == "$(hostname)" ]]; then
+    echo -e "${BLUE}Cache attive (nix.conf): $(nix config show substituters 2>/dev/null || echo '?')${NC}"
+fi
 echo ""
 
 get_reference_pkg() {
@@ -54,8 +74,11 @@ get_unstable_version() {
     nix eval --raw "github:NixOS/nixpkgs/nixos-unstable#${ref_pkg}.version" 2>/dev/null || echo "N/A"
 }
 
-# Funzione per verificare se il pacchetto di riferimento è nella cache binaria
-# Ritorna: "✓" se in cache, "✗" se richiede compilazione, "?" se errore
+# Funzione per verificare se il pacchetto di riferimento è nelle cache
+# dell'host. Ritorna "✓", "✗", "!" o "?" (cfr. cache-status.sh).
+# Limite: il riferimento è nixos-unstable con la config predefinita di
+# nixpkgs, non quella dell'host (cudaSupport, cudaCapabilities, pin):
+# per i pacchetti CUDA il path verificato non è quello che l'host costruirà.
 check_cache() {
     local pkg="$1"
     local pkg_path
@@ -69,11 +92,7 @@ check_cache() {
             return
         fi
     fi
-    if nix path-info --store https://cache.nixos.org "$pkg_path" &>/dev/null; then
-        echo "✓"
-    else
-        echo "✗"
-    fi
+    "$FLAKE_DIR/o3/scripts/cache-status.sh" "$pkg_path" "${HOST_CACHES[@]}"
 }
 
 # Funzione per ottenere la dimensione del closure del pacchetto (in bytes)
@@ -211,6 +230,7 @@ esac
 case "$kernel_cache" in
     "✓") kernel_cache_colored="${GREEN}✓${NC}" ;;
     "✗") kernel_cache_colored="${RED}✗${NC}" ;;
+    "!") kernel_cache_colored="${YELLOW}!${NC}" ;;
     *)   kernel_cache_colored="${YELLOW}?${NC}" ;;
 esac
 printf "\r%-60s\r" "" >&2
@@ -252,6 +272,7 @@ for pkg in "${ORDERED_KEYS[@]}"; do
     case "$cache_status" in
         "✓") cache_colored="${GREEN}✓${NC}" ;;
         "✗") cache_colored="${RED}✗${NC}" ;;
+        "!") cache_colored="${YELLOW}!${NC}" ;;
         *)   cache_colored="${YELLOW}?${NC}" ;;
     esac
 
@@ -265,9 +286,12 @@ echo ""
 echo -e "${BOLD}Legenda:${NC}"
 echo -e "  ${BOLD}Peso${NC}:       Dimensione closure (pacchetto + dipendenze)"
 echo -e "  ${BOLD}S${NC} (Status):  ${GREEN}=${NC} uguale  ${RED}↑${NC} aggiornamento  ${YELLOW}?${NC} sconosciuto"
-echo -e "  ${BOLD}C${NC} (Cache):   ${GREEN}✓${NC} binario disponibile  ${RED}✗${NC} compilazione richiesta  ${YELLOW}?${NC} errore"
+echo -e "  ${BOLD}C${NC} (Cache):   ${GREEN}✓${NC} in almeno una cache dell'host  ${RED}✗${NC} assente in tutte  ${YELLOW}!${NC} accesso negato  ${YELLOW}?${NC} non verificata"
 echo ""
 echo -e "${RED}${BOLD}ATTENZIONE:${NC} Pacchetti con ${RED}✗${NC} nella colonna C richiedono compilazione (potenzialmente ore)"
+echo -e "  La colonna C verifica il path di nixos-unstable con la config predefinita di"
+echo -e "  nixpkgs: per i pacchetti CUDA dell'host (llama.cpp, Whisper) non è il path"
+echo -e "  che l'host costruirà, quindi non prevede la loro compilazione."
 echo ""
 echo -e "${BOLD}Per aggiornare i pacchetti di sistema:${NC}"
 if [[ "$HOST_INPUT" != "sconosciuto" ]]; then

@@ -92,6 +92,17 @@
     cudaCapabilities = ["8.9"];
   };
 
+  # Cache binaria del team CUDA di NixOS: cache.nixos.org non distribuisce i
+  # pacchetti CUDA (unfree). Si somma alle cache di nix.nix, solo sugli host
+  # che importano questo modulo. Serve i path che coincidono con quelli
+  # costruiti upstream: un pacchetto compilato con cudaCapabilities ristrette
+  # può non trovarvi corrispondenza. URL e chiave: wiki.nixos.org/wiki/CUDA
+  # e la pagina della cache, verificati il 2026-11-11.
+  nix.settings = {
+    substituters = ["https://cache.nixos-cuda.org"];
+    trusted-public-keys = ["cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="];
+  };
+
   # NVIDIA-related packages
   environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia # GPU monitoring

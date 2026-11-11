@@ -35,8 +35,12 @@ promozione, che scatta sul rischio alto (giro del 2026-11-08,
 ## Vincoli
 
 Applica autonomia e attivazione del ramo, allineamenti del [contesto](contesto.md)
-e, per casa, rischi di [sistema](sistema.md). La colonna cache `✗` segnala compilazioni
-locali. Controlla i blocchi già tracciati in `o1/plan.md` e `world.md`.
+e, per casa, rischi di [sistema](sistema.md). La colonna cache cerca il path
+di riferimento nelle cache configurate per l'host nel checkout: `✗` segnala
+compilazioni locali, `!` (accesso negato) e `?` (non verificata) non sono un
+verdetto. Per i pacchetti CUDA di game vale il controllo di
+[sistema](sistema.md). Controlla i blocchi già tracciati in `o1/plan.md` e
+`world.md`.
 
 ## Esito
 

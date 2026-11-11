@@ -31,7 +31,13 @@ sempre il filtro del [contesto](contesto.md).
   lunga e backend LLM/OCR della LAN. Dopo il rebuild verifica `/models`.
   `whisper-cpp` ha pin indipendente e cadenza propria in
   `casa.host_specifico.game.pacchetti_dedicati`: pesa solo quando dovuto.
-  Per entrambi `✗` in cache significa coda CUDA lunga.
+  Per entrambi la colonna C di `system-versions.sh` non prevede la build:
+  verifica il path di nixos-unstable con la config predefinita, non la
+  variante CUDA dell'host. Game ha anche `cache.nixos-cuda.org` (modulo
+  NVIDIA, attiva dopo il rebuild): per sapere se il path CUDA scelto arriva
+  dalla cache valuta il suo `outPath` con `con-identita.sh` e passalo a
+  `o3/scripts/cache-status.sh -v <path> <cache…>`. La presenza vale per quel
+  path, non per i bump successivi; un'assenza non ne dice da sola la causa.
 - **`game` — gaming:** `steam`/`heroic`/`mangohud` vengono da
   `o3/modules/system/gaming.nix`, solo su game; sono `pacchetti_host`.
   Rischio normalmente basso salvo incompatibilità Proton/driver nelle
