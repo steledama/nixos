@@ -41,10 +41,10 @@ riesame (`method/plan.md`, «Risveglio»):
   `o3/scripts/home-versions.sh` nella diagnosi `ia` del giro; rimozione di
   input e override in sessione col custode (`kb/development-environment.md`);
   by: 2026-12
-- `w5` — upstream: esecutore Codex con limiti equivalenti a Claude
-  (method `o3/ciclo/fallback.md`), assente presso ogni adottante al
-  2026-11-11. probe: `--codex-adapter` documentato come verificato in
-  method o in `example-org/nixos-ufficio`; by: 2027-01
+- `w5` — upstream: esecutore Codex canonico in method, accanto a
+  `o3/lanciatore.py` (decisione del 2026-11-11, method `4341ff0`; tetto USD
+  non bloccante). probe: esecutore collaudato nel canone e documentato in
+  `o3/ciclo/fallback.md` di method; by: 2027-01
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 
