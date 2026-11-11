@@ -1,0 +1,5 @@
+# Profilo del lanciatore di nixos: solo ciò che si discosta dai default.
+# Codex primo per il giro a mano del 2026-11-11 col custode (prova di
+# /manutenzione e dello switch home nella sandbox di Codex); a regime
+# l'ordine voluto dal custode è ["claude", "codex"].
+motori = ["codex", "claude"]
