@@ -40,7 +40,7 @@ si nasconde: la collezione è vuota finché una cattura reale non la popola.
   default condivisi del modulo cicli.
 - [grafie-permessi.jsonl](grafie-permessi.jsonl) — esiti della sonda delle
   grafie dei permessi del giro (`o3/scripts/sonda-grafie.sh`), una tornata
-  per versione di Claude Code; letti in `kb/cicli.md § Grafie dei permessi`.
+  per versione di Claude Code; letti in `i2/grafie-permessi.md`.
 - [manutenzione.json](manutenzione.json) — registro delle versioni/debito
   upstream confrontati dalla skill `/manutenzione` (versioni pacchetti,
   stato dei workaround `Dip.: w<n>` di `o1/plan.md`). **Eccezione al ciclo

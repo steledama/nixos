@@ -12,6 +12,10 @@ vive in `../presentation/presentation.md` ([presentation](../method/presentation
 - [Codex nel recinto dell'host](codex-recinto-host.md) — giro nixos completo con Codex, fallback reale non ancora osservato
   riscontrato su deck; switch e fallback reale restano da collaudare.
 
+- [Grafie dei permessi](grafie-permessi.md) — forme di comando negate e
+  concesse nel giro su Claude Code 2.1.311 e cause dei dinieghi osservati;
+  da rifare a ogni tornata della sonda.
+
 - [Ipotesi sulla clipboard di Chromium](ipotesi-clipboard-chromium.md) —
   incolla disattivato su `deck`, risolto riavviando Chromium; il doppione di
   xwayland-satellite è escluso come causa ma non isolato; riesame alla

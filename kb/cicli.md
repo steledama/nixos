@@ -65,6 +65,9 @@ inaccessibili si dichiarano per repo. `RuntimeMaxSec`, `NoNewPrivileges`,
 esterna è `Type=exec` (su `oneshot` `RuntimeMaxSec` non ha effetto), quindi
 `systemctl --user start` torna subito.
 
+Sui mount FUSE il recinto vale per sottocartella: in `salute` la sonda trova
+`gdrive-personale` in sola lettura e `gdrive-personale/salute` scrivibile.
+
 I wrapper di comando (`wrappers` in `cicli.nix`) stanno in testa al `PATH`
 dell'unità e aggiungono sempre gli argomenti dichiarati: in `salute`, `gog`
 riceve `--gmail-no-send`. Fermano alias e chiamate distratte, non una chiamata
@@ -289,6 +292,10 @@ con la cwd nel checkout, o un rollout Codex scritto negli ultimi 60
 minuti, fermavano il giro (economia, 2026-11-10 alle 14:00: una sessione
 Codex ferma dalle 13:34 ha fatto saltare il giro).
 
+Il controllo legge i transcript e non i processi perché dentro il namespace
+dell'unità `/proc/<pid>/cwd` degli altri processi è negato, mentre i
+transcript dal recinto sono leggibili.
+
 Lo fa `lanciatore.py`: davanti al commit del giro cerca i transcript con
 attività dopo la partenza, cioè
 
@@ -362,32 +369,19 @@ schedulato di economia). Uno switch Home Manager eseguito dal giro non
 riavvia l'unità del giro stesso (giro di nixos del 2026-10-18, con bump e
 switch veri).
 
-## Esiti del gradino 0 e delle sonde
+## Permessi del giro
 
-Su `deck`, 2026-10-11, salute:
-
-- **giro riuscito** (commit `2eb8a69` in salute, push via ssh senza agent,
-  1,85 USD, 4,5 minuti): `/eval`, `/exec` e `/commit` invocate davvero da
-  `claude -p`, keyring di `gog` leggibile;
-- **recinto sui mount FUSE**: la sonda trova `gdrive-personale` in sola lettura
-  e `gdrive-personale/salute` scrivibile;
-- **controllo `15`**: dentro il namespace dell'unità `/proc/<pid>/cwd` degli
-  altri processi è negato. Fino al 2026-11-10 il controllo stava quindi
-  prima del giro, fuori dal namespace; oggi è a valle e
-  legge i transcript, che dal recinto sono leggibili (sezione «Sessioni
-  concorrenti»);
-- **permessi**: con `--setting-sources project` il `.claude/settings.json`
-  del repo si fonde con il file del ciclo. I deny valgono anche contro un
-  allow del ciclo; gli allow valgono se il workspace è fidato
-  (`hasTrustDialogAccepted`, che non passa alle sottocartelle), altrimenti
-  Claude li ignora con un avviso. Con `--setting-sources ""` il file del
-  ciclo resta l'unico, ma il giro perde `CLAUDE.md` e le skill del
-  progetto: non è usabile.
+Con `--setting-sources project` il `.claude/settings.json` del repo si fonde
+con il file del ciclo. I deny valgono anche contro un allow del ciclo; gli
+allow valgono se il workspace è fidato (`hasTrustDialogAccepted`, che non
+passa alle sottocartelle), altrimenti Claude li ignora con un avviso. Con
+`--setting-sources ""` il file del ciclo resta l'unico, ma il giro perde
+`CLAUDE.md` e le skill del progetto: non è usabile (prove del gradino 0 di
+salute, 2026-10-11).
 
 Regola che ne segue: gli allow del `.claude/settings.json` di un repo con
-ciclo autonomo stanno dentro quelli dei permessi del giro (`o3/ciclo/permessi.json`, o
-`.claude/ciclo.json` nei repo non ancora migrati); i deny vi si possono
-aggiungere liberamente. In salute oggi `settings.json` porta solo deny.
+ciclo autonomo stanno dentro quelli dei permessi del giro
+(`o3/ciclo/permessi.json`); i deny vi si possono aggiungere liberamente.
 
 ## Grafie dei permessi
 
@@ -402,30 +396,9 @@ porta una nuova versione di Claude Code. Il giro non la lancia, perché
 `i1/grafie-permessi.jsonl`, una tornata per versione, circa 0,11 USD a
 prova.
 
-Tornata del 2026-10-28, Claude Code 2.1.311:
-
-- **negate**: graffe `ls {o1,o2}`, `cd o1 && ls`, la sostituzione
-  `$(…)`, il ciclo `for`, e un heredoc seguito da `&&`
-  (`git commit -F - <<'EOF' && git log -1`);
-- **concesse**: `&&` e `;` fra comandi in allow, pipe, redirezioni
-  (`2>/dev/null`), `cd` da solo, l'heredoc da solo (`cat`,
-  `git commit -F -`, `-m "$(cat <<'EOF' …)"`), `-m` ripetuti, e graffe e
-  pipe dentro le virgolette (`jq -n '{a: 1, b: 2}'`, `--jq`).
-
-Le cause dei dinieghi dei giri sono quindi verificate:
-
-- il commit negato del 2026-10-27 non cadeva per l'heredoc ma per
-  l'heredoc unito a `&&`;
-- `cd` cade quando apre un composto, non da solo, e questo spiega anche il
-  diniego del 2026-10-24 (`…; cd /home/stele/nixos && jq …`);
-- le graffe contano solo fuori dalle virgolette.
-- il `git log` negato del 2026-11-02 aveva `%(trailers:…)` fuori dalle
-  virgolette, cioè bash non valido: la sonda su 2.1.312 nega la forma nuda
-  e concede quella fra apici, già coperta da `Bash(git log*)`.
-
-Il `gh issue view … --jq '{state,updatedAt,n:(.comments|length)}'`, negato
-il 2026-10-27 su 2.1.308, passa identico su 2.1.311. Su quella versione non
-è più riproducibile, e la causa resta legata alla versione precedente.
+La lettura corrente degli esiti, cioè quali forme sono negate e quali
+concesse sulla versione provata e le cause dei dinieghi osservati nei giri,
+vive in `i2/grafie-permessi.md` e si aggiorna a ogni tornata.
 
 La regola delle grafie della skill `cycle` (uno per chiamata, niente `;`,
 `&&`, `for`, graffe, heredoc) è più stretta del necessario su `;`, `&&` e
