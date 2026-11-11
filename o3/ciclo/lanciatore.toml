@@ -1,9 +1,7 @@
 # Profilo del lanciatore di nixos: solo ciò che si discosta dai default.
 # Claude primo e Codex di riserva, ordine voluto dal custode (2026-11-11).
-# Il giro a mano con Codex primo delle 18:23 si è fermato senza commit: la
-# sandbox di Codex apre in scrittura solo checkout e cartella git, e un giro
-# nixos ha bisogno di ~/.cache/nix, del demone Nix e del bus utente
-# (o2/ciclo-fallback-codex.md). Di riserva fa la diagnosi e si ferma pulito.
-# Codex primo per il secondo giro a mano del 2026-11-11, dopo method
-# 0eeb2db (col recinto dell'host Codex non aggiunge la propria sandbox).
-motori = ["codex", "claude"]
+# Dopo method 0eeb2db Codex gira nel recinto dell'host senza la propria
+# sandbox: il giro a mano con Codex primo del 2026-11-11 (5769c3c) ha
+# verificato flake, bus utente, commit e push. Switch e fallback reale fra
+# motori restano da collaudare (o2/ciclo-fallback-codex.md).
+motori = ["claude", "codex"]

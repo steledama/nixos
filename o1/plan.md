@@ -27,7 +27,6 @@ task attendono upstream.
 
 | Ciclo   | Ob. | Task                                               | Dip. |
 | ------- | --- | -------------------------------------------------- | ---- |
-| dev     | S   | Portare il ciclo nixos sul lanciatore canonico     |      |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
 | runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
 | dev     | S   | Rendere utile Codex come riserva del ciclo nixos   | w5   |
