@@ -14,14 +14,14 @@ dipendenze.
 ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli strumenti
 e sorveglia il debito upstream. La pubblicazione e il passaggio dei tre host
 all'unico repo pubblico sono completati. La tracciabilità con l'identità
-locale è corretta e collaudata su game. Resta la pulizia dei vecchi checkout
-privati su game e neve; gli altri task sono in attesa upstream.
+locale è corretta e collaudata su game. La pulizia degli archivi è conclusa:
+la vecchia storia resta solo nel bundle privato di deck. I task aperti sono
+in attesa upstream.
 
 ## Task
 
 | Ciclo   | Ob. | Task                                               | Dip. |
 | ------- | --- | -------------------------------------------------- | ---- |
-| runtime | 1   | Pulire i vecchi checkout di game e neve            | —    |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
 | runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
 

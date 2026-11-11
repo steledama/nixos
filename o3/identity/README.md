@@ -88,12 +88,16 @@ git clone ~/.local/share/nixos/archivio-privato/storia-prepubblicazione.bundle /
 git -C /tmp/nixos-storia log --all
 ```
 
-Prima di eliminare vecchi checkout sugli altri host, verificare nella
-sessione locale ref, reflog, stash, modifiche e file ignorati di ogni
-worktree. Il consolidamento copre i commit letti quel giorno, non nuovi
-cambiamenti o file mai committati. Rimuovere i worktree con Git prima del
-checkout che li registra. Le identità in `~/.config/nixos/` e il clone
-pubblico operativo restano necessari e non si eliminano.
+La pulizia è completata anche su game e neve: i resoconti delle sessioni
+locali inoltrati dal custode il 2026-11-11 confermano vecchi checkout,
+worktree, bundle temporanei e copie dei vecchi permessi locali rimossi.
+I clone pubblici sono puliti e le identità in `~/.config/nixos/` restano
+presenti. Non sono verifiche remote ripetute da deck.
+
+Quattro commit staccati, senza ref e non coperti dal bundle, erano emersi
+nella verifica finale di game: il custode ha scelto di non recuperarli e
+di eliminare anche la copia temporanea che li conservava. Il bundle di
+deck resta quello consolidato e verificato, senza ulteriori integrazioni.
 
 ## Controllo prima dei commit
 
