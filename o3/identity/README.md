@@ -61,52 +61,36 @@ valutazioni, build e attivazioni reali passano dal wrapper. Non usare
 
 ## Storia precedente
 
-La storia precedente alla pubblicazione è un archivio privato statico,
-non un altro repository da mantenere. Il custode ha approvato il
-2026-11-11 la rinomina del vecchio repository in `nixos-archivio-privato`,
-archiviato e mantenuto privato, e la creazione di un nuovo `steledama/nixos`
-con storia pulita. Su deck il bundle finale verificato vive in
-`~/.local/share/nixos/archivio-privato/storia-prepubblicazione.bundle`; i riferimenti
-storici rimasti nei nodi si consultano lì. Per esempio:
+La storia privata precedente al repo pubblico si conserva in due forme:
+
+- `steledama/nixos-archivio-privato` su GitHub, privato e archiviato:
+  conserva la vecchia storia pubblicata, senza sincronizzazioni future;
+- un solo bundle su deck:
+  `~/.local/share/nixos/archivio-privato/storia-prepubblicazione.bundle`.
+  Il file privato `LEGGIMI.txt` accanto al bundle contiene checksum e
+  istruzioni di ripristino. Il bundle comprende anche i commit presenti
+  solo nelle ref o nei reflog dei vecchi checkout dei tre host, incluso
+  `6fb3d265` di game, che non è nell'archivio GitHub.
+
+Consolidamento verificato il 2026-11-11: 2316 commit, clone mirror di prova
+e `git fsck --full` riusciti. Vecchio `.git` di deck, bundle superato,
+patch duplicata e copie temporanee della pubblicazione rimossi. Il bundle
+va incluso nel backup privato; non entra nel repo pubblico, neppure come
+allegato, branch o tag.
+
+Per consultare la storia senza riattivare un checkout da mantenere:
 
 ```bash
 git clone ~/.local/share/nixos/archivio-privato/storia-prepubblicazione.bundle /tmp/nixos-storia
 git -C /tmp/nixos-storia log --all
 ```
 
-Il bundle va incluso nel backup privato e non deve entrare nel repository
-pubblico, neppure come allegato, branch o tag.
-
-Il vecchio `.git` di deck è conservato nello stesso archivio come
-`git-prima-pubblicazione/`, con origin rivolto all'archivio remoto privato.
-Nel checkout operativo non rimangono ref o oggetti della storia precedente.
-
-Il passaggio è completato sui tre host. Per game e neve, i resoconti delle
-sessioni locali inoltrati dal custode il 2026-11-11 attestano: clone pubblico
-a `1c9da16`, identità e regole privacy identiche a deck con permessi privati,
-controllo privacy senza riscontri, switch Home Manager riuscito e deriva
-home allineata. SSH, mount Drive e Syncthing funzionano, senza unità utente
-fallite. Sono riscontri delle sessioni locali, non verifiche remote ripetute
-da deck. La successiva manutenzione su game e il rebuild del custode hanno
-collaudato anche Whisper 1.9.5 e la cache CUDA. La tracciabilità è verificata
-dal rebuild di `8827fd7`: revisione `nar:sha256-…` e deriva allineata
-(`kb/development-workflow.md`, «Tracciabilità»).
-
-Su game e neve il vecchio checkout è in `~/nixos-archivio-privato`, con
-origin rivolto all'archivio remoto. I worktree precedenti sono stati
-ricollegati. Quello di game conserva il commit locale non pubblicato
-`6fb3d265`: il passaggio al repo pubblico non lo ha integrato né eliminato.
-Il suo intento è stato ripreso con una nuova modifica per la cache CUDA,
-senza cherry-pick dalla storia privata.
-Il materiale va conservato privato insieme al vecchio checkout.
-
-I sistemi attivi conservavano una revisione privata non risolvibile nel nuovo
-clone. Il primo rebuild col wrapper ha poi registrato `dirty`, perché
-l'override toglie `rev` a `self`: la revisione ora usa il `narHash` del
-codice pubblico, e `system-drift.sh` confronta comunque il toplevel attivo
-con `HEAD` (`kb/development-workflow.md`, «Tracciabilità»). Non impedisce la
-chiusura della migrazione: i sistemi con revisione fissata erano identici
-prima del taglio, e le home sono ora applicate e verificate.
+Prima di eliminare vecchi checkout sugli altri host, verificare nella
+sessione locale ref, reflog, stash, modifiche e file ignorati di ogni
+worktree. Il consolidamento copre i commit letti quel giorno, non nuovi
+cambiamenti o file mai committati. Rimuovere i worktree con Git prima del
+checkout che li registra. Le identità in `~/.config/nixos/` e il clone
+pubblico operativo restano necessari e non si eliminano.
 
 ## Controllo prima dei commit
 

@@ -9,4 +9,5 @@ in [tasks](../method/tasks.md).
 
 ## Contenuti
 
+- [pulire-vecchi-checkout.md](pulire-vecchi-checkout.md) — Pulire i vecchi checkout di game e neve
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo fix upstream
