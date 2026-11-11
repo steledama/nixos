@@ -13,12 +13,15 @@ dipendenze.
 `nixos` è a regime sui tre host di casa: il peso prevalente sta nelle
 ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli strumenti
 e sorveglia il debito upstream. La pubblicazione e il passaggio dei tre host
-all'unico repo pubblico sono completati; restano le attese upstream.
+all'unico repo pubblico sono completati. Il rebuild di game ha fatto
+emergere un difetto di tracciabilità con l'identità locale, da correggere;
+gli altri task restano in attesa upstream.
 
 ## Task
 
 | Ciclo   | Ob. | Task                                               | Dip. |
 | ------- | --- | -------------------------------------------------- | ---- |
+| runtime | S   | Ripristinare la revisione con identità locale      | —    |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
 | runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
 

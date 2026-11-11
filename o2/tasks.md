@@ -9,4 +9,5 @@ in [tasks](../method/tasks.md).
 
 ## Contenuti
 
+- [revisione-con-identita-locale.md](revisione-con-identita-locale.md) — Ripristinare la revisione con identità locale
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo fix upstream
