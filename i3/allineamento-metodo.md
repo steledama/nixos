@@ -1,6 +1,6 @@
 ---
 ciclo: dev
-method_commit: 6aa4ea82222f5c3c289938f2eb87c97f2ea57521
+method_commit: 47289138f25b703e6a4bfc8c3acdce2ad0402171
 reviewed_at: 2026-11-11
 status: aligned
 obiettivo: S
@@ -16,7 +16,7 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
 ## Adattamenti intenzionali
 
 - Lanciatore e motori (method `fce8afe`, `accb3b5`, `4341ff0`, `201a6eb`,
-  `6d3938f`, `de73101`, prescrizione `motori-del-ciclo`, recepiti il 2026-11-11). Lo stop
+  `6d3938f`, `de73101`, `0eeb2db`, `dbe78b8`, `4728913`, prescrizione `motori-del-ciclo`, recepiti il 2026-11-11). Lo stop
   verificato di `accb3b5` ha chiesto un adattamento sull'host:
   `ciclo-recinto-ferma` al posto di `systemctl stop`, che su un'unità
   transitoria già scaricata risponde `5`. Il recinto tiene in sola lettura
@@ -28,7 +28,9 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
   riserva. Col contratto canonico `--recinto-host` il giro a mano con
   Codex primo delle 20:14:17 ha chiuso con commit e push (`5769c3c`);
   il fallback per credito esaurito resta non osservato, task chiuso dal
-  custode ([lettura locale](../i2/codex-recinto-host.md)). Il gate
+  custode ([lettura locale](../i2/codex-recinto-host.md)). Il runbook del
+  giro a mano di `4728913` (sessione ferma, `start --wait`) è in
+  `kb/cicli.md`, «Sessioni concorrenti» e «Uso». Il gate
   col perimetro (`7485488`) è recepito nei fork di `/commit` e `/cycle`.
 - Prova locale dell'ingresso selettivo di `/exec` (2026-10-24): nucleo
   in `SKILL.md`, procedure `plan.md`, `specify.md`, `perform.md` nella

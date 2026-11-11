@@ -361,9 +361,9 @@ lasciare il tree com'è e dichiararlo in `Attenzione:`; scrive
 sessione-concorrente`. La riga di chiusura porta `sessioni_concorrenti`, il
 tree resta sporco e il giro successivo si ferma su `10` finché il custode
 non riconcilia. Una sessione che scrive solo dopo il commit del giro trova
-il commit già fatto, come dopo un pull. I cicli col lanciatore canonico
-(method) non hanno il marker e l'hook non fa nulla: lì le sessioni le
-controlla `lanciatore.py`.
+il commit già fatto, come dopo un pull. I cicli col lanciatore canonico, dal
+2026-11-11 tutti e quattro, non hanno il marker e l'hook non fa nulla: lì le
+sessioni le controlla `lanciatore.py`, con lo stesso criterio.
 
 Il timestamp di modifica è solo un prefiltro. Come nel lanciatore canonico
 (method `18a9f5a`), si leggono gli ultimi 4 MiB dal fondo fino al primo evento
@@ -375,8 +375,12 @@ valido non contano.
 
 La sessione che avvia il giro può quindi scrivere la risposta dopo il
 marker senza bloccarlo. Una successiva chiamata a uno strumento conta ancora,
-anche per leggere `journalctl` o `systemctl status`: controllare il giro da
-un terminale esterno. L'avvio differito resta disponibile come margine
+anche per leggere `journalctl` o `systemctl status`, o per aspettare la fine:
+il giro a mano si lancia da un terminale separato, o dalla sessione come
+ultimo atto, e le sessioni del checkout restano ferme finché non finisce
+(method `4728913`). Al collaudo di Codex in `nixos` del 2026-11-11 tre
+tentativi si sono fermati così, sulla sessione del custode che controllava
+il giro. L'avvio differito resta disponibile come margine
 operativo, ma non serve per la sola risposta testuale:
 
 ```bash
@@ -398,6 +402,7 @@ dai tentativi.
 ```bash
 systemctl --user start ciclo-salute-sonda   # controlli e recinto, senza Claude
 systemctl --user start ciclo-salute         # avvio a mano, fuori cadenza
+systemctl --user start --wait ciclo-salute  # idem, e aspetta la fine
 systemctl --user list-timers 'ciclo-*'      # prossima partenza
 journalctl --user -fu ciclo-salute
 jq . ~/.local/state/ciclo/salute/ultimo.json
