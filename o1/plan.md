@@ -17,18 +17,19 @@ all'unico repo pubblico sono completati. La tracciabilità con l'identità
 locale è corretta e collaudata su game. La pulizia degli archivi è conclusa:
 la vecchia storia resta solo nel bundle privato di deck. I cicli autonomi di
 deck passano al lanciatore canonico, che registra il credito esaurito di
-Claude: salute ed economia dal 2026-11-11, nixos è il prossimo. Dal
-2026-11-11 l'host è pronto anche per Codex come secondo motore, che ogni
-repo accende nel proprio profilo; gli altri task attendono upstream.
+Claude: tutti e quattro dal 2026-11-11. L'host è pronto anche per Codex
+come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
+di riserva ma fa solo la diagnosi finché la sua sandbox non scrive fuori
+dal checkout. Gli altri task attendono upstream.
 
 ## Task
 
-| Ciclo   | Ob. | Task                                                | Dip. |
-| ------- | --- | --------------------------------------------------- | ---- |
-| dev     | S   | Portare il ciclo nixos sul lanciatore canonico      |      |
-| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream  | w3   |
-| runtime | 1   | Rimuovere il pin Codex dopo build su ai             | w4   |
-| dev     | S   | Accendere Codex come secondo motore del ciclo nixos | w5   |
+| Ciclo   | Ob. | Task                                               | Dip. |
+| ------- | --- | -------------------------------------------------- | ---- |
+| dev     | S   | Portare il ciclo nixos sul lanciatore canonico     |      |
+| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
+| runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
+| dev     | S   | Rendere utile Codex come riserva del ciclo nixos   | w5   |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
@@ -42,12 +43,13 @@ riesame (`method/plan.md`, «Risveglio»):
   `o3/scripts/home-versions.sh` nella diagnosi `ia` del giro; rimozione di
   input e override in sessione col custode (`kb/development-environment.md`);
   by: 2026-12
-- `w5` — upstream: verifiche aperte del contratto dei motori in method
-  (il giro completo con Codex è riuscito il 2026-11-11, method `6d3938f`;
-  restano la forma reale di un errore di quota di Codex, il `git push` in
-  rete dalla sandbox di Codex, un fallback fra motori veri). probe:
-  sezione «Verified and still open» di method `o3/ciclo/fallback.md`;
-  by: 2027-01
+- `w5` — upstream: in method, scritture fuori dal checkout per la sandbox
+  di Codex (`~/.cache/nix`, demone Nix, bus utente), senza le quali un giro
+  nixos con Codex non verifica il flake né fa lo switch; poi la forma reale
+  di un errore di quota di Codex e un fallback fra motori veri. Il giro
+  completo e il push in rete da Codex sono verificati (method `6d3938f`,
+  `3b618dc`). probe: sezione «Verified and still open» di method
+  `o3/ciclo/fallback.md`; by: 2027-01
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 

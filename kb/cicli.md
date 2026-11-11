@@ -323,7 +323,10 @@ sono già raggiungibili. Provato: `codex login status` riesce in un
 recinto equivalente, e il giro a mano di method del 2026-11-11 alle 18:17,
 con Codex primo, è riuscito dall'unità `ciclo-method` (commit `3b618dc`,
 push in rete, nessun diniego). Il secondo motore si accende repo per repo nel suo
-profilo, dopo un primo giro a mano col custode.
+profilo, dopo un primo giro a mano col custode. In `nixos` è acceso di riserva
+dal 2026-11-11, ma la sandbox propria di Codex scrive solo nel checkout:
+senza `~/.cache/nix`, demone Nix e bus utente il giro fa la diagnosi e si
+ferma senza commit (`o2/ciclo-fallback-codex.md`).
 
 ## Sessioni concorrenti
 

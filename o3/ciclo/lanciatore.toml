@@ -1,5 +1,7 @@
 # Profilo del lanciatore di nixos: solo ciò che si discosta dai default.
-# Codex primo per il giro a mano del 2026-11-11 col custode (prova di
-# /manutenzione e dello switch home nella sandbox di Codex); a regime
-# l'ordine voluto dal custode è ["claude", "codex"].
-motori = ["codex", "claude"]
+# Claude primo e Codex di riserva, ordine voluto dal custode (2026-11-11).
+# Il giro a mano con Codex primo delle 18:23 si è fermato senza commit: la
+# sandbox di Codex apre in scrittura solo checkout e cartella git, e un giro
+# nixos ha bisogno di ~/.cache/nix, del demone Nix e del bus utente
+# (o2/ciclo-fallback-codex.md). Di riserva fa la diagnosi e si ferma pulito.
+motori = ["claude", "codex"]

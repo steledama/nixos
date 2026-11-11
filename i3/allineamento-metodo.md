@@ -24,8 +24,9 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
   rende `~/.codex` scrivibile nel recinto dei cicli col lanciatore e non
   tiene più minuti né budget degli altri repo: un solo paracadute in
   `registry.nix` (`kb/cicli.md`, «Lanciatore canonico»). Come adottante,
-  `nixos` resta legacy: passaggio e secondo motore sono affidati a
-  `o2/ciclo-nixos-lanciatore.md` e `o2/ciclo-fallback-codex.md`. Il gate
+  `nixos` gira col lanciatore dal 2026-11-11, `motori = ["claude",
+"codex"]`; Codex di riserva resta limitato dalla propria sandbox
+  (`o2/ciclo-fallback-codex.md`). Il gate
   col perimetro (`7485488`) è recepito nei fork di `/commit` e `/cycle`.
 - Prova locale dell'ingresso selettivo di `/exec` (2026-10-24): nucleo
   in `SKILL.md`, procedure `plan.md`, `specify.md`, `perform.md` nella
