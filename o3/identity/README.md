@@ -36,8 +36,10 @@ compilarli e creare il suo `default.nix`:
 ```
 
 Usare directory con permessi `0700` e file `0600`. La directory reale va
-preservata nel backup privato, insieme al seed; il clone pubblico da solo
-non ricostruisce le identità. `NIXOS_IDENTITY_DIR` permette di scegliere
+preservata nel seed, come note `casa/identity/…` della cassaforte personale
+(`kb/secrets-management.md`, «Identità separata dai segreti»; ripristino in
+`kb/post-installation.md`); il clone pubblico da solo non ricostruisce le
+identità. `NIXOS_IDENTITY_DIR` permette di scegliere
 una directory diversa, anche sotto `sudo` (il wrapper lo invoca dopo aver
 risolto la directory dell'utente).
 

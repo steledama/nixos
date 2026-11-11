@@ -89,6 +89,27 @@ nota() { # nome -> testo esatto della nota, su stdout
 }
 ```
 
+### Identità locale, prima di ogni build
+
+Il rebuild e lo switch passano da `o3/scripts/con-identita.sh`, che si ferma
+senza `~/.config/nixos/identity/`. Le note `casa/identity/…` vanno quindi al
+loro posto per prime:
+
+```bash
+install -d -m 700 ~/.config/nixos/identity
+( umask 077
+  for f in default.nix home.nix work.nix; do
+    nota "casa/identity/$f" > ~/.config/nixos/identity/$f
+  done
+  nota casa/identity/privacy.json > ~/.config/nixos/privacy.json )
+o3/scripts/con-identita.sh nix eval --raw \
+  '.#nixosConfigurations.<host>.config.networking.hostName'
+```
+
+L'ultima riga prova che il flake valuta con l'identità ripristinata. Finché
+le note non esistono nel seed (`secrets-management`, «Identità separata dai
+segreti»), la directory si copia da un altro host di casa con `scp -rp`.
+
 ### Voci di sistema, prima del boot
 
 - **Host key SSH** (`casa/<host>/ssh-host-ed25519`, `casa/<host>/ssh-host-rsa`):
@@ -205,6 +226,7 @@ nix develop
 ## Checklist
 
 - [ ] cassaforte aperta da zero (Gmail sul telefono), segreti al loro posto prima dei servizi
+- [ ] identità locale in `~/.config/nixos/identity/`, flake valutato col wrapper
 - [ ] hostname corretto e rebuild completato, host key SSH come prima
 - [ ] Home Manager applicato
 - [ ] chiave SSH utente disponibile, GitHub accessibile via SSH

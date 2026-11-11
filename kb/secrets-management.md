@@ -114,7 +114,9 @@ Convenzioni comuni alle voci sotto:
   `rclone-familiare`; per `neve` e `game` `ssh-utente`, `ssh-familiare`,
   `ssh-host-ed25519`, `ssh-host-rsa`, `syncthing`, `rclone`,
   `rclone-familiare`; `casa/gog-client` una sola per i
-  tre host. `syncthing` contiene `cert.pem` seguito da `key.pem`.
+  tre host. `syncthing` contiene `cert.pem` seguito da `key.pem`. Fuori da
+  questa rilevazione, decise il 2026-11-11 e ancora da creare, le voci
+  `casa/identity/…` (§ Identità separata dai segreti).
 - Rotazioni e gestori candidati descrivono procedure da collaudare; oggi
   nessuna di queste voci è consegnata da sops-nix o agenix. Nessun valore,
   token o hash di password viene registrato qui.
@@ -400,7 +402,30 @@ rimangono quelli configurati sul singolo host.
 
 Questi dati non sono segreti crittografici e finiscono nel Nix store durante
 la valutazione. La loro copia privata è però necessaria al ripristino:
-clonare il repo pubblico recupera i template, non le identità reali.
+clonare il repo pubblico recupera i template, non le identità reali, e i
+template non si attivano (`nixos-rebuild`).
+
+La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
+
+- **Host/path/modo:** `~/.config/nixos/identity/{default,home,work}.nix`,
+  `0600` in directory `0700`, sui tre host; `~/.config/nixos/privacy.json`
+  (letterali che il gate non deve lasciar pubblicare), usato dove si committa.
+- **Consumer:** `o3/scripts/con-identita.sh`, quindi ogni valutazione, build
+  e attivazione reale, di sistema e home. Serve prima del primo rebuild.
+- **Seed:** note sicure `casa/identity/default.nix`, `casa/identity/home.nix`,
+  `casa/identity/work.nix` e `casa/identity/privacy.json`, una sola serie
+  presa da `deck`. Da creare: finché il custode non le ha scritte e rilette
+  contro i file, l'unica copia è quella sugli host stessi. Che i file di
+  `game` e `neve` coincidano con quelli di `deck` non è verificato.
+- **Scrittura:** file modificati a mano a ogni cambio d'assetto (un peer, una
+  chiave autorizzata, un indirizzo): la nota va aggiornata nello stesso
+  momento, altrimenti il seed ripristina un assetto superato. La prova
+  annuale confronta anche queste voci.
+- **Prova:** con la copia ripristinata, il path dell'`activationPackage` e
+  il toplevel valutati col wrapper coincidono con quelli attivi
+  (`home-drift.sh`, `system-drift.sh`). Non ancora eseguita.
+- **Senza seed:** copiare la directory da un altro host di casa; se sono
+  persi tutti, si ricompilano i template a mano da router, peer e pannelli.
 
 I segreti _crittografici_ veri (chiavi private, password, `rclone.conf`) restano
 file locali gitignorati referenziati per path, mai importati come valori Nix.
@@ -421,6 +446,7 @@ I file privati veri restano locali agli host e non entrano in Git.
 
 File e directory critici da preservare:
 
+- `~/.config/nixos/identity/` (non segreta, ma senza non si ricostruisce)
 - `~/.ssh/id_ed25519`
 - `~/.config/rclone/rclone.conf`
 - `/etc/wireguard/casa-vpn.key`
