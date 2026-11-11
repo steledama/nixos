@@ -6,26 +6,27 @@
 # units ciclo-<repo> only on the host named here: one value of `host` per
 # repo, so "a single host keeps a repo's autonomous cycle" holds by construction.
 #
-# Boundary: nixos decides where and when, the repo decides what. The round's
-# prompt (`prompt`) and the cycle's permissions (`settings`) are files of
-# the repo; the module invokes them without knowing what the round does.
+# Boundary: nixos decides where and when, the repo decides what. Every cycle
+# runs method's canonical launcher (o3/lanciatore.py of the checkout
+# `canone`, default "method"; method from 2026-11-08, the others from
+# 2026-11-11): branch, prompt, permissions, time cap, budget and engines
+# (motori) are the repo's, in o3/ciclo/ (lanciatore.toml, prompt.md,
+# permessi.json), and the registry holds none of them. The outer unit has
+# no namespace; the agent alone runs in the fence, a transient unit
+# ciclo-<repo>-agente; both carry the single parachute of
+# modules/home/ciclo/registry.nix. The unit passes --claude and --codex:
+# the repo's profile decides whether Codex ever runs.
 #
 # Fields:
 # - host: networking hostName of the only host that runs the autonomous cycle
 #   (null only for state "esterno");
 # - checkout: path of the checkout relative to the home;
-# - branch: the branch the round expects; any other stops it;
 # - cadence + time: OnCalendar of the timer, "<cadence> <time>";
-# - maxRuntime: RuntimeMaxSec of the unit; maxBudgetUsd: --max-budget-usd
-#   (legacy cycles only: a launcher cycle that sets them fails evaluation);
 # - state: "manuale" (unit present, started only by hand with systemctl
 #   --user start), "timer" (scheduled), "esterno" (outside nixos, no unit);
-# - settings, prompt: paths in the repo; defaults o3/ciclo/permessi.json and
-#   o3/ciclo/prompt.md, shared by the cycle and presentation modules through
-#   modules/home/ciclo/registry.nix;
-# - giri: folder of the checkout, ignored by git, for tentativi.jsonl,
-#   ultimo.json and giri/<id>.jsonl; default i1/giri, null to keep traces
-#   in the unit's state directory. The view gets --ciclo-unita when non-null;
+# - giri: folder of the checkout, ignored by git, where the launcher writes
+#   tentativi.jsonl, ultimo.json and giri/<id>.jsonl; default i1/giri,
+#   read by the view (presentations.nix through modules/home/ciclo/registry.nix);
 # - readWritePaths, readOnlyPaths, inaccessiblePaths: fence of the unit,
 #   relative to the home or absolute (readWritePaths and inaccessiblePaths),
 #   on top of a read-only home; a readOnlyPaths entry
@@ -39,21 +40,10 @@
 #   inside it), 15 seconds per checkout, with the unit's start timeout sized
 #   on the list; outcome in fetch.json of the state directory, with the ts
 #   of the last successful fetch kept across failures (ultimo_riuscito).
-# - lanciatore: the unit runs method's canonical launcher (o3/lanciatore.py
-#   of the checkout `canone`, default "method") instead of ciclo-avvio:
-#   sessions, pull, traces in i1/giri and closing line are the launcher's,
-#   time cap, budget and engines (motori) come from the repo's
-#   o3/ciclo/lanciatore.toml (defaults 45 minutes, 5 USD, claude only):
-#   the registry holds no maxRuntime, agentMaxRuntime or maxBudgetUsd for
-#   it. The outer unit has no namespace; the agent alone runs in the fence,
-#   a transient unit ciclo-<repo>-agente; both carry the single parachute
-#   of modules/home/ciclo/registry.nix. The script passes --claude and
-#   --codex: the repo's profile decides whether Codex ever runs.
 {identity ? import ./identity}: {
   salute = {
     host = "deck";
     checkout = "salute";
-    branch = "main";
     # 09:00 from 2026-10-24: Android's automatic clock sync arrives late and
     # the extra half hour gives it time (custodian, salute 1e599e7). 08:30
     # from 2026-10-20: the night and the early morning yoga or meditation
@@ -62,9 +52,6 @@
     # from 2026-10-11).
     cadence = "*-*-*";
     time = "09:00";
-    # Canonical launcher from 2026-11-11 (custodian; method fce8afe):
-    # minutes, budget and engines in salute's o3/ciclo/lanciatore.toml.
-    lanciatore = true;
     state = "timer";
     readWritePaths = [
       "${identity.home.personalDrive}/salute"
@@ -86,14 +73,11 @@
   economia = {
     host = "deck";
     checkout = "economia";
-    branch = "main";
     cadence = "*-*-*";
     # 14:00 from 2026-10-21 (custodian): at 13:00 the custodian's open
     # session stopped the round; its 45 minutes end before method.
     time = "14:00";
-    # Canonical launcher from 2026-11-11, as salute: the profile's default
-    # 45 minutes end before method at 15:00.
-    lanciatore = true;
+    # The launcher profile's default 45 minutes end before method at 15:00.
     # Step 1 from 2026-10-16 (custodian): four manual rounds (economia
     # 368bf9a, 2430f5a, 882601a, 086f13b); the last two clean, the second
     # one's misfiled bill fixed by the custodian (cda8da0).
@@ -113,14 +97,9 @@
   nixos = {
     host = "deck";
     checkout = "nixos";
-    branch = "main";
     cadence = "*-*-*";
     # 04:30 from 2026-10-18 (custodian): the report is ready on waking.
     time = "04:30";
-    # Canonical launcher from 2026-11-11 (custodian; o2/ciclo-nixos-lanciatore.md):
-    # minutes, budget and engines in o3/ciclo/lanciatore.toml, defaults
-    # 45 minutes, 5 USD, Claude only.
-    lanciatore = true;
     # Step 1 from 2026-10-17 (custodian), without waiting for a round with
     # real bumps and switch: that part of the perimeter is tested by the
     # first round that finds them due (method o2/pilota-ciclo-autonomo.md).
@@ -134,14 +113,8 @@
   method = {
     host = "deck";
     checkout = "method";
-    branch = "main";
     cadence = "*-*-*";
     time = "15:00";
-    # Canonical launcher from 2026-11-08 (custodian; method
-    # o2/lanciatore-ciclo-nel-metodo.md, step 2, launcher at 477b442 or
-    # later). Minutes and budget in method's o3/ciclo/lanciatore.toml; the
-    # units keep only the parachute of registry.nix.
-    lanciatore = true;
     # Step 1 from 2026-10-17 (custodian; method 519d162).
     state = "timer";
     # Fetch adopters' markers before the round, outside its read-only home.

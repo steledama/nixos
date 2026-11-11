@@ -6,9 +6,6 @@
   registry ? import ../../../cicli.nix {inherit identity;},
 }: let
   defaults = {
-    branch = "main";
-    settings = "o3/ciclo/permessi.json";
-    prompt = "o3/ciclo/prompt.md";
     giri = "i1/giri";
     readWritePaths = [];
     readOnlyPaths = [];
@@ -16,11 +13,11 @@
     homeWritable = false;
     wrappers = {};
     fetch = [];
-    lanciatore = false;
     canone = "method";
-    agentMaxRuntime = null;
   };
-  # With the canonical launcher, minutes and budget are the repo's policy, in
+  # Every cycle runs method's canonical launcher (from 2026-11-11 the last
+  # legacy ones moved): branch, prompt, permissions, minutes, budget and
+  # engines are the repo's policy, in
   # its o3/ciclo/lanciatore.toml (method o3/motori-del-ciclo.md): the host
   # keeps no value per repo, only one physical parachute above any profile,
   # the same for all. The agent's unit ends first, so the launcher still
@@ -36,20 +33,18 @@ in
     else let
       d = defaults // entry;
     in
-      lib.throwIf ((entry.lanciatore or false) && (entry ? maxRuntime || entry ? agentMaxRuntime || entry ? maxBudgetUsd))
-      "cicli.nix: ${repo} usa il lanciatore: minuti e budget stanno nel suo o3/ciclo/lanciatore.toml, non nel registro"
+      lib.throwIf (lib.any (k: entry ? ${k}) ["maxRuntime" "agentMaxRuntime" "maxBudgetUsd" "branch" "settings" "prompt" "lanciatore"])
+      "cicli.nix: ${repo} dichiara un campo del vecchio ciclo: branch, prompt, permessi, minuti e budget stanno nel suo o3/ciclo/lanciatore.toml"
       d
-      // lib.optionalAttrs d.lanciatore {
+      // {
         maxRuntime = paracadute.esterno;
         agentMaxRuntime = paracadute.agente;
-      }
-      // {
-        # Protect the cycle's own instructions even with a writable home. With
-        # the canonical launcher, also what git runs from the launcher outside
-        # the fence: the round never writes them (method o3/lanciatore.py).
+        # Protect the cycle's own instructions even with a writable home, and
+        # what git runs from the launcher outside the fence: the round never
+        # writes them (method o3/lanciatore.py).
         readOnlyPaths = lib.unique (d.readOnlyPaths
-          ++ ["${d.checkout}/o3/ciclo"]
-          ++ lib.optionals d.lanciatore [
+          ++ [
+            "${d.checkout}/o3/ciclo"
             "${d.canone}/o3/lanciatore.py"
             # Canonical protected path from method de73101: a round that
             # changed it would weaken the policy of the next ones.

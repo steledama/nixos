@@ -274,25 +274,22 @@ anticipare la decisione sulla propagazione.
 
 ## Intervallo revisionato
 
-`d26c1328b13c5e6e5755555df681f32f87190af9..18a9f5a0be70648dc699020cd248e2ca8487308d`:
-3 commit, revisionati il 2026-11-10.
+`6aa4ea82222f5c3c289938f2eb87c97f2ea57521..47289138f25b703e6a4bfc8c3acdce2ad0402171`:
+7 commit, revisionati il 2026-11-11.
 
-- **Già soddisfatto:** `0896918`, le sessioni ferme non impediscono il giro;
-  quelle concorrenti ne bloccano il commit. La realizzazione locale è
-  `beb75bc`, in `o3/modules/home/ciclo/ciclo-concorrenti.sh`, agganciata
-  dall'avvio e registrata dalla chiusura. NixOS conserva il proprio lanciatore
-  fino alla prescrizione di migrazione del canone.
-- **Già soddisfatto:** `18a9f5a`, conta una chiamata agli strumenti durante il
-  giro, non la sola scrittura del transcript. Correzione locale `03449de`,
-  verificabile nello stesso hook e nei test sintetici per Claude e Codex.
-- **Non pertinente:** `b44436f`, resoconto, fili e task interni del canone;
-  nessuna nuova prescrizione per `nixos`.
+- **Già soddisfatto:** `0eeb2db` e `dbe78b8`, l'esecutore Codex col solo
+  recinto dell'host, letto dal canone; provati dal giro `5769c3c`.
+  `10c09e7`, codice canonico dell'esecutore letto dal recinto.
+- **Adattamento:** `4728913`, il runbook del giro a mano (sessione ferma,
+  `start --wait`) in `kb/cicli.md`, «Sessioni concorrenti» e «Uso».
+- **Non pertinente:** `da94452`, `dc6e902`, `dcadab3`, il profilo di method.
 
-Nessun adattamento nuovo né task locale. Nessuna modifica a skill,
-configurazioni o permessi; nessuna verifica runtime sugli host compiuta da
-questa revisione. I passaggi precedenti sono nella storia di questo file.
+Prescrizione `motori-del-ciclo` riletta: recepita. A revisione chiusa, col
+passaggio di tutti e quattro i cicli al lanciatore, `nixos` ha rimosso il
+proprio percorso dell'host (`ciclo-avvio`, `ciclo-chiusura`,
+`ciclo-namespace`, l'hook `ciclo-concorrenti`) e i campi del registro che
+servivano solo a lui. I passaggi precedenti sono nella storia di questo file.
 
 Verifiche della revisione: audit strutturale, inventory, facts, coverage,
-fidelity e `o3/tools/check.sh` riusciti; nessun segnale di drift deterministico.
-Riletto il target dopo l'aggiornamento del marker: intervallo vuoto e nessuna
-prescrizione aperta, nessun ulteriore recepimento necessario.
+fidelity e `o3/tools/check.sh` riusciti. Riletto il target dopo
+l'aggiornamento del marker: intervallo vuoto.

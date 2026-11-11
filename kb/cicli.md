@@ -12,59 +12,58 @@ gradini vivono in method (`o2/dove-gira-il-ciclo-autonomo.md`,
 
 ## Decisioni e meccanismo
 
-- **`o3/cicli.nix`**, le decisioni: per ogni repo host, checkout, branch,
-  cadenza e orario, tempo massimo, budget, stato (`manuale`, `timer`,
-  `esterno`) e recinto. Un solo `host` per repo: un solo host tiene il
-  ciclo autonomo di un repo per costruzione. I cicli di `bi` e `baserow` su
-  `svezia` e `danea-auto` (Task Scheduler) li dichiara il repo
-  `example-org/nixos-ufficio`.
+- **`o3/cicli.nix`**, le decisioni: per ogni repo host, checkout, cadenza e
+  orario, stato (`manuale`, `timer`, `esterno`) e recinto. Un solo `host`
+  per repo: un solo host tiene il ciclo autonomo di un repo per
+  costruzione. I cicli di `bi` e `baserow` su `svezia` e `danea-auto` (Task
+  Scheduler) li dichiara il repo `example-org/nixos-ufficio`.
 - **`o3/modules/home/cicli.nix`**, il meccanismo: importato da tutti i
-  profili in `o3/home/default.nix`, genera `ciclo-<repo>.service` solo dove
-  `host` coincide con l'`hostname` del profilo, e il `.timer` solo in stato
-  `timer`. Pubblica anche il quadro completo in
+  profili in `o3/home/default.nix`, genera `ciclo-<repo>.service` e la sua
+  sonda solo dove `host` coincide con l'`hostname` del profilo, e il
+  `.timer` solo in stato `timer`. Pubblica anche il quadro completo in
   `~/.local/state/ciclo/decisioni.json`.
 
-Confine: `nixos` decide dove e quando, il repo decide cosa. Il prompt del giro
-e i permessi del solo ciclo autonomo (passati con `--settings` e
-`--setting-sources project`) sono file del repo, parametrizzabili per repo
-(`prompt`, `settings`). Il lettore condiviso
-`o3/modules/home/ciclo/registry.nix` applica a cicli e presentazioni i default
-`o3/ciclo/prompt.md`, `o3/ciclo/permessi.json` e `i1/giri`; il registro
-`o3/cicli.nix` dichiara soltanto le eccezioni. Le voci `esterno`, prive di
-checkout, restano fuori dai default NixOS.
+Confine: `nixos` decide dove e quando, il repo decide cosa. Ogni ciclo gira
+col lanciatore canonico di method (sezione «Lanciatore canonico»): branch,
+prompt, permessi, minuti, budget e motori sono file del repo in
+`o3/ciclo/` (`lanciatore.toml`, `prompt.md`, `permessi.json`), e il registro
+non ne tiene nessuno; `registry.nix` fallisce la valutazione se ne trova
+uno. Il lettore condiviso `o3/modules/home/ciclo/registry.nix` applica a
+cicli e presentazioni i default (`giri = i1/giri`, `canone = method`, il
+paracadute); il registro dichiara soltanto le eccezioni. Le voci `esterno`,
+prive di checkout, restano fuori dai default NixOS.
 
-Il lettore aggiunge `<checkout>/o3/ciclo` ai `readOnlyPaths`, senza
-duplicati e anche con `homeWritable`: il giro non modifica le proprie
-istruzioni. Un repo può sovrascrivere prompt e settings e dichiarare
-ulteriori percorsi protetti; `giri = null` conserva le tracce nello stato
-utente. `decisioni.json` pubblica le decisioni esplicite del registro,
-mentre i JSON delle unità contengono i valori effettivi con i default.
-I nuovi adottanti devono avere i file e la cartella giri ignorata da Git
-prima di attivare il ciclo, altrimenti l'avvio si ferma con codice `14`.
+Il lettore aggiunge ai `readOnlyPaths`, senza duplicati e anche con
+`homeWritable`, `<checkout>/o3/ciclo` e ciò che git esegue dal lanciatore
+fuori dal recinto: il giro non modifica le proprie istruzioni.
+`decisioni.json` pubblica le decisioni esplicite del registro col
+paracadute come `maxRuntime`. I nuovi adottanti devono avere i file del
+ciclo e la cartella giri ignorata da Git prima di attivare il ciclo,
+altrimenti il lanciatore si ferma con codice `14`.
 
 Ciò che vale per tutte le sessioni lo passa l'unità, perché `--setting-sources
 project` salta `~/.claude/settings.json`: le variabili d'ambiente in
-`Environment`, e le impostazioni host-wide in `hostSettings` del modulo
-(oggi `attribution` vuoto, decisione del custode del 2026-10-11, method
-`e5a57bb`). `ciclo-avvio` le fonde sopra i permessi del repo (`settings`, vince
-l'unità) in `~/.local/state/ciclo/<repo>/settings.json`, che è il file
-passato a `--settings`; la sonda fa la stessa fusione e ne registra
-`attribution`. Verificato su claude 2.1.295 in `-p`: senza la fusione il
-commit porta il trailer `Co-Authored-By`, con la fusione no.
+`Environment`. L'`attribution` vuota (decisione del custode del 2026-10-11,
+method `e5a57bb`) la fonde il lanciatore stesso nei permessi del giro, in
+`.git/lanciatore/settings.json`. Verificato su claude 2.1.295 in `-p`:
+senza la fusione il commit porta il trailer `Co-Authored-By`, con la
+fusione no.
 
 Unità utente, non di sistema: il lingering è attivo su `deck`,
 lo switch è home-level, e l'unità trova nella home le credenziali di Claude
 (`~/.claude/.credentials.json`) e la chiave ssh senza passphrase, usata con
-`BatchMode` e senza agent. Claude è il pacchetto di `pkgs-ai` fissato nel
-modulo, non quello del profilo.
+`BatchMode` e senza agent. Claude e Codex sono i pacchetti di `pkgs-ai`
+fissati nel modulo, non quelli del profilo.
 
 ## Recinto
 
-L'unità è il recinto vero: la home è in sola lettura e restano scrivibili il
-checkout, la cartella di stato, `~/.claude` e `~/.claude.json` e i path che il
-repo dichiara; i path inaccessibili si dichiarano per repo. `Type=exec` con
-`RuntimeMaxSec` (su `oneshot` non ha effetto), `NoNewPrivileges`, stdin nullo,
-`GIT_TERMINAL_PROMPT=0`, `GIT_SSH_COMMAND="ssh -o BatchMode=yes"`.
+Il recinto vero è l'unità transitoria dell'agente: la home è in sola
+lettura e restano scrivibili il checkout, la cartella di stato, `~/.claude`,
+`~/.claude.json`, `~/.codex` e i path che il repo dichiara; i path
+inaccessibili si dichiarano per repo. `RuntimeMaxSec`, `NoNewPrivileges`,
+`GIT_TERMINAL_PROMPT=0`, `GIT_SSH_COMMAND="ssh -o BatchMode=yes"`. L'unità
+esterna è `Type=exec` (su `oneshot` `RuntimeMaxSec` non ha effetto), quindi
+`systemctl --user start` torna subito.
 
 I wrapper di comando (`wrappers` in `cicli.nix`) stanno in testa al `PATH`
 dell'unità e aggiungono sempre gli argomenti dichiarati: in `salute`, `gog`
@@ -85,36 +84,21 @@ credenziali dentro l'unità. Lo stream del giro resta la traccia di un aggiramen
 
 ## Avvio e arresti
 
-`ciclo-avvio` controlla prima di Claude, senza mai merge, rebase o stash.
-Ogni arresto lascia unità fallita, motivo e codice di uscita:
+I controlli prima dell'agente e i codici di uscita sono del lanciatore
+(docstring di method `o3/lanciatore.py`): fra gli altri `75` lock, `10`
+working tree sporco, `11` branch, `14` profilo o file del ciclo mancanti,
+`15` sessione concorrente, `23` percorsi protetti toccati, `24` `fermo`
+presente, `25` arresto del recinto non verificato. Senza mai merge, rebase
+o stash; il commit e il push li fa il giro.
 
-- `75` un altro ciclo tiene il lock (`flock` nella cartella di stato);
-- `11` branch diverso da quello dichiarato, o senza upstream;
-- `10` working tree sporco;
-- `13` fetch o `pull --ff-only` falliti, o un pull che cambierebbe un
-  `readOnlyPaths` del checkout (`pull-in-sola-lettura`: fallirebbe a metà sul
-  recinto e lascerebbe il tree sporco; il pull va fatto fuori dall'unità);
-- `12` branch divergente da `origin`; solo avanti si procede (il push lo fa il
-  giro), solo indietro si fa `pull --ff-only`;
-- `14` prompt o permessi del ciclo mancanti nel repo, o cartella `giri` non
-  ignorata da git;
-- `15` un'altra sessione ha lavorato nel checkout durante il giro, e
-  `ciclo-concorrenti` ne ha bloccato il commit (`sessione-concorrente`, vedi
-  sotto);
-- `20` Claude esce con codice non zero, `21` Claude riporta `is_error`;
-- `16`, solo nella sonda: il recinto reale differisce da quello dichiarato.
-
-- `226` systemd non riesce a preparare il namespace, prima di
-  `ciclo-avvio`: per esempio un path di `readWritePaths` su un mount Drive
-  che risponde I/O error perché `deck` non risolve i nomi (2026-10-14,
-  `i1/ciclo-salute-namespace-20261014.md`). Anche `ciclo-chiusura` fallisce
-  nello stesso namespace, quindi la chiusura la scrive `ciclo-namespace`,
-  primo `ExecStopPost` con `+`, fuori dal recinto: agisce solo su `226`,
-  registra `esito: errore`, `motivo: namespace` senza riga di partenza, e
-  non legge nulla che il giro possa scrivere (niente git nel checkout,
-  dove un hook o `core.fsmonitor` del giro girerebbe senza recinto).
-
-L'unità non committa né spinge: lo decide il giro del repo.
+Fino al 2026-11-11 i cicli di salute, economia e nixos avevano un percorso
+proprio dell'host (`ciclo-avvio`, `ciclo-chiusura`, `ciclo-namespace`,
+l'hook `ciclo-concorrenti`), rimosso quando tutti e quattro sono passati
+al lanciatore; la sua storia è in git. Fra le lezioni che ha lasciato:
+un namespace che systemd non riesce a preparare (`226`, un path di
+`readWritePaths` su un mount Drive in I/O error, 2026-10-14,
+`i1/ciclo-salute-namespace-20261014.md`) ferma l'unità prima di qualunque
+script nel recinto.
 
 ## Atti remoti
 
@@ -154,44 +138,24 @@ costruiscono la stessa home.
 
 ## Esito dei tentativi
 
-In `~/.local/state/ciclo/<repo>/`, leggibile dalla home dello stesso host,
-oppure nella cartella del checkout che la voce dichiara come `giri` (canone
-`i1/giri`, ignorata da git; method per primo, il 2026-10-19). Lì il giro può
-riscriverli: il custode ha accettato che le tracce stiano nel perimetro del
-giro. `ciclo-avvio` sceglie la cartella dopo il pull d'avvio, con `git
-check-ignore`: gli arresti precedenti (lock, branch, tree, fetch e pull) e
-quelli di `ciclo-namespace`, che gira fuori dal recinto e non scrive mai nel
-checkout, restano nello stato; il primo
-tentativo che passa il controllo li sposta nella cartella in ordine
-cronologico, prima della propria partenza, e la prima volta porta con sé lo
-storico. Lock, `corrente.json`, `sonde.jsonl` e il `settings.json` fuso
-restano sempre nello stato.
+Le tracce le scrive il lanciatore nella cartella `giri` del checkout
+(canone `i1/giri`, ignorata da git), dove il giro può riscriverle: il
+custode ha accettato che stiano nel suo perimetro. Lock e `settings.json`
+fuso stanno in `.git/lanciatore/`; la `StateDirectory` dell'unità tiene
+`fetch.json` e `sonde.jsonl`.
 
-- `tentativi.jsonl`: due righe per tentativo con l'id di systemd
-  (`INVOCATION_ID`, lo stesso del journal). `partenza` la scrive l'avvio;
-  `chiusura` la scrive `ciclo-chiusura` da `ExecStopPost`, che gira anche
-  dopo timeout e kill (dopo un fallimento del namespace la sostituisce `ciclo-namespace`): esito (`riuscito`, `arresto`, `errore`, `timeout`),
-  motivo, risultato e codice di systemd, `HEAD` prima e dopo, commit, push
-  (`HEAD` uguale a `@{u}`), `oggetto` (prima riga del commit del giro, `null`
-  se `HEAD` non si è mosso), tree sporco dopo, `is_error`, numero di
-  `permission_denials` e `dinieghi` (lista di `{tool, input}`, input =
-  comando, file o URL troncato a 1000 caratteri), costo, turni e durata:
-  quanto basta a leggere il giro senza aprire i trascritti chiusi;
-- `giri/<id>.jsonl`: lo stream di Claude (`--output-format stream-json
---verbose`), un evento per riga, ogni comando del giro compreso: rende
-  leggibile dopo un aggiramento del recinto. Gli ultimi 60, mai pubblicati;
-  la chiusura ricava `is_error`, negazioni, costo e durata dall'evento finale
-  `result`, assente se il giro è interrotto;
+- `tentativi.jsonl`: righe `partenza` e `chiusura` per tentativo. La
+  chiusura porta esito, motivo, codice, motore (`engine`,
+  `engine_attempts`), commit del giro e degli altri, push, `oggetto`, tree
+  sporco dopo, dinieghi, costo e durata; il contratto è in method
+  `o3/ciclo/fallback.md`;
+- `giri/<id>.jsonl`: lo stream dell'agente, un evento per riga, ogni
+  comando del giro compreso: rende leggibile dopo un aggiramento del
+  recinto. Mai pubblicati;
 - `ultimo.json`: l'ultima chiusura.
 
-Forma minima: il contratto definitivo con la home si concorda in method.
-
-`SERVICE_RESULT=success` da solo non prova che il giro sia riuscito:
-con `Type=exec` anche uno stop manuale con SIGTERM può produrlo. La
-chiusura richiede inoltre uscita normale dell'avvio con codice 0,
-`claude_exit: 0` e un evento `result` con `is_error: false`. Un risultato
-systemd `success` senza queste conferme diventa `arresto`, motivo
-`interrotto`; timeout ed eventuali motivi espliciti conservano il loro esito.
+`SERVICE_RESULT=success` da solo non prova che il giro sia riuscito: va
+letta la chiusura.
 
 ## Nella vista
 
@@ -213,7 +177,7 @@ una vista permanente in `presentations.nix` che quell'host non serve.
 ## Lanciatore canonico
 
 Dal 2026-11-08 `method` e dal 2026-11-11 `salute`, `economia` e `nixos`
-(`lanciatore = true` nel registro) non usano più `ciclo-avvio`. Per `nixos`
+girano col lanciatore canonico. Per `nixos`
 il recinto dell'agente tiene la home scrivibile (`homeWritable`, lo switch
 di `/manutenzione`) più i percorsi protetti del lanciatore; i permessi del
 giro negano già la scrittura su quelli canonici (`CLAUDE.md`, `AGENTS.md`,
@@ -226,8 +190,8 @@ lanciatore; restano all'unità `ciclo-fetch` e la `StateDirectory`
 (`fetch.json`, `sonde.jsonl`). Minuti, budget e motori sono del profilo del
 repo (`o3/ciclo/lanciatore.toml`, default 45 minuti, 5 USD e solo Claude):
 dal 2026-11-11 (method `201a6eb`, prescrizione `motori-del-ciclo`) il
-registro non tiene per questi cicli né `maxRuntime` né `agentMaxRuntime`
-né `maxBudgetUsd`, e `registry.nix` fallisce la valutazione se li trova. Il task è `o2/lanciatore-ciclo-nel-metodo.md` di method, passo 2.
+registro non tiene né `maxRuntime` né `agentMaxRuntime` né
+`maxBudgetUsd`.
 
 Solo l'agente sta nel recinto, passato con `--recinto`: un'unità transitoria
 `ciclo-method-agente` di `systemd-run --user --wait --pipe`, con lo stesso
@@ -248,7 +212,7 @@ l'unità `not-found`, vuole lo stato `inactive` o `failed` e il cgroup in
 `app.slice` (esplicito nel recinto) assente o vuoto. Provato su unità
 transitorie vere, uscita normale e unità viva, e su un `systemctl` finto
 per i tre rifiuti. Sopra i minuti del profilo l'host tiene un solo
-paracadute fisico, uguale per tutti i cicli col lanciatore
+paracadute fisico, uguale per tutti i cicli
 (`registry.nix`): agente 85 minuti, unità esterna 90, che la vista usa
 anche per il ritardo di chiusura (`decisioni.json`). Un profilo oltre gli 80
 minuti chiede di alzarlo.
@@ -287,9 +251,8 @@ dev'essere almeno a `477b442`, che introduce `--recinto-ferma`.
 La sonda `ciclo-method-sonda` è `lanciatore.py --controlli`, fuori da ogni
 namespace come il lanciatore, più `ciclo-recinto` in un'unità transitoria
 `ciclo-method-sonda-recinto` col recinto dell'agente. Una sessione aperta
-(`15`) con un recinto sano salta la sonda con codice `0`, come faceva
-l'`ExecCondition`. La riduzione della sonda è una proposta della sessione di
-casa: la decide il custode.
+(`15`) con un recinto sano salta la sonda con codice `0`. La riduzione
+della sonda è una proposta della sessione di casa: la decide il custode.
 
 Collaudo di `salute` ed `economia` del 2026-11-11 su `deck`: sonde superate,
 poi un giro a mano di ciascuno, avviati insieme alle 17:19:55. Entrambi
@@ -307,8 +270,7 @@ lanciatore legge il cambio di `HEAD`, non chi ha committato.
 Da method `fce8afe` la chiusura porta `engine`, `engine_attempts` con
 l'osservazione del provider di ogni tentativo e `costo_usd` cumulato: un
 rifiuto per quota esaurita resta leggibile in `i1/giri/tentativi.jsonl` di
-ogni ciclo col lanciatore. Il percorso legacy non riceve questa
-osservazione.
+ogni ciclo.
 
 Da method `201a6eb` il motore lo sceglie il repo, con `motori` nel proprio
 profilo (per esempio `["claude", "codex"]`, anche al contrario). Il secondo
@@ -317,7 +279,7 @@ atto. Codex passa dall'esecutore canonico `o3/esecutore_codex.py` di
 method, che traduce `permessi.json` e l'hook sul commit; senza tetto in USD
 la chiusura dichiara `budget_usd_imposto: false`. La parte dell'host su
 `deck`, dal 2026-11-11: lo script `lancia` passa `--codex` col binario di
-`pkgs-ai`, e il recinto dei cicli col lanciatore ha `~/.codex` scrivibile
+`pkgs-ai`, e il recinto dei cicli ha `~/.codex` scrivibile
 (sessioni, rinnovo di `auth.json`). Interprete Python nello store e rete
 sono già raggiungibili. Provato: `codex login status` riesce in un
 recinto equivalente, e il giro a mano di method del 2026-11-11 alle 18:17,
@@ -338,43 +300,34 @@ Le sessioni aperte non si controllano prima del giro ma al commit (custode,
 2026-11-10): una sessione Claude o Codex lasciata aperta e inattiva nel
 checkout è innocua e non deve fermare il ciclo; conta solo una che lavora
 mentre il giro gira, perché il commit del giro potrebbe portarsi dietro le
-sue modifiche. Prima il controllo stava in `ciclo-sessioni`, prima del lock:
-un processo Claude con la cwd nel checkout, o un rollout Codex scritto negli
-ultimi 60 minuti, fermavano il giro (economia, 2026-11-10 alle 14:00: una
-sessione Codex ferma dalle 13:34 ha fatto saltare il giro).
+sue modifiche. Prima il controllo stava prima del lock: un processo Claude
+con la cwd nel checkout, o un rollout Codex scritto negli ultimi 60
+minuti, fermavano il giro (economia, 2026-11-10 alle 14:00: una sessione
+Codex ferma dalle 13:34 ha fatto saltare il giro).
 
-`ciclo-avvio` tocca il marker `inizio-giro` nella cartella di stato subito
-prima di lanciare Claude. `ciclo-concorrenti` è un hook `PreToolUse` su
-`Bash` negli `hostSettings` di ogni giro: davanti a un `git commit` cerca i
-transcript aggiornati dopo il marker, cioè
+Lo fa `lanciatore.py`: davanti al commit del giro cerca i transcript con
+attività dopo la partenza, cioè
 
 - `~/.claude/projects/<checkout codificato>/*.jsonl` (ogni carattere non
-  alfanumerico del path diventa `-`; il giro gira con
-  `--no-session-persistence` e non ne lascia di suoi);
+  alfanumerico del path diventa `-`; il giro non ne lascia di suoi);
 - `~/.codex/sessions/**/rollout-*.jsonl` con la cwd della `session_meta` nel
   checkout (le sessioni Codex sono thread del daemon `app-server`, la cui
   cwd è dove è nato: `/proc` non le vede).
 
-Se ne trova, blocca il commit con codice 2 e dice al giro di non riprovare,
-lasciare il tree com'è e dichiararlo in `Attenzione:`; scrive
-`concorrenti.json`, che `ciclo-avvio` legge dopo Claude per fermarsi con `15
-sessione-concorrente`. La riga di chiusura porta `sessioni_concorrenti`, il
+Se ne trova, blocca il commit e chiude con `15 sessione-concorrente`; il
 tree resta sporco e il giro successivo si ferma su `10` finché il custode
 non riconcilia. Una sessione che scrive solo dopo il commit del giro trova
-il commit già fatto, come dopo un pull. I cicli col lanciatore canonico, dal
-2026-11-11 tutti e quattro, non hanno il marker e l'hook non fa nulla: lì le
-sessioni le controlla `lanciatore.py`, con lo stesso criterio.
+il commit già fatto, come dopo un pull.
 
-Il timestamp di modifica è solo un prefiltro. Come nel lanciatore canonico
-(method `18a9f5a`), si leggono gli ultimi 4 MiB dal fondo fino al primo evento
-con timestamp non successivo al marker. Conta solo una chiamata a uno
-strumento: per Claude un evento `assistant` con `tool_use` in
-`message.content`; per Codex un `response_item` con `payload.type` che
-finisce in `_call`. Testo, output degli strumenti ed eventi senza timestamp
-valido non contano.
+Il timestamp di modifica è solo un prefiltro (method `18a9f5a`): si leggono
+gli ultimi 4 MiB dal fondo fino al primo evento con timestamp non
+successivo alla partenza. Conta solo una chiamata a uno strumento: per
+Claude un evento `assistant` con `tool_use` in `message.content`; per
+Codex un `response_item` con `payload.type` che finisce in `_call`. Testo,
+output degli strumenti ed eventi senza timestamp valido non contano.
 
-La sessione che avvia il giro può quindi scrivere la risposta dopo il
-marker senza bloccarlo. Una successiva chiamata a uno strumento conta ancora,
+La sessione che avvia il giro può quindi scrivere la risposta dopo la
+partenza senza bloccarlo. Una successiva chiamata a uno strumento conta ancora,
 anche per leggere `journalctl` o `systemctl status`, o per aspettare la fine:
 il giro a mano si lancia da un terminale separato, o dalla sessione come
 ultimo atto, e le sessioni del checkout restano ferme finché non finisce
@@ -389,13 +342,12 @@ systemd-run --user --on-active=120s --collect systemctl --user start ciclo-econo
 
 ## Sonda
 
-`ciclo-<repo>-sonda` è la stessa unità, recinto compreso, in modalità sonda
-(`CICLO_SONDA=1`): gli stessi controlli di sola lettura (lock, branch,
-tree, prompt e permessi), niente fetch né pull, mai Claude.
-Poi prova il recinto con `test -r`/`test -w`, senza scrivere: home e
-`readOnlyPaths` in sola lettura, checkout, stato e `readWritePaths`
-scrivibili, `inaccessiblePaths` illeggibili. Esito in `sonde.jsonl`, separato
-dai tentativi.
+`ciclo-<repo>-sonda` lancia `lanciatore.py --controlli`, in sola lettura,
+niente fetch né pull, mai l'agente; poi `ciclo-recinto` in un'unità
+transitoria col recinto dell'agente prova il recinto con `test -r`/`test
+-w`, senza scrivere: home e `readOnlyPaths` in sola lettura, checkout,
+stato e `readWritePaths` scrivibili, `inaccessiblePaths` illeggibili. Esito
+in `sonde.jsonl`, separato dai tentativi.
 
 ## Uso
 
@@ -405,7 +357,7 @@ systemctl --user start ciclo-salute         # avvio a mano, fuori cadenza
 systemctl --user start --wait ciclo-salute  # idem, e aspetta la fine
 systemctl --user list-timers 'ciclo-*'      # prossima partenza
 journalctl --user -fu ciclo-salute
-jq . ~/.local/state/ciclo/salute/ultimo.json
+jq . ~/salute/i1/giri/ultimo.json
 ```
 
 Salute è al gradino 1 dal 2026-10-11: timer ogni giorno alle 09:00 dal
@@ -447,7 +399,7 @@ Su `deck`, 2026-10-11, salute:
   e `gdrive-personale/salute` scrivibile;
 - **controllo `15`**: dentro il namespace dell'unità `/proc/<pid>/cwd` degli
   altri processi è negato. Fino al 2026-11-10 il controllo stava quindi
-  prima del giro, in `ciclo-sessioni` fuori dal namespace; oggi è a valle e
+  prima del giro, fuori dal namespace; oggi è a valle e
   legge i transcript, che dal recinto sono leggibili (sezione «Sessioni
   concorrenti»);
 - **permessi**: con `--setting-sources project` il `.claude/settings.json`
@@ -466,7 +418,7 @@ aggiungere liberamente. In salute oggi `settings.json` porta solo deny.
 ## Grafie dei permessi
 
 `o3/scripts/sonda-grafie.sh` lancia `claude -p` con il `settings.json` fuso
-del giro e le stesse opzioni dell'avvio (`--setting-sources project`,
+del giro (`.git/lanciatore/`) e le sue opzioni di permesso (`--setting-sources project`,
 `--permission-mode dontAsk`), una prova per forma di comando. Ogni forma è
 innocua ed è composta solo da comandi in allow: un diniego dipende quindi
 dalla grafia, non dal contenuto. Una prova di controllo in deny (`find`)
@@ -508,18 +460,11 @@ Allargarla spetta al canone di `method`.
 
 ## Da verificare
 
-- il blocco per sessione concorrente dentro un giro vero: il giro di
-  economia del 2026-11-10 alle 15:21 ha committato e pubblicato `4083c8a`
-  senza concorrenza (segnalazione della sessione economia); non prova il
-  ramo di blocco;
 - il ciclo di `method` col lanciatore alla prima partenza dal timer
   (2026-11-09 alle 15:00);
-- rimontaggio del Drive durante un giro (con il Drive irraggiungibile
-  all'avvio, l'unità non parte: cfr. «Avvio e arresti»);
-- la chiusura di `ciclo-namespace` nella home: per il codice di
-  `o3/view/ciclo.py` di salute, una chiusura senza partenza è un tentativo
-  rosso col motivo `namespace`; derivato dal codice, non ancora visto in un
-  fallimento reale (provato su un'unità transitoria il 2026-10-15);
+- rimontaggio del Drive durante un giro, e col lanciatore un namespace
+  dell'agente che fallisce (`226` sull'unità transitoria): come lo chiude
+  il lanciatore non è ancora visto in un fallimento reale;
 
 Connessioni:
 

@@ -7,31 +7,23 @@
 # the unit finds Claude's credentials (~/.claude/.credentials.json) and the
 # passphrase-less ssh key in the home, with BatchMode and no agent.
 #
-# The unit is the real fence: read-only home, writable only the checkout,
-# the state directory, Claude's state and the paths the repo declares. A
-# repo whose round runs home-manager switch declares homeWritable, and its
-# fence is then the harness permissions alone (nixos, custodian 2026-10-16).
-# ciclo-avvio checks lock, branch, clean tree and divergence from origin
-# before Claude, and stops without merge, rebase or stash; it never commits
-# nor pushes, the round does. ciclo-chiusura runs as ExecStopPost, after a
-# timeout or a kill too, and appends the outcome to
-# ~/.local/state/ciclo/<repo>/tentativi.jsonl, or to the checkout folder the
-# repo declares as giri (ciclo-avvio says when); when the namespace itself
-# fails, ciclo-namespace writes it from outside, always in the state.
-#
-# A repo with lanciatore = true (method, 2026-11-08) runs instead method's
-# canonical launcher, o3/lanciatore.py of the canon checkout: the outer unit
-# has no namespace, the launcher does sessions, lock, pull, traces and the
-# closing line, and puts only the agent in the fence, a transient unit
-# ciclo-<repo>-agente started with systemd-run. The fence is the same one,
-# plus what git runs from the launcher (registry.nix). BindsTo and After
+# Every cycle runs method's canonical launcher, o3/lanciatore.py of the
+# canon checkout (method from 2026-11-08, the others from 2026-11-11): the
+# outer unit has no namespace, the launcher does sessions, lock, pull,
+# traces and the closing line, and puts only the agent in the fence, a
+# transient unit ciclo-<repo>-agente started with systemd-run. The fence:
+# read-only home, writable only the checkout, the state directory, Claude's
+# and Codex's state and the paths the repo declares, plus what git runs
+# from the launcher read-only (registry.nix). A repo whose round runs
+# home-manager switch declares homeWritable, and its fence is then the
+# harness permissions alone (nixos, custodian 2026-10-16). BindsTo and After
 # tie the agent to the outer unit, --expand-environment=no keeps the prompt
 # as written, and --recinto-ferma lets the launcher stop the agent's unit
-# and wait for it before the closing line (method 477b442; trials of the
-# nixos home session, 2026-11-08). From method accb3b5 the stop runs after
-# every agent and a nonzero exit is code 25 with a persistent fermo, so it
-# is ciclo-recinto-ferma, which verifies the unit and its cgroup are gone
-# instead of failing on a unit --collect already unloaded.
+# and wait for it before the closing line (method 477b442). From method
+# accb3b5 the stop runs after every agent and a nonzero exit is code 25
+# with a persistent fermo, so it is ciclo-recinto-ferma, which verifies the
+# unit and its cgroup are gone instead of failing on a unit --collect
+# already unloaded.
 {
   config,
   lib,
@@ -53,27 +45,10 @@
   local = lib.filterAttrs (_: d: d.state != "esterno" && d.host == hostname) registry;
 
   runtimeInputs = [pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnugrep pkgs.jq pkgs.openssh pkgs.util-linux];
-  avvio = pkgs.writeShellApplication {
-    name = "ciclo-avvio";
-    inherit runtimeInputs;
-    # jq filters take $variables inside single quotes on purpose.
-    excludeShellChecks = ["SC2016"];
-    text = builtins.readFile ./ciclo/ciclo-avvio.sh;
-  };
-  concorrenti = pkgs.writeShellApplication {
-    name = "ciclo-concorrenti";
-    runtimeInputs = runtimeInputs ++ [pkgs.python3];
-    text = builtins.readFile ./ciclo/ciclo-concorrenti.sh;
-  };
   fetch = pkgs.writeShellApplication {
     name = "ciclo-fetch";
     inherit runtimeInputs;
     text = builtins.readFile ./ciclo/ciclo-fetch.sh;
-  };
-  namespace = pkgs.writeShellApplication {
-    name = "ciclo-namespace";
-    inherit runtimeInputs;
-    text = builtins.readFile ./ciclo/ciclo-namespace.sh;
   };
   recintoCheck = pkgs.writeShellApplication {
     name = "ciclo-recinto";
@@ -89,13 +64,6 @@
     name = "ciclo-sonda-lanciatore";
     inherit runtimeInputs;
     text = builtins.readFile ./ciclo/ciclo-sonda-lanciatore.sh;
-  };
-  chiusura = pkgs.writeShellApplication {
-    name = "ciclo-chiusura";
-    inherit runtimeInputs;
-    # jq filters take $variables inside single quotes on purpose.
-    excludeShellChecks = ["SC2016"];
-    text = builtins.readFile ./ciclo/ciclo-chiusura.sh;
   };
 
   # A wrapper resolves the real command in the PATH that follows its own
@@ -114,30 +82,6 @@
       d.wrappers;
     };
 
-  # Host-wide settings of every round, merged over the repo's settings file
-  # (host wins): --setting-sources project skips ~/.claude/settings.json,
-  # so claude-code.nix does not reach the round. The PreToolUse hook blocks
-  # the round's git commit when another session worked in the checkout
-  # during the round (ciclo-concorrenti): sessions are checked at commit
-  # time, not before the round, so an idle open session never stops it.
-  hostSettings = {
-    attribution = {
-      commit = "";
-      pr = "";
-    };
-    hooks.PreToolUse = [
-      {
-        matcher = "Bash";
-        hooks = [
-          {
-            type = "command";
-            command = "${concorrenti}/bin/ciclo-concorrenti";
-          }
-        ];
-      }
-    ];
-  };
-
   # Private rclone mounts (rclone.nix) stay out of every round: their mount
   # point and their own config directory are inaccessible, on top of what
   # the repo declares (custodian, 2026-11-07: familiare's Drive on deck).
@@ -150,25 +94,20 @@
   codex = "${pkgs-ai.codex}/bin/codex";
   python = "${pkgs.python3}/bin/python3";
 
+  # What ciclo-fetch and ciclo-sonda-lanciatore read.
   cfgFile = repo: d:
-    pkgs.writeText "ciclo-${repo}.json" (builtins.toJSON ({
-        inherit repo claude;
-        inherit (d) host checkout branch settings prompt giri readWritePaths readOnlyPaths homeWritable fetch;
-        maxBudgetUsd = d.maxBudgetUsd or null;
-        inaccessiblePaths = inaccessible d;
-        inherit hostSettings;
-      }
-      // lib.optionalAttrs d.lanciatore {
-        inherit python;
-        lanciatore = lanciatorePy d;
-        sondaRecinto =
-          recinto repo d {
-            unit = "ciclo-${repo}-sonda-recinto";
-            owner = "ciclo-${repo}-sonda.service";
-            runtime = "1min";
-          }
-          ++ ["${recintoCheck}/bin/ciclo-recinto" "${attese repo d}"];
-      }));
+    pkgs.writeText "ciclo-${repo}.json" (builtins.toJSON {
+      inherit repo python;
+      inherit (d) fetch;
+      lanciatore = lanciatorePy d;
+      sondaRecinto =
+        recinto repo d {
+          unit = "ciclo-${repo}-sonda-recinto";
+          owner = "ciclo-${repo}-sonda.service";
+          runtime = "1min";
+        }
+        ++ ["${recintoCheck}/bin/ciclo-recinto" "${attese repo d}"];
+    });
 
   # Seconds of git fetch per declared checkout. The start timeout of the unit
   # covers the ExecStartPre too, so it grows with the fetch list: a hung
@@ -213,8 +152,8 @@
       ["${r.h}/${d.checkout}" "${r.s}/ciclo/${repo}" "${r.h}/.claude" "-${r.h}/.claude.json"]
       # Codex, when the repo's profile names it among motori: sessions,
       # auth.json refresh and its state live in CODEX_HOME (method
-      # o3/motori-del-ciclo.md). Only launcher cycles can run Codex.
-      ++ lib.optional d.lanciatore "-${r.h}/.codex"
+      # o3/motori-del-ciclo.md).
+      ++ ["-${r.h}/.codex"]
       ++ inHome r d.readWritePaths;
     # "-": a private path may not exist yet (account not authorized on
     # this host); the probe still checks it is unreadable.
@@ -238,8 +177,6 @@
       name = "PAGER";
       value = "cat";
     }
-    # --setting-sources project skips ~/.claude/settings.json and its env;
-    # its attribution reaches the round as hostSettings, merged by ciclo-avvio.
     {
       name = "DISABLE_AUTOUPDATER";
       value = "1";
@@ -255,44 +192,6 @@
       then "\"${e.name}=${e.value}\""
       else "${e.name}=${e.value}")
     (environment unitRoots repo d);
-
-  service = repo: d: {
-    Unit = {
-      Description = "Ciclo autonomo di ${repo}: eval, exec, commit senza custode";
-      ConditionPathIsDirectory = "%h/${d.checkout}/.git";
-      # A home-manager switch, by the custodian or by a round, changes every
-      # ciclo unit when claude-code moves (cfgFile carries its path):
-      # sd-switch must not restart a round already running.
-      X-RestartIfChanged = false;
-    };
-    Service =
-      {
-        # exec, not oneshot: RuntimeMaxSec has no effect on oneshot units.
-        Type = "exec";
-        RuntimeMaxSec = d.maxRuntime;
-        TimeoutStopSec = "30s";
-        WorkingDirectory = "%h/${d.checkout}";
-        StateDirectory = "ciclo/${repo}";
-        # "+": outside the namespace, where the .git/ of the declared
-        # checkouts is writable. Open sessions are no longer checked here:
-        # ciclo-concorrenti does it at commit time.
-        ExecStartPre = lib.optional (d.fetch != []) "+${fetch}/bin/ciclo-fetch ${cfgFile repo d} ${toString fetchTimeout}";
-        TimeoutStartSec = "${toString (startTimeout d)}s";
-        ExecStart = "${avvio}/bin/ciclo-avvio ${cfgFile repo d}";
-        # "+" only for the namespace failure, where ciclo-chiusura cannot run;
-        # ciclo-chiusura stays fenced, since it runs git in the checkout.
-        ExecStopPost = [
-          "+${namespace}/bin/ciclo-namespace ${cfgFile repo d}"
-          "${chiusura}/bin/ciclo-chiusura ${cfgFile repo d}"
-        ];
-        StandardInput = "null";
-        Environment = unitEnvironment repo d;
-        NoNewPrivileges = true;
-      }
-      // fence unitRoots repo d;
-  };
-
-  # --- Canonical launcher (lanciatore = true) ---
 
   # The launcher comes from the live canon checkout, as the gate does, and
   # pulls it at start (method's decision of 2026-11-08: no pinned version).
@@ -393,7 +292,7 @@
   in
     ["PATH=${lib.makeBinPath [pkgs.git pkgs.openssh]}:${lib.removePrefix "PATH=" (lib.head e)}"] ++ lib.tail e;
 
-  serviceLanciatore = repo: d: {
+  service = repo: d: {
     Unit = {
       Description = "Ciclo autonomo di ${repo}: lanciatore canonico, agente nel recinto";
       ConditionPathIsDirectory = "%h/${d.checkout}/.git";
@@ -424,7 +323,7 @@
 
   # The probe of a launcher cycle: lanciatore.py --controlli, then the fence
   # tested from inside a transient unit like the agent's (ciclo-sonda-lanciatore).
-  probeLanciatore = repo: d: {
+  probe = repo: d: {
     Unit = {
       Description = "Sonda del ciclo autonomo di ${repo}: controlli del lanciatore e recinto, senza Claude";
       ConditionPathIsDirectory = "%h/${d.checkout}/.git";
@@ -442,22 +341,6 @@
       NoNewPrivileges = true;
     };
   };
-
-  # The probe is the same unit, fence included, in probe mode: read-only
-  # checks and fence tests, never Claude, no closing line among the attempts.
-  # No session check: sessions matter only at the round's commit.
-  probe = repo: d: let
-    s = service repo d;
-  in {
-    Unit = s.Unit // {Description = "Sonda del ciclo autonomo di ${repo}: controlli e recinto, senza Claude";};
-    Service =
-      # The probe never fetches.
-      removeAttrs s.Service ["ExecStopPost" "ExecStartPre"]
-      // {
-        RuntimeMaxSec = "2min";
-        Environment = s.Service.Environment ++ ["CICLO_SONDA=1"];
-      };
-  };
 in {
   assertions =
     lib.mapAttrsToList (repo: d: {
@@ -472,28 +355,16 @@ in {
     local;
 
   # The full picture, for the home to compute missed starts against cadence.
-  # Launcher cycles carry the parachute as maxRuntime: the view's late-close
+  # Cycles on deck carry the parachute as maxRuntime: the view's late-close
   # limit, since their minutes live in the repo's profile.
   home.file.".local/state/ciclo/decisioni.json".text = builtins.toJSON (lib.mapAttrs (repo: e:
-    if e.lanciatore or false
-    then e // {inherit (registry.${repo}) maxRuntime;}
-    else e) (import ../../cicli.nix {inherit identity;}));
+    if e.state == "esterno"
+    then e
+    else e // {inherit (registry.${repo}) maxRuntime;}) (import ../../cicli.nix {inherit identity;}));
 
   systemd.user.services =
-    lib.mapAttrs' (repo: d:
-      lib.nameValuePair "ciclo-${repo}" (
-        if d.lanciatore
-        then serviceLanciatore repo d
-        else service repo d
-      ))
-    local
-    // lib.mapAttrs' (repo: d:
-      lib.nameValuePair "ciclo-${repo}-sonda" (
-        if d.lanciatore
-        then probeLanciatore repo d
-        else probe repo d
-      ))
-    local;
+    lib.mapAttrs' (repo: d: lib.nameValuePair "ciclo-${repo}" (service repo d)) local
+    // lib.mapAttrs' (repo: d: lib.nameValuePair "ciclo-${repo}-sonda" (probe repo d)) local;
 
   systemd.user.timers = lib.mapAttrs' (repo: d:
     lib.nameValuePair "ciclo-${repo}" {

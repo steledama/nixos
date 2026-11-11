@@ -48,7 +48,3 @@ comando = ["python3", "-m", "unittest", "discover", "-s", "o3/view/tests"]
 [[controllo]]
 quando = "o3/scripts/*"
 comando = ["python3", "-m", "unittest", "discover", "-s", "o3/scripts/tests"]
-
-[[controllo]]
-quando = "o3/modules/home/ciclo/*"
-comando = ["python3", "-m", "unittest", "discover", "-s", "o3/modules/home/ciclo/tests"]

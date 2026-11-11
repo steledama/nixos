@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Sonda delle grafie dei permessi del giro: lancia `claude -p` con i settings
-# fusi del giro e le stesse opzioni di ciclo-avvio.sh, una prova per forma di
+# fusi del giro (.git/lanciatore/settings.json, scritti dal lanciatore
+# canonico) e le sue opzioni di permesso, una prova per forma di
 # comando, e registra se l'harness concede o nega la grafia.
 # Fuori dal giro: dentro il giro `claude -p` è negato e ogni prova costa API.
 # Uso: o3/scripts/sonda-grafie.sh [--elenco] [--solo <nome>]
@@ -11,7 +12,7 @@ set -euo pipefail
 FLAKE_DIR="${FLAKE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 cd "$FLAKE_DIR"
 
-SETTINGS="${SETTINGS:-$HOME/.local/state/ciclo/nixos/settings.json}"
+SETTINGS="${SETTINGS:-$FLAKE_DIR/.git/lanciatore/settings.json}"
 OUT="${OUT:-$FLAKE_DIR/i1/grafie-permessi.jsonl}"
 BUDGET="${BUDGET:-0.5}"
 
