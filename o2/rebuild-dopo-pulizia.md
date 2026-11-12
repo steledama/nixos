@@ -27,7 +27,10 @@ verificato su un sistema attivato.
 - **`neve`** — fatto il 2026-11-12: home con `remoto allinea`, sistema con
   `nrs` dal custode; `system-drift.sh` e `home-drift.sh` allineati a
   `7e46af1`, nessuna unità fallita, gruppi `scanner` e `lp` presenti.
-- **`game`** — niente applicato: era spento.
+- **`game`** — fatto il 2026-11-12: home con `remoto allinea`, sistema con
+  `nrs` dal custode; `system-drift.sh` e `home-drift.sh` allineati a
+  `48e61d6`, nessuna unità fallita, `stele` senza `libvirtd` e con `i2c` e
+  `docker`, `openrgb.service` attivo.
 
 Un rebuild lanciato senza wrapper si ferma al controllo `identitaReale`, ma
 lascia nel profilo di sistema la generazione costruita coi template: va
