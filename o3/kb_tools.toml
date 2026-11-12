@@ -1,0 +1,4 @@
+# Il nucleo vive nel canone; i controlli NixOS in kb_domain.py.
+doc_dirs = ["kb"]
+optional_doc_dirs = ["tech"]
+catalog = "kb/kb.md"

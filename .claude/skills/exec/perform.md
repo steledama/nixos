@@ -9,7 +9,7 @@ strumenti di sviluppo in `o3/tools/`. Due piani, secondo autorizzazione:
   vivo — una prescrizione consumata (rebuild eseguito, script assorbito, task
   chiuso) si pota insieme alla sua voce (cfr. `method/perform.md`); gli
   strumenti registrati sono ancora eseguibili
-  (`o3/tools/check.sh`, `o3/view/build.py`, `kb_tools.py` girano
+  (`o3/tools/check.sh`, `method/../o3/view/build.py --root .`, `kb_tools.py` girano
   davvero); la sezione «Strumenti» riflette ciò che c'è in `o3/tools/` e
   `o3/view/`, non uno stadio superato.
 - **L'atto stesso**, sotto la regola locale del repository — la stessa di

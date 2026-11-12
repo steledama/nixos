@@ -1,7 +1,7 @@
 ---
 ciclo: dev
-method_commit: 47289138f25b703e6a4bfc8c3acdce2ad0402171
-reviewed_at: 2026-11-11
+method_commit: b59bcb9184bf524480c3de63e87c82b239096efa
+reviewed_at: 2026-11-12
 status: aligned
 obiettivo: S
 ---
@@ -47,8 +47,10 @@ di questo file. I nodi canonici sono consumati tramite
   fonti dichiarative e distinzione fra configurazione, generazione e
   runtime. Audit, facts e coverage non certificano l'utilità semantica né
   ogni invariante.
-- Il fork `kb_tools.py` conserva inventory, facts, coverage e i controlli
-  system/home; footer duplicati e link fuori dai nodi sono coperti.
+- Il nucleo KB si esegue dal canone con `--root .`; `o3/kb_tools.toml`
+  dichiara il perimetro locale e `o3/kb_domain.py` conserva inventory,
+  facts, coverage, fidelity e il controllo dei link fra kb e tech.
+  Footer duplicati, traduzioni e task sono coperti dal nucleo canonico.
 - `/eval` distingue evidenza di una decisione da prova di un fatto esterno:
   il codice dichiarativo è fonte primaria della configurazione, mentre
   l'attivazione e lo stato degli host si osservano a parte. `nixos` non ha
@@ -117,18 +119,18 @@ di questo file. I nodi canonici sono consumati tramite
 
 ## Adattamenti delle viste
 
-- `o3/view/` è la copia del canone. Le uniche parti locali sono quelle che
-  il fork parametrizza per costruzione: `project.py` e la CONFIG delle
-  descrizioni degli slot in `build_system_image.py` (descrizione locale di
-  `o3`).
+- `o3/view/` contiene solo `project.py` e le regressioni locali: builder,
+  server e asset si eseguono dal canone con `--root .`. La descrizione
+  locale di o3 è in `project.py`, nel campo `DESCRIZIONI`.
 - `project.py`: sigla «NixOS», `LINGUA = "en"`, accento `#c2410c`,
   `CSS_LOCALI = ["nixos.css"]` (in `presentation/`: la tavola e i riquadri
   del deck), `ESCLUSE` vuota.
 - Il deck vive in `presentation/presentation.md`, dichiarato in `DECK` e
   reso dal canone, senza builder di dominio né Mermaid: la topologia è la
   tavola `presentation/rete.svg`.
-- I test vivono in `o3/view/tests/` (il repo non ha `tests/` in root) e
-  differiscono dal canone solo per il path dei builder.
+- I test vivono in `o3/view/tests/` (il repo non ha `tests/` in root),
+  importano i builder canonici e seguono il contratto di pubblicazione
+  con provenienza di entrambi i commit.
 - `view/` è fuori da git, e `.gitattributes` porta solo la riga canonica
   `o3/view/**`. In locale `build.py` rende l'anteprima; il gate di `/commit`
   e il contratto di `exec plan` usano `build.py --check`.
@@ -141,21 +143,39 @@ di questo file. I nodi canonici sono consumati tramite
 
 ## Prescrizioni aperte del canone
 
-All'ultima revisione nessuna prescrizione aperta restava da recepire:
-`motori-del-ciclo`, l'unica in elenco, è recepita. Le prescrizioni nate dopo
-il cursore le rilegge la prossima revisione.
+- `motori-del-ciclo`: già recepita; il profilo sceglie Claude e Codex,
+  l'host offre binari e recinto. Le correzioni dell'esecutore sono lette
+  direttamente dal canone. Il fallback per credito esaurito resta non osservato.
+- `ultimo-giro`: recepita nelle skill eval/exec e nei permessi del giro;
+  `python3 method/../o3/ultimo_giro.py` legge giro, Esiti e Prossimo.
+  L'assenza di dinieghi nel prossimo giro resta da osservare.
+- `strumenti-dal-canone`: recepita nei file. Rimossi i builder, gli asset,
+  kb_profile e il fork KB; profilo e modulo di dominio conservano i controlli
+  NixOS. Gate, skill, permessi e comandi usano il canone. Il modulo home
+  delle viste considera anche il canone nell'impronta e nell'innesco e
+  conserva i builder locali degli adottanti non ancora migrati. La versione
+  pubblicata dichiara i due commit in `provenance.json`. Lo switch Home
+  Manager su deck è riuscito: server attivo, pubblicazione riuscita e
+  `/_stato` valido; la pubblicazione segue i commit, non il working tree.
 
 ## Intervallo revisionato
 
-`6aa4ea82222f5c3c289938f2eb87c97f2ea57521..47289138f25b703e6a4bfc8c3acdce2ad0402171`:
-7 commit, revisionati il 2026-11-11.
+`47289138f25b703e6a4bfc8c3acdce2ad0402171..b59bcb9184bf524480c3de63e87c82b239096efa`:
+16 commit.
 
-- **Già soddisfatto:** `0eeb2db`, `dbe78b8` e `10c09e7`, l'esecutore Codex
-  col solo recinto dell'host, letto dal canone.
-- **Adattamento:** `4728913`, il runbook del giro a mano (sessione ferma,
-  `start --wait`) in `kb/cicli.md`, «Sessioni concorrenti» e «Uso».
-- **Non pertinente:** `da94452`, `dc6e902`, `dcadab3`, il profilo di method.
+- **Già soddisfatto (3):** `bb03684`, esecutore Codex; `1f29f66`, gate
+  degli stadi; `cbd4c4e`, protocollo Herdr, consumati direttamente dal canone.
+- **Adattamento (4):** `de3fe56`, ultimo giro nelle skill e nei permessi;
+  `e07b485`, descrizioni della home in project; `7bde89a`, builder dal
+  canone; `b59bcb9`, nucleo KB dal canone e controlli di dominio separati.
+- **Non pertinente (9):** `20a8e2f`, `e330430`, `d8610be`, `4d551d3`,
+  `27181d3`, `633eba8`, `669896b`, `000730e`, `c12512c`: osservatorio,
+  accessi agli adottanti e stato del ciclo e della coda interni a method.
 
-Verifiche della revisione: audit strutturale, inventory, facts, coverage,
-fidelity e `o3/tools/check.sh` riusciti. Riletto il target dopo
-l'aggiornamento del marker: intervallo vuoto.
+Nessun task locale aggiunto. Verifiche: audit, inventory, facts, coverage,
+fidelity, review locale, contratto delle viste e regressioni dei builder;
+confronto dei quattro report NixOS con il fork precedente (output identici),
+65 test delle viste riusciti e valutazione Home Manager valida. Una
+pubblicazione reale in un repository temporaneo con i file del recepimento
+ha prodotto la versione con entrambi i commit in `provenance.json`. Il marker è
+riletto sullo stesso target per verificare l'intervallo vuoto.

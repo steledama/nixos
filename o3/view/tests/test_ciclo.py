@@ -11,7 +11,7 @@ import unittest
 from datetime import datetime
 from pathlib import Path
 
-BUILDERS = Path(__file__).resolve().parents[1]
+BUILDERS = Path(__file__).resolve().parents[3] / "method" / ".." / "o3" / "view"
 sys.path.insert(0, str(BUILDERS))
 
 import ciclo
@@ -37,7 +37,9 @@ class StateCase(unittest.TestCase):
     def decide(self, decision: dict) -> None:
         (self.root / "decisioni.json").write_text(json.dumps({"prova": decision}))
 
-    def attempt(self, char: str, ts: str, close: dict | None, result: str | None = None):
+    def attempt(
+        self, char: str, ts: str, close: dict | None, result: str | None = None
+    ):
         rows = [{"evento": "partenza", "id": ident(char), "ts": ts}]
         if close is not None:
             rows.append({"evento": "chiusura", "id": ident(char), **close})
@@ -45,7 +47,9 @@ class StateCase(unittest.TestCase):
             out.writelines(json.dumps(row) + "\n" for row in rows)
         if result is not None:
             event = {"type": "result", "result": result}
-            (self.state / "giri" / f"{ident(char)}.jsonl").write_text(json.dumps(event) + "\n")
+            (self.state / "giri" / f"{ident(char)}.jsonl").write_text(
+                json.dumps(event) + "\n"
+            )
 
     def colors(self) -> list[tuple[str, list[str]]]:
         view = ciclo.load(self.state, NOW)
@@ -57,7 +61,9 @@ OK = {"esito": "riuscito", "commit": True, "push": True, "permission_denials": 0
 
 class Semaphore(StateCase):
     def test_green_needs_explicit_no_attention(self):
-        self.attempt("a", "2026-10-11T05:30:00+02:00", OK, "Fatto.\n\n**Attenzione:** nessuna")
+        self.attempt(
+            "a", "2026-10-11T05:30:00+02:00", OK, "Fatto.\n\n**Attenzione:** nessuna"
+        )
         self.assertEqual(self.colors(), [("verde", [])])
 
     def test_missing_attention_line_is_yellow(self):
@@ -66,7 +72,9 @@ class Semaphore(StateCase):
 
     def test_attention_items_and_denials_are_yellow(self):
         close = {**OK, "permission_denials": 2}
-        self.attempt("a", "2026-10-11T05:30:00+02:00", close, "Attenzione: foto da decidere")
+        self.attempt(
+            "a", "2026-10-11T05:30:00+02:00", close, "Attenzione: foto da decidere"
+        )
         color, reasons = self.colors()[0]
         self.assertEqual(color, "giallo")
         self.assertIn("foto da decidere", reasons)
@@ -95,7 +103,9 @@ class Semaphore(StateCase):
 
     def test_manual_state_has_no_missed_start(self):
         self.attempt("a", "2026-10-01T05:30:00+02:00", OK, "Attenzione: nessuna")
-        self.assertFalse(any(a.missed for a in ciclo.load(self.state, NOW)["tentativi"]))
+        self.assertFalse(
+            any(a.missed for a in ciclo.load(self.state, NOW)["tentativi"])
+        )
 
 
 class WithoutAttempts(StateCase):
@@ -111,8 +121,12 @@ class WithoutAttempts(StateCase):
 
     def test_declared_before_first_attempt(self):
         self.decide({"state": "manuale"})
-        self.assertEqual(ciclo.load(self.root / "mai-partito", NOW)["stato"], "unreadable")
-        (self.root / "decisioni.json").write_text(json.dumps({"mai-partito": {"state": "manuale"}}))
+        self.assertEqual(
+            ciclo.load(self.root / "mai-partito", NOW)["stato"], "unreadable"
+        )
+        (self.root / "decisioni.json").write_text(
+            json.dumps({"mai-partito": {"state": "manuale"}})
+        )
         self.assertEqual(ciclo.load(self.root / "mai-partito", NOW)["stato"], "never")
 
     def test_unreadable(self):
@@ -133,7 +147,12 @@ class WithoutAttempts(StateCase):
 
 class Routes(StateCase):
     def test_latest_and_attempt_page(self):
-        self.attempt("a", "2026-10-11T05:30:00+02:00", OK, "# Giro\n\n- uno\n\nAttenzione: nessuna")
+        self.attempt(
+            "a",
+            "2026-10-11T05:30:00+02:00",
+            OK,
+            "# Giro\n\n- uno\n\nAttenzione: nessuna",
+        )
         kind, body = ciclo.respond("/_ciclo/ultimi.json", self.state)
         self.assertTrue(kind.startswith("application/json"))
         self.assertEqual(json.loads(body)["tentativi"][0]["colore"], "verde")
@@ -142,7 +161,12 @@ class Routes(StateCase):
 
     def test_attempt_page_shows_subject_and_counts_denials(self):
         denied = [{"tool": "Bash", "input": "gh release list --repo x/y"}]
-        close = {**OK, "oggetto": "fix: <uno>", "permission_denials": 1, "dinieghi": denied}
+        close = {
+            **OK,
+            "oggetto": "fix: <uno>",
+            "permission_denials": 1,
+            "dinieghi": denied,
+        }
         self.attempt("b", "2026-10-11T05:30:00+02:00", close, "Attenzione: nessuna")
         page = ciclo.respond(f"/_ciclo/{ident('b')}", self.state)[1].decode()
         self.assertIn("<dt>oggetto</dt><dd>fix: &lt;uno&gt;</dd>", page)
@@ -174,10 +198,17 @@ class NextTask(StateCase):
         import os
         import subprocess
 
-        names = ("GIT_AUTHOR_NAME", "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL")
+        names = (
+            "GIT_AUTHOR_NAME",
+            "GIT_AUTHOR_EMAIL",
+            "GIT_COMMITTER_NAME",
+            "GIT_COMMITTER_EMAIL",
+        )
         env = {**os.environ, **dict.fromkeys(names, "t")}
         command = ["git", "-C", str(self.repo), *args]
-        result = subprocess.run(command, env=env, capture_output=True, text=True, check=True)
+        result = subprocess.run(
+            command, env=env, capture_output=True, text=True, check=True
+        )
         return result.stdout.strip()
 
     def commit(self, trailers: str) -> str:
@@ -186,19 +217,28 @@ class NextTask(StateCase):
 
     def round(self, char: str, head: str) -> ciclo.Attempt:
         self.attempt(
-            char, "2026-10-11T05:30:00+02:00", {**OK, "head_dopo": head}, "Attenzione: nessuna"
+            char,
+            "2026-10-11T05:30:00+02:00",
+            {**OK, "head_dopo": head},
+            "Attenzione: nessuna",
         )
-        return next(a for a in ciclo.load(self.state, NOW)["tentativi"] if a.id == ident(char))
+        return next(
+            a for a in ciclo.load(self.state, NOW)["tentativi"] if a.id == ident(char)
+        )
 
     def test_confirmed_task_stays_green(self):
         self.commit("Prossimo: Diagnosi orfani (confermato)")
         attempt = self.round("a", self.commit("Prossimo: Diagnosi orfani (confermato)"))
-        self.assertEqual((attempt.color, attempt.next_task), ("verde", "Diagnosi orfani"))
+        self.assertEqual(
+            (attempt.color, attempt.next_task), ("verde", "Diagnosi orfani")
+        )
 
     def test_unreadable_history_is_declared(self):
         ciclo.REPO = self.root / "senza-git"
         attempt = self.round("a", "0" * 40)
-        self.assertEqual((attempt.color, attempt.reasons), ("giallo", [ciclo.label("no-history")]))
+        self.assertEqual(
+            (attempt.color, attempt.reasons), ("giallo", [ciclo.label("no-history")])
+        )
 
     def test_commit_not_yet_released_is_declared(self):
         self.commit("Prossimo: Diagnosi orfani (confermato)")
@@ -212,16 +252,22 @@ class NextTask(StateCase):
     def test_missing_trailer_is_yellow(self):
         self.commit("Prossimo: Diagnosi orfani (confermato)")
         attempt = self.round("a", self.commit("Autonomia: agente"))
-        self.assertEqual((attempt.color, attempt.reasons), ("giallo", [ciclo.label("no-next")]))
+        self.assertEqual(
+            (attempt.color, attempt.reasons), ("giallo", [ciclo.label("no-next")])
+        )
 
     def test_declared_change_is_highlighted(self):
         self.commit("Prossimo: Diagnosi orfani (confermato)")
         attempt = self.round(
-            "a", self.commit("Prossimo: Serie storica (cambiato, era Diagnosi orfani; smentita)")
+            "a",
+            self.commit(
+                "Prossimo: Serie storica (cambiato, era Diagnosi orfani; smentita)"
+            ),
         )
         self.assertEqual(attempt.color, "giallo")
         self.assertEqual(
-            attempt.reasons, [f"{ciclo.label('changed')}: Diagnosi orfani → Serie storica"]
+            attempt.reasons,
+            [f"{ciclo.label('changed')}: Diagnosi orfani → Serie storica"],
         )
 
     def test_undeclared_change_is_caught(self):
@@ -231,7 +277,8 @@ class NextTask(StateCase):
         self.assertIn(ciclo.label("undeclared"), attempt.reasons[0])
         page = ciclo.respond(f"/_ciclo/{ident('a')}", self.state)[1].decode()
         self.assertIn(
-            f"Serie storica <small>({ciclo.label('previous')}: Diagnosi orfani)</small>", page
+            f"Serie storica <small>({ciclo.label('previous')}: Diagnosi orfani)</small>",
+            page,
         )
         latest = json.loads(ciclo.respond("/_ciclo/ultimi.json", self.state)[1])
         self.assertNotIn("prossimo", latest["tentativi"][0])
@@ -247,9 +294,14 @@ class NextTask(StateCase):
     def latest_after_change(self) -> dict:
         self.commit("Prossimo: Diagnosi orfani (confermato)")
         self.round(
-            "a", self.commit("Prossimo: Serie storica (cambiato, era Diagnosi orfani; smentita)")
+            "a",
+            self.commit(
+                "Prossimo: Serie storica (cambiato, era Diagnosi orfani; smentita)"
+            ),
         )
-        return json.loads(ciclo.respond("/_ciclo/ultimi.json", self.state)[1])["tentativi"][0]
+        return json.loads(ciclo.respond("/_ciclo/ultimi.json", self.state)[1])[
+            "tentativi"
+        ][0]
 
     def test_changed_priority_links_the_new_task(self):
         self.write_plan("Serie storica", "o2/serie-storica.md")

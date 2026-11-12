@@ -10,7 +10,7 @@ import unittest
 from html.parser import HTMLParser
 from pathlib import Path
 
-BUILDERS = Path(__file__).resolve().parents[1]
+BUILDERS = Path(__file__).resolve().parents[3] / "method" / ".." / "o3" / "view"
 sys.path.insert(0, str(BUILDERS))
 
 import build_pages
@@ -52,7 +52,9 @@ class Elements(HTMLParser):
         self.feed(markup)
 
     def handle_starttag(self, tag, attrs):
-        self.targets.extend((tag, key, value) for key, value in attrs if key in {"href", "src"})
+        self.targets.extend(
+            (tag, key, value) for key, value in attrs if key in {"href", "src"}
+        )
         self.ids.extend(value for key, value in attrs if key == "id")
         if tag not in {"img", "br", "hr", "link", "meta"}:
             self.stack.append(tag)
@@ -111,7 +113,10 @@ class PageTests(unittest.TestCase):
         self.assertIn("autonomy.md", build_pages.perimeter(self.root))
 
     def test_home_lists_pending_proposals_and_delegation(self):
-        self.assertIn(build_pages.label("no-pending"), build_system_image.proposals_html(self.root))
+        self.assertIn(
+            build_pages.label("no-pending"),
+            build_system_image.proposals_html(self.root),
+        )
         (self.root / "o2/primo.md").write_text(
             '---\nsintesi: "s"\nciclo: dev\ndecidere: "dove stanno gli `arresti`"\n---\n\n# Primo task\n',
             encoding="utf-8",
@@ -144,7 +149,9 @@ Conclusione.
         markup, _ = self.render("i2/lettura.md", source)
         rendered = Elements(markup)
         body = [(tags, text) for tags, text in rendered.text if "main" in tags]
-        self.assertIn(("html", "body", "main", "ul", "li", "ul", "li"), [t for t, _ in body])
+        self.assertIn(
+            ("html", "body", "main", "ul", "li", "ul", "li"), [t for t, _ in body]
+        )
         self.assertIn((("html", "body", "main", "h1"), "Indice"), body)
         self.assertIn((("html", "body", "main", "h3"), "Dettagli"), body)
         self.assertEqual(body[-1], (("html", "body", "main", "p"), "Conclusione."))
@@ -173,7 +180,9 @@ Conclusione.
         ]:
             self.assertIn(target, hrefs)
         # Ciò che non si rende resta etichetta: nessun link esce da `view/`.
-        self.assertFalse(any(".md" in href or href.startswith("file:") for href in hrefs))
+        self.assertFalse(
+            any(".md" in href or href.startswith("file:") for href in hrefs)
+        )
         self.assertNotIn("../../altro.html", hrefs)
         self.assertIn("](../kb/node.md)", markup)
         self.assertEqual(markup, self.render("i2/lettura.md", source)[0])

@@ -15,7 +15,7 @@ Questi helper vivono in `o3/modules/home/*.nix`, usano wrapper come
 anche una voce desktop. Sono user-space: si applicano con `home-manager switch`,
 non con `nixos-rebuild`, salvo modifiche al livello system sottostante.
 
-Il controllo `o3/tools/kb_tools.py coverage` segnala i wrapper CLI Home Manager
+Il controllo `method/../o3/kb_tools.py --root . coverage` segnala i wrapper CLI Home Manager
 importati che non sono citati in README o KB. Questo nodo evita che helper
 piccoli ma importanti restino invisibili.
 
@@ -117,7 +117,7 @@ Quando si aggiunge un nuovo wrapper CLI in `o3/modules/home/*.nix`:
 
 1. importarlo nel profilo home corretto;
 2. verificare se merita un nodo dedicato o una riga in questo nodo;
-3. eseguire `python3 o3/tools/kb_tools.py coverage`;
+3. eseguire `python3 method/../o3/kb_tools.py --root . coverage`;
 4. applicare con `o3/scripts/con-identita.sh home-manager switch --flake .#user@host`.
 
 Connessioni:

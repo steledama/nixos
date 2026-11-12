@@ -72,7 +72,7 @@ decisione umana su scopi, territorio e deleghe ([autonomia](autonomy.md)),
 umano **in-the-loop** sui rebuild di sistema e sugli atti sugli host,
 **basso attrito di lettura** (bussola snella, register dei poli, viste
 generate). Segnali: `o3/tools/check.sh`, `kb_tools.py fidelity`,
-`python3 o3/view/build.py --check`, filo
+`python3 method/../o3/view/build.py --root . --check`, filo
 [allineamento-metodo](i3/allineamento-metodo.md), assetto delle viste in
 `kb/deck-user-services.md` § Presentazione sulla LAN. Il lavoro è
 raggiungibile dalla colonna `Ob. S` di [`o1/plan.md`](o1/plan.md).

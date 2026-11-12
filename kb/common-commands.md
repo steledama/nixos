@@ -53,7 +53,7 @@ o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake . && \
 ```bash
 o3/tools/check.sh
 o3/tools/check.sh --flake
-python3 o3/tools/kb_tools.py audit --format markdown
+python3 method/../o3/kb_tools.py --root . audit --format markdown
 nix flake check
 ```
 

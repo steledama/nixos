@@ -102,8 +102,8 @@ esplicita): [`method/design-principles.md`](method/design-principles.md).
 - `i1/`–`i3/`, `o1/`–`o2/` — le collezioni del ciclo: osservazioni,
   interpretazioni, verdetti, piano e task.
 - `presentation/` e `view/` — il deck e le viste HTML generate (non
-  versionate). `python3 o3/view/build.py` le costruisce come anteprima e
-  `python3 o3/view/serve.py` le serve sulle reti private; `deck` le pubblica
+  versionate). `python3 method/../o3/view/build.py --root .` le costruisce come anteprima e
+  `python3 method/../o3/view/serve.py --root .` le serve sulle reti private; `deck` le pubblica
   in modo permanente ([`kb/deck-user-services.md`](kb/deck-user-services.md)).
 
 Le regole operative e i confini di autorità per gli agenti sono in

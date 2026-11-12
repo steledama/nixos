@@ -50,7 +50,7 @@ questo repo aggiunge i gesti del dominio:
 - la fase diagnosi di `/manutenzione`, con derive di sistema e home e rami
   dovuti;
 - `systemctl --user --failed` e `systemctl --failed`;
-- `python3 o3/tools/kb_tools.py fidelity`.
+- `python3 method/../o3/kb_tools.py --root . fidelity`.
 
 ## Tendenze del giro
 

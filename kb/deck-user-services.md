@@ -15,7 +15,7 @@ cicli autonomi, anch'essi unità utente di `deck`, hanno il nodo `cicli`.
 
 Decisione del custode (2026-10-03): ogni progetto ha un host privilegiato che
 ne serve in modo permanente le viste generate alle sole reti private, e
-`python3 o3/view/serve.py` lanciato a mano ascolta per default sulla
+`python3 method/../o3/view/serve.py --root .` lanciato a mano ascolta per default sulla
 porta 8000. Repo e porte vivono in un solo registro, `o3/presentations.nix`
 (`deck`: `method` 8001, `nixos` 8002, `salute` 8003, `economia` 8004). Le
 viste di `bi` e `baserow` sulla production le dichiara il repo
@@ -45,23 +45,18 @@ dal profilo. Il build parte dal commit di `HEAD` esportato con
 `serve.py --publish-root` e rilegge il puntatore a ogni richiesta, quindi uno
 scambio di versione non chiede riavvii.
 
-- **Codice del server.** Lo scambio ricarica le viste, non il codice del
-  server: il processo resta quello avviato, con `serve.py` e i moduli locali
-  che importa (`ciclo`, e tramite questo `project` e `sources`). All'avvio il
-  server scrive l'hash dell'albero committato di `o3/view`
-  (`git rev-parse HEAD:o3/view`) in
-  `~/.local/state/presentazione/<repo>.serve`; dopo ogni pubblicazione, se
-  il server gira e l'hash è cambiato, la unit lo riavvia (`try-restart`).
-  Il riavvio segue quindi i commit, come la pubblicazione: le modifiche in
-  corso nel checkout non lo fanno scattare, e l'albero copre gli import senza
-  elencarli. Il timer da 5 minuti limita il ritardo. Limite: se il server
-  riparte per un altro motivo (crash, login) col checkout modificato, esegue
-  i file su disco, modifiche comprese. Il rischio è basso, perché un ciclo
-  autonomo parte solo a checkout pulito e il codice di `o3/view` arriva con
-  `/method` in sessione.
+- **Codice del server.** I repo migrati eseguono i builder e il server da
+  `~/method/o3/view/` con `--root .`; quelli con builder locali continuano
+  a usarli fino al proprio `/method`. L'impronta del server comprende
+  entrambi gli alberi committati `o3/view`, dell'adottante e del canone:
+  dopo la pubblicazione un cambio riavvia il server con `try-restart`.
+  Il timer limita il ritardo. La versione pubblicata di un repo migrato
+  dichiara in `provenance.json` sia il commit locale sia quello di method;
+  l'avanzamento del canone richiede una nuova build. Un riavvio del server
+  esegue i file presenti nel checkout, incluse eventuali modifiche locali.
 
 - **Innesco.** La path unit `presentazione-<repo>-pubblicazione.path` osserva
-  `.git/logs/HEAD`. Ogni spostamento di `HEAD` (commit, checkout, un pull)
+  `.git/logs/HEAD` del repo e di `method`. Ogni spostamento di `HEAD` (commit, checkout, un pull)
   la fa scattare. Un `git fetch` non la fa scattare, e nessuna unit fa fetch
   o pull (decisione del custode del 2026-10-07): il
   pull lo fa il custode o l'agente in sessione, che dal 2026-10-09 lo esegue

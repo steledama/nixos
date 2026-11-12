@@ -215,13 +215,13 @@ giro.
 **1. Raccogli il contesto corrente**
 
 Leggi `goal.md`, `i3/verdicts.md` e ogni filo `i3/*.md`; poi `o1/plan.md`,
-`world.md` e gli eventi dall'ultimo giro: `git log -1 --grep='^docs(ciclo)' --format=%h`
+`world.md` e gli eventi dall'ultimo giro: `python3 method/../o3/ultimo_giro.py`
 dà il commit, `git log --oneline <commit>..HEAD` gli eventi, tutti. Una
 finestra a numero fisso perde il lavoro del custode fra due giri (2026-11-08:
 35 commit contro `-15`). Senza un giro precedente vale la data dell'ultima
 revisione, con `--since`. In
 NixOS i segnali reali sono l'audit e l'aggregato drift (`python3
-o3/tools/kb_tools.py audit` / `facts` / `fidelity`), lo stato del sistema in
+method/../o3/kb_tools.py --root . audit` / `facts` / `fidelity`), lo stato del sistema in
 esecuzione (membrana `world -> /run/current-system`, esiti di rebuild e boot),
 lo stato delle issue upstream citate come dipendenze `world` nel plan, gli
 esiti di `perceive` e `interpret` di questo giro e le percezioni `i1/` non

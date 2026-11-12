@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-BUILDERS = Path(__file__).resolve().parents[1]
+BUILDERS = Path(__file__).resolve().parents[3] / "method" / ".." / "o3" / "view"
 sys.path.insert(0, str(BUILDERS))
 
 import sources

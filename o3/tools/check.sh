@@ -13,16 +13,16 @@ echo "==> Nix formatting"
 alejandra --check .
 
 echo "==> KB structural audit"
-python3 o3/tools/kb_tools.py audit --format markdown
+python3 method/../o3/kb_tools.py --root . audit --format markdown
 
 echo "==> KB facts"
-python3 o3/tools/kb_tools.py facts
+python3 method/../o3/kb_tools.py --root . facts
 
 echo "==> KB coverage"
-python3 o3/tools/kb_tools.py coverage
+python3 method/../o3/kb_tools.py --root . coverage
 
 echo "==> KB fidelity"
-python3 o3/tools/kb_tools.py fidelity
+python3 method/../o3/kb_tools.py --root . fidelity
 
 if [[ "$run_flake_check" == "1" ]]; then
   echo "==> Flake check"

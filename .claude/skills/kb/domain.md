@@ -6,12 +6,12 @@ escluso `kb/kb.md`. Non includere i nodi del canone nel catalogo locale.
 ## Audit e perimetri
 
 ```bash
-python3 o3/tools/kb_profile.py --root .
-python3 o3/tools/kb_tools.py audit --format markdown
-python3 o3/tools/kb_tools.py inventory
-python3 o3/tools/kb_tools.py facts
-python3 o3/tools/kb_tools.py coverage
-python3 o3/tools/kb_tools.py fidelity
+python3 method/../o3/kb_profile.py --root .
+python3 method/../o3/kb_tools.py --root . audit --format markdown
+python3 method/../o3/kb_tools.py --root . inventory
+python3 method/../o3/kb_tools.py --root . facts
+python3 method/../o3/kb_tools.py --root . coverage
+python3 method/../o3/kb_tools.py --root . fidelity
 python3 method/../o3/skill_tools.py audit
 python3 method/../o3/skill_tools.py classifica
 ```
@@ -55,4 +55,4 @@ fra KB procedurale e prescrizioni di atti specifici, senza traslochi automatici.
 Formatta i file toccati: Markdown con `prettier`, Python con `ruff format`,
 Nix con `alejandra`. Riesegui l'audit sopra e `o3/tools/check.sh`.
 Se cambiano sorgenti presentative rigenera le viste pertinenti con
-`python3 o3/view/build.py`.
+`python3 method/../o3/view/build.py --root .`.

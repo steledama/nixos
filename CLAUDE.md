@@ -131,19 +131,19 @@ Per ogni intento ricorrente, lo strumento da usare con il comando minimo sicuro 
   - Comando minimo: `o3/tools/check.sh` (`--flake` aggiunge `nix flake check`)
   - Approfondimento: `kb/development-environment.md`
 - **audit strutturale KB** — `kb_tools.py audit`
-  - Comando minimo: `python3 o3/tools/kb_tools.py audit --format markdown`
+  - Comando minimo: `python3 method/../o3/kb_tools.py --root . audit --format markdown`
   - Approfondimento: `method/kb-tools.md`
 - **attributi di dominio** — `kb_tools.py facets`
-  - Comando minimo: `python3 o3/tools/kb_tools.py facets` (verifica la facet `ciclo: dev | runtime` sugli item di collezione; l'audit la integra come problemi `[FACET]`)
+  - Comando minimo: `python3 method/../o3/kb_tools.py --root . facets` (verifica la facet `ciclo: dev | runtime` sugli item di collezione; l'audit la integra come problemi `[FACET]`)
   - Approfondimento: `method/node.md`
 - **fatti KB vs filesystem** — `kb_tools.py facts`
-  - Comando minimo: `python3 o3/tools/kb_tools.py facts`
+  - Comando minimo: `python3 method/../o3/kb_tools.py --root . facts`
   - Approfondimento: `method/cognitive-fidelity.md`
 - **copertura host, moduli e wrapper CLI** — `kb_tools.py coverage`
-  - Comando minimo: `python3 o3/tools/kb_tools.py coverage`
+  - Comando minimo: `python3 method/../o3/kb_tools.py --root . coverage`
   - Approfondimento: `method/cognitive-fidelity.md`
 - **aggregato drift** — `kb_tools.py fidelity`
-  - Comando minimo: `python3 o3/tools/kb_tools.py fidelity`
+  - Comando minimo: `python3 method/../o3/kb_tools.py --root . fidelity`
   - Approfondimento: `method/cognitive-fidelity.md`
 - **switch home-manager (autonomo)** — `home-manager`
   - Comando minimo: `o3/scripts/con-identita.sh home-manager switch --flake .#user@host`

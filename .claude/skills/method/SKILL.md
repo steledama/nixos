@@ -94,11 +94,11 @@ revisione, e la chiusura dei fili ordinari non ne autorizza la rimozione
 8. Verifica almeno:
 
    ```bash
-   python3 o3/tools/kb_tools.py audit --format markdown
-   python3 o3/tools/kb_tools.py inventory
-   python3 o3/tools/kb_tools.py facts
-   python3 o3/tools/kb_tools.py coverage
-   python3 o3/tools/kb_tools.py fidelity
+   python3 method/../o3/kb_tools.py --root . audit --format markdown
+   python3 method/../o3/kb_tools.py --root . inventory
+   python3 method/../o3/kb_tools.py --root . facts
+   python3 method/../o3/kb_tools.py --root . coverage
+   python3 method/../o3/kb_tools.py --root . fidelity
    o3/tools/check.sh
    ```
 

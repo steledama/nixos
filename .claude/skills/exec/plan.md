@@ -23,7 +23,7 @@ locale è già stato verificato).
 **2. Verifica la consistenza o1↔o2 col generatore**
 
 Il contratto plan×`o2/` lo verifica il generatore: esegui
-`python3 o3/view/build.py --check` e interpretane l'esito — a contratto violato
+`python3 method/../o3/view/build.py --root . --check` e interpretane l'esito — a contratto violato
 esce con l'elenco degli errori (file `o2/` senza riga del plan, voce di
 `o2/tasks.md` senza file, file non indicizzato, ciclo divergente fra plan e
 frontmatter, colonna `Ob.` vuota o che punta a un obiettivo assente dal
@@ -159,7 +159,7 @@ coda, non dal giro precedente. Una sessione può aver messo una riga in testa
 senza toccare il trailer. Se consigli un'altra riga, il corpo del commit
 nomina quella scavalcata e il motivo (urgenza, costo/opportunità, una lente
 del passo 3b). Poi confronta il consigliato con l'ultimo trailer `Prossimo:`
-della storia (`git log -1 --grep='^Prossimo:' --format='%(trailers:key=Prossimo,valueonly)'`;
+della storia (la riga `Prossimo:` di `python3 method/../o3/ultimo_giro.py`;
 senza trailer precedente è un cambio, con causa «primo trailer»):
 
 - **confermato**: dì in una riga, nel corpo del commit e nel resoconto,
@@ -200,7 +200,7 @@ secondo giro automatico.
 
 Minimo: `o1/plan.md`, `goal.md`, l'ultimo trailer `Prossimo:`, i corpi dei
 giri della settimana del passo 3c, verificati da `commit_gate.py stadi`, e
-`python3 o3/view/build.py --check`.
+`python3 method/../o3/view/build.py --root . --check`.
 
 ## Convenzioni della coda
 

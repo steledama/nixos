@@ -47,9 +47,9 @@ o3/tools/tests`. Non sostituisce uno scanner di segreti come gitleaks.
   presenza in `applicato_su`, senza scrivere né eseguire manutenzione.
   Test: `python3 -m unittest discover -s o3/scripts/tests`.
 
-- `tools/kb_profile.py --root .` — profilo quantitativo della KB:
+- `method/../o3/kb_profile.py --root .` — profilo quantitativo della KB:
   manifest dei nodi, dimensioni, maturità e limiti; dalla root usa
-  `python3 o3/tools/kb_profile.py --root .`.
+  `python3 method/../o3/kb_profile.py --root .`.
   Il protocollo e il profilo di dominio vivono nella skill `kb`.
 
 - `scripts/home-versions.sh` — confronta gli agenti AI installati da `pkgs-ai`
@@ -82,7 +82,7 @@ o3/tools/tests`. Non sostituisce uno scanner di segreti come gitleaks.
   richiede `sudo` per `dmidecode`, `hdparm` e `nvme`.
 - `tools/check.sh` — review locale non distruttiva (no sudo): formatter, audit KB,
   facts, coverage, fidelity. `--flake` aggiunge `nix flake check`.
-- `tools/kb_tools.py` — backend deterministico per audit e fact-check. Comandi:
+- `method/../o3/kb_tools.py --root .` — backend deterministico per audit e fact-check. Comandi:
   - `audit` — audit strutturale (link rotti, orfani, catalogo `kb/kb.md`,
     naming, cluster, facet, candidati termini); il report resta su stdout
   - `facts` — confronto fatti documentali (host, profili, moduli) vs
@@ -95,42 +95,18 @@ o3/tools/tests`. Non sostituisce uno scanner di segreti come gitleaks.
   - `facets` — attributi di dominio (`ciclo` sugli item di collezione)
   - `backlinks <nodo>` · `orphans` · `readme` (copertura `kb/kb.md`) ·
     `migration` · `terms`
-- `view/` — i builder delle viste, con lo stesso path in ogni repo (canone,
-  cfr. [view](../method/view.md)):
-  - `build.py` — **unico entrypoint**: `python3 o3/view/build.py` verifica i
-    contratti fra le fonti, rigenera pagine, deck, home e asset in `../view/`,
-    rimuove ciò che non produce più, formatta con Prettier e chiude col
-    presidio del compartimento stagno (nessun URL emesso esce da `../view/`).
-    Costruisce in una cartella temporanea e tocca `../view/` solo a esito
-    riuscito, come anteprima del working tree; `--check` verifica senza
-    scrivere, `--publish DIR` pubblica da un commit pulito. Identico al
-    canone;
-  - `publish.py` — la pubblicazione da commit pulito chiamata da
-    `build.py --publish`: fonti esportate con `git archive`, una cartella per
-    versione, puntatore `current` scambiato solo a build riuscita,
-    `status.json`, lock col PID. La usa il servizio di `deck`
-    (`kb/deck-user-services.md § Presentazione sulla LAN`). Test:
-    `python3 -m unittest discover -s o3/view/tests -p 'test_publish.py'`;
-  - `project.py` — l'unico file parametrizzato: sigla «NixOS», etichette in
-    inglese, accento `#c2410c`, il CSS di dominio `nixos.css` (in
-    `../presentation/`), `ESCLUSE` vuota e il deck Markdown
-    `DECK = "presentation/presentation.md"`, con la tavola `rete.svg`;
-  - `sources.py` — libreria condivisa (plan, task, register, contratti,
-    chiusura dei link, resa del deck); non si invoca direttamente;
-  - `build_pages.py` — le pagine 1:1 di `goal.md`, `world.md` e delle sei
-    collezioni, allo stesso path del repo. Regressioni:
-    `python3 -m unittest discover -s o3/view/tests -p 'test_build_pages.py'`;
-  - `build_system_image.py` — la home statica minimalista
-    `../view/index.html`, coi poli resi dall'intro dei register; dichiara
-    l'anteprima, o commit e toolchain della versione pubblicata;
-  - `serve.py` — serve la sola `../view/` sulle reti private:
-    `python3 o3/view/serve.py`, porta 8000, Ctrl-C per chiudere; con
-    `--publish-root DIR` serve la versione pubblicata e `/_stato`, ed è la
-    forma del servizio permanente di `deck`. Senza versione valida esce con 3
-    (`--check` fa solo il controllo); `--ciclo-state DIR` (i tentativi, in
-    `i1/giri` o nello stato dell'unità) e `--ciclo-unita DIR` (lo stato
-    dell'unità, accanto alle decisioni) servono `/_ciclo/`;
-  - `assets/` — i CSS canonici, copiati in `../view/assets/`.
+- `kb_tools.toml` e `kb_domain.py` — profilo e controlli NixOS per il nucleo
+  canonico: inventario host/moduli, facts, coverage, fidelity e struttura.
+- `view/project.py` — identità delle viste: sigla NixOS, lingua inglese,
+  accento `#c2410c`, descrizione locale di o3, CSS `nixos.css`, deck
+  `presentation/presentation.md`, nessuna esclusione.
+- Builder, server e asset delle viste vivono nel canone, senza copie locali:
+  `python3 method/../o3/view/build.py --root .` costruisce l'anteprima,
+  `--check` verifica senza scrivere e `--publish DIR` pubblica da commit
+  pulito. `python3 method/../o3/view/serve.py --root .` serve sulle reti
+  private. Contratti e opzioni: [view](../method/view.md).
+  Il servizio di deck è descritto in `kb/deck-user-services.md`.
+  Le regressioni locali in `view/tests/` importano i builder canonici.
 
 Gli strumenti in `tools/` e `view/` sono **esecutori deterministici del ciclo di sviluppo**
 (`ciclo: dev`): agiscono sull'artefatto — KB, viste, audit — non direttamente

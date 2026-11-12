@@ -1,9 +1,9 @@
 # modules/home/presentations.nix
 #
 # Permanent presentation of the projects served by this host: one user unit
-# presentazione-<repo> per checkout, each running the checkout's own serve.py
-# with its own --port. No copies: the server reads the checkout on disk, so a
-# pull updates the presentation.
+# presentazione-<repo> per checkout, with its own --port. Migrated repos run
+# the canonical server with --root; older adopters keep their local server
+# until their own migration.
 # Repos and ports live in ../../presentations.nix; the firewall is system-level.
 #
 # Checkout form, for the repos outside registry.published: o3/view/serve.py
@@ -28,7 +28,8 @@
 #
 # Server code: the swap reloads the views, not serve.py and the local modules
 # it imports. The server records the hash of the committed o3/view tree when
-# it starts (%S/presentazione/<repo>.serve); after every publish, a running
+# it starts, together with the canonical o3/view tree
+# (%S/presentazione/<repo>.serve); after every publish, a running
 # server whose stamp differs is restarted. The timer bounds the delay. A
 # server restarted for another reason (crash, login) still runs the files on
 # disk, uncommitted edits included.
@@ -54,7 +55,15 @@
 
   cicli = import ./ciclo/registry.nix {inherit lib identity;};
   hasCiclo = repo: cicli ? ${repo} && cicli.${repo}.host == hostname;
-  serve = "${pkgs.python3}/bin/python3 o3/view/serve.py";
+  # Preserve older adopters until their own /method migration.
+  viewCommand = name:
+    pkgs.writeShellScript "presentation-${name}" ''
+      if [ -f "o3/view/${name}.py" ]; then
+        exec ${pkgs.python3}/bin/python3 "o3/view/${name}.py" "$@"
+      fi
+      exec ${pkgs.python3}/bin/python3 "$HOME/method/o3/view/${name}.py" --root . "$@"
+    '';
+  serve = "${viewCommand "serve"}";
   serveArgs = repo: port: "--publish-root ${publishRoot repo} --port ${toString port}";
   serveStart = repo: port:
     "${serve} ${serveArgs repo port}"
@@ -73,7 +82,10 @@
   # commits like the publish does, so edits in progress never trigger it, and
   # the tree covers serve.py with its local imports (ciclo, project, sources).
   # A changed builder costs a spare restart, idempotent.
-  hashServe = "${pkgs.git}/bin/git rev-parse HEAD:o3/view";
+  hashServe = "${pkgs.writeShellScript "presentation-code-hash" ''
+    ${pkgs.git}/bin/git rev-parse HEAD:o3/view || exit 1
+    ${pkgs.git}/bin/git -C "$HOME/method" rev-parse HEAD:o3/view
+  ''}";
   stampServe = repo: "${pkgs.writeShellScript "presentazione-${repo}-stamp" ''
     ${pkgs.coreutils}/bin/mkdir -p "$(${pkgs.coreutils}/bin/dirname "$1")"
     ${hashServe} > "$1"
@@ -120,7 +132,7 @@ in {
         };
         Service = {
           WorkingDirectory = "%h/${repo}";
-          ExecStart = "${pkgs.python3}/bin/python3 o3/view/serve.py --port ${toString port}";
+          ExecStart = "${serve} --port ${toString port}";
           Restart = "on-failure";
           RestartSec = "5s";
         };
@@ -133,7 +145,7 @@ in {
           # lets the server start on the last good version.
           Wants = [(publisher repo)];
           After = [(publisher repo)];
-          ConditionPathExists = ["%h/${repo}/o3/view/serve.py"];
+          ConditionPathExists = ["%h/${repo}/o3/view/project.py"];
           # Bounds the restarts of a server that crashes for other reasons.
           StartLimitIntervalSec = 300;
           StartLimitBurst = 5;
@@ -143,7 +155,7 @@ in {
           # serve.py exits 3 when no valid version exists: ExecCondition skips
           # the unit (1-254) instead of failing it, with the diagnosis in the
           # journal; the first successful publish starts it.
-          ExecCondition = "${pkgs.python3}/bin/python3 o3/view/serve.py --publish-root ${publishRoot repo} --check";
+          ExecCondition = "${serve} --publish-root ${publishRoot repo} --check";
           ExecStartPre = stampServe repo;
           ExecStart = serveStart repo port;
           Restart = "on-failure";
@@ -156,14 +168,14 @@ in {
       // forEachPublished "-pubblicazione" (repo: _: {
         Unit = {
           Description = "Pubblicazione delle viste di ${repo} da commit pulito";
-          ConditionPathExists = ["%h/${repo}/o3/view/publish.py"];
+          ConditionPathExists = ["%h/${repo}/o3/view/project.py"];
         };
         Service = {
           # No RemainAfterExit: every login and every change of HEAD publishes.
           Type = "oneshot";
           WorkingDirectory = "%h/${repo}";
           Environment = "PATH=${publishPath}";
-          ExecStart = "${pkgs.python3}/bin/python3 %h/${repo}/o3/view/build.py --publish ${publishRoot repo}";
+          ExecStart = "${viewCommand "build"} --publish ${publishRoot repo}";
           ExecStartPost = afterPublish repo;
           # Bounds a hung build (one takes seconds). On timeout systemd sends
           # SIGTERM: publish.py closes the round without lock or .partial and
@@ -179,7 +191,7 @@ in {
       };
       # Every move of HEAD appends to its reflog. PathChanged does not see
       # changes made before activation: the login run of the service covers them.
-      Path.PathChanged = "%h/${repo}/.git/logs/HEAD";
+      Path.PathChanged = ["%h/${repo}/.git/logs/HEAD" "%h/method/.git/logs/HEAD"];
       Install.WantedBy = ["default.target"];
     });
 

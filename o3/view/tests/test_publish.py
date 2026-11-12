@@ -12,7 +12,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-BUILDERS = Path(__file__).resolve().parents[1]
+BUILDERS = Path(__file__).resolve().parents[3] / "method" / ".." / "o3" / "view"
 sys.path.insert(0, str(BUILDERS))
 
 import publish
@@ -34,13 +34,16 @@ def commit(repo: Path, text: str) -> str:
     return git(repo, "rev-parse", "HEAD")
 
 
-def fake_builder(source: Path, out: Path, sha: str) -> None:
+def fake_builder(source: Path, out: Path, sha: str, canon: str | None = None) -> None:
     text = (source / "goal.md").read_text(encoding="utf-8")
     out.mkdir(parents=True)
     (out / "index.html").write_text(text, encoding="utf-8")
     if "rotto" in text:
         raise RuntimeError("contratto violato")
-    (out / "provenance.json").write_text(json.dumps({"commit": sha}), encoding="utf-8")
+    (out / "provenance.json").write_text(
+        json.dumps({"commit": sha} | ({"canon": canon} if canon else {})),
+        encoding="utf-8",
+    )
 
 
 def served(dest: Path) -> str:
@@ -82,7 +85,9 @@ class PublishTest(unittest.TestCase):
         self.assertFalse(status["ok"])
         self.assertEqual(status["requested"], sha)
         self.assertIn("contratto violato", status["error"])
-        self.assertFalse([name for name in self.releases() if name.endswith(".partial")])
+        self.assertFalse(
+            [name for name in self.releases() if name.endswith(".partial")]
+        )
 
     def test_tiene_corrente_e_precedente(self) -> None:
         for text in ("uno", "due", "tre"):
@@ -101,8 +106,10 @@ class PublishTest(unittest.TestCase):
     def test_richiesta_durante_la_build_arriva_comunque(self) -> None:
         commit(self.repo, "uno")
 
-        def builder_con_commit_concorrente(source: Path, out: Path, sha: str) -> None:
-            fake_builder(source, out, sha)
+        def builder_con_commit_concorrente(
+            source: Path, out: Path, sha: str, canon: str | None = None
+        ) -> None:
+            fake_builder(source, out, sha, canon)
             if (source / "goal.md").read_text(encoding="utf-8") == "uno":
                 commit(self.repo, "due")
                 # La seconda pubblicazione trova il lock e si accoda.
@@ -117,7 +124,9 @@ class PublishTest(unittest.TestCase):
         self.run_publish()
         sha = commit(self.repo, "due")
 
-        def builder_interrotto(source: Path, out: Path, sha: str) -> None:
+        def builder_interrotto(
+            source: Path, out: Path, sha: str, canon: str | None = None
+        ) -> None:
             out.mkdir(parents=True)
             raise SystemExit(143)
 
@@ -150,13 +159,17 @@ class PublishTest(unittest.TestCase):
     def test_commit_arrivato_durante_una_build_fallita_si_pubblica(self) -> None:
         commit(self.repo, "rotto")
 
-        def builder_che_fallisce_e_vede_un_commit(source: Path, out: Path, sha: str) -> None:
+        def builder_che_fallisce_e_vede_un_commit(
+            source: Path, out: Path, sha: str, canon: str | None = None
+        ) -> None:
             if (source / "goal.md").read_text(encoding="utf-8") == "rotto":
                 commit(self.repo, "buono")
-            fake_builder(source, out, sha)
+            fake_builder(source, out, sha, canon)
 
         self.assertEqual(
-            publish.publish(self.repo, self.dest, builder=builder_che_fallisce_e_vede_un_commit),
+            publish.publish(
+                self.repo, self.dest, builder=builder_che_fallisce_e_vede_un_commit
+            ),
             0,
         )
         self.assertEqual(served(self.dest), "buono")
@@ -165,7 +178,13 @@ class PublishTest(unittest.TestCase):
 class ServeCheckTest(unittest.TestCase):
     def check(self, root: Path) -> int:
         return subprocess.run(
-            [sys.executable, str(BUILDERS / "serve.py"), "--publish-root", str(root), "--check"],
+            [
+                sys.executable,
+                str(BUILDERS / "serve.py"),
+                "--publish-root",
+                str(root),
+                "--check",
+            ],
             capture_output=True,
             check=False,
         ).returncode

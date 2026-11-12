@@ -83,8 +83,8 @@
       "Bash(python3 method/../o3/skill_tools.py *)",
       "Bash(python3 method/../o3/canone.py *)",
       "Bash(python3 method/../o3/scadenze.py)",
-      "Bash(python3 o3/tools/kb_tools.py *)",
-      "Bash(python3 o3/view/build.py --check)",
+      "Bash(python3 method/../o3/kb_tools.py --root . *)",
+      "Bash(python3 method/../o3/view/build.py --root . --check)",
       "Bash(python3 -m unittest *)",
       "Bash(ruff check *)",
       "Bash(ruff format *)",
@@ -124,7 +124,9 @@
       "WebFetch",
       "WebSearch",
       "Bash(o3/scripts/con-identita.sh nix eval *)",
-      "Bash(o3/scripts/con-identita.sh nix build *)"
+      "Bash(o3/scripts/con-identita.sh nix build *)",
+      "Bash(python3 method/../o3/ultimo_giro.py)",
+      "Bash(python3 method/../o3/ultimo_giro.py --corpo)"
     ],
     "deny": [
       "Edit(./CLAUDE.md)",

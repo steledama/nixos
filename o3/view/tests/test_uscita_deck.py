@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-BUILDERS = Path(__file__).resolve().parents[1]
+BUILDERS = Path(__file__).resolve().parents[3] / "method" / ".." / "o3" / "view"
 sys.path.insert(0, str(BUILDERS))
 
 import project  # noqa: E402
@@ -40,10 +40,16 @@ class RevealPageTests(unittest.TestCase):
     def test_il_frammento_segue_l_inizializzazione(self):
         with tempfile.TemporaryDirectory() as cartella:
             pagina = sources.reveal_page(
-                "# Titolo\n\n## Slide\n\nTesto.\n", "deck.md", "Deck", URL, Path(cartella)
+                "# Titolo\n\n## Slide\n\nTesto.\n",
+                "deck.md",
+                "Deck",
+                URL,
+                Path(cartella),
             )
         sources.check_deck_exit(pagina)
-        self.assertLess(pagina.index("Reveal.initialize"), pagina.index(sources.deck_exit()))
+        self.assertLess(
+            pagina.index("Reveal.initialize"), pagina.index(sources.deck_exit())
+        )
 
 
 if __name__ == "__main__":

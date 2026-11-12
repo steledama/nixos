@@ -42,7 +42,7 @@ aggiornamento rituale del filo.
 eventuali decisioni seguono il confine della delega.
 
 - **i2 — le viste sono ancora vere?** Non è una domanda di giudizio: la
-  verifica della build (`python3 o3/view/build.py --check`) la lancia il
+  verifica della build (`python3 method/../o3/view/build.py --root . --check`) la lancia il
   gate. Contratti fra le fonti e presidio del
   compartimento stagno devono passare; un errore si corregge nelle fonti prima
   del commit. L'output non entra nel commit: `view/` è ignorata da git e la

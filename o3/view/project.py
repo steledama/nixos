@@ -34,3 +34,6 @@ CSS_LOCALI: list[str] = ["nixos.css"]
 # glob relativi alla root: «i2/diario-*.md». Le viste possono essere servite
 # sulle reti private: ciò che il repo non vuole esporre resta qui.
 ESCLUSE: list[str] = []
+
+# Descrizione locale dello stadio Perform sulla home.
+DESCRIZIONI = {"o3": "Dichiarazione runtime e strumenti deterministici del Perform."}

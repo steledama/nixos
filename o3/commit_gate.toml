@@ -32,7 +32,7 @@ comando = ["prettier", "--write", "--log-level", "warn"]
 comando = ["o3/tools/check.sh"]
 
 [[controllo]]
-comando = ["python3", "o3/view/build.py", "--check"]
+comando = ["python3", "method/../o3/view/build.py", "--root", ".", "--check"]
 
 [[controllo]]
 comando = ["python3", "o3/tools/privacy.py", "--if-configured"]
