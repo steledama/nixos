@@ -24,7 +24,17 @@ verificato su un sistema attivato.
 
 - **`deck`** — home applicata e allineata (2026-11-11). Sistema: rebuild
   fatto dopo `96f2ff7`, da rifare per `75e6d08`.
-- **`game`**, **`neve`** — niente applicato: erano spenti.
+- **`neve`** — fatto il 2026-11-12: home con `remoto allinea`, sistema con
+  `nrs` dal custode; `system-drift.sh` e `home-drift.sh` allineati a
+  `7e46af1`, nessuna unità fallita, gruppi `scanner` e `lp` presenti.
+- **`game`** — niente applicato: era spento.
+
+Un rebuild lanciato senza wrapper si ferma al controllo `identitaReale`, ma
+lascia nel profilo di sistema la generazione costruita coi template: va
+tolta (`nix-env --switch-generation` sulla precedente, poi
+`--delete-generations`) prima del rebuild corretto. Su `neve` è successo il
+2026-11-12, con una shell aperta prima che la home portasse `nrs` col
+wrapper.
 
 ## Atti
 
