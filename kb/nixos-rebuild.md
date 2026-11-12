@@ -32,7 +32,13 @@ di `o3/identity/`, con chiavi SSH e indirizzi segnaposto. La build nuda resta
 utile solo come controllo dei template; l'attivazione la ferma
 `system.preSwitchChecks` in `o3/hosts/default.nix`, che riconosce i template
 dall'attributo `template` e interrompe `switch`, `boot` e `test` prima di
-toccare il sistema.
+toccare il sistema. Il controllo scatta però dopo la build, quando
+`nixos-rebuild` ha già registrato la generazione nel profilo: un rebuild
+lanciato senza wrapper lascia una generazione coi template, da togliere
+prima del rebuild corretto (`sudo nix-env --switch-generation <precedente>
+-p /nix/var/nix/profiles/system`, poi `--delete-generations <quella>`).
+Capita con una shell aperta prima che la home portasse `nrs` col wrapper:
+fish carica le abbreviazioni all'avvio, `exec fish` le rilegge.
 
 ## Scope
 
