@@ -9,7 +9,7 @@ modellato dalla membrana `world -> /run/current-system` (gitignorata): atti e
 segnali restano nel sistema reale e nei suoi log. Una cattura entra qui solo
 quando serve precisione o durata — un log diagnostico, un errore riprodotto, un
 referto `o3/scripts/hw-report.sh` che fonda una decisione. L'assenza si mostra, non
-si nasconde: la collezione è vuota finché una cattura reale non la popola.
+si nasconde: senza catture reali la collezione resta al solo indice.
 
 ## Contenuti
 
@@ -51,4 +51,4 @@ si nasconde: la collezione è vuota finché una cattura reale non la popola.
   cross-host** per i rami globali (`ia`, `world`): se già eseguito oggi da
   un host, un altro non lo rilancia, legge l'esito registrato. Segnalato a
   `method` come possibile seconda specie di i1
-  (`method/i1/registro-perpetuo-vs-cattura-singola.md`).
+  (`i1/registro-perpetuo-vs-cattura-singola.md` di `method`).

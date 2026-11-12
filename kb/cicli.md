@@ -7,8 +7,7 @@ stato: bozza
 Il ciclo autonomo è il ciclo congiunto `eval all → exec all → commit` di un repo
 (skill `/cycle`), lanciato da
 un'unità utente con Claude Code non interattivo, senza custode. Scelta e
-gradini vivono in method (`o2/dove-gira-il-ciclo-autonomo.md`,
-`o2/pilota-ciclo-autonomo.md`); qui c'è il meccanismo che li porta sugli host.
+gradini vivono in method (filo `i3/ciclo-autonomo.md`); qui c'è il meccanismo che li porta sugli host.
 
 ## Decisioni e meccanismo
 

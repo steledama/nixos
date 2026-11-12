@@ -79,7 +79,7 @@ scambio di versione non chiede riavvii.
   idempotente: con `HEAD` già servito `publish.py` risponde «già servito» in
   un decimo di secondo, senza costruire. Recupera il cambio perso dalla path
   unit e ritenta una build fallita, entro un intervallo più l'`AccuracySec`
-  predefinito di 1 minuto (canone `method/kb/view.md`, «recupero»). A mano:
+  predefinito di 1 minuto (canone `method/view.md`, «recupero»). A mano:
   `systemctl --user start presentazione-<repo>-pubblicazione`.
 - **Avvio e recupero.** La pubblicazione è anche `WantedBy=default.target`,
   e il server la ordina prima di sé con `Wants`/`After`. Al login si

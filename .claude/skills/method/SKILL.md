@@ -21,8 +21,8 @@ Esegui questa skill dalla root di `nixos`. La copia canonica vive nel repo
 Il cursore vive nel frontmatter di `i3/allineamento-metodo.md` — non in
 root: la root ospita il symlink `method` verso il canone (`../method/kb`), e
 un marker con nome simile accanto ad esso è un signifier ambiguo, non un
-ledger onesto (verdetto del canone: `i3/allineamento-marker-stadio.md` nel
-repo `method`). Cursore (`method_commit`, `reviewed_at`, `status`) e verdetto
+ledger onesto (verdetto del canone: filo `allineamento-marker-stadio`, chiuso, nella
+storia git di `method`). Cursore (`method_commit`, `reviewed_at`, `status`) e verdetto
 narrativo sono fusi in un solo file-i3, stessa forma «stato attuale
 aggiornato in place» di ogni altro filo. `status: aligned` è ammesso solo
 quando ogni cambiamento pertinente dell'intervallo **e ogni prescrizione

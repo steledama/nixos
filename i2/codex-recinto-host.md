@@ -6,7 +6,7 @@ ciclo: dev
 
 Il limite osservato nel tentativo `928bb91a` del 2026-11-11 alle 18:23
 era l'accesso alla cache Nix e al bus utente dalla sandbox propria di Codex
-(task `o2/ciclo-fallback-codex.md`, chiuso il 2026-11-11). Il contratto canonico riletto in
+(task del fallback Codex, chiuso il 2026-11-11). Il contratto canonico riletto in
 `method/../o3/ciclo/fallback.md` dichiara ora `--recinto-host`: in presenza
 del recinto dell'host l'esecutore usa quello, senza aggiungere la sandbox
 `workspace-write`. Il profilo locale cita il recepimento `0eeb2db`.

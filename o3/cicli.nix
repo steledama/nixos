@@ -1,6 +1,6 @@
 # cicli.nix
 #
-# Decisions of the autonomous cycle (method o2/dove-gira-il-ciclo-autonomo.md):
+# Decisions of the autonomous cycle (method i3/ciclo-autonomo.md):
 # for every repo, where and when its `eval all -> exec all -> commit` round
 # runs. The mechanism lives in modules/home/cicli.nix and generates the
 # units ciclo-<repo> only on the host named here: one value of `host` per
@@ -102,7 +102,7 @@
     time = "04:30";
     # Step 1 from 2026-10-17 (custodian), without waiting for a round with
     # real bumps and switch: that part of the perimeter is tested by the
-    # first round that finds them due (method o2/pilota-ciclo-autonomo.md).
+    # first round that finds them due (method i3/ciclo-autonomo.md).
     state = "timer";
     # /manutenzione bumps ia and home-manager and switches deck inside the
     # round (custodian, 2026-10-16): a switch relinks files all over the

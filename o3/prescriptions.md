@@ -24,7 +24,6 @@ Nessuna prescrizione narrativa aperta.
   - `modules/home/` — moduli Home Manager e wrapper CLI utente
 - `identity/` — template pubblici e istruzioni per l'input locale delle
   identità reali, che restano fuori da Git
-- `patches/` — patch upstream applicate dal flake
 - `ciclo/` — il giro senza custode di questo repo: `prompt.md` (il prompt
   dell'unità `ciclo-nixos`) e `permessi.json` (i permessi del solo ciclo
   autonomo), in sola lettura nell'unità (voce `nixos` di `cicli.nix`;

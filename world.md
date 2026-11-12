@@ -31,7 +31,7 @@ Le fonti grezze restano principalmente il sistema in esecuzione, ma la skill
 `/manutenzione` (cfr. `.claude/skills/manutenzione/SKILL.md`) confronta quel sistema
 con fonti-mondo esterne autorevoli — superano il test «avrebbero ancora
 significato senza questo artefatto?» (`method/world.md`): esistono e contano a
-prescindere da `nixos`. Divergenza dal canone chiusa.
+prescindere da `nixos`.
 
 - **nixpkgs-unstable** — `github:NixOS/nixpkgs`, branch `nixos-unstable`.
   Fonte del confronto versioni per i rami `ia`/`casa` (flake input
