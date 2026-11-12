@@ -78,8 +78,8 @@ NIXOS_IDENTITY_DIR=/home/<utente>/.config/nixos/identity \
 
 Il wrapper passa al flake l'identità locale dell'host; dentro `nixos-enter`
 si è root, quindi la directory va indicata con `NIXOS_IDENTITY_DIR`. Senza
-wrapper il flake costruisce i template pubblici, con chiavi e indirizzi
-segnaposto: l'attivazione li rifiuta (`system.preSwitchChecks` in
+wrapper il flake valuta i template pubblici, con chiavi e indirizzi
+segnaposto, e la loro build si ferma (`system.checks` in
 `o3/hosts/default.nix`). Se la directory dell'identità è andata persa,
 ripristinarla prima di ricostruire.
 

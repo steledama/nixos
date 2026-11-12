@@ -401,7 +401,7 @@ rimangono quelli configurati sul singolo host.
 Questi dati non sono segreti crittografici e finiscono nel Nix store durante
 la valutazione. La loro copia privata è però necessaria al ripristino:
 clonare il repo pubblico recupera i template, non le identità reali, e i
-template non si attivano (`nixos-rebuild`).
+template non si costruiscono come sistema (`nixos-rebuild`).
 
 La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
 

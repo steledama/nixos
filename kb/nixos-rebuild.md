@@ -28,17 +28,16 @@ un risultato nello store e un symlink `result` nella directory corrente, quindi
 è la verifica che un agente può eseguire da solo.
 
 Il wrapper non è facoltativo: senza, il flake costruisce i template pubblici
-di `o3/identity/`, con chiavi SSH e indirizzi segnaposto. La build nuda resta
-utile solo come controllo dei template; l'attivazione la ferma
-`system.preSwitchChecks` in `o3/hosts/default.nix`, che riconosce i template
-dall'attributo `template` e interrompe `switch`, `boot` e `test` prima di
-toccare il sistema. Il controllo scatta però dopo la build, quando
-`nixos-rebuild` ha già registrato la generazione nel profilo: un rebuild
-lanciato senza wrapper lascia una generazione coi template, da togliere
-prima del rebuild corretto (`sudo nix-env --switch-generation <precedente>
--p /nix/var/nix/profiles/system`, poi `--delete-generations <quella>`).
-Capita con una shell aperta prima che la home portasse `nrs` col wrapper:
-fish carica le abbreviazioni all'avvio, `exec fish` le rilegge.
+di `o3/identity/`, con chiavi SSH e indirizzi segnaposto. `nix flake check`
+li valuta; la loro build la ferma `system.checks` in `o3/hosts/default.nix`,
+che riconosce i template dall'attributo `template` e aggiunge una
+derivazione `identita-reale` che fallisce. Così un rebuild senza wrapper si
+interrompe prima che `nixos-rebuild` registri la generazione nel profilo.
+Il controllo stava prima in `system.preSwitchChecks`, che scatta dopo la
+registrazione: il 2026-11-12 un rebuild senza wrapper su `neve` ha lasciato
+una generazione coi template, tolta a mano. La causa era una shell aperta
+prima che la home portasse `nrs` col wrapper: fish carica le abbreviazioni
+all'avvio, `exec fish` le rilegge.
 
 ## Scope
 
