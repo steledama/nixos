@@ -73,6 +73,14 @@
     };
   };
 
+  # Progetto Google Cloud del client OAuth di gog e gdrive-personale
+  # (world.md § Fonti): dato documentale, nessun modulo lo legge.
+  gcloud = {
+    projectId = "example-project-123456";
+    projectNumber = "123456789012";
+    displayName = "my-project-00000";
+  };
+
   syncthing.deviceIds = {
     neve = "REPLACE-WITH-NEVE-SYNCTHING-DEVICE-ID";
     game = "REPLACE-WITH-GAME-SYNCTHING-DEVICE-ID";

@@ -46,8 +46,8 @@ prescindere da `nixos`.
 
 - **Google Cloud Console personale** — fonte per identità del progetto,
   ruoli IAM, client OAuth e stato del consenso usati da `gog` e rclone.
-  Progetto di riferimento: `autonomous-tube-485017-e4`, numero
-  `371243294687`; il display name riportato nel setup è `my-project-99364`.
+  ID, numero e display name del progetto di riferimento stanno
+  nell'identità locale (`gcloud` in `~/.config/nixos/identity/home.nix`).
   Verificare i valori e i permessi nella console prima di operare; il JSON
   locale non certifica lo stato IAM. Nodo di setup: `google-workspace-cli`.
 

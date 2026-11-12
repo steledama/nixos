@@ -421,6 +421,10 @@ La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
   effetto sul loro sistema, e sono state allineate a quella di `deck` (`game`
   il 2026-11-12, copia della vecchia in `work.nix.bak-2026-11-12`): le
   impronte dei quattro file coincidono sui tre host.
+  Da riallineare: più tardi lo stesso giorno `home.nix` e `privacy.json` di
+  `deck` hanno ricevuto il progetto Google Cloud (`gcloud`), tolto dai file
+  pubblici; le due note del seed e le copie di `neve` e `game` sono ancora
+  alla versione precedente.
 - **Scrittura:** file modificati a mano a ogni cambio d'assetto (un peer, una
   chiave autorizzata, un indirizzo): la nota va aggiornata nello stesso
   momento, altrimenti il seed ripristina un assetto superato. La prova

@@ -75,7 +75,7 @@ API, quote o autorizzazioni. Il file locale OAuth identifica un client, ma non
 prova né i permessi IAM correnti né lo stato `Production` del consenso.
 
 `gog` e il remote `gdrive-personale` condividono il client OAuth (progetto
-`371243294687`, verificato su `deck` il 2026-11-07); gli altri remote rclone usano progetti distinti.
+`gcloud` dell'identità locale, verificato su `deck` il 2026-11-07); gli altri remote rclone usano progetti distinti.
 Prima di ruotare le credenziali confrontare i soli client ID nelle
 configurazioni locali, senza stampare client secret o token: una rotazione
 può coinvolgere sia gog sia il mount Drive.

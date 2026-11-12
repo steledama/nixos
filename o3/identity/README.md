@@ -15,7 +15,9 @@ al flake come input esplicito. Non serve un secondo repository operativo.
   la stessa forma dei template. Il suo `default.nix` importa i due file
   reali e restituisce `{ home = …; work = …; }`.
 - `home.nix` locale custodisce email e autore Git, rete di casa, chiavi
-  pubbliche, device ID Syncthing, mount Drive e identità SSH aggiuntive.
+  pubbliche, device ID Syncthing, mount Drive, identità SSH aggiuntive e
+  il progetto Google Cloud del client OAuth (`gcloud`, solo documentale:
+  nessun modulo lo legge).
 - `work.nix` locale custodisce i dati del client VPN ufficio e gli eventuali
   checkout privati letti dal ciclo di method. Il template non ne elenca.
 
