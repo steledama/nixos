@@ -93,13 +93,6 @@ aggiornabile senza toccare il sistema. Vantaggi:
 - disponibili in ogni terminale, su tutti i profili;
 - l'aggiornamento resta un gesto manuale ed esplicito (`hfu`).
 
-Codex ha temporaneamente un input dedicato `nixpkgs-codex`, fermo alla
-revisione `f9a75f4` con Codex 0.166.0 e le sue dipendenze: la build di
-0.167.0 fallisce in `aws-lc-sys` (NixOS/nixpkgs #585124). L'override di
-`pkgs-ai.codex` in `flake.nix` permette agli altri agenti di avanzare.
-`home-versions.sh` legge il pin effettivo; `/manutenzione ia` ne sorveglia
-la rimozione, subordinata a cache o build riuscita del Codex nell'input `ai`.
-
 `gogcli` (binario `gog`) segue una strada diversa: arriva dai `pkgs` ordinari
 con un overlay locale permanente in `flake.nix` (segue le release upstream di
 `openclaw/gogcli`, più rapide di nixpkgs), e vive in un modulo home proprio.

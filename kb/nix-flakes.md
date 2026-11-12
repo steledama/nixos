@@ -38,11 +38,6 @@ copia del mondo: isolano un pacchetto dalla cadenza del suo input naturale.
   La differenza conta quando si legge il flake: un pin con cadenza propria è
   struttura, un pin di workaround è debito con una condizione di chiusura.
 
-- **`nixpkgs-codex`** — Codex dentro `pkgs-ai`. Questo invece è un pin di
-  workaround: tiene Codex alla versione che costruisce finché l'input `ai`
-  non ne offre una funzionante. Motivo e condizione di rimozione in
-  `development-environment` e nella riga del plan.
-
 `o3/modules/system/nix.nix` allinea `nix.nixPath` a `inputs.nixpkgs`, il pin
 che costruisce realmente l'host, anche per i comandi Nix non-flake.
 
@@ -84,8 +79,8 @@ Aggiornare un input alla volta.
 - `flake.nix` — root del repo, definisce input, overlay condivisi, tutti i
   `nixosConfigurations` e gli `homeConfigurations`
 - `flake.lock` — lock file committato per riproducibilità; contiene una
-  voce propria per ciascuno dei quattro input della famiglia nixpkgs
-  (`nixpkgs`, `ai`, `nixpkgs-whisper`, `nixpkgs-codex`)
+  voce propria per ciascuno dei tre input della famiglia nixpkgs
+  (`nixpkgs`, `ai`, `nixpkgs-whisper`)
 
 Connessioni:
 

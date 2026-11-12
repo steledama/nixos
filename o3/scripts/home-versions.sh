@@ -38,11 +38,7 @@ echo ""
 # Funzione per ottenere versione dal ai lockato
 get_fresh_version() {
     local pkg="$1"
-    local rev="$FRESH_REV"
-    if [[ "$pkg" == "codex" ]]; then
-        rev=$(jq -r '.nodes["nixpkgs-codex"].locked.rev // .nodes.ai.locked.rev' "$FLAKE_DIR/flake.lock")
-    fi
-    nix eval --raw "github:NixOS/nixpkgs/${rev}#${pkg}.version" 2>/dev/null || echo "N/A"
+    nix eval --raw "github:NixOS/nixpkgs/${FRESH_REV}#${pkg}.version" 2>/dev/null || echo "N/A"
 }
 
 # Funzione per ottenere versione da nixpkgs unstable (ultimo commit)
@@ -138,7 +134,3 @@ echo ""
 echo -e "${BOLD}Note:${NC}"
 echo -e "  - pkgs-ai usa un input separato per aggiornamenti indipendenti dello stack agentico"
 echo -e "  - Aggiornare ai non richiede nixos-rebuild"
-
-if jq -e '.nodes["nixpkgs-codex"]' "$FLAKE_DIR/flake.lock" >/dev/null; then
-    echo "  - Codex ha un pin temporaneo separato (nixpkgs-codex): aggiornare ai non lo muove"
-fi

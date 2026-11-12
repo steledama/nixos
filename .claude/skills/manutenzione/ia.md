@@ -39,14 +39,3 @@ il tree torna pulito e il resto si può committare. Il giro autonomo segue
 
 Restituisci delta, valutazione, esito dello switch e host verificati alla
 [chiusura comune](chiusura.md). Su deck segui [remoto](remoto.md) prima del commit.
-
-**Pin temporaneo Codex**: `nixpkgs-codex` conserva Codex 0.166.0 con le
-sue dipendenze, mentre `ai` continua ad aggiornare Claude Code, Pi e Herdr.
-Lo script versioni legge il pin effettivo di Codex. Il delta di Codex da solo
-non deve bloccare lo switch degli altri agenti. A ogni diagnosi ia controlla
-se Codex dell'input `ai` aggiornato è costruibile (cache binaria oppure build
-riuscita): la chiusura di NixOS/nixpkgs #585124 da sola non basta.
-Finché manca il riscontro, conserva il pin e dichiaralo nel resoconto.
-Quando la build riesce, rimuovi input, override e questa eccezione, verifica
-lo switch e aggiorna la documentazione. Nel giro autonomo la rimozione resta
-proposta alla sessione col custode perché modifica questa skill.

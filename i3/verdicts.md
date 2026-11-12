@@ -20,8 +20,8 @@ Ogni filo dichiara nel frontmatter `ciclo` e `obiettivo`, verificato contro
 li ripete.
 
 - [workaround-desktop-upstream.md](workaround-desktop-upstream.md) — wrapper
-  Steam/PipeWire su `game` e pin Codex (`nixpkgs-codex`), locali e
-  temporanei, sorvegliati da `/manutenzione`; il blocco dell'igc su `game` ne è
+  Steam/PipeWire su `game`, locale e
+  temporaneo, sorvegliato da `/manutenzione`; il blocco dell'igc su `game` ne è
   uscito come difetto hardware accettato (`kb/hardware-inventory.md`).
 - [allineamento-metodo.md](allineamento-metodo.md) — cursore di allineamento
   al canone `method`: commit recepito, esito delle prescrizioni aperte e

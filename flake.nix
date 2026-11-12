@@ -15,12 +15,8 @@
 
     # ai: Input separato per agenti AI da aggiornare frequentemente
     # Aggiorna con: nix flake update ai (senza toccare il sistema)
-    # Usato per: claude-code, pi-coding-agent, herdr; codex ha un pin temporaneo
+    # Usato per: claude-code, codex, pi-coding-agent, herdr
     ai.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    # Temporary Codex 0.166.0 pin: 0.167.0 fails in aws-lc-sys.
-    # Remove after the fix for NixOS/nixpkgs#585124 builds on input ai.
-    nixpkgs-codex.url = "github:nixos/nixpkgs/f9a75f41be3a74eab55d3a7679d34ad6cc0da977";
 
     # nixpkgs-whisper: pin per whisper-cpp (solo host game, NVIDIA). Non è un
     # workaround per una build rotta: è un pacchetto
@@ -129,11 +125,6 @@
       pkgs-ai = import inputs.ai {
         inherit system;
         config.allowUnfree = true;
-        overlays = [
-          (_final: _prev: {
-            codex = (import inputs.nixpkgs-codex {inherit system;}).codex;
-          })
-        ];
       };
     in
       home-manager.lib.homeManagerConfiguration {

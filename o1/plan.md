@@ -20,9 +20,9 @@ deck passano al lanciatore canonico, che registra il credito esaurito di
 Claude: tutti e quattro dal 2026-11-11. L'host è pronto anche per Codex
 come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
 di riserva, collaudato con un giro completo fino al push. Il fallback reale
-per credito esaurito si verificherà quando accade. Seed e rebuild aspettano
-il custode sugli host, Steam aspetta upstream; il pin Codex ha la sua
-condizione d'uscita dal 2026-11-12 e si toglie in sessione.
+per credito esaurito si verificherà quando accade. Il pin Codex è uscito il
+2026-11-12. Seed e rebuild aspettano il custode sugli host, Steam aspetta
+upstream.
 
 ## Task
 
@@ -31,7 +31,6 @@ condizione d'uscita dal 2026-11-12 e si toglie in sessione.
 | runtime | 2   | Mettere l'identità locale nel seed                 | p1   |
 | runtime | 1   | Portare i tre host sulla configurazione ripulita   | p2   |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
-| runtime | 1   | Rimuovere il pin Codex dopo build su ai            | —    |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):

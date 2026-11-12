@@ -14,17 +14,11 @@ nella configurazione.
 - Su `game`, il wrapper Home Manager riavvia PipeWire prima di Steam per
   evitare il crash nella `libaudio.so` bundlata; va rimosso dopo un fix
   upstream verificato.
-- Su tutti gli host, l'input `nixpkgs-codex` tiene Codex a 0.166.0 mentre
-  `ai` avanza per gli altri agenti (`bac7d86`, 2026-11-10): codex 0.167.0
-  non compilava su `ai` (aws-lc-sys, NixOS/nixpkgs #585124 chiusa il
-  2026-11-09). Il 2026-11-12 la condizione d'uscita è arrivata: la 0.167.0
-  di `nixos-unstable`, il ramo che `ai` segue, è in cache.nixos.org
-  (misurato da `o3/scripts/home-versions.sh`, giro del 2026-11-12). Il
-  pin resta finché rimozione e switch non sono verificati su un host, in
-  sessione col custode, perché la rimozione tocca anche la skill
-  `/manutenzione` (`.claude/skills/manutenzione/ia.md`).
 
-Verdetto corrente: la deriva desktop è contenuta. Steam resta debito noto
+Verdetto corrente: la deriva desktop è contenuta. Il pin Codex è uscito il
+2026-11-12: la 0.167.0 dell'input `ai` è arrivata in cache, la rimozione è
+verificata con lo switch su `deck`; `game` e `neve` la ricevono col
+prossimo allineamento. Steam resta debito noto
 con una condizione upstream e un task (`w3` in `o1/plan.md`, dettagli in
 `o2/`); #9289 ancora aperta al 2026-11-12 (`gh issue view`, ultimo
 aggiornamento 2025-02-19). L'overlay NAPS2 è uscito il
@@ -38,4 +32,4 @@ rimpiazzabile, cambiare servizio può costare meno che aspettare upstream.
 La ricorrenza quotidiana di `/manutenzione world` sorveglia la condizione
 upstream. Ogni workaround esce quando la condizione è superata **e** la
 rimozione è verificata sul relativo host (runtime, o build attiva per gli
-overlay di packaging). Il filo si chiude con l'uscita del wrapper Steam e del pin Codex.
+overlay di packaging). Il filo si chiude con l'uscita del wrapper Steam.

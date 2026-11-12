@@ -1,7 +1,7 @@
 {
   "ultima_esecuzione": {
     "data": "2026-11-12",
-    "ora": "04:33",
+    "ora": "07:39",
     "host": "deck",
     "rami": ["ia"]
   },
@@ -14,13 +14,19 @@
   "ia": {
     "cadenza_giorni": 1,
     "data": "2026-11-12",
-    "ora": "04:33",
+    "ora": "07:39",
     "host_eseguito": "deck",
-    "esito": "nessun delta",
-    "rev_ai": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
-    "pacchetti": [],
-    "nota": "Nessun delta su ai f4a03c0: claude-code 2.1.318, pi 1.5.0, herdr 0.9.5 pari a unstable; codex 0.166.0 sul pin nixpkgs-codex, 0.167.0 su unstable ora in cache.nixos.org: condizione di w4 arrivata, rimozione del pin in sessione col custode (o2/rimuovere-pin-codex.md). Niente bump ne switch, applicato_su conservato.",
-    "applicato_su": ["deck", "game"]
+    "esito": "eseguito",
+    "rev_ai": "177d0540942fb205af6993b1d5fa0b57799e09f8",
+    "pacchetti": [
+      {
+        "nome": "codex",
+        "da": "0.166.0",
+        "a": "0.167.0"
+      }
+    ],
+    "nota": "Pin nixpkgs-codex rimosso in sessione col custode: ai f4a03c0 -> 177d054, codex 0.167.0 dalla cache (nessuna compilazione); claude-code 2.1.318, pi 1.5.0 invariati. Switch su deck riuscito. game e neve col prossimo allineamento.",
+    "applicato_su": ["deck"]
   },
   "home-manager": {
     "cadenza_giorni": 7,
