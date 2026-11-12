@@ -13,10 +13,6 @@ si nasconde: senza catture reali la collezione resta al solo indice.
 
 ## Contenuti
 
-- [agent-task-orientation-20261024.md](agent-task-orientation-20261024.md) —
-  percorso osservato nella revisione del primo task: rilevamento host
-  tardivo, ricerca dopo un link già disponibile e output troncato;
-  confronto con un nuovo ingresso ancora da fare.
 - [grafie-permessi.jsonl](grafie-permessi.jsonl) — esiti della sonda delle
   grafie dei permessi del giro (`o3/scripts/sonda-grafie.sh`), una tornata
   per versione di Claude Code; letti in `i2/grafie-permessi.md`.
