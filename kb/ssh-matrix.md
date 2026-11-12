@@ -81,12 +81,13 @@ limite è che chi ha `sudo` può comunque cambiare la configurazione di sshd.
 Un rifiuto della chiave appare in `journalctl -u sshd` come
 `Connection closed by authenticating user stele 10.20.0.3 [preauth]`.
 Inventario delle chiavi e revoca se il telefono si perde:
-`secrets-management § Telefono telefono`.
+`secret-inventory § Telefono telefono`.
 
 Connessioni:
 
 - [network-architecture](network-architecture.md)
 - [wireguard-home](wireguard-home.md)
 - [secrets-management](secrets-management.md)
+- [secret-inventory](secret-inventory.md)
 - [game-local-llm](game-local-llm.md)
 - [cicli](cicli.md)

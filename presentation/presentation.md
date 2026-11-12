@@ -57,7 +57,7 @@ SSH non è mai esposto sulla WAN e accetta solo chiavi.
 - **Identità** — IP, chiavi pubbliche, endpoint in `~/.config/nixos/identity/home.nix`,
   separati dalla struttura; `work.nix` tiene solo ciò che serve a deck verso
   l'ufficio.
-- **Segreti** — fuori da Git, inventariati in `kb/secrets-management.md`.
+- **Segreti** — fuori da Git, inventariati in `kb/secret-inventory.md`.
 
 ## Il ciclo
 

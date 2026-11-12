@@ -38,7 +38,8 @@ sono duplicati qui.
 - [development-workflow](development-workflow.md) — Validazione, commit, attivazione e rollback
 - [development-environment](development-environment.md) — Baseline degli strumenti e aggiornamento dello stack agentico
 - [common-commands](common-commands.md) — Reference compatta dei comandi ricorrenti
-- [secrets-management](secrets-management.md) — Confine segreti/identità, inventario e vincoli di bootstrap
+- [secrets-management](secrets-management.md) — Confine segreti/identità, vincoli di bootstrap, seed, backup e prova annuale
+- [secret-inventory](secret-inventory.md) — Inventario dei segreti per voce: path, consumer, seed, prova e rotazione
 
 ## Strumenti e capability host
 

@@ -46,7 +46,7 @@ confronto hardware si eseguono una sola volta.
 ## 3. Ripristinare i segreti e fare il primo boot
 
 Il ripristino parte dalla cassaforte Bitwarden personale; l'inventario
-di `secrets-management` dà per ogni voce path, proprietario, permessi e
+`secret-inventory` dà per ogni voce path, proprietario, permessi e
 prova. I segreti vanno al loro posto **prima** dei servizi che li usano:
 quelli di sistema prima del boot della nuova generazione, quelli utente
 prima di `home-manager switch` (sezione 4), altrimenti Syncthing genera
@@ -243,6 +243,7 @@ Connessioni:
 - [disaster-recovery](disaster-recovery.md)
 - [client-desktop-architecture](client-desktop-architecture.md)
 - [secrets-management](secrets-management.md)
+- [secret-inventory](secret-inventory.md)
 - [google-workspace-cli](google-workspace-cli.md)
 - [game-live-transcription](game-live-transcription.md)
 - [network-architecture](network-architecture.md)

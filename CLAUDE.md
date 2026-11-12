@@ -170,7 +170,7 @@ profilo `o3/commit_gate.toml` (`alejandra`, `ruff format`, `prettier`,
 
 ## Comportamenti vincolati
 
-- **Secrets**: `.env`, `rclone.conf` e chiavi private sono gitignored. Mai committarli. Mappa completa dei segreti del progetto: `kb/secrets-management.md`.
+- **Secrets**: `.env`, `rclone.conf` e chiavi private sono gitignored. Mai committarli. Scelte e procedure: `kb/secrets-management.md`; inventario voce per voce: `kb/secret-inventory.md`.
 - **Presentazione sulle reti private**: le viste si servono solo sulle reti private, mai sulla rete pubblica (canone `method/presentation.md § Vincolo conservato`). `serve.py` a mano ascolta sulla 8000 su ogni host; `deck` serve in modo permanente `nixos` sulla 8002 (e `method`, `salute`, `economia` sulle 8001, 8003, 8004). Il server è senza autenticazione ed espone in modo continuo le viste pubblicate da commit: lì entrano le pagine 1:1 di register e di ogni item delle sei collezioni e il deck, con hostname, IP privati e topologia delle reti, mai segreti, chiavi, password o contenuti di `.env`/`rclone.conf`. Servizi utente, firewall e rotta statica: `kb/deck-user-services.md § Presentazione sulla LAN`.
 - **Pacchetti unfree**: dichiarazione esplicita in `unfree.allowedNames` (nel modulo che installa il pacchetto) con commento `# UNFREE:`; il predicate vive solo in `o3/modules/system/unfree.nix`. Lista corrente per host: `kb/unfree-packages.md`.
 - **Push remoto**: il push del branch corrente su `origin` segue ogni commit

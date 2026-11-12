@@ -111,7 +111,7 @@ vivono in `o3/modules/home/`.
   - Nodi KB: nix-flakes, home-manager, nixos-rebuild
 - **identità dell'infrastruttura**
   - Fonte di verità tecnica: `~/.config/nixos/identity/work.nix`, `~/.config/nixos/identity/home.nix` (template `*.example.nix`)
-  - Nodi KB: secrets-management
+  - Nodi KB: secrets-management, secret-inventory
 - **estensione del sistema**
   - Fonte di verità tecnica: `o3/hosts/`, `o3/home/`, `o3/modules/`
   - Nodi KB: configuration-patterns, project-extension

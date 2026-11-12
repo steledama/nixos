@@ -90,10 +90,11 @@ Client OAuth e materiale del keyring restano nei percorsi locali sopra,
 fuori dal repository.
 I pattern Git per export OAuth sono una protezione aggiuntiva, non coprono
 qualunque nome possibile: `oauth-client.json` non va copiato nel checkout.
-Inventario e vincoli di backup: `secrets-management`.
+Inventario: `secret-inventory`; vincoli di backup: `secrets-management`.
 
 Connessioni:
 
 - [development-environment](development-environment.md)
 - [secrets-management](secrets-management.md)
+- [secret-inventory](secret-inventory.md)
 - [rclone-gdrive](rclone-gdrive.md)
