@@ -11,9 +11,11 @@ storia della separazione è in git).
 - Ciò che qui nomina ancora i server è un legame dichiarato, non un invito
   ad agire: la VPN ufficio di `deck`, gli alias SSH di `deck`, il peer e la
   chiave di `norvegia` sulla VPN casa.
-- Il lavoro sui server si fa nell'altro repo. Modificarlo dal suo checkout
-  su `deck` (`~/nixos-lavoro`) è ammesso; gli atti sui server restano alle
-  sessioni lì.
+- Il lavoro sui server si fa nell'altro repo, dalle sessioni sui suoi host.
+  Su `deck` quel repo non ha checkout: per leggerlo o porgli una domanda, il
+  custode apre in un pannello Herdr una sessione via `ssh norvegia` e questa
+  sessione la interroga (§ Comunicazione fra sessioni con Herdr). Gli atti
+  sui server restano alle sessioni lì.
 - Un'istruzione che presuppone il repo unico è un residuo: verificala prima
   di applicarla e, nel dubbio, chiedi al custode.
 
@@ -80,6 +82,13 @@ protocollo nel nodo [`session-messaging`](method/session-messaging.md).
 Il messaggio si dichiara inoltrato dalla sessione nixos e conserva regole e
 autorizzazioni della sessione destinataria. Il collegamento non estende la
 delega su altri repo, host, sudo o rebuild.
+
+Fra host il canale va in un solo verso: questa sessione scrive nel pannello
+`ssh` della sessione remota e ne legge la risposta dal pannello, mentre la
+sessione remota non può scrivere qui. È la via per il repo di lavoro, che su
+`deck` non ha checkout: le domande partono dichiarate di sola lettura. Il
+protocollo è in [`session-messaging`](method/session-messaging.md),
+§ Sessione su un altro host.
 
 ## Skill
 
