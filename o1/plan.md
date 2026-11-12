@@ -22,8 +22,8 @@ come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
 di riserva, collaudato con un giro completo fino al push. Il fallback reale
 per credito esaurito si verificherà quando accade. Dal 2026-11-12 il pin
 Codex è uscito e i tre host girano sulla configurazione ripulita. Il seed
-contiene l'identità locale, uguale sui tre host; Steam a 64 bit aspetta la
-prova su game.
+contiene l'identità locale, uguale sui tre host; il wrapper di Steam
+aspetta il client a 64 bit su game.
 
 ## Task
 
@@ -34,8 +34,9 @@ prova su game.
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
 
-- `p2` — custode: la prova di Steam a 64 bit (stable dal 2026-11-11) senza
-  il wrapper chiede `game` libero; PipeWire 1.6.11 non tocca il crash.
+- `p2` — custode: il client a 64 bit (stable dal 2026-11-11) è in
+  download su `game` dal 2026-11-12; col 32 bit il riproduttore di #13174
+  fa crashare Steam. Si ripete la prova quando `ubuntu12_64/steam` esiste.
   Risveglio alternativo: chiusura di ValveSoftware/steam-for-linux#13174,
   che ha sostituito #9289; by: 2026-12
 

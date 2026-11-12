@@ -1,5 +1,5 @@
 ---
-sintesi: "Provare su game Steam a 64 bit senza il wrapper PipeWire e, se regge, rimuovere il workaround."
+sintesi: "Il riproduttore di #13174 fa crashare Steam a 32 bit su game: ripetere la prova col client a 64 bit e, se regge, rimuovere il wrapper."
 ciclo: runtime
 ---
 
@@ -41,6 +41,14 @@ pubblica un device virtuale via API PipeWire fa crashare Steam (build
   Se il client a 64 bit non carica più la `libaudio.so` di `ubuntu12_32/`,
   il crash non ha più dove avvenire. Non verificato: nessun riscontro su
   #13174 dopo lo stable, e le librerie a 32 bit restano richieste.
+- **Prima prova su `game` (2026-11-12, sera).** Client ancora a 32 bit
+  (`ubuntu12_32/steam`, build `1792618285`, canale stable): carica la
+  `libaudio.so` e `ubuntu12_64/steam` non esiste. Il bootstrap ha messo in
+  coda proprio allora i pacchetti `*_steamrt64`: il client a 64 bit sta
+  arrivando, non è ancora attivo. Avviato senza wrapper, Steam parte (ma
+  PipeWire era pulito, dopo un riavvio); il riproduttore di #13174 lo fa
+  crashare subito. Lo strumento vale anche su questo host: la prova si
+  ripete identica col client a 64 bit.
 - **nixpkgs non deve fare nulla.** `steam-unwrapped` 1.0.0.87 è il
   bootstrap, il client si aggiorna da sé; l'incompatibilità del client a 64
   bit con l'FHS di NixOS (nixpkgs#505824) è chiusa dal 2026-04.
@@ -55,7 +63,9 @@ Senza toccare la configurazione, quando `game` è libero:
 2. Avviare `/run/current-system/sw/bin/steam` direttamente, scavalcando il
    wrapper.
 3. Con Steam aperto, lanciare il riproduttore di #13174 (commento del
-   2026-10-20): se Steam regge, il percorso del crash è chiuso. Un semplice
+   2026-10-20; copia in `~/steam-repro-13174.sh` su `game`):
+   `nix-shell -p gcc pkg-config pipewire.dev --run 'bash steam-repro-13174.sh'`.
+   Se Steam regge, il percorso del crash è chiuso. Un semplice
    avvio riuscito non prova nulla, perché il crash vuole uno stato PipeWire
    sporco.
 
