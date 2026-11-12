@@ -22,23 +22,23 @@ come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
 di riserva, collaudato con un giro completo fino al push. Il fallback reale
 per credito esaurito si verificherà quando accade. Dal 2026-11-12 il pin
 Codex è uscito e i tre host girano sulla configurazione ripulita. Il seed
-contiene l'identità locale, uguale sui tre host; il wrapper di Steam
-aspetta il client a 64 bit su game.
+contiene l'identità locale, uguale sui tre host. Il wrapper di Steam resta:
+anche il client a 64 bit crasha su game, si aspetta Valve.
 
 ## Task
 
 | Ciclo   | Ob. | Task                                                   | Dip. |
 | ------- | --- | ------------------------------------------------------ | ---- |
-| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo la prova su game | p2   |
+| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo la prova su game | w1   |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
 
-- `p2` — custode: il client a 64 bit (stable dal 2026-11-11) è in
-  download su `game` dal 2026-11-12; col 32 bit il riproduttore di #13174
-  fa crashare Steam. Si ripete la prova quando `ubuntu12_64/steam` esiste.
-  Risveglio alternativo: chiusura di ValveSoftware/steam-for-linux#13174,
-  che ha sostituito #9289; by: 2026-12
+- `w1` — Valve: anche il client a 64 bit (`steamrt64/`, build
+  `1794424036`) carica una sua `libaudio.so` e il riproduttore di #13174
+  lo fa crashare su `game` (2026-11-12). Si riprova la stessa prova alla
+  chiusura della issue o a un client che non carichi più `libaudio`;
+  probe: github ValveSoftware/steam-for-linux#13174 closed; by: 2027-02
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 

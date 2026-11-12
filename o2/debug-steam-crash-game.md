@@ -1,5 +1,5 @@
 ---
-sintesi: "Il riproduttore di #13174 fa crashare Steam a 32 bit su game: ripetere la prova col client a 64 bit e, se regge, rimuovere il wrapper."
+sintesi: "Anche il client a 64 bit crasha col riproduttore di #13174 su game: il wrapper resta finché Valve non corregge."
 ciclo: runtime
 ---
 
@@ -36,7 +36,7 @@ pubblica un device virtuale via API PipeWire fa crashare Steam (build
   di 1.6.10 e 1.6.11 non toccano questo percorso (fix JACK, Bluetooth,
   plugin ALSA, pulse-server). Il bump di `nixpkgs` non è condizione di
   rimozione.
-- **Steam a 64 bit è la via nuova.** Client a 64 bit nel container Steam
+- **Steam a 64 bit era la via sperata.** Client a 64 bit nel container Steam
   Runtime: beta dal 2026-10-15, stable dall'aggiornamento del 2026-11-11.
   Se il client a 64 bit non carica più la `libaudio.so` di `ubuntu12_32/`,
   il crash non ha più dove avvenire. Non verificato: nessun riscontro su
@@ -49,6 +49,13 @@ pubblica un device virtuale via API PipeWire fa crashare Steam (build
   PipeWire era pulito, dopo un riavvio); il riproduttore di #13174 lo fa
   crashare subito. Lo strumento vale anche su questo host: la prova si
   ripete identica col client a 64 bit.
+- **Seconda prova, client a 64 bit (2026-11-12, sera).** Al riavvio il
+  bootstrap è passato al client a 64 bit, che vive in `steamrt64/` (non in
+  `ubuntu12_64/`, come si attendeva), build `1794424036`, dentro il
+  container dello Steam Runtime. Carica però una propria
+  `steamrt64/libaudio.so`: Valve ha ricompilato la libreria, non l'ha
+  tolta. Il riproduttore lo fa crashare come il 32 bit. Il 64 bit non è la
+  via d'uscita: il difetto sta nel codice di `libaudio`, non nell'ABI.
 - **nixpkgs non deve fare nulla.** `steam-unwrapped` 1.0.0.87 è il
   bootstrap, il client si aggiorna da sé; l'incompatibilità del client a 64
   bit con l'FHS di NixOS (nixpkgs#505824) è chiusa dal 2026-04.
@@ -57,9 +64,10 @@ pubblica un device virtuale via API PipeWire fa crashare Steam (build
 
 Senza toccare la configurazione, quando `game` è libero:
 
-1. Client a 64 bit attivo: build in `~/.local/share/Steam/logs/`, eseguibile
-   in `ubuntu12_64/`; con Steam aperto, `libaudio.so` assente dalle mappe
-   del processo (`grep libaudio /proc/<pid>/maps`).
+1. Client attivo e librerie: `pgrep -a steam` (il client a 64 bit è
+   `steamrt64/steam`); con Steam aperto, `grep libaudio /proc/<pid>/maps`
+   dice se e quale `libaudio.so` è caricata. `exe` non è leggibile da fuori
+   del container, nemmeno con `sudo`.
 2. Avviare `/run/current-system/sw/bin/steam` direttamente, scavalcando il
    wrapper.
 3. Con Steam aperto, lanciare il riproduttore di #13174 (commento del
@@ -75,7 +83,7 @@ La prova su `game` passa, con o senza chiusura di #13174: conta il
 comportamento sull'host. Poi si tolgono i file sopra, si attiva con
 `remoto allinea game` da `deck` (home-level, `atti-remoti`) e si verifica
 un avvio dal launcher. Se la prova fallisce, il task torna ad aspettare
-#13174.
+#13174 (`w1` del plan).
 
 ---
 
