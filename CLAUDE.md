@@ -1,12 +1,11 @@
 # CLAUDE.md
 
-Costituzione operativa per agenti che lavorano su questo repository NixOS multi-host. Contiene solo regole d'azione: la conoscenza di dominio (architettura, host, servizi, pattern, comandi) vive nei nodi `kb/`. Quando un'istruzione qui rimanda a un nodo, leggi il nodo prima di agire.
+Costituzione operativa per agenti che lavorano su questo repository NixOS multi-host. Contiene solo regole d'azione vigenti: la conoscenza di dominio (architettura, host, servizi, pattern, comandi) vive nei nodi `kb/`, e quando e perché una regola è nata lo dice la storia git. Quando un'istruzione qui rimanda a un nodo, leggi il nodo prima di agire.
 
 ## Confine con il repo di lavoro
 
 Questo repo descrive i tre host di casa. La coppia server
-`norvegia`/`svezia` vive in `example-org/nixos-ufficio` dal 2026-11-04 (la
-storia della separazione è in git).
+`norvegia`/`svezia` vive in `example-org/nixos-ufficio`.
 
 - Ciò che qui nomina ancora i server è un legame dichiarato, non un invito
   ad agire: la VPN ufficio di `deck`, gli alias SSH di `deck`, il peer e la
@@ -21,7 +20,7 @@ storia della separazione è in git).
 
 ## Rilevamento host
 
-Esegui `hostname` all'inizio di ogni sessione, prima del primo atto e quindi anche prima del pull. Host validi: `deck`, `game`, `neve`. `norvegia` e `svezia` non sono più target di questo repo dal 2026-11-04 (§ Confine con il repo di lavoro). Menziona l'host rilevato nel primo aggiornamento dopo il rilevamento. Usalo come target predefinito per rebuild e comandi host-specifici, salvo override esplicito. Se l'utente dice "questo sistema" o "qui" senza specificare, vale l'host rilevato.
+Esegui `hostname` all'inizio di ogni sessione, prima del primo atto e quindi anche prima del pull. Host validi: `deck`, `game`, `neve`; `norvegia` e `svezia` non sono target di questo repo (§ Confine con il repo di lavoro). Menziona l'host rilevato nel primo aggiornamento dopo il rilevamento. Usalo come target predefinito per rebuild e comandi host-specifici, salvo override esplicito. Se l'utente dice "questo sistema" o "qui" senza specificare, vale l'host rilevato.
 
 L'host distingue anche il ruolo del checkout: su `deck` `~/nixos` è servito, perché la path unit ripubblica le viste in LAN a ogni spostamento di `HEAD`; sugli altri host nessun processo esegue o pubblica i suoi file. La delega del ciclo vale in entrambi i casi (`autonomy.md`).
 
@@ -57,7 +56,7 @@ Regola unica: se il file modificato vive in `o3/modules/system/` o `o3/hosts/`, 
 
 Categorie di comandi:
 
-- **Consentiti senza chiedere** (non-sudo, area utente): `home-manager switch`, `systemctl --user`, `git status/add/commit`, `git pull --ff-only` del branch corrente a working tree pulito (anche nel checkout di `method`), `git push` del branch corrente su `origin` dopo ogni commit riuscito, `nix flake update`, `nix-collect-garbage --delete-old`, `o3/tools/check.sh` (anche `--flake`), operazioni su file in directory utente; da `deck`, `remoto stato|allinea` su `game` e `neve` (criterio `atti-remoti` di `autonomy.md`; i server li rifiuta dal 2026-11-04).
+- **Consentiti senza chiedere** (non-sudo, area utente): `home-manager switch`, `systemctl --user`, `git status/add/commit`, `git pull --ff-only` del branch corrente a working tree pulito (anche nel checkout di `method`), `git push` del branch corrente su `origin` dopo ogni commit riuscito, `nix flake update`, `nix-collect-garbage --delete-old`, `o3/tools/check.sh` (anche `--flake`), operazioni su file in directory utente; da `deck`, `remoto stato|allinea` su `game` e `neve` (criterio `atti-remoti` di `autonomy.md`; `remoto` rifiuta i server).
 - **Richiedono autorizzazione esplicita**: ogni comando con `sudo` (`nixos-rebuild`, `systemctl` di sistema, `nix-collect-garbage -d`), push di altri branch, `amend` di commit già pubblicati, operazioni distruttive (`reset --hard`, force push, `branch -D`).
 
 Procedure complete: `kb/common-commands.md`. Workflow git (commit → rebuild → rollback): `kb/development-workflow.md`.
@@ -71,7 +70,7 @@ Chiedere sui punti riservati e continuare il lavoro indipendente. La delega
 non estende sudo, rebuild, reboot né atti su altri host: valgono le categorie
 qui sopra. La presenza in chat non è ratifica preventiva delle decisioni
 dell'agente. Il giro senza custode segue il criterio `ciclo-autonomo` di
-`autonomy.md` (gradino 1 su `deck` dal 2026-10-17, timer alle 04:30).
+`autonomy.md` (gradino 1 su `deck`, timer alle 04:30).
 
 ## Comunicazione fra sessioni con Herdr
 
@@ -86,45 +85,43 @@ delega su altri repo, host, sudo o rebuild.
 Fra host il canale va in un solo verso: questa sessione scrive nel pannello
 `ssh` della sessione remota e ne legge la risposta dal pannello, mentre la
 sessione remota non può scrivere qui. È la via per il repo di lavoro, che su
-`deck` non ha checkout: le domande partono dichiarate di sola lettura. Il
-protocollo è in [`session-messaging`](method/session-messaging.md),
-§ Sessione su un altro host.
+`deck` non ha checkout: le domande partono dichiarate di sola lettura
+(`session-messaging`, § Sessione su un altro host).
 
 ## Skill
 
-Una skill non è un task: è una capacità permanente e versionata, non entra
-negli indici di lavoro futuro (`o1/plan.md`, `o2/`). Se il workflow che
-orchestra è ricorrente, la ricorrenza vive in `## Ricorrenze` di `o1/plan.md`
-(forma in `method/plan.md`, «Ricorrenze»), non in un task che si
-riapre da solo; una skill multi-scope porta **una riga per ricorrenza** —
-l'orologio appartiene alla porzione di mondo servita, non allo strumento. Se
-l'esecuzione è automatizzata da uno scheduler, la sua configurazione
-versionata è la fonte di verità e `Prossima` vale `config`. Quando le porzioni
-di mondo si moltiplicano oltre poche righe leggibili (entità con ricorrenze
-proprie, non solo scope), la cadenza migra in **config dichiarativa per
-entità** accanto alla skill, e `## Ricorrenze` tiene solo il polso aggregato —
-cfr. `/manutenzione`, compresa nella riga del ciclo autonomo, cadenze per
-ramo/task in `i1/manutenzione.json`.
-L'inventario vivo è l'`ls` di `.claude/skills/` (wrapper Codex in
-`.codex/skills/`); l'elenco qui è il bootstrap di sessione. Cfr.
-`method/skill.md`.
+Una skill è una capacità permanente e versionata, non un task: non entra
+negli indici di lavoro futuro (`o1/plan.md`, `o2/`). L'inventario vivo è
+l'`ls` di `.claude/skills/` (wrapper Codex in `.codex/skills/`); l'elenco qui
+è il bootstrap di sessione. Cfr. `method/skill.md`.
 
-**Skill di metodo** (quartetto canonico, `/cycle` che ne compone il giro e
-`method`, forkate dal canone):
+Se il workflow che una skill orchestra è ricorrente, la ricorrenza vive in
+`## Ricorrenze` di `o1/plan.md` (forma in `method/plan.md`, «Ricorrenze»),
+una riga per porzione di mondo servita. Se l'esecuzione è automatizzata da
+uno scheduler, la sua configurazione versionata è la fonte di verità e
+`Prossima` vale `config`. Quando le entità con cadenza propria diventano
+troppe per poche righe leggibili, la cadenza migra in config dichiarativa
+accanto alla skill e `## Ricorrenze` tiene solo il polso aggregato: è il
+caso di `/manutenzione`, compresa nella riga del ciclo autonomo, con le
+cadenze per ramo in `i1/manutenzione.json`.
+
+**Skill di metodo** (forkate dal canone):
 
 - `/eval [perceive|interpret|compare|all]` — il braccio di valutazione: raccolta del grezzo dal sistema in esecuzione (i1), sintesi con provenienza e cascata (i2), verdetto dei fili contro `goal.md` e bonifica del plan (i3)
 - `/exec [plan|specify|perform|all]` — il braccio di esecuzione: coda e priorità (o1), qualità interna dei task (o2), supervisione della collezione e atti autorizzati (o3)
 - `/kb [audit|review]` — audit deterministico o revisione semantica profonda
   della KB (diagnosi, non corregge; capacità trasversale ai due archi)
 - `/commit` — gate di filing back prima di fissare le modifiche nella storia
-- `/cycle [autonomo]` — il ciclo congiunto: `eval all` → `exec all` → `/commit`, in sessione o come ciclo autonomo su `deck` (criterio `ciclo-autonomo`, gradino 1)
+- `/cycle [autonomo]` — il ciclo congiunto: `eval all` → `exec all` → `/commit`, in sessione o come ciclo autonomo su `deck` (criterio `ciclo-autonomo`)
 - `/method` — drift rispetto ai commit del repo canonico `method` (marker in `i3/allineamento-metodo.md`: cfr. `.claude/skills/method/SKILL.md`)
 
-**Skill di dominio** (locale al progetto, **autonoma**: il pilota del
-montaggio 2026-08-01 non l'ha assorbita come argomento delle canoniche —
-dichiara la propria mappa di stadi in testa al file):
+**Skill di dominio** (locale e autonoma: dichiara la propria mappa di stadi
+in testa al file):
 
-- `/manutenzione [ia|home-manager|casa|world|all]` — punto sugli aggiornamenti disponibili per il ramo scelto (default `all`) e valutazione se e come aggiornare; esegue in autonomia i rami `ia` e `home-manager` (input omonimo) e i bump di pacchetti overlay home-level (es. `gogcli`), diagnostica su `casa` (inclusi i bump di pacchetti overlay system-level: versione upstream, hash sorgente/vendor, eventuale patch toolchain minimale, build/test — l'attivazione via `nixos-rebuild` resta un atto separato autorizzato) e sorveglia il debito upstream tracciato (`world`, righe `Dip.: w<n>` di `o1/plan.md`). Attraversa entrambi gli archi: è il ramo a determinare l'arco, non chi invoca. Assorbe l'ex skill `/overlay` (fusa qui il 2026-08-02: la diagnosi "c'è un pacchetto overlay da aggiornare" e l'esecuzione del bump vivevano in due skill separate senza necessità)
+- `/manutenzione [ia|home-manager|casa|world|all]` — punto sugli aggiornamenti disponibili per il ramo scelto (default `all`) e valutazione se e come aggiornare. Il ramo determina l'arco, non chi invoca:
+  - esegue in autonomia i rami `ia` e `home-manager` (input omonimo) e i bump di pacchetti overlay home-level (es. `gogcli`);
+  - su `casa` è diagnostica, inclusi i bump di pacchetti overlay system-level (versione upstream, hash sorgente/vendor, eventuale patch toolchain minimale, build/test): l'attivazione via `nixos-rebuild` resta un atto separato autorizzato;
+  - su `world` sorveglia il debito upstream tracciato (righe `Dip.: w<n>` di `o1/plan.md`).
 
 ## Strumenti
 
@@ -137,7 +134,7 @@ Per ogni intento ricorrente, lo strumento da usare con il comando minimo sicuro 
   - Comando minimo: `python3 o3/tools/kb_tools.py audit --format markdown`
   - Approfondimento: `method/kb-tools.md`
 - **attributi di dominio** — `kb_tools.py facets`
-  - Comando minimo: `python3 o3/tools/kb_tools.py facets` (verifica la facet `ciclo: dev | runtime` sugli item di collezione; l'audit la integra come problemi `[FACET]`. La facet `mondo` è uscita il 2026-11-05, a separazione fatta)
+  - Comando minimo: `python3 o3/tools/kb_tools.py facets` (verifica la facet `ciclo: dev | runtime` sugli item di collezione; l'audit la integra come problemi `[FACET]`)
   - Approfondimento: `method/node.md`
 - **fatti KB vs filesystem** — `kb_tools.py facts`
   - Comando minimo: `python3 o3/tools/kb_tools.py facts`
@@ -163,7 +160,8 @@ profilo `o3/commit_gate.toml` (`alejandra`, `ruff format`, `prettier`,
 ## Convenzioni di scrittura
 
 - **Commit**: Conventional Commits, dettagli in `kb/development-workflow.md § Commit conventions`. La skill `commit` applica formatter e convenzioni come default.
-- **Nuovi nodi KB**: struttura, frontmatter e footer Connessioni in `method/node.md`. Il frontmatter dei nodi nixos porta `stato` (nessun campo `data`: le date vivono in git; la facet `mondo` è uscita il 2026-11-05 col suo scopo, lo split dei repo). Prima di creare un nodo nuovo verificare se un nodo esistente può essere arricchito (`method/cognitive-artifact-design.md § Regole di revisione`).
+- **Nuovi nodi KB**: struttura, frontmatter e footer Connessioni in `method/node.md`. Il frontmatter dei nodi nixos porta `stato`, senza campo `data`: le date vivono in git. Prima di creare un nodo nuovo verificare se un nodo esistente può essere arricchito (`method/cognitive-artifact-design.md § Regole di revisione`).
+- **Stato attuale, non cronaca**: register, nodi, fili e commenti dicono come stanno le cose e perché; date di decisione, hash e resoconti di collaudi restano in git.
 - **Modifiche architetturali**: aggiornare in place il filo pertinente in
   `i3/` quando cambia il verdetto (un file per filo, indice `i3/verdicts.md`);
   la cronologia resta in Git (`method/verdict.md`).
@@ -173,33 +171,31 @@ profilo `o3/commit_gate.toml` (`alejandra`, `ruff format`, `prettier`,
 ## Comportamenti vincolati
 
 - **Secrets**: `.env`, `rclone.conf` e chiavi private sono gitignored. Mai committarli. Mappa completa dei segreti del progetto: `kb/secrets-management.md`.
-- **Presentazione sulle reti private**: decisione del custode del 2026-10-03, canone `method/presentation.md § Vincolo conservato`. `serve.py` a mano ascolta sulla 8000 su ogni host; `deck` serve in modo permanente `nixos` sulla 8002 (e `method`, `salute`, `economia` sulle 8001, 8003, 8004). Solo reti private, mai la rete pubblica. Il server è senza autenticazione e, una volta permanente, espone in modo continuo le viste pubblicate da commit: lì entrano le pagine 1:1 di register e di ogni item delle sei collezioni e il deck, con hostname, IP privati e topologia delle reti, mai segreti, chiavi, password o contenuti di `.env`/`rclone.conf`. Servizi utente, firewall, rotta statica e stato del collaudo: `kb/deck-user-services.md § Presentazione sulla LAN`.
+- **Presentazione sulle reti private**: le viste si servono solo sulle reti private, mai sulla rete pubblica (canone `method/presentation.md § Vincolo conservato`). `serve.py` a mano ascolta sulla 8000 su ogni host; `deck` serve in modo permanente `nixos` sulla 8002 (e `method`, `salute`, `economia` sulle 8001, 8003, 8004). Il server è senza autenticazione ed espone in modo continuo le viste pubblicate da commit: lì entrano le pagine 1:1 di register e di ogni item delle sei collezioni e il deck, con hostname, IP privati e topologia delle reti, mai segreti, chiavi, password o contenuti di `.env`/`rclone.conf`. Servizi utente, firewall e rotta statica: `kb/deck-user-services.md § Presentazione sulla LAN`.
 - **Pacchetti unfree**: dichiarazione esplicita in `unfree.allowedNames` (nel modulo che installa il pacchetto) con commento `# UNFREE:`; il predicate vive solo in `o3/modules/system/unfree.nix`. Lista corrente per host: `kb/unfree-packages.md`.
-- **Push remoto**: dal 2026-10-08 il custode autorizza il push del branch
-  corrente su `origin` dopo ogni commit riuscito. Restano su richiesta
-  esplicita `--force`, `amend` di commit già pubblicati e il push di altri
-  branch; un push rifiutato non si forza, ci si ferma e si riferisce. Il
-  push non rilascia il sistema: nessun processo degli host fa `pull` da
-  solo (la pubblicazione delle viste costruisce l'`HEAD` del checkout
-  locale, mai un fetch) e nessun host ha `autoUpgrade`. Se un ciclo
-  automatico iniziasse a fare `pull` ed eseguire, il push tornerebbe su
-  richiesta finché il custode non sceglie. `remoto allinea`
-  (2026-10-19) non è questo caso: lo switch parte dall'albero che `deck`
-  invia, e il `pull --ff-only` che segue porta solo il checkout al commit. `sudo` e `nixos-rebuild` restano sotto
-  le loro regole.
-- **Pull remoto**: dal 2026-10-09 il custode autorizza senza richiesta
-  `git pull --ff-only` del branch corrente da `origin`, a inizio sessione,
-  prima di un giro e quando un confronto trova il checkout indietro, solo a
-  working tree pulito. Vale per questo repository e per il
-  checkout di `method` letto dal symlink; per i checkout di altri repository,
-  dove può lavorare un'altra sessione, bastano `fetch` e `origin`. Con
-  modifiche locali o branch divergente non si fa merge né rebase: ci si
-  ferma e si riferisce. Il pull dell'agente aggiorna il checkout e, dove il
-  repo è in `published` di `o3/presentations.nix` (oggi su `deck`), ripubblica
-  le viste servite in LAN tramite il path unit su `.git/logs/HEAD`: è un
-  rilascio delle sole viste, di contenuto già committato e pushato, scelto
-  dal custode il 2026-10-09. Non cambia mai il sistema, che si aggiorna solo
-  con `home-manager switch` o `nixos-rebuild` sotto le loro regole.
+- **Push remoto**: il push del branch corrente su `origin` segue ogni commit
+  riuscito, senza richiesta. Restano su richiesta esplicita `--force`,
+  `amend` di commit già pubblicati e il push di altri branch; un push
+  rifiutato non si forza, ci si ferma e si riferisce. Il push non rilascia
+  il sistema: nessun processo degli host fa `pull` da solo (la pubblicazione
+  delle viste costruisce l'`HEAD` del checkout locale, mai un fetch) e
+  nessun host ha `autoUpgrade`. Se un ciclo automatico iniziasse a fare
+  `pull` ed eseguire, il push tornerebbe su richiesta finché il custode non
+  sceglie. `remoto allinea` non è questo caso: lo switch parte dall'albero
+  che `deck` invia, e il `pull --ff-only` che segue porta solo il checkout
+  al commit. `sudo` e `nixos-rebuild` restano sotto le loro regole.
+- **Pull remoto**: `git pull --ff-only` del branch corrente da `origin` è
+  consentito senza richiesta a inizio sessione, prima di un giro e quando un
+  confronto trova il checkout indietro, solo a working tree pulito. Vale per
+  questo repository e per il checkout di `method` letto dal symlink; per i
+  checkout di altri repository, dove può lavorare un'altra sessione, bastano
+  `fetch` e `origin`. Con modifiche locali o branch divergente non si fa
+  merge né rebase: ci si ferma e si riferisce. Dove il repo è in `published`
+  di `o3/presentations.nix` (oggi su `deck`) il pull ripubblica le viste
+  servite in LAN tramite il path unit su `.git/logs/HEAD`: è un rilascio
+  delle sole viste, di contenuto già committato e pushato. Non cambia mai il
+  sistema, che si aggiorna solo con `home-manager switch` o `nixos-rebuild`
+  sotto le loro regole.
 
 ## Tabelle vs elenchi
 

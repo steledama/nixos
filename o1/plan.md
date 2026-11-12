@@ -11,19 +11,10 @@ dipendenze.
 ## Direzione
 
 `nixos` è a regime sui tre host di casa: il peso prevalente sta nelle
-ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli strumenti
-e sorveglia il debito upstream. La pubblicazione e il passaggio dei tre host
-all'unico repo pubblico sono completati. La tracciabilità con l'identità
-locale è corretta e collaudata su game. La pulizia degli archivi è conclusa:
-la vecchia storia resta solo nel bundle privato di deck. I cicli autonomi di
-deck passano al lanciatore canonico, che registra il credito esaurito di
-Claude: tutti e quattro dal 2026-11-11. L'host è pronto anche per Codex
-come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
-di riserva, collaudato con un giro completo fino al push. Il fallback reale
-per credito esaurito si verificherà quando accade. Dal 2026-11-12 il pin
-Codex è uscito e i tre host girano sulla configurazione ripulita. Il seed
-contiene l'identità locale, uguale sui tre host. Il wrapper di Steam resta:
-anche il client a 64 bit crasha su game, si aspetta Valve.
+ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli
+strumenti e sorveglia il debito upstream. Nessun fronte di sviluppo è
+aperto: l'unico task attende Valve per togliere il wrapper di Steam su
+`game`.
 
 ## Task
 
