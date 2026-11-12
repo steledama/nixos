@@ -5,6 +5,7 @@
 }: let
   cfg = config.services.wireguardServer;
 
+  listenPort = 51820;
   allowedSourceSubnets = [cfg.vpnSubnet] ++ cfg.lanSubnets;
 
   protectRuleLines =
@@ -36,12 +37,6 @@ in {
       description = "WireGuard server address and subnet assigned to the interface.";
     };
 
-    listenPort = lib.mkOption {
-      type = lib.types.port;
-      default = 51820;
-      description = "UDP port used by the WireGuard server.";
-    };
-
     externalInterface = lib.mkOption {
       type = lib.types.str;
       description = "External network interface facing the internet.";
@@ -50,12 +45,6 @@ in {
     privateKeyFile = lib.mkOption {
       type = lib.types.str;
       description = "Path to the WireGuard private key file.";
-    };
-
-    autoStart = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Start the WireGuard interface automatically at boot. Set false for on-demand use.";
     };
 
     peers = lib.mkOption {
@@ -96,7 +85,7 @@ in {
 
     networking.wireguard.interfaces.${cfg.interfaceName} = {
       ips = [cfg.vpnSubnet];
-      listenPort = cfg.listenPort;
+      inherit listenPort;
       privateKeyFile = cfg.privateKeyFile;
       peers =
         map (peer: {
@@ -111,12 +100,8 @@ in {
       internalInterfaces = [cfg.interfaceName];
     };
 
-    networking.firewall.allowedUDPPorts = [cfg.listenPort];
+    networking.firewall.allowedUDPPorts = [listenPort];
 
     networking.firewall.extraCommands = lib.mkAfter protectRuleLines;
-
-    systemd.targets."wireguard-${cfg.interfaceName}" = lib.mkIf (!cfg.autoStart) {
-      wantedBy = lib.mkForce [];
-    };
   };
 }

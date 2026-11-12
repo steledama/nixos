@@ -43,7 +43,7 @@ deck (192.168.0.10)          game (192.168.0.9)           neve (192.168.0.8)
 
 - `o3/modules/home/syncthing-home-mesh.nix` — mesh dei client casa (deck, game, neve)
 - `o3/modules/home/rclone.nix` — mount FUSE dichiarativi e template manuali rclone
-- `o3/modules/system/services/user-linger.nix` — mantiene Syncthing attivo senza login
+- `o3/hosts/default.nix` — `users.users.stele.linger` mantiene Syncthing attivo senza login
 
 ## Porte (firewall)
 

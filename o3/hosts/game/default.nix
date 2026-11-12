@@ -1,10 +1,13 @@
 # hosts/game/default.nix
 # Gaming PC with NVIDIA RTX 4070 - dual boot with Windows
 {
+  config,
   pkgs,
   identity,
   ...
-}: {
+}: let
+  llamaPort = toString config.services.llamaCppServer.port;
+in {
   imports = [
     ./hardware.nix
     ../default.nix
@@ -22,18 +25,12 @@
   # Dual boot: NTFS support for accessing Windows partitions
   boot.supportedFilesystems = ["ntfs"];
 
-  # Keep the RTC in UTC. Windows dual boot must use RealTimeIsUniversal.
-  # Local-time RTC made the clock jump back after NTP sync, invalidating OAuth.
-
   # Windows entry in systemd-boot menu
   # FS1 is the Windows EFI partition (PARTUUID: 1e5bbc53-f785-4ae2-909f-c209d4f78bb8).
   boot.loader.systemd-boot.windows."windows" = {
     title = "Windows";
     efiDeviceHandle = "FS1";
   };
-
-  # Memtest86+ entry in systemd-boot menu, to validate the 48 GB RAM upgrade.
-  boot.loader.systemd-boot.memtest86.enable = true;
 
   # Set Windows as default boot entry — runs after every nixos-rebuild.
   # The windows."windows" entry above is written by NixOS as windows_windows.conf
@@ -62,8 +59,8 @@
       # LAN-only services. I peer della VPN casa arrivano mascherati dal NAT
       # di deck, quindi con sorgente LAN.
       extraCommands = ''
-        # llama.cpp (11434)
-        iptables -A nixos-fw -s ${identity.home.lan.subnet} -p tcp --dport 11434 -j nixos-fw-accept
+        # llama.cpp
+        iptables -A nixos-fw -s ${identity.home.lan.subnet} -p tcp --dport ${llamaPort} -j nixos-fw-accept
         # ComfyUI (8188)
         iptables -A nixos-fw -s ${identity.home.lan.subnet} -p tcp --dport 8188 -j nixos-fw-accept
       '';

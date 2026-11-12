@@ -4,20 +4,16 @@
   ...
 }: let
   cfg = config.services.wireguardWorkClient;
+  # Runtime name the operator types (wg show lavoro).
+  interfaceName = "lavoro";
   # Explicit peer name → predictable systemd unit name. Without it nixpkgs
   # derives the name from the public key, escaping +/= to \x2b/\x3d, which is
   # awkward to target for the self-heal override below.
   peerName = "office";
-  peerUnit = "wireguard-${cfg.interfaceName}-peer-${peerName}";
+  peerUnit = "wireguard-${interfaceName}-peer-${peerName}";
 in {
   options.services.wireguardWorkClient = {
     enable = lib.mkEnableOption "WireGuard client for the office VPN";
-
-    interfaceName = lib.mkOption {
-      type = lib.types.str;
-      default = "lavoro";
-      description = "WireGuard interface name used for the office VPN client.";
-    };
 
     address = lib.mkOption {
       type = lib.types.str;
@@ -56,23 +52,11 @@ in {
         that reaches the office LAN (through this VPN).
       '';
     };
-
-    persistentKeepalive = lib.mkOption {
-      type = lib.types.nullOr lib.types.int;
-      default = 25;
-      description = "Keepalive interval for NAT traversal.";
-    };
-
-    autoStart = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Start the WireGuard interface automatically at boot. Set false for on-demand use.";
-    };
   };
 
   config = lib.mkIf cfg.enable {
     # Ensure DNS is available before resolving the VPN endpoint hostname
-    systemd.services."wireguard-${cfg.interfaceName}" = {
+    systemd.services."wireguard-${interfaceName}" = {
       wants = ["nss-lookup.target"];
       after = ["nss-lookup.target"];
     };
@@ -92,7 +76,7 @@ in {
       startLimitIntervalSec = 0;
     };
 
-    networking.wireguard.interfaces.${cfg.interfaceName} = {
+    networking.wireguard.interfaces.${interfaceName} = {
       ips = [cfg.address];
       privateKeyFile = cfg.privateKeyFile;
       peers = [
@@ -101,15 +85,11 @@ in {
           publicKey = cfg.serverPublicKey;
           endpoint = cfg.endpoint;
           allowedIPs = cfg.allowedIPs;
-          persistentKeepalive = cfg.persistentKeepalive;
+          persistentKeepalive = 25; # NAT traversal
         }
       ];
     };
 
     networking.hosts = lib.mapAttrs' (name: address: lib.nameValuePair address [name]) cfg.hosts;
-
-    systemd.targets."wireguard-${cfg.interfaceName}" = lib.mkIf (!cfg.autoStart) {
-      wantedBy = lib.mkForce [];
-    };
   };
 }

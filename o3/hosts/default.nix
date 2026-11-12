@@ -42,7 +42,6 @@
     ../modules/system/locale.nix # default it
     ../modules/system/hardware/sound.nix
     ../modules/system/services/print.nix
-    ../modules/system/services/user-linger.nix
     ../modules/system/host-names.nix
     ../modules/system/niri.nix
     ../modules/system/gui-apps.nix
@@ -56,10 +55,10 @@
     isNormalUser = true;
     description = "stele";
     extraGroups = ["networkmanager" "wheel" "video"];
+    linger = true;
     openssh.authorizedKeys.keys = lib.attrValues identity.home."${config.networking.hostName}AuthorizedKeys";
   };
   services.niriDesktop.autoLoginUser = "stele";
-  services.userLinger.users = ["stele"];
 
   # NetworkManager plus a ping-friendly firewall on every host; host files add
   # their own ports, static profiles and extra rules. SSH opens its own port.
