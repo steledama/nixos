@@ -114,9 +114,9 @@ Convenzioni comuni alle voci sotto:
   `rclone-familiare`; per `neve` e `game` `ssh-utente`, `ssh-familiare`,
   `ssh-host-ed25519`, `ssh-host-rsa`, `syncthing`, `rclone`,
   `rclone-familiare`; `casa/gog-client` una sola per i
-  tre host. `syncthing` contiene `cert.pem` seguito da `key.pem`. Fuori da
-  questa rilevazione, decise il 2026-11-11 e ancora da creare, le voci
-  `casa/identity/…` (§ Identità separata dai segreti).
+  tre host; `casa/identity/default.nix`, `home.nix`, `work.nix` e
+  `privacy.json`, una serie sola per i tre host (§ Identità separata dai
+  segreti). `syncthing` contiene `cert.pem` seguito da `key.pem`.
 - Rotazioni e gestori candidati descrivono procedure da collaudare; oggi
   nessuna di queste voci è consegnata da sops-nix o agenix. Nessun valore,
   token o hash di password viene registrato qui.
@@ -412,9 +412,14 @@ La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
   e attivazione reale, di sistema e home. Serve prima del primo rebuild.
 - **Seed:** note sicure `casa/identity/default.nix`, `casa/identity/home.nix`,
   `casa/identity/work.nix` e `casa/identity/privacy.json`, una sola serie
-  presa da `deck`. Da creare: finché il custode non le ha scritte e rilette
-  contro i file, l'unica copia è quella sugli host stessi. Che i file di
-  `game` e `neve` coincidano con quelli di `deck` non è verificato.
+  presa da `deck`, create e rilette byte per byte contro i file il
+  2026-11-12. Una serie basta perché `work.nix` serve solo a `deck` (VPN
+  ufficio, `/etc/hosts`, `ssh-work-lan.nix`, `methodFetch` del ciclo
+  `method`): sugli altri host deve solo valutarsi. Lo stesso giorno, con
+  l'identità di `deck`, si valutano i toplevel e gli `activationPackage` di
+  `neve` e `game`. `neve` aveva una `work.nix` diversa, senza effetto sul suo
+  sistema, ed è stata allineata a quella di `deck`; le impronte dei quattro
+  file ora coincidono. Il confronto con `game` è ancora da fare.
 - **Scrittura:** file modificati a mano a ogni cambio d'assetto (un peer, una
   chiave autorizzata, un indirizzo): la nota va aggiornata nello stesso
   momento, altrimenti il seed ripristina un assetto superato. La prova
