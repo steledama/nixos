@@ -1,9 +1,9 @@
 ---
-sintesi: "Rimuovere il wrapper Steam/PipeWire su game quando il fix upstream rende inutile il workaround."
+sintesi: "Provare su game Steam a 64 bit senza il wrapper PipeWire e, se regge, rimuovere il workaround."
 ciclo: runtime
 ---
 
-# Rimuovere steam-pipewire-wrapper dopo fix upstream
+# Rimuovere steam-pipewire-wrapper dopo la prova su game
 
 ## Workaround attivo
 
@@ -16,20 +16,56 @@ File da rimuovere quando upstream chiude:
 
 1. `o3/modules/home/steam-pipewire-wrapper.nix`
 2. Import in `o3/home/stele/game.nix`
-3. Rebuild home-manager su `game`: `home-manager switch --flake .#stele@game`
+3. Attivazione su `game`: `remoto allinea game` da `deck`
 
 ## Dipendenza upstream
 
-Issue Valve: `ValveSoftware/steam-for-linux` #9289 (e collegate #9204, #9060).
-Il crash è nella `libaudio.so` NAS bundlata da Steam, innescato da PipeWire.
-Quando Valve rilascia un client che non usa più quel path o sostituisce
-`libaudio.so`, il wrapper diventa inutile.
+Issue Valve viva: `ValveSoftware/steam-for-linux` **#13174** (aperta,
+riaperta; Valve vi chiude come duplicati le segnalazioni nuove, es. #13434
+del 2026-07-23). #9289 e #9204 sono le storiche: #9289 è ferma dal
+2025-02-19, #9204 è chiusa dal 2023 e Valve rimanda a #13174 i casi nuovi.
+Il crash è nella `libaudio.so` NAS bundlata in `ubuntu12_32/`, raggiunta
+dalla `libpulse` del client; PipeWire è l'innesco, non il difetto. Su
+#13174 c'è dal 2026-10-20 un riproduttore deterministico: un programma che
+pubblica un device virtuale via API PipeWire fa crashare Steam (build
+`1791918634`), mentre lo stesso device creato via API pulse no.
+
+## Stato al 2026-11-12
+
+- **PipeWire non basta.** Lock a 1.6.9, `nixos-unstable` a 1.6.11: le note
+  di 1.6.10 e 1.6.11 non toccano questo percorso (fix JACK, Bluetooth,
+  plugin ALSA, pulse-server). Il bump di `nixpkgs` non è condizione di
+  rimozione.
+- **Steam a 64 bit è la via nuova.** Client a 64 bit nel container Steam
+  Runtime: beta dal 2026-10-15, stable dall'aggiornamento del 2026-11-11.
+  Se il client a 64 bit non carica più la `libaudio.so` di `ubuntu12_32/`,
+  il crash non ha più dove avvenire. Non verificato: nessun riscontro su
+  #13174 dopo lo stable, e le librerie a 32 bit restano richieste.
+- **nixpkgs non deve fare nulla.** `steam-unwrapped` 1.0.0.87 è il
+  bootstrap, il client si aggiorna da sé; l'incompatibilità del client a 64
+  bit con l'FHS di NixOS (nixpkgs#505824) è chiusa dal 2026-04.
+
+## Prova su game
+
+Senza toccare la configurazione, quando `game` è libero:
+
+1. Client a 64 bit attivo: build in `~/.local/share/Steam/logs/`, eseguibile
+   in `ubuntu12_64/`; con Steam aperto, `libaudio.so` assente dalle mappe
+   del processo (`grep libaudio /proc/<pid>/maps`).
+2. Avviare `/run/current-system/sw/bin/steam` direttamente, scavalcando il
+   wrapper.
+3. Con Steam aperto, lanciare il riproduttore di #13174 (commento del
+   2026-10-20): se Steam regge, il percorso del crash è chiuso. Un semplice
+   avvio riuscito non prova nulla, perché il crash vuole uno stato PipeWire
+   sporco.
 
 ## Criterio di chiusura
 
-Issue upstream chiusa **e** Steam si apre su `game` senza il wrapper dopo
-`home-manager switch`. Verificare che nei log non compaia più
-`libaudio.so`/PulseAudio nel thread che crashava.
+La prova su `game` passa, con o senza chiusura di #13174: conta il
+comportamento sull'host. Poi si tolgono i file sopra, si attiva con
+`remoto allinea game` da `deck` (home-level, `atti-remoti`) e si verifica
+un avvio dal launcher. Se la prova fallisce, il task torna ad aspettare
+#13174.
 
 ---
 
@@ -43,7 +79,7 @@ path PulseAudio del runtime, innescato da uno stato corrotto di PipeWire.
 Confermato via backtrace gdb — il thread `threaded-ml` (mainloop PulseAudio)
 riceveva SIGSEGV in `libaudio.so` dopo una enumerazione GPU riuscita.
 
-Corrisponde a `ValveSoftware/steam-for-linux` #9289/#9204 (più utenti con
+Corrisponde a `ValveSoftware/steam-for-linux` #9289/#9204, oggi #13174 (più utenti con
 backtrace identico su Fedora, Debian, Ubuntu, NixOS con PipeWire).
 
 **Fix immediato (workaround runtime):**

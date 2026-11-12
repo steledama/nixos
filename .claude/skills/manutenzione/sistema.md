@@ -42,7 +42,7 @@ sempre il filtro del [contesto](contesto.md).
   `o3/modules/system/gaming.nix`, solo su game; sono `pacchetti_host`.
   Rischio normalmente basso salvo incompatibilità Proton/driver nelle
   note. Il wrapper home `steam-pipewire-wrapper.nix` (`stele@game`,
-  issue #9289) è invece debito `world`, non cambia le loro versioni.
+  issue #13174) è invece debito `world`, non cambia le loro versioni.
 - **`neve` — scanner:** `naps2`, da
   `o3/modules/system/hardware/scanner.nix`, è `pacchetti_host`, senza
   patch locali dalla 8.6.0 (fix #784 upstream). Il delta di un bump va
