@@ -56,6 +56,11 @@ pubblica un device virtuale via API PipeWire fa crashare Steam (build
   `steamrt64/libaudio.so`: Valve ha ricompilato la libreria, non l'ha
   tolta. Il riproduttore lo fa crashare come il 32 bit. Il 64 bit non è la
   via d'uscita: il difetto sta nel codice di `libaudio`, non nell'ABI.
+- **Segnalato a Valve (2026-11-12).** Il custode ha riportato le due prove
+  su #13174
+  ([commento](https://github.com/ValveSoftware/steam-for-linux/issues/13174#issuecomment-6836389483)),
+  con PipeWire 1.6.9: le note di 1.6.10 e 1.6.11 non toccano il percorso, e
+  aggiornare per la prova non ne valeva il rebuild.
 - **nixpkgs non deve fare nulla.** `steam-unwrapped` 1.0.0.87 è il
   bootstrap, il client si aggiorna da sé; l'incompatibilità del client a 64
   bit con l'FHS di NixOS (nixpkgs#505824) è chiusa dal 2026-04.
