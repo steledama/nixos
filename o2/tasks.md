@@ -9,5 +9,4 @@ in [tasks](../method/tasks.md).
 
 ## Contenuti
 
-- [identita-nel-seed.md](identita-nel-seed.md) — Mettere l'identità locale nel seed
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo la prova su game

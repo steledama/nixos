@@ -417,9 +417,10 @@ La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
   ufficio, `/etc/hosts`, `ssh-work-lan.nix`, `methodFetch` del ciclo
   `method`): sugli altri host deve solo valutarsi. Lo stesso giorno, con
   l'identità di `deck`, si valutano i toplevel e gli `activationPackage` di
-  `neve` e `game`. `neve` aveva una `work.nix` diversa, senza effetto sul suo
-  sistema, ed è stata allineata a quella di `deck`; le impronte dei quattro
-  file ora coincidono. Il confronto con `game` è ancora da fare.
+  `neve` e `game`. `neve` e `game` avevano una `work.nix` diversa, senza
+  effetto sul loro sistema, e sono state allineate a quella di `deck` (`game`
+  il 2026-11-12, copia della vecchia in `work.nix.bak-2026-11-12`): le
+  impronte dei quattro file coincidono sui tre host.
 - **Scrittura:** file modificati a mano a ogni cambio d'assetto (un peer, una
   chiave autorizzata, un indirizzo): la nota va aggiornata nello stesso
   momento, altrimenti il seed ripristina un assetto superato. La prova
