@@ -26,7 +26,7 @@
       }
     ],
     "nota": "Pin nixpkgs-codex rimosso in sessione col custode: ai f4a03c0 -> 177d054, codex 0.167.0 dalla cache (nessuna compilazione); claude-code 2.1.318, pi 1.5.0 invariati. Switch su deck riuscito. game e neve col prossimo allineamento.",
-    "applicato_su": ["deck"]
+    "applicato_su": ["deck", "neve"]
   },
   "home-manager": {
     "cadenza_giorni": 7,
