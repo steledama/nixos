@@ -12,7 +12,7 @@ gradini vivono in method (filo `i3/ciclo-autonomo.md`); qui c'è il meccanismo c
 ## Decisioni e meccanismo
 
 - **`o3/cicli.nix`**, le decisioni: per ogni repo host, checkout, cadenza e
-  orario, stato (`manuale`, `timer`, `esterno`) e recinto. Un solo `host`
+  orario, stato (`manuale`, `timer`) e recinto. Un solo `host`
   per repo: un solo host tiene il ciclo autonomo di un repo per
   costruzione. I cicli di `bi` e `baserow` su `svezia` e `danea-auto` (Task
   Scheduler) li dichiara il repo `example-org/nixos-ufficio`.
@@ -26,11 +26,9 @@ Confine: `nixos` decide dove e quando, il repo decide cosa. Ogni ciclo gira
 col lanciatore canonico di method (sezione «Lanciatore canonico»): branch,
 prompt, permessi, minuti, budget e motori sono file del repo in
 `o3/ciclo/` (`lanciatore.toml`, `prompt.md`, `permessi.json`), e il registro
-non ne tiene nessuno; `registry.nix` fallisce la valutazione se ne trova
-uno. Il lettore condiviso `o3/modules/home/ciclo/registry.nix` applica a
+non ne tiene nessuno. Il lettore condiviso `o3/modules/home/ciclo/registry.nix` applica a
 cicli e presentazioni i default (`giri = i1/giri`, `canone = method`, il
-paracadute); il registro dichiara soltanto le eccezioni. Le voci `esterno`,
-prive di checkout, restano fuori dai default NixOS.
+paracadute); il registro dichiara soltanto le eccezioni.
 
 Il lettore aggiunge ai `readOnlyPaths`, senza duplicati e anche con
 `homeWritable`, `<checkout>/o3/ciclo` e ciò che git esegue dal lanciatore
@@ -98,8 +96,7 @@ proprio dell'host (`ciclo-avvio`, `ciclo-chiusura`, `ciclo-namespace`,
 l'hook `ciclo-concorrenti`), rimosso quando tutti e quattro sono passati
 al lanciatore; la sua storia è in git. Fra le lezioni che ha lasciato:
 un namespace che systemd non riesce a preparare (`226`, un path di
-`readWritePaths` su un mount Drive in I/O error, 2026-10-14,
-`i1/ciclo-salute-namespace-20261014.md`) ferma l'unità prima di qualunque
+`readWritePaths` su un mount Drive in I/O error, 2026-10-14) ferma l'unità prima di qualunque
 script nel recinto.
 
 ## Atti remoti

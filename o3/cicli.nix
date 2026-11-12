@@ -18,12 +18,11 @@
 # the repo's profile decides whether Codex ever runs.
 #
 # Fields:
-# - host: networking hostName of the only host that runs the autonomous cycle
-#   (null only for state "esterno");
+# - host: networking hostName of the only host that runs the autonomous cycle;
 # - checkout: path of the checkout relative to the home;
 # - cadence + time: OnCalendar of the timer, "<cadence> <time>";
 # - state: "manuale" (unit present, started only by hand with systemctl
-#   --user start), "timer" (scheduled), "esterno" (outside nixos, no unit);
+#   --user start), "timer" (scheduled);
 # - giri: folder of the checkout, ignored by git, where the launcher writes
 #   tentativi.jsonl, ultimo.json and giri/<id>.jsonl; default i1/giri,
 #   read by the view (presentations.nix through modules/home/ciclo/registry.nix);

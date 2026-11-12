@@ -86,8 +86,8 @@ procedura del dominio al centro degli atti del giro, come `/manutenzione` di
 `nixos`, sta dentro `perceive` e `perform`, non al loro posto: dal 5
 novembre 2026 i giri di `nixos` si sono ridotti a quella procedura più un
 ritocco al task in testa, e in tutti i 21 giri dal 17 ottobre il trailer
-dichiarava i sei stadi senza che uno leggesse `goal.md` (caso
-`i1/ciclo-stadi-saltati-20261107.md`). La procedura si divide fra i due
+dichiarava i sei stadi senza che uno leggesse `goal.md` (cattura del
+2026-11-07, in git). La procedura si divide fra i due
 stadi: la diagnosi, in sola lettura, è un canale di `perceive`; gli atti
 stanno in `perform`, dopo `compare` e `plan`, così il verdetto può ancora
 fermarli. La verità prima delle priorità vale anche per gli atti (giro del

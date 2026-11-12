@@ -67,5 +67,4 @@ aveva chiesto di riesaminare la priorità dell'intera coda o di eseguirlo.
 
 Connessioni:
 
-- [agent-experience-review-20261025](agent-experience-review-20261025.md)
 - [agent-as-user](../method/agent-as-user.md)

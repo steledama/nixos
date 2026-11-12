@@ -1,5 +1,4 @@
 # Shared interpretation of the cycle registry for units and presentations.
-# External schedulers have no checkout and do not receive NixOS defaults.
 {
   lib,
   identity ? import ../../../identity,
@@ -27,31 +26,26 @@
     agente = "85min";
   };
 in
-  lib.mapAttrs (repo: entry:
-    if entry.state == "esterno"
-    then entry
-    else let
-      d = defaults // entry;
-    in
-      lib.throwIf (lib.any (k: entry ? ${k}) ["maxRuntime" "agentMaxRuntime" "maxBudgetUsd" "branch" "settings" "prompt" "lanciatore"])
-      "cicli.nix: ${repo} dichiara un campo del vecchio ciclo: branch, prompt, permessi, minuti e budget stanno nel suo o3/ciclo/lanciatore.toml"
-      d
-      // {
-        maxRuntime = paracadute.esterno;
-        agentMaxRuntime = paracadute.agente;
-        # Protect the cycle's own instructions even with a writable home, and
-        # what git runs from the launcher outside the fence: the round never
-        # writes them (method o3/lanciatore.py).
-        readOnlyPaths = lib.unique (d.readOnlyPaths
-          ++ [
-            "${d.checkout}/o3/ciclo"
-            "${d.canone}/o3/lanciatore.py"
-            # Canonical protected path from method de73101: a round that
-            # changed it would weaken the policy of the next ones.
-            "${d.canone}/o3/esecutore_codex.py"
-            "${d.checkout}/.git/config"
-            "${d.checkout}/.git/hooks"
-            "${d.checkout}/.git/lanciatore"
-          ]);
-      })
+  lib.mapAttrs (repo: entry: let
+    d = defaults // entry;
+  in
+    d
+    // {
+      maxRuntime = paracadute.esterno;
+      agentMaxRuntime = paracadute.agente;
+      # Protect the cycle's own instructions even with a writable home, and
+      # what git runs from the launcher outside the fence: the round never
+      # writes them (method o3/lanciatore.py).
+      readOnlyPaths = lib.unique (d.readOnlyPaths
+        ++ [
+          "${d.checkout}/o3/ciclo"
+          "${d.canone}/o3/lanciatore.py"
+          # Canonical protected path from method de73101: a round that
+          # changed it would weaken the policy of the next ones.
+          "${d.canone}/o3/esecutore_codex.py"
+          "${d.checkout}/.git/config"
+          "${d.checkout}/.git/hooks"
+          "${d.checkout}/.git/lanciatore"
+        ]);
+    })
   registry

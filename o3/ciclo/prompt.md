@@ -44,8 +44,7 @@ quelli ricorrenti di `/manutenzione`, sotto.
 sta in `perceive`, i suoi atti in `perform` (skill `cycle`, «Stadi»). Invoca `eval all` ed
 `exec all` col tool Skill; il minimo di ogni stadio è in fondo alla sua
 sezione delle skill. Dal 2026-11-05 al 2026-11-07 i giri si erano ridotti a
-`/manutenzione` più un ritocco al task in testa
-(`i1/ciclo-stadi-saltati-20261107.md`). Al minimo canonico di `perceive`
+`/manutenzione` più un ritocco al task in testa. Al minimo canonico di `perceive`
 questo repo aggiunge i gesti del dominio:
 
 - la fase diagnosi di `/manutenzione`, con derive di sistema e home e rami

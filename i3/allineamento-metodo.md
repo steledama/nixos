@@ -35,8 +35,8 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
 - Prova locale dell'ingresso selettivo di `/exec` (2026-10-24): nucleo
   in `SKILL.md`, procedure `plan.md`, `specify.md`, `perform.md` nella
   stessa cartella, con oggetto esplicito `specify <task>`. Mappa, confronto
-  ed esito della revisione (chiusa il 2026-10-26) sono nella cattura
-  `i1/agent-experience-review-20261025.md`; «prossimo task» e `/exec all`
+  ed esito della revisione (chiusa il 2026-10-26) sono nella storia git della cattura
+  `agent-experience-review-20261025`; «prossimo task» e `/exec all`
   restano non collaudati, limite accettato dal custode. Concordata la valutazione con la sessione method via Herdr;
   la struttura resta una divergenza sperimentale da confrontare col canone.
   La frase sul commit vuoto è coerente con la correzione canonica
@@ -46,8 +46,8 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
   non avanza il cursore della revisione completa nel frontmatter.
 - Ristrutturazione locale di `/manutenzione` (2026-10-25): nucleo con
   selezione dei rami, file interni e supporti condivisi; nessuna skill
-  aggiunta al catalogo. Mappa ed evidenze nella cattura
-  `i1/agent-experience-review-20261025.md`. La prescrizione
+  aggiunta al catalogo. Mappa ed evidenze nella storia git
+  della stessa cattura. La prescrizione
   `progettazione-skill` punti 4–6 è implementata e collaudata: il giro
   autonomo del 2026-11-04 ha esercitato gli ultimi rami e ha chiuso il task
   del collaudo. Con la separazione del 2026-11-04 i rami `lavoro` e
@@ -148,8 +148,7 @@ passate sono ricostruibili in Git. I nodi canonici sono consumati tramite
   che aggiunge la protezione di `o3/ciclo`; `--ciclo-unita` segue `giri` non
   nullo. Adattamento motivato: lo switch home-manager nel giro rende la home
   scrivibile (`homeWritable`), scelta del custode; `o3/ciclo` resta in sola
-  lettura sopra la home scrivibile. Giri riusciti dei quattro repo su deck in
-  `i1/cicli-defaults-20261025.md`. Regola delle grafie (`e88d81f`) nel fork
+  lettura sopra la home scrivibile. Giri riusciti dei quattro repo su deck riscontrati il 2026-10-25. Regola delle grafie (`e88d81f`) nel fork
   di `/cycle` dal 2026-10-27, con gli esiti della sonda su 2.1.311
   (`dd0cfb2`) e la clausola locale sull'heredoc del giro del 2026-10-27.
 - Task e giro (canone `22ead2d`, `96314f5`, `369d5ea`, `48fff8d`, recepito

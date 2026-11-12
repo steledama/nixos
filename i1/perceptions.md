@@ -13,31 +13,10 @@ si nasconde: senza catture reali la collezione resta al solo indice.
 
 ## Contenuti
 
-- [agent-experience-review-20261025.md](agent-experience-review-20261025.md) —
-  evidenze del prototipo exec, dinieghi del 24 e del 26, giro del 25,
-  allineamento della production del 26 ed esito del riesame congiunto che
-  chiude la revisione; limiti del collaudo.
-
 - [agent-task-orientation-20261024.md](agent-task-orientation-20261024.md) —
   percorso osservato nella revisione del primo task: rilevamento host
   tardivo, ricerca dopo un link già disponibile e output troncato;
   confronto con un nuovo ingresso ancora da fare.
-- [ciclo-stadi-saltati-20261107.md](ciclo-stadi-saltati-20261107.md) —
-  giri autonomi ridotti a `/manutenzione`: `eval` ed `exec` non aperti dal
-  2026-11-05, trailer `Esiti:` con stadi non eseguiti, autovalutazione
-  cieca; correzione nel prompt, acquisita da `method` (`1516fa8`).
-- [ciclo-primo-giro-stadi-20261108.md](ciclo-primo-giro-stadi-20261108.md) —
-  primo giro con gli stadi verificati: sei stadi eseguiti davvero, ma
-  finestre troppo corte, visione d'insieme non letta e rischio senza fonte;
-  correzione locale nel prompt e in `/manutenzione`, acquisita da `method`
-  (`083a8e7`).
-- [ciclo-salute-namespace-20261014.md](ciclo-salute-namespace-20261014.md) —
-  giro autonomo di `salute` non avviato su `deck`: DNS assente per ore, mount
-  Drive in I/O error, namespace dell'unità e chiusura falliti, nessuna
-  traccia in `tentativi.jsonl`.
-- [cicli-defaults-20261025.md](cicli-defaults-20261025.md) — giri riusciti
-  sui percorsi canonici e confronto delle configurazioni prima/dopo i
-  default condivisi del modulo cicli.
 - [grafie-permessi.jsonl](grafie-permessi.jsonl) — esiti della sonda delle
   grafie dei permessi del giro (`o3/scripts/sonda-grafie.sh`), una tornata
   per versione di Claude Code; letti in `i2/grafie-permessi.md`.

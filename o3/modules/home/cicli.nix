@@ -42,7 +42,7 @@
   hasView = repo: lib.any (entry: entry ? ${repo}) (lib.attrValues presentations.privileged);
   viewHere = repo: served.enable && presentations.privileged.${served.privilegedAs} ? ${repo};
 
-  local = lib.filterAttrs (_: d: d.state != "esterno" && d.host == hostname) registry;
+  local = lib.filterAttrs (_: d: d.host == hostname) registry;
 
   runtimeInputs = [pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnugrep pkgs.jq pkgs.openssh pkgs.util-linux];
   fetch = pkgs.writeShellApplication {
@@ -344,8 +344,8 @@
 in {
   assertions =
     lib.mapAttrsToList (repo: d: {
-      assertion = lib.elem d.state ["manuale" "timer" "esterno"] && (d.state == "esterno" || d.host != null);
-      message = "cicli.nix: ${repo} vuole state manuale|timer|esterno e host non nullo fuori da esterno";
+      assertion = lib.elem d.state ["manuale" "timer"];
+      message = "cicli.nix: ${repo} vuole state manuale|timer";
     })
     registry
     ++ lib.mapAttrsToList (repo: _: {
@@ -357,10 +357,7 @@ in {
   # The full picture, for the home to compute missed starts against cadence.
   # Cycles on deck carry the parachute as maxRuntime: the view's late-close
   # limit, since their minutes live in the repo's profile.
-  home.file.".local/state/ciclo/decisioni.json".text = builtins.toJSON (lib.mapAttrs (repo: e:
-    if e.state == "esterno"
-    then e
-    else e // {inherit (registry.${repo}) maxRuntime;}) (import ../../cicli.nix {inherit identity;}));
+  home.file.".local/state/ciclo/decisioni.json".text = builtins.toJSON (lib.mapAttrs (repo: e: e // {inherit (registry.${repo}) maxRuntime;}) (import ../../cicli.nix {inherit identity;}));
 
   systemd.user.services =
     lib.mapAttrs' (repo: d: lib.nameValuePair "ciclo-${repo}" (service repo d)) local

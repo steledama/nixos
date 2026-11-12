@@ -29,8 +29,7 @@ con `WebFetch` e non dal riassunto di una ricerca: per Chromium il post
 `ChangeLog-<versione>` su `cdn.kernel.org`. Se la fonte non si trova, la voce
 porta `rischio: non valutato`, con la fonte cercata nella nota, e sale in
 `Attenzione:`. Assegnare `medio` senza fonte deciderebbe da solo la mancata
-promozione, che scatta sul rischio alto (giro del 2026-11-08,
-`i1/ciclo-primo-giro-stadi-20261108.md`).
+promozione, che scatta sul rischio alto (giro del 2026-11-08).
 
 ## Vincoli
 

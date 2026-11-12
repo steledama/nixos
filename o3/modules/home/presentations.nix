@@ -53,7 +53,7 @@
   publisher = repo: "presentazione-${repo}-pubblicazione.service";
 
   cicli = import ./ciclo/registry.nix {inherit lib identity;};
-  hasCiclo = repo: cicli ? ${repo} && cicli.${repo}.state != "esterno" && cicli.${repo}.host == hostname;
+  hasCiclo = repo: cicli ? ${repo} && cicli.${repo}.host == hostname;
   serve = "${pkgs.python3}/bin/python3 o3/view/serve.py";
   serveArgs = repo: port: "--publish-root ${publishRoot repo} --port ${toString port}";
   serveStart = repo: port:
