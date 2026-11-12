@@ -1,9 +1,9 @@
 {
   "ultima_esecuzione": {
-    "data": "2026-11-11",
-    "ora": "15:13",
-    "host": "game",
-    "rami": ["casa", "ia"]
+    "data": "2026-11-12",
+    "ora": "04:33",
+    "host": "deck",
+    "rami": ["ia"]
   },
   "autovalutazione": {
     "data": "2026-11-11",
@@ -13,13 +13,13 @@
   },
   "ia": {
     "cadenza_giorni": 1,
-    "data": "2026-11-11",
-    "ora": "04:32",
+    "data": "2026-11-12",
+    "ora": "04:33",
     "host_eseguito": "deck",
     "esito": "nessun delta",
     "rev_ai": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
     "pacchetti": [],
-    "nota": "Nessun delta su ai f4a03c0: claude-code 2.1.318, pi 1.5.0, herdr 0.9.5 pari a unstable; codex 0.166.0 sul pin nixpkgs-codex, 0.167.0 su unstable senza cache (NixOS/nixpkgs #585124 chiusa il 2026-11-09), pin conservato, attesa w4 nel plan. Niente bump ne switch, applicato_su conservato.",
+    "nota": "Nessun delta su ai f4a03c0: claude-code 2.1.318, pi 1.5.0, herdr 0.9.5 pari a unstable; codex 0.166.0 sul pin nixpkgs-codex, 0.167.0 su unstable ora in cache.nixos.org: condizione di w4 arrivata, rimozione del pin in sessione col custode (o2/rimuovere-pin-codex.md). Niente bump ne switch, applicato_su conservato.",
     "applicato_su": ["deck", "game"]
   },
   "home-manager": {

@@ -21,5 +21,6 @@ Lo stesso giro ha superato `check.sh --flake` e chiuso con commit e push
 
 La quota reale e il fallback restano aperti nel contratto canonico. Il push
 Codex in rete è già documentato lì per method (`3b618dc`, fonte del
-2026-11-11). L'attesa locale va riconosciuta come `arrival:`, non come una
-`probe:` su testo libero che `probe.sh` non sa interrogare.
+2026-11-11). Il custode ha chiuso il collaudo senza un'attesa locale
+(`7a9054a`, 2026-11-11): il fallback per credito esaurito si legge quando
+accade, nella chiusura del tentativo in `i1/giri/tentativi.jsonl`.

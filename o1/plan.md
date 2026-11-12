@@ -20,8 +20,9 @@ deck passano al lanciatore canonico, che registra il credito esaurito di
 Claude: tutti e quattro dal 2026-11-11. L'host è pronto anche per Codex
 come secondo motore, che ogni repo accende nel proprio profilo; in nixos è
 di riserva, collaudato con un giro completo fino al push. Il fallback reale
-per credito esaurito si verificherà quando accade. Gli altri task attendono
-upstream.
+per credito esaurito si verificherà quando accade. Seed e rebuild aspettano
+il custode sugli host, Steam aspetta upstream; il pin Codex ha la sua
+condizione d'uscita dal 2026-11-12 e si toglie in sessione.
 
 ## Task
 
@@ -30,7 +31,7 @@ upstream.
 | runtime | 2   | Mettere l'identità locale nel seed                 | p1   |
 | runtime | 1   | Portare i tre host sulla configurazione ripulita   | p2   |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo fix upstream | w3   |
-| runtime | 1   | Rimuovere il pin Codex dopo build su ai            | w4   |
+| runtime | 1   | Rimuovere il pin Codex dopo build su ai            | —    |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
@@ -43,12 +44,6 @@ riesame (`method/plan.md`, «Risveglio»):
 - `w3` — upstream: ValveSoftware/steam-for-linux #9289, aperta dal 2025
   senza fix. probe: github ValveSoftware/steam-for-linux#9289 closed;
   by: 2027-01
-- `w4` — upstream: codex 0.167.0 su `ai` senza cache al 2026-11-11,
-  NixOS/nixpkgs #585124 chiusa il 2026-11-09. arrival: cache binaria o build
-  riuscita di Codex sull'input `ai` aggiornato, letta da
-  `o3/scripts/home-versions.sh` nella diagnosi `ia` del giro; rimozione di
-  input e override in sessione col custode (`kb/development-environment.md`);
-  by: 2026-12
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 

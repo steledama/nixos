@@ -16,14 +16,18 @@ nella configurazione.
   upstream verificato.
 - Su tutti gli host, l'input `nixpkgs-codex` tiene Codex a 0.166.0 mentre
   `ai` avanza per gli altri agenti (`bac7d86`, 2026-11-10): codex 0.167.0
-  non compila su `ai` (aws-lc-sys). NixOS/nixpkgs #585124 è chiusa dal
-  2026-11-09, ma al 2026-11-11 la 0.167.0 resta senza cache; la chiusura
-  da sola non basta (`.claude/skills/manutenzione/ia.md`). Esce quando
-  Codex di `ai` ha cache o una build riuscita (`w4` in `o1/plan.md`).
+  non compilava su `ai` (aws-lc-sys, NixOS/nixpkgs #585124 chiusa il
+  2026-11-09). Il 2026-11-12 la condizione d'uscita è arrivata: la 0.167.0
+  di `nixos-unstable`, il ramo che `ai` segue, è in cache.nixos.org
+  (misurato da `o3/scripts/home-versions.sh`, giro del 2026-11-12). Il
+  pin resta finché rimozione e switch non sono verificati su un host, in
+  sessione col custode, perché la rimozione tocca anche la skill
+  `/manutenzione` (`.claude/skills/manutenzione/ia.md`).
 
 Verdetto corrente: la deriva desktop è contenuta. Steam resta debito noto
 con una condizione upstream e un task (`w3` in `o1/plan.md`, dettagli in
-`o2/`); #9289 ancora aperta al 2026-10-27. L'overlay NAPS2 è uscito il
+`o2/`); #9289 ancora aperta al 2026-11-12 (`gh issue view`, ultimo
+aggiornamento 2025-02-19). L'overlay NAPS2 è uscito il
 2026-11-01 col bump di `nixpkgs` a `1c89083`, che porta la 8.6.0 col
 try/catch upstream (#784): la patch non si applicava più e la build su
 `neve` lo ha rivelato. Quando il debito è di packaging e il servizio è

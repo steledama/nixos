@@ -9,8 +9,9 @@ vive in `../presentation/presentation.md` ([presentation](../method/presentation
 
 ## Contenuti
 
-- [Codex nel recinto dell'host](codex-recinto-host.md) — giro nixos completo con Codex, fallback reale non ancora osservato
-  riscontrato su deck; switch e fallback reale restano da collaudare.
+- [Codex nel recinto dell'host](codex-recinto-host.md) — giro nixos
+  completo con Codex riscontrato su deck; il fallback reale per credito
+  esaurito non è ancora osservato e si legge quando accade.
 
 - [Grafie dei permessi](grafie-permessi.md) — forme di comando negate e
   concesse nel giro su Claude Code 2.1.311 e cause dei dinieghi osservati;
