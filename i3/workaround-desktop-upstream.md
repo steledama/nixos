@@ -15,15 +15,14 @@ nella configurazione.
   evitare il crash nella `libaudio.so` bundlata; va rimosso quando una
   prova su `game` lo dimostra inutile.
 
-Verdetto corrente: la deriva desktop è contenuta. Il pin Codex è uscito il
-2026-11-12: la 0.167.0 dell'input `ai` è arrivata in cache, la rimozione è
-verificata con lo switch su `deck`; `game` e `neve` la ricevono col
-prossimo allineamento. Steam resta debito noto,
-ma la via d'uscita è cambiata: il client a 64 bit, stable dal 2026-11-11,
-potrebbe non caricare più la `libaudio.so` a 32 bit, e la prova su `game`
-aspetta l'host libero (`p2` in `o1/plan.md`, dettagli in `o2/`). PipeWire
-1.6.11 non tocca il crash. L'issue viva è #13174, aperta al 2026-11-12;
-#9289, ferma dal 2025-02-19, era la sorveglianza sbagliata. L'overlay NAPS2 è uscito il
+Verdetto corrente: la deriva desktop è contenuta. Il pin Codex è uscito
+(`43cde0d`): Codex segue di nuovo l'input `ai`. Steam resta debito noto e
+ora dipende solo da Valve: la prova su `game` del 2026-11-12 ha mostrato che
+anche il client a 64 bit (`steamrt64/`) carica una sua `libaudio.so` e il
+riproduttore di #13174 lo fa crashare (`w1` in `o1/plan.md`, dettagli in
+`o2/`). PipeWire 1.6.11 non tocca il crash. L'issue viva è #13174, aperta
+al 2026-11-13 (`probe.sh`); #9289, ferma dal 2025-02-19, era la
+sorveglianza sbagliata. L'overlay NAPS2 è uscito il
 2026-11-01 col bump di `nixpkgs` a `1c89083`, che porta la 8.6.0 col
 try/catch upstream (#784): la patch non si applicava più e la build su
 `neve` lo ha rivelato. Quando il debito è di packaging e il servizio è
@@ -32,6 +31,7 @@ rimpiazzabile, cambiare servizio può costare meno che aspettare upstream.
 ## Chiusura
 
 La ricorrenza quotidiana di `/manutenzione world` sorveglia le condizioni
-upstream delle attese `w`; per Steam la mossa è la prova su `game`. Ogni workaround esce quando la condizione è superata **e** la
+upstream delle attese `w`; per Steam si riprova su `game` alla chiusura di
+#13174 o a un client che non carichi più `libaudio`. Ogni workaround esce quando la condizione è superata **e** la
 rimozione è verificata sul relativo host (runtime, o build attiva per gli
 overlay di packaging). Il filo si chiude con l'uscita del wrapper Steam.

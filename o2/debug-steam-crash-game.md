@@ -36,11 +36,9 @@ pubblica un device virtuale via API PipeWire fa crashare Steam (build
   di 1.6.10 e 1.6.11 non toccano questo percorso (fix JACK, Bluetooth,
   plugin ALSA, pulse-server). Il bump di `nixpkgs` non è condizione di
   rimozione.
-- **Steam a 64 bit era la via sperata.** Client a 64 bit nel container Steam
-  Runtime: beta dal 2026-10-15, stable dall'aggiornamento del 2026-11-11.
-  Se il client a 64 bit non carica più la `libaudio.so` di `ubuntu12_32/`,
-  il crash non ha più dove avvenire. Non verificato: nessun riscontro su
-  #13174 dopo lo stable, e le librerie a 32 bit restano richieste.
+- **Steam a 64 bit.** Client a 64 bit nel container Steam Runtime: beta dal
+  2026-10-15, stable dall'aggiornamento del 2026-11-11. Era la via sperata;
+  la seconda prova sotto la smentisce.
 - **Prima prova su `game` (2026-11-12, sera).** Client ancora a 32 bit
   (`ubuntu12_32/steam`, build `1792618285`, canale stable): carica la
   `libaudio.so` e `ubuntu12_64/steam` non esiste. Il bootstrap ha messo in

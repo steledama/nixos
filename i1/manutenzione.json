@@ -1,9 +1,9 @@
 {
   "ultima_esecuzione": {
-    "data": "2026-11-12",
-    "ora": "07:39",
+    "data": "2026-11-13",
+    "ora": "04:33",
     "host": "deck",
-    "rami": ["ia"]
+    "rami": ["ia", "world"]
   },
   "autovalutazione": {
     "data": "2026-11-11",
@@ -13,20 +13,30 @@
   },
   "ia": {
     "cadenza_giorni": 1,
-    "data": "2026-11-12",
-    "ora": "07:39",
+    "data": "2026-11-13",
+    "ora": "04:33",
     "host_eseguito": "deck",
     "esito": "eseguito",
-    "rev_ai": "177d0540942fb205af6993b1d5fa0b57799e09f8",
+    "rev_ai": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
     "pacchetti": [
       {
+        "nome": "claude-code",
+        "da": "2.1.318",
+        "a": "2.1.321"
+      },
+      {
         "nome": "codex",
-        "da": "0.166.0",
-        "a": "0.167.0"
+        "da": "0.167.0",
+        "a": "0.167.1"
+      },
+      {
+        "nome": "pi",
+        "da": "1.5.0",
+        "a": "1.5.2"
       }
     ],
-    "nota": "Pin nixpkgs-codex rimosso in sessione col custode: ai f4a03c0 -> 177d054, codex 0.167.0 dalla cache (nessuna compilazione); claude-code 2.1.318, pi 1.5.0 invariati. Switch su deck riuscito. game e neve col prossimo allineamento.",
-    "applicato_su": ["deck", "neve"]
+    "nota": "Giro autonomo: ai 177d054 -> d4f25a3, tre patch dalla cache (nessuna compilazione), changelog non letto per regola; herdr 0.9.5 invariato. Switch su deck riuscito.",
+    "applicato_su": ["deck"]
   },
   "home-manager": {
     "cadenza_giorni": 7,
@@ -123,13 +133,14 @@
     "host_eseguito": "deck"
   },
   "world": {
-    "Rimuovere steam-pipewire-wrapper dopo fix upstream": {
+    "Rimuovere steam-pipewire-wrapper dopo la prova su game": {
       "cadenza_giorni": 30,
-      "data": "2026-10-27",
-      "ora": "04:30",
+      "verifica_attiva_su_cadenza": false,
+      "data": "2026-11-13",
+      "ora": "04:33",
       "esito": "invariato",
-      "dipendenza": "ValveSoftware/steam-for-linux #9289",
-      "nota": "issue ancora OPEN, 11 commenti, ultimo aggiornamento 2025-02-19, nessun fix"
+      "dipendenza": "ValveSoftware/steam-for-linux #13174",
+      "nota": "probe.sh: OPEN. Voce spostata dal titolo precedente (Rimuovere steam-pipewire-wrapper dopo fix upstream, #9289), rinominato in cbb5d45 del 2026-11-12."
     }
   }
 }
