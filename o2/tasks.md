@@ -10,3 +10,4 @@ in [tasks](../method/tasks.md).
 ## Contenuti
 
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo la prova su game
+- [riavvio-viste-canone.md](riavvio-viste-canone.md) — Osservare il riavvio delle viste a un cambio del canone

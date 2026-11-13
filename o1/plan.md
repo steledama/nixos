@@ -13,14 +13,16 @@ dipendenze.
 `nixos` è a regime sui tre host di casa: il peso prevalente sta nelle
 ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli
 strumenti e sorveglia il debito upstream. Nessun fronte di sviluppo è
-aperto: l'unico task attende Valve per togliere il wrapper di Steam su
-`game`.
+aperto: i due task aspettano un fatto esterno, Valve per togliere il
+wrapper di Steam su `game` e un cambio di `o3/view/` nel canone per vedere
+il riavvio del server delle viste.
 
 ## Task
 
-| Ciclo   | Ob. | Task                                                   | Dip. |
-| ------- | --- | ------------------------------------------------------ | ---- |
-| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo la prova su game | w1   |
+| Ciclo   | Ob. | Task                                                    | Dip. |
+| ------- | --- | ------------------------------------------------------- | ---- |
+| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo la prova su game  | w1   |
+| dev     | S   | Osservare il riavvio delle viste a un cambio del canone | w2   |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
@@ -30,6 +32,11 @@ riesame (`method/plan.md`, «Risveglio»):
   lo fa crashare su `game` (2026-11-12). Si riprova la stessa prova alla
   chiusura della issue o a un client che non carichi più `libaudio`;
   probe: github ValveSoftware/steam-for-linux#13174 closed; by: 2027-02
+- `w2` — method: dal suo avvio `presentazione-nixos` non ha visto cambiare
+  `o3/view/` del canone, quindi il riavvio dopo la pubblicazione non è
+  ancora stato osservato. probe: `git -C ~/method rev-parse HEAD:o3/view`
+  diverso dalla seconda riga di `~/.local/state/presentazione/nixos.serve`
+  dopo una pubblicazione; by: 2027-01
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 
