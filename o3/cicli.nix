@@ -116,11 +116,5 @@
     time = "15:00";
     # Step 1 from 2026-10-17 (custodian; method 519d162).
     state = "timer";
-    # Fetch adopters' markers before the round, outside its read-only home.
-    # example-org/nixos-ufficio, seventh adopter from 2026-11-04 (custodian;
-    # method b03ee34), has no checkout on deck since 2026-11-12: the round
-    # reads it on its host with `--ssh` (method 000730e), a session through
-    # a Herdr ssh pane (method kb/session-messaging.md).
-    fetch = identity.work.methodFetch;
   };
 }

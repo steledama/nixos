@@ -114,8 +114,7 @@ La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
   `casa/identity/work.nix` e `casa/identity/privacy.json`, una sola serie
   presa da `deck`, create e rilette byte per byte contro i file il
   2026-11-12. Una serie basta perché `work.nix` serve solo a `deck` (VPN
-  ufficio, `/etc/hosts`, `ssh-work-lan.nix`, `methodFetch` del ciclo
-  `method`): sugli altri host deve solo valutarsi. Lo stesso giorno, con
+  ufficio, `/etc/hosts`, `ssh-work-lan.nix`): sugli altri host deve solo valutarsi. Lo stesso giorno, con
   l'identità di `deck`, si valutano i toplevel e gli `activationPackage` di
   `neve` e `game`. `neve` e `game` avevano una `work.nix` diversa, senza
   effetto sul loro sistema, e sono state allineate a quella di `deck` (`game`

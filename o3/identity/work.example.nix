@@ -9,7 +9,6 @@
 #   hosts): l'ufficio si raggiunge solo da deck;
 # - vpn: client della VPN lavoro di deck (wireguard-work-client.nix).
 {
-  methodFetch = [];
   lan = {
     hosts = {
       norvegia = "10.0.0.2";
