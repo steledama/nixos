@@ -3,18 +3,19 @@
 La configurazione completa dei tre computer di casa: un portatile che fa
 anche da piccolo server, un desktop e un PC da gioco. Tutto è dichiarato in
 questo repository con NixOS, flakes e home-manager standalone: sistema,
-desktop, servizi, sincronizzazione dei file e strumenti di sviluppo. Ogni
-host si ricostruisce da qui, senza configurazioni manuali fuori dal repo.
+desktop, servizi, sincronizzazione dei file e strumenti di sviluppo. La configurazione ordinaria dei tre host si ricostruisce dal repository,
+completato dall’identità locale e dal seed dei segreti.
 
 [![Nix Flakes](https://img.shields.io/badge/Nix-Flakes-blue.svg?logo=nixos&logoColor=white)](https://nixos.wiki/wiki/Flakes)
 [![Hosts](https://img.shields.io/badge/Hosts-3-green.svg)](#)
 [![Open Source First](https://img.shields.io/badge/Software-Open%20Source%20First-brightgreen.svg)](#)
 
-Il progetto tiene in equilibrio due obiettivi che si tirano a vicenda: un
-sistema **snello e minimalista** e tre host **affidabili**, che si
-ricostruiscono dal repository e i cui servizi ripartono da soli. Il primo
-chiede di togliere, il secondo di aggiungere ridondanza: come si bilanciano
-è scritto in [`goal.md`](goal.md).
+Il progetto serve a mantenere computer di casa **piacevoli da usare,
+puliti, aggiornati e sicuri**, con una configurazione comprensibile e
+ricostruibile. I quattro obiettivi sono semplicità e pulizia,
+riproducibilità e controllo dei cambiamenti, aggiornamento continuo e
+consapevole, sicurezza e riservatezza. Criteri e segnali sono in
+[`goal.md`](goal.md).
 
 Accanto alla configurazione vivono la sua documentazione, il piano di lavoro
 e un ciclo autonomo quotidiano in cui un agente AI controlla gli

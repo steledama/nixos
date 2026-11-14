@@ -4,17 +4,17 @@ Costituzione operativa per agenti che lavorano su questo repository NixOS multi-
 
 ## Confine con il repo di lavoro
 
-Questo repo descrive i tre host di casa. La coppia server
-`norvegia`/`svezia` vive in `example-org/nixos-ufficio`.
+Questo repo descrive i tre host di casa. Il server `svezia` e la postazione di sviluppo
+`norvegia` vivono in `example-org/nixos-ufficio`.
 
-- Ciò che qui nomina ancora i server è un legame dichiarato, non un invito
+- Ciò che qui nomina gli host di lavoro è un legame dichiarato, non un invito
   ad agire: la VPN ufficio di `deck`, gli alias SSH di `deck`, il peer e la
   chiave di `norvegia` sulla VPN casa.
-- Il lavoro sui server si fa nell'altro repo, dalle sessioni sui suoi host.
+- Il lavoro sugli host di lavoro si fa nell'altro repo, dalle sessioni sui suoi host.
   Su `deck` quel repo non ha checkout: per leggerlo o porgli una domanda, il
   custode apre in un pannello Herdr una sessione via `ssh norvegia` e questa
   sessione la interroga (§ Comunicazione fra sessioni con Herdr). Gli atti
-  sui server restano alle sessioni lì.
+  sugli host di lavoro restano alle sessioni lì.
 - Un'istruzione che presuppone il repo unico è un residuo: verificala prima
   di applicarla e, nel dubbio, chiedi al custode.
 
@@ -56,7 +56,7 @@ Regola unica: se il file modificato vive in `o3/modules/system/` o `o3/hosts/`, 
 
 Categorie di comandi:
 
-- **Consentiti senza chiedere** (non-sudo, area utente): `home-manager switch`, `systemctl --user`, `git status/add/commit`, `git pull --ff-only` del branch corrente a working tree pulito (anche nel checkout di `method`), `git push` del branch corrente su `origin` dopo ogni commit riuscito, `nix flake update`, `nix-collect-garbage --delete-old`, `o3/tools/check.sh` (anche `--flake`), operazioni su file in directory utente; da `deck`, `remoto stato|allinea` su `game` e `neve` (criterio `atti-remoti` di `autonomy.md`; `remoto` rifiuta i server).
+- **Consentiti senza chiedere** (non-sudo, area utente): `home-manager switch`, `systemctl --user`, `git status/add/commit`, `git pull --ff-only` del branch corrente a working tree pulito (anche nel checkout di `method`), `git push` del branch corrente su `origin` dopo ogni commit riuscito, `nix flake update`, `nix-collect-garbage --delete-old`, `o3/tools/check.sh` (anche `--flake`), operazioni su file in directory utente; da `deck`, `remoto stato|allinea` su `game` e `neve` (criterio `atti-remoti` di `autonomy.md`; `remoto` rifiuta gli host di lavoro).
 - **Richiedono autorizzazione esplicita**: ogni comando con `sudo` (`nixos-rebuild`, `systemctl` di sistema, `nix-collect-garbage -d`), push di altri branch, `amend` di commit già pubblicati, operazioni distruttive (`reset --hard`, force push, `branch -D`).
 
 Procedure complete: `kb/common-commands.md`. Workflow git (commit → rebuild → rollback): `kb/development-workflow.md`.

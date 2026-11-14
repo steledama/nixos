@@ -14,7 +14,7 @@ interattivo, senza custode. Scelta e gradini vivono in method (filo
 - **`o3/cicli.nix`**, le decisioni: per ogni repo host, checkout, cadenza e
   orario, stato (`manuale`, `timer`) e recinto. Un solo `host` per repo: un
   solo host tiene il ciclo autonomo di un repo per costruzione. I cicli che
-  girano sui server li dichiara il repo `example-org/nixos-ufficio`.
+  girano sugli host di lavoro li dichiara il repo `example-org/nixos-ufficio`.
 - **`o3/modules/home/cicli.nix`**, il meccanismo: importato da tutti i
   profili in `o3/home/default.nix`, genera `ciclo-<repo>.service` e la sua
   sonda solo dove `host` coincide con l'`hostname` del profilo, e il
@@ -260,7 +260,7 @@ Da `deck` l'agente raggiunge `game` e `neve` solo con `remoto`
 (`o3/modules/home/remoto.nix`, criterio `atti-remoti` di `autonomy.md`). I
 comandi remoti sono fissati nello script costruito da Nix, che il giro non
 può modificare; `ssh` resta negato nel giro. Il giro notturno non lo usa:
-alle 04:30 `game` e `neve` sono spenti. `remoto` rifiuta i server, che
+alle 04:30 `game` e `neve` sono spenti. `remoto` rifiuta gli host di lavoro, che
 vivono nel repo `example-org/nixos-ufficio`.
 
 - `remoto stato <host>`: `nixos-version`, generazioni di sistema e home (la
@@ -281,7 +281,7 @@ vivono nel repo `example-org/nixos-ufficio`.
   quell'albero ed è su `origin`, fa anche `git pull --ff-only` di `~/nixos`
   sull'host.
 
-Codici di uscita: `0` riuscito, `2` uso (anche un server), `3` host non
+Codici di uscita: `0` riuscito, `2` uso (anche un host di lavoro), `3` host non
 raggiungibile, `6` su `deck` ci sono file non in staging (l'albero inviato
 non sarebbe quello dello switch di `deck`); dopo uno switch riuscito, `10`
 checkout remoto sporco, `11` branch remoto non `main`, `12` `HEAD` remoto

@@ -1,10 +1,10 @@
 # o3/identity/work.example.nix (template pubblicabile di work.nix)
 #
 # Identità del mondo LAVORO ridotta a ciò che usa deck: è l'identità
-# incrociata dichiarata (goal.md, «Due repo, confine netto»). La coppia server
-# e il resto dell'identità di lavoro vivono nel repo example-org/nixos-ufficio.
+# incrociata dichiarata (goal.md, «Due repo, confine netto»). Il server svezia, la postazione
+# di sviluppo norvegia e il resto dell'identità di lavoro vivono nel repo example-org/nixos-ufficio.
 #
-# - lan: indirizzi dei server per ssh-work-lan.nix e, con i dispositivi LAN
+# - lan: indirizzi degli host di lavoro per ssh-work-lan.nix e, con i dispositivi LAN
 #   ufficio, per /etc/hosts di deck (wireguard-work-client.nix, opzione
 #   hosts): l'ufficio si raggiunge solo da deck;
 # - vpn: client della VPN lavoro di deck (wireguard-work-client.nix).

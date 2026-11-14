@@ -4,7 +4,7 @@
 # Uso: remoto stato|allinea game|neve
 #
 # stato reads the host; allinea runs home-manager switch from deck's staged
-# tree, then moves the checkout once that tree is pushed. The servers left
+# tree, then moves the checkout once that tree is pushed. The office hosts left
 # this repo on 2026-11-04 and remoto refuses them. The remote commands live
 # in remoto/remoto.sh and reach the PATH through Nix, so the autonomous
 # round, which cannot edit this module, cannot change them either.

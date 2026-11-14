@@ -17,16 +17,14 @@ Internet
        └─ VPN 10.20.0.0/24
             ├─ 10.20.0.1  deck (server)
             ├─ 10.20.0.3  telefono
-            └─ 10.20.0.5  norvegia   (solo in standby)
+            └─ 10.20.0.5  norvegia   (sviluppo, tunnel manuale)
 ```
 
-Dei due server è client solo lo standby, la postazione desktop in ufficio:
-il client e la regola che lo lega al ruolo vivono nel repo
-`example-org/nixos-ufficio`. Deck tiene il solo peer `norvegia` (decisione del
-custode, 2026-11-08): `svezia` è avviata a diventare il server unico, con
-`norvegia` postazione di sviluppo, e il suo tunnel casa non si stabilisce più
-(task `server-unico` di quel repo). La production resta fuori dal mondo
-casa: da casa la si raggiunge dalla VPN ufficio di deck
+`norvegia` è la postazione di sviluppo in ufficio e il client della VPN
+casa, ad avvio manuale. `svezia` è il server e non è peer della VPN casa.
+Configurazione e gestione dei due host vivono nel repo
+`example-org/nixos-ufficio`; qui deck dichiara il peer di `norvegia`.
+Da casa si raggiunge il server `svezia` tramite la VPN ufficio di deck
 (`network-architecture`, «Accesso all'ufficio da casa»).
 
 Split tunnel: i client VPN raggiungono `10.20.0.0/24` e `192.168.0.0/24` (LAN
@@ -38,7 +36,7 @@ NetworkManager che, quando un'interfaccia sale sulla LAN casa, aggiunge la
 rotta `10.20.0.0/24` via l'IP LAN di deck. Su altre reti non aggiunge nulla;
 `deck` non la importa, perché è lui il gateway. Il NAT di deck maschera solo il
 traffico che entra dal tunnel: le risposte dalla LAN tornano nel tunnel perché
-`AllowedIPs` dello standby include la LAN casa, e funziona solo mentre il suo
+`AllowedIPs` di `norvegia` include la LAN casa, e funziona solo mentre il suo
 tunnel casa è attivo, ad avvio manuale. La LAN ufficio non passa da qui: la
 raggiunge solo deck (`network-architecture`).
 
@@ -46,7 +44,7 @@ raggiunge solo deck (`network-architecture`).
 
 Il server VPN casa usa `o3/modules/system/services/wireguard.nix` su `deck`,
 con interfaccia `casa` (assegnata in `o3/hosts/deck/default.nix`).
-Il client dello standby, ad avvio manuale, è dichiarato nel repo
+Il client di `norvegia`, ad avvio manuale, è dichiarato nel repo
 `example-org/nixos-ufficio`: qui c'è solo il suo peer.
 
 In `o3/hosts/deck/default.nix`:
@@ -94,7 +92,7 @@ vecchio fino al restart.
 
 Su un client NixOS la prevenzione è `dynamicEndpointRefreshSeconds` sul
 peer, che riesegue periodicamente la risoluzione DNS senza riavviare il
-tunnel; lo usa il client dello standby, nel repo `example-org/nixos-ufficio`.
+tunnel; lo usa il client di `norvegia`, nel repo `example-org/nixos-ufficio`.
 Su un telefono basta spegnere e riaccendere il tunnel.
 
 ## Gestione
@@ -132,14 +130,14 @@ wg pubkey < /etc/wireguard/casa-vpn.key > /etc/wireguard/casa-vpn.pub'
 ```
 
 Conservare il seed privato fuori da Git e verificare soltanto la public key.
-Gestione e path runtime del client dello standby sono nel repo
+Gestione e path runtime del client di `norvegia` sono nel repo
 `example-org/nixos-ufficio`.
 
 ## Troubleshooting
 
 ### Nessun client esterno raggiunge deck (0 B received, nessun handshake)
 
-Sintomo: sul client (il telefono o lo standby) il peer di
+Sintomo: sul client (il telefono o `norvegia`) il peer di
 deck con `endpoint` corretto (IP pubblico attuale, DNS non stale) ma
 `0 B received` e nessuna riga `latest handshake` anche dopo diversi
 `persistent keepalive`. Su deck, `sudo wg show casa` conferma il sospetto:

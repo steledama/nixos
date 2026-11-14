@@ -13,8 +13,8 @@ su deck `ssh-work-lan.nix` aggiunge `ssh norvegia` e `ssh svezia`. Gli indirizzi
 
 Tutti gli alias usano porta 22 e `~/.ssh/id_ed25519`:
 
-- **norvegia** — utente `sviluppo`, `identity.work.lan.hosts.norvegia`;
-- **svezia** — utente `sviluppo`, `identity.work.lan.hosts.svezia`;
+- **norvegia** — postazione di sviluppo, utente `sviluppo`, `identity.work.lan.hosts.norvegia`;
+- **svezia** — server, utente `sviluppo`, `identity.work.lan.hosts.svezia`;
 - **deck** — utente `stele`, `identity.home.lan.hosts.deck`;
 - **neve** — utente `stele`, `identity.home.lan.hosts.neve`;
 - **game** — utente `stele`, `identity.home.lan.hosts.game`.
@@ -27,21 +27,21 @@ Un alias seleziona utente e destinazione, ma non apre un tunnel VPN.
 - **Deck verso lavoro** — la VPN `lavoro` parte al boot
   (`network-architecture`, «Accesso all'ufficio da casa»): verificare la
   rotta verso la LAN ufficio.
-- **Server lavoro verso casa** — solo dallo standby, col client VPN `casa`
+- **Ufficio verso casa** — dalla postazione di sviluppo `norvegia`, col client VPN `casa`
   ad avvio manuale (`wireguard-home`; il client è nel repo
   `example-org/nixos-ufficio`).
 - **Neve/game verso lavoro** — nessun accesso: al lavoro si entra solo da
-  deck, né rotta né alias né nomi dei server su questi host.
+  deck, né rotta né alias né nomi degli host di lavoro su questi host.
 
 SSH non è esposto su WAN. Per diagnosticare, controllare
 prima `ip route get <ip-destinazione>` sull'host che apre la connessione.
 
 Da `deck` l'agente non usa gli alias liberamente per gli atti: su `game` e
-`neve` passa da `remoto` (`cicli § Atti remoti`). I server vivono nel repo
+`neve` passa da `remoto` (`cicli § Atti remoti`). Gli host di lavoro vivono nel repo
 `example-org/nixos-ufficio`: gli alias `norvegia` e `svezia` restano
-per le sessioni del custode, e da qui l'agente non agisce sui server.
+per le sessioni del custode, e da qui l'agente non agisce sugli host di lavoro.
 
-I profili `sviluppo` dei server (repo `example-org/nixos-ufficio`) aggiungono a
+I profili `sviluppo` degli host di lavoro (repo `example-org/nixos-ufficio`) aggiungono a
 `ssh game` un forwarding locale della porta 11434 verso llama.cpp, ma dal
 2026-11-08 le loro chiavi non sono autorizzate su `game`. Prerequisiti, durata
 della sessione e verifica dell’endpoint vivono in `game-local-llm`.

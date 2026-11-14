@@ -310,7 +310,7 @@ di `deck` è un atto del custode.
   senza cavo, `deck` per primo. Il profilo Wi-Fi imperativo di riserva su
   `deck` la usa. Nessun profilo NetworkManager o shadow è stato esportato.
 
-I segreti della coppia server sono inventariati nel repo
+I segreti del server `svezia` e della postazione di sviluppo `norvegia` sono inventariati nel repo
 `example-org/nixos-ufficio`.
 
 Connessioni:

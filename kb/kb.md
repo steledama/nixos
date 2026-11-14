@@ -18,7 +18,7 @@ sono duplicati qui.
 
 ## Rete e VPN
 
-- [wireguard-home](wireguard-home.md) — VPN casa con `deck` server e lo standby lavoro come client
+- [wireguard-home](wireguard-home.md) — VPN casa con `deck` server e `norvegia`, postazione di sviluppo, come client
 
 ## Diagnostica
 

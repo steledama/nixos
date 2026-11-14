@@ -18,7 +18,7 @@ ne serve in modo permanente le viste generate alle sole reti private, e
 `python3 method/../o3/view/serve.py --root .` lanciato a mano ascolta per default sulla
 porta 8000. Repo e porte vivono in un solo registro, `o3/presentations.nix`
 (`deck`: `method` 8001, `nixos` 8002, `salute` 8003, `economia` 8004). Le
-viste di `bi` e `baserow` sulla production le dichiara il repo
+viste di `bi` e `baserow` su `svezia` le dichiara il repo
 `example-org/nixos-ufficio`. Il modulo home `o3/modules/home/presentations.nix` ne
 genera un servizio utente `presentazione-<repo>` per repo. Per un repo fuori
 dalla forma pubblicata il servizio lancia `o3/view/serve.py --port` dal
@@ -114,7 +114,7 @@ le ricava dallo stesso registro:
   casa raggiungono `game` e `neve` mascherati dal NAT di deck, quindi con la
   sua sorgente LAN: per loro basta la regola LAN;
 - **`deck`** — in più 8001-8004 dalla LAN casa e 8000-8004 dalla VPN casa
-  `10.20.0.0/24`, così ci arrivano anche lo standby e il telefono
+  `10.20.0.0/24`, così ci arrivano anche `norvegia` e il telefono
   (`extraCommands` dell'host).
   La rete pubblica non è mai ammessa; senza un server sulla porta non ascolta
   nessuno.

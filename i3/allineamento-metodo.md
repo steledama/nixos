@@ -69,8 +69,8 @@ di questo file. I nodi canonici sono consumati tramite
 - `autonomy.md` in root istanzia la delega del ciclo col perimetro NixOS
   deciso dal custode: dentro il ciclo solo gli atti che `CLAUDE.md` già
   consente senza chiedere; `ssh` agli altri host in sola lettura e senza
-  `sudo` nel perceive; `sudo`, rebuild, reboot, produzione e atti su altri
-  host restano fuori. `/method` e `/manutenzione` conservano i propri gate.
+  `sudo` nel perceive; `sudo`, rebuild, reboot e atti sugli altri host
+  restano fuori, compresi gli host di lavoro. `/method` e `/manutenzione` conservano i propri gate.
 - Pull autonomo: su `deck` il pull sposta `HEAD` e la path unit ripubblica
   le viste in LAN, quindi è un rilascio delle sole viste. Il custode ha
   scelto di dichiararlo invece di tenere il pull su richiesta; il sistema

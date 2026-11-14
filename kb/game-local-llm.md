@@ -12,7 +12,7 @@ Dal 2026-11-01 il servizio non parte al boot (`autoStart = false`, decisione
 del custode: nessun uso richiede che resti sempre acceso, e la GPU da 12 GB
 serve anche a Strata e ComfyUI). L'unità resta installata e si avvia a mano
 con `sudo systemctl start llama-cpp`, che va lanciato su `game` prima di
-usare l'OCR di `~/economia` o il tunnel dai server lavoro (repo
+usare l'OCR di `~/economia` o il tunnel dagli host di lavoro (repo
 `example-org/nixos-ufficio`). Un
 `nixos-rebuild switch` non lo avvia più.
 
@@ -139,13 +139,13 @@ web su origini arbitrarie non possono usare il browser per chiamare il servizio.
 La porta è indicizzata anche in `network-architecture.md` tra i servizi della
 rete casa.
 
-## Accesso dai server lavoro
+## Accesso dagli host di lavoro
 
 Legame d'uso dichiarato nel goal del repo `example-org/nixos-ufficio` (2026-11-04):
-i profili `sviluppo` dei server aprono un tunnel SSH verso `game` che porta
+i profili `sviluppo` degli host di lavoro prevedono un tunnel SSH verso `game` che porta
 il loro `127.0.0.1:11434` su `127.0.0.1:11434` di `game`, passando dalla VPN
-casa dello standby (`wireguard-home`). Procedura e verifica vivono in quel
-repo. Dal 2026-11-08 il custode ha tolto le chiavi dei server da `game` per
+casa di `norvegia` (`wireguard-home`). Procedura e verifica vivono in quel
+repo. Dal 2026-11-08 il custode ha tolto le chiavi degli host di lavoro da `game` per
 tenere minimi gli accessi (`ssh-matrix`), quindi il tunnel non si apre finché
 non torna autorizzata una chiave. Se torna, il forward arriva a llama.cpp da
 localhost e le regole firewall della porta 11434 non c'entrano.
@@ -188,6 +188,19 @@ catalogo `/models` su `game`. Il contratto è quello OpenAI
 (`/v1/chat/completions` con content block `image_url`), non il `/api/chat` di
 Ollama usato prima della migrazione: la costruzione del payload vive nel client
 del repo di dominio, non nell'infrastruttura NixOS.
+
+## Criterio di integrazione delle prove
+
+L'AI locale è uno degli usi dei computer di casa, valutato contro i quattro
+obiettivi di `goal.md`. Ciò che serve i consumer vive nella configurazione
+ordinaria, con pesi e sorgenti fissati per hash. Le prove restano in area
+utente e si smontano senza residui; i criteri si fissano prima della prova.
+
+Una prova entra nel servizio quando migliora sia la misura sia la qualità
+valutata alla cieca dal custode. Il costo di manutenzione di un pacchetto
+proprio, fork o overlay e l'uso della GPU devono essere espliciti e
+accettati. L'integrazione si valuta anche per aggiornabilità, riproducibilità
+e riservatezza, oltre che per semplicità.
 
 ## Strata: prova in area utente
 

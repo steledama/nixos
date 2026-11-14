@@ -1,8 +1,4 @@
-/* CSS di dominio di NixOS, dichiarato in o3/view/project.py
-   (CSS_LOCALI) e caricato dopo deck.css e theme.css. Il deck
-   presentation/presentation.md porta una tavola (rete.svg) e alcuni
-   componenti a riquadri: il mondo di casa, i percorsi, i passi del ciclo.
-   Verde-acqua per casa, come nella tavola. */
+/* Stili locali del deck NixOS: tavole SVG, ciclo e schede degli host. */
 
 :root {
   --casa: #0f766e;
@@ -14,41 +10,6 @@
   margin: 0.2em auto 0;
   max-height: 600px;
   max-width: 100%;
-}
-
-.reveal .mondi {
-  display: grid;
-  gap: 0.8em;
-  grid-template-columns: 1fr 1fr;
-  margin-bottom: 0.6em;
-}
-
-.reveal .mondo {
-  border-radius: 0.5em;
-  border-top: 0.25em solid var(--line);
-  font-size: 0.8em;
-  padding: 0.6em 0.9em 0.3em;
-}
-
-.reveal .mondo ul {
-  margin: 0.4em 0 0 1em;
-}
-
-.reveal .casa {
-  background: var(--casa-soft);
-  border-top-color: var(--casa);
-}
-
-.reveal .casa > p strong {
-  color: var(--casa);
-}
-
-.reveal .percorsi ul {
-  font-size: 0.86em;
-}
-
-.reveal .percorsi li {
-  margin-bottom: 0.55em;
 }
 
 .reveal .ciclo p {
@@ -75,12 +36,35 @@
   font-weight: 800;
 }
 
-.reveal .casa li strong {
-  color: var(--casa);
-}
-
 /* Il codice in linea del canone è più grande del testo: qui si allinea. */
 .reveal p code,
 .reveal li code {
   font-size: 0.85em;
+}
+
+/* Ruoli degli host: tre schede leggibili sullo stesso piano. */
+.reveal .schede {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8em;
+  margin: 1em 0;
+}
+
+.reveal .scheda {
+  background: var(--casa-soft);
+  border-top: 0.2em solid var(--casa);
+  border-radius: 0.4em;
+  font-size: 0.8em;
+  padding: 0.5em 0.8em;
+}
+
+.reveal .scheda strong {
+  color: var(--casa);
+}
+
+@media (max-width: 650px) {
+  .reveal .schede {
+    grid-template-columns: 1fr;
+    gap: 0.4em;
+  }
 }

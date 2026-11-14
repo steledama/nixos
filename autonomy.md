@@ -71,10 +71,10 @@ La delega del ciclo non estende i permessi su host, sudo e rebuild.
   (`remoto allinea`). Così un solo commit certifica in `applicato_su` gli
   host davvero allineati. L'host non fa `pull` per eseguire: lo switch parte
   dall'albero inviato, il checkout si limita a seguire il commit. `remoto`
-  rifiuta i server di lavoro.
+  rifiuta gli host di lavoro.
 - **Fuori dalla delega:** ogni comando con `sudo`, `nixos-rebuild`, reboot,
   `systemctl` di sistema, ogni altro atto su host diversi da quello locale,
-  i server di lavoro, l'esposizione delle viste e i segreti. L'agente
+  gli host di lavoro, l'esposizione delle viste e i segreti. L'agente
   predispone il comando minimo, dichiara l'host e si ferma.
 - **Checkout servito:** su `deck` commit, pull e push del ciclo spostano
   `HEAD` e ripubblicano le viste di `nixos` in LAN; la delega vale anche lì

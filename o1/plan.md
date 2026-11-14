@@ -44,5 +44,5 @@ Dettagli in [o2/tasks.md](../o2/tasks.md).
 
 | Prossima | Cadenza    | Esecutore | Ob. | Ricorrenza                                                                   |
 | -------- | ---------- | --------- | --- | ---------------------------------------------------------------------------- |
-| config   | quotidiano | scheduler | S   | [Ciclo autonomo](../o3/ciclo/prompt.md)                                      |
+| config   | quotidiano | scheduler | 3   | [Ciclo autonomo](../o3/ciclo/prompt.md)                                      |
 | 2027-11  | annuale    | sessione  | 2   | [Prova annuale del seed](../kb/secrets-management.md#prova-annuale-del-seed) |

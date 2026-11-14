@@ -6,8 +6,8 @@ stato: maturo
 
 Tre host sulla rete di casa. Gli alias SSH sono comuni; la raggiungibilità
 dalla VPN casa e verso l'ufficio dipende dai tunnel e dai percorsi descritti
-in `ssh-matrix`. La rete lavoro e la coppia server `norvegia`/`svezia`
-vivono nel repo `example-org/nixos-ufficio`: qui resta solo ciò che
+in `ssh-matrix`. La rete lavoro, il server `svezia` e la postazione di sviluppo
+`norvegia` vivono nel repo `example-org/nixos-ufficio`: qui resta solo ciò che
 `deck`, `game` e `neve` dichiarano verso l'ufficio (§ Accesso all'ufficio da
 casa).
 
@@ -69,7 +69,7 @@ identity, con lo stesso indirizzo ovunque compaiono:
 
 - **host casa** (`deck`, `neve`, `game`) — l'IP della LAN casa, su tutti e
   tre (`o3/modules/system/host-names.nix`, importato da `o3/hosts/default.nix`);
-- **server e dispositivi LAN ufficio** (`norvegia`, `svezia`, `danea2`) —
+- **host e dispositivi LAN ufficio** (`norvegia`, `svezia`, `danea2`) —
   l'IP della LAN lavoro, solo su deck, l'unico che la raggiunge (opzione
   `hosts` del client VPN ufficio, § Accesso all'ufficio da casa).
 
@@ -88,8 +88,8 @@ custode del 2026-11-05): il client non maschera la LAN casa, e la rotta di
 subnet della VPN casa. Se `wireguard-lavoro` non è attivo, il traffico di deck verso
 l'ufficio esce su internet e non arriva.
 
-Il server della VPN ufficio, i peer e il firewall dei server sono nel repo
-`example-org/nixos-ufficio`. Lo standby resta client manuale della VPN casa di deck
+Il server della VPN ufficio, i peer e il firewall degli host di lavoro sono nel repo
+`example-org/nixos-ufficio`. La postazione di sviluppo `norvegia` è client manuale della VPN casa di deck
 (`wireguard-home`): la sua chiave pubblica è dichiarata fra i peer di deck.
 
 ## Servizi Rete Casa

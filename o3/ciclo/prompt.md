@@ -52,6 +52,18 @@ questo repo aggiunge i gesti del dominio:
 - `systemctl --user --failed` e `systemctl --failed`;
 - `python3 method/../o3/kb_tools.py --root . fidelity`.
 
+## Lettura degli obiettivi
+
+In compare valuta i quattro obiettivi di `goal.md`: pulizia, riproducibilità,
+aggiornamento e sicurezza. La manutenzione distingue novità disponibili,
+decisione e applicazione per host. L'AI locale è un uso del sistema; non è
+un obiettivo numerato separato. La salute di deck non certifica gli host
+spenti, e l'assenza di unità fallite o di drift non certifica la sicurezza.
+Per il quarto obiettivo nomina gli aspetti verificati e la copertura
+mancante, senza introdurre controlli o atti fuori dalla delega. Il costo e
+l'attrito del giro si valutano contro il Goal di sviluppo: tempo umano
+risparmiato e comprensione degli esiti.
+
 ## Tendenze del giro
 
 Le tendenze del passo 3c di `exec plan` si leggono con

@@ -1,11 +1,11 @@
 # modules/system/home-vpn-route.nix
 #
 # Route the home VPN subnet through deck for home clients other than deck
-# (game, neve). Without it they reach the VPN peers (the phone, the standby
-# server) only via the default gateway, which knows nothing of 10.20.0.0/24.
+# (game, neve). Without it they reach the VPN peers (the phone, norvegia, the office
+# development workstation) only via the default gateway, which knows nothing of 10.20.0.0/24.
 # A NetworkManager dispatcher adds the route whenever an interface comes up on
 # the home LAN, so DHCP profiles and reconnects keep it; on other networks
-# (a laptop away from home) nothing is added. The standby server answers
+# (a laptop away from home) nothing is added. Norvegia answers
 # through its tunnel, whose AllowedIPs include the home LAN; the tunnel stays
 # manual. The office LAN is reached from deck only (2026-11-05): no route
 # towards it here.
