@@ -5,10 +5,11 @@ stato: maturo
 # nixos-rebuild
 
 Comando per applicare la configurazione NixOS di sistema. Richiede `sudo` e
-autorizzazione esplicita del custode. Se l'ambiente agente non può soddisfare il
-prompt interattivo, il comando va lanciato dall'utente nel proprio terminale;
-il confine stabile è l'autorità sul cambiamento di sistema, non la capacità di
-uno specifico client.
+autorizzazione esplicita del custode. Quando sudo richiede la password, il
+custode lancia il comando nel proprio terminale interattivo sull'host
+destinatario. L'agente prepara il comando e le verifiche senza sudo, quindi
+controlla l'esito in sola lettura. Non chiede né gestisce la password:
+l'autorizzazione e l'inserimento interattivo sono due requisiti distinti.
 
 ## Comandi
 

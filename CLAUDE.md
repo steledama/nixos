@@ -59,6 +59,12 @@ Categorie di comandi:
 - **Consentiti senza chiedere** (non-sudo, area utente): `home-manager switch`, `systemctl --user`, `git status/add/commit`, `git pull --ff-only` del branch corrente a working tree pulito (anche nel checkout di `method`), `git push` del branch corrente su `origin` dopo ogni commit riuscito, `nix flake update`, `nix-collect-garbage --delete-old`, `o3/tools/check.sh` (anche `--flake`), operazioni su file in directory utente; da `deck`, `remoto stato|allinea` su `game` e `neve` (criterio `atti-remoti` di `autonomy.md`; `remoto` rifiuta gli host di lavoro).
 - **Richiedono autorizzazione esplicita**: ogni comando con `sudo` (`nixos-rebuild`, `systemctl` di sistema, `nix-collect-garbage -d`), push di altri branch, `amend` di commit già pubblicati, operazioni distruttive (`reset --hard`, force push, `branch -D`).
 
+Quando `sudo` richiede la password, il custode esegue il comando nel proprio
+terminale interattivo sull'host destinatario. L'agente prepara il comando,
+dichiara l'host, svolge le verifiche senza sudo e controlla poi l'esito in
+sola lettura. L'autorizzazione non risolve il requisito della password:
+l'agente non la chiede né la gestisce.
+
 Procedure complete: `kb/common-commands.md`. Workflow git (commit → rebuild → rollback): `kb/development-workflow.md`.
 
 ## Delega del ciclo

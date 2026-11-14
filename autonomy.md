@@ -75,7 +75,10 @@ La delega del ciclo non estende i permessi su host, sudo e rebuild.
 - **Fuori dalla delega:** ogni comando con `sudo`, `nixos-rebuild`, reboot,
   `systemctl` di sistema, ogni altro atto su host diversi da quello locale,
   gli host di lavoro, l'esposizione delle viste e i segreti. L'agente
-  predispone il comando minimo, dichiara l'host e si ferma.
+  predispone il comando minimo, dichiara l'host e si ferma sul punto riservato.
+  Quando sudo richiede la password, il custode esegue il comando nel proprio
+  terminale interattivo sull'host destinatario; l'agente verifica poi l'esito
+  in sola lettura, senza chiedere né gestire la password.
 - **Checkout servito:** su `deck` commit, pull e push del ciclo spostano
   `HEAD` e ripubblicano le viste di `nixos` in LAN; la delega vale anche lì
   (canone in [consent](method/consent.md)) e il resoconto dichiara le viste
