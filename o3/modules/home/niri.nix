@@ -171,6 +171,10 @@ in {
 
             ${lidSwitchConfig}
 
+            layout {
+                gaps 6
+            }
+
             ${cfg.extraConfig}
 
             spawn-at-startup "systemctl" "--user" "start" "noctalia.service"

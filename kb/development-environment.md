@@ -169,13 +169,13 @@ host.
 
 ### Aggiornare gli agenti AI
 
-Si usa l'abbreviazione fish `hfu` (home fresh update):
+Si aggiorna esplicitamente l'input `ai`:
 
 ```bash
 cd ~/nixos
 
 # Aggiorna solo l'input ai (stack agentico)
-hfu                    # espande a: nix flake update ai
+nix flake update ai
 
 # Applica via home-manager (senza sudo)
 hms                    # espande a: o3/scripts/con-identita.sh home-manager switch --flake .#$USER@(hostname)
@@ -186,9 +186,12 @@ hms                    # espande a: o3/scripts/con-identita.sh home-manager swit
 
 ### Abbreviazioni fish
 
-- **`hfu`** — aggiorna solo l'input `ai`
 - **`hms`** — applica il profilo Home Manager dell'utente e host correnti
 - **`nrs`** — applica la configurazione NixOS corrente (richiede sudo)
+- **`ngc`** — pulisce le vecchie generazioni utente e sistema e aggiorna il menu di avvio (richiede sudo)
+- **`gs`**, **`gp`**, **`gl`** — rispettivamente `git status`, `git push`, `git pull`
+- **`ll`** — `ls -lah`
+- **`..`**, **`...`** — risalgono rispettivamente di una e due directory
 
 Gli aggiornamenti degli input di sistema vanno eseguiti per nome; non usare un
 update globale. Comandi e cadenze sono documentati in `nix-flakes`.

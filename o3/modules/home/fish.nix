@@ -36,27 +36,14 @@
       ".." = "cd ..";
       "..." = "cd ../..";
       # Git abbreviations
-      g = "git";
       gs = "git status";
-      ga = "git add";
-      gc = "git commit";
       gp = "git push";
       gl = "git pull";
-      gd = "git diff";
-      gco = "git checkout";
-      gb = "git branch";
-      glog = "git log --oneline --graph --decorate";
 
       # NixOS abbreviations
-      nd = "nix develop";
       # Sempre col wrapper: il flake nudo costruisce i template pubblici.
       nrs = "./o3/scripts/con-identita.sh sudo nixos-rebuild switch --flake .";
       hms = "./o3/scripts/con-identita.sh home-manager switch --flake .#$USER@(hostname)";
-      nrb = "./o3/scripts/con-identita.sh sudo nixos-rebuild boot --flake .";
-      # Update mirati per input: mai `nix flake update` bare, che muoverebbe
-      # insieme sistema e stack agentico. Ogni input ha la sua cadenza.
-      nfu = "nix flake update nixpkgs"; # casa: deck, game, neve
-      nfua = "nix flake update ai"; # stack agentico: claude-code, codex, pi, herdr
       ngc = "nix-collect-garbage -d && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
     };
 
