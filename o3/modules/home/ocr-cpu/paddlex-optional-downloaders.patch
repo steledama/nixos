@@ -1,0 +1,20 @@
+--- a/paddlex/inference/utils/official_models.py
++++ b/paddlex/inference/utils/official_models.py
+@@ -33,3 +33,14 @@
+-import modelscope
+-from aistudio_sdk.errors import NotExistError
+-from aistudio_sdk.snapshot_download import snapshot_download as aistudio_download
++try:
++    import modelscope
++except ImportError:
++    modelscope = None
++
++try:
++    from aistudio_sdk.errors import NotExistError
++    from aistudio_sdk.snapshot_download import snapshot_download as aistudio_download
++except ImportError:
++    class NotExistError(Exception):
++        pass
++
++    def aistudio_download(*args, **kwargs):
++        raise RuntimeError("AIStudio downloads are not included: use the fixed local models")

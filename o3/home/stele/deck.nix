@@ -6,6 +6,7 @@
     ../../modules/home/ssh-work-lan.nix
     ../../modules/home/presentations.nix
     ../../modules/home/pressione-salute.nix
+    ../../modules/home/ocr-cpu.nix # Riserva OCR PP-OCRv6 small su CPU
     ../../modules/home/remoto.nix # Atti fissi dell'agente su game e neve (stato, allinea)
     ../../modules/home/bitwarden-cli.nix # bw: cassaforte personale, seed dei segreti di casa
     ../../modules/home/google-workspace-cli.nix # gog: Gmail, Calendar, Drive per i cicli salute ed economia (solo deck dal 2026-11-07)

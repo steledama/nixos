@@ -48,3 +48,8 @@ comando = ["python3", "-m", "unittest", "discover", "-s", "o3/view/tests"]
 [[controllo]]
 quando = "o3/scripts/*"
 comando = ["python3", "-m", "unittest", "discover", "-s", "o3/scripts/tests"]
+
+# CPU OCR must work without network and reject a PDF passed as one image.
+[[controllo]]
+quando = "o3/modules/home/ocr-cpu/*"
+comando = ["nix", "build", "--no-link", ".#packages.x86_64-linux.ocr-cpu.tests.offline"]

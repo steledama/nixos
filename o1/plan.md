@@ -10,19 +10,21 @@ dipendenze.
 
 ## Direzione
 
-`nixos` è a regime sui tre host di casa: il peso prevalente sta nelle
-ricorrenze, con il ciclo autonomo quotidiano che tiene aggiornati gli
-strumenti e sorveglia il debito upstream. Nessun fronte di sviluppo è
-aperto: i due task aspettano un fatto esterno, Valve per togliere il
-wrapper di Steam su `game` e un cambio di `o3/view/` nel canone per vedere
-il riavvio del server delle viste.
+La cura ordinaria dei tre host resta centrata sulle ricorrenze. È aperta
+l’integrazione dei motori OCR scelti dopo la prova: MiniCPM diretto sulla
+GPU di game e Paddle small sulla CPU di deck come riserva. Documento e
+valutazione di dominio restano custoditi da economia.
+Le altre attese riguardano Valve, la semplificazione upstream del packaging
+Paddle CPU e un cambio del codice delle viste nel canone.
 
 ## Task
 
-| Ciclo   | Ob. | Task                                                    | Dip. |
-| ------- | --- | ------------------------------------------------------- | ---- |
-| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo la prova su game  | w1   |
-| dev     | S   | Osservare il riavvio delle viste a un cambio del canone | w2   |
+| Ciclo   | Ob. | Task                                                        | Dip. |
+| ------- | --- | ----------------------------------------------------------- | ---- |
+| runtime | 1   | Integrare MiniCPM OCR e Paddle CPU                          | —    |
+| runtime | 1   | Rimuovere steam-pipewire-wrapper dopo la prova su game      | w1   |
+| runtime | 1   | Semplificare il packaging OCR CPU dopo il supporto upstream | w3   |
+| dev     | S   | Osservare il riavvio delle viste a un cambio del canone     | w2   |
 
 Legenda delle attese (`w`) e delle pause (`p`), con risveglio e termine di
 riesame (`method/plan.md`, «Risveglio»):
@@ -37,6 +39,11 @@ riesame (`method/plan.md`, «Risveglio»):
   ancora stato osservato. arrival: un commit di `method` che tocca
   `o3/view/`, riconosciuto in sessione col custode (il giro non legge né
   `~/method` né lo stamp in `~/.local/state/`); by: 2027-01
+
+- `w3` — packaging Paddle CPU: riesaminare gli override e la patch degli
+  import opzionali a un cambio di nixpkgs/PaddleX. arrival: nuovo pin letto
+  in sessione con ricette CPU minime e import senza i downloader esclusi;
+  by: 2027-02
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 

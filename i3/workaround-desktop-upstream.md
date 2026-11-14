@@ -15,7 +15,16 @@ nella configurazione.
   evitare il crash nella `libaudio.so` bundlata; va rimosso quando una
   prova su `game` lo dimostra inutile.
 
-Verdetto corrente: la deriva desktop è contenuta. Il pin Codex è uscito
+- Su `deck`, il runtime Paddle CPU richiede packaging locale: dipendenze
+  limitate all'inferenza, quattro wheel ufficiali e patch degli import
+  opzionali dei downloader PaddleX. Modelli fissati e test senza rete
+  evitano download dinamici; ModelScope vulnerabile e AIStudio unfree sono
+  esclusi. Le personalizzazioni escono quando le ricette upstream e gli
+  import opzionali le rendono inutili, dopo il test locale (`w3`, dettagli
+  nel task di semplificazione).
+
+Verdetto corrente: la deriva è contenuta, ma il fallback OCR su CPU aggiunge
+un costo di packaging esplicito e presidiato. Il pin Codex è uscito
 (`43cde0d`): Codex segue di nuovo l'input `ai`. Steam resta debito noto e
 ora dipende solo da Valve: la prova su `game` del 2026-11-12 ha mostrato che
 anche il client a 64 bit (`steamrt64/`) carica una sua `libaudio.so` e il
@@ -34,4 +43,5 @@ La ricorrenza quotidiana di `/manutenzione world` sorveglia le condizioni
 upstream delle attese `w`; per Steam si riprova su `game` alla chiusura di
 #13174 o a un client che non carichi più `libaudio`. Ogni workaround esce quando la condizione è superata **e** la
 rimozione è verificata sul relativo host (runtime, o build attiva per gli
-overlay di packaging). Il filo si chiude con l'uscita del wrapper Steam.
+overlay di packaging). Il filo si chiude con l'uscita del wrapper Steam e delle personalizzazioni
+temporanee del packaging OCR CPU.

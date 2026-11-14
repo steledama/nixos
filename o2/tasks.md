@@ -9,5 +9,9 @@ in [tasks](../method/tasks.md).
 
 ## Contenuti
 
+- [confronto-motori-ocr.md](confronto-motori-ocr.md) — Integrare MiniCPM OCR e Paddle CPU
+
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo la prova su game
 - [riavvio-viste-canone.md](riavvio-viste-canone.md) — Osservare il riavvio delle viste a un cambio del canone
+
+- [semplificare-packaging-ocr-cpu.md](semplificare-packaging-ocr-cpu.md) — Semplificare il packaging OCR CPU dopo il supporto upstream

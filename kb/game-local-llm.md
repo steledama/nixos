@@ -24,7 +24,7 @@ Il repo `~/economia` è la fonte del workflow OCR di dominio:
 - ridimensionamento immagini;
 - chiamata REST al backend OCR configurabile;
 - prompt OCR e gestione del testo estratto;
-- decisione su quando usare GLM-OCR invece di estrazione PDF tradizionale.
+- decisione su quando usare MiniCPM-OCR invece di estrazione PDF tradizionale.
 
 Il repo `~/nixos` è la fonte dell'infrastruttura:
 
@@ -34,6 +34,20 @@ Il repo `~/nixos` è la fonte dell'infrastruttura:
 - binding di rete;
 - firewall LAN/VPN-only;
 - ruolo di `game` come server locale per modelli.
+
+## Stato dell'integrazione
+
+Il custode ha deciso MiniCPM diretto al posto di GLM-OCR e Paddle small
+su CPU come riserva di deck. L'analisi qualitativa è stata affidata alla
+sessione economia; il confronto aggiuntivo sulle tabelle e la lettura
+personale alla cieca non sono prerequisiti di questa decisione. I limiti
+del campione restano nella sintesi `i2/confronto-ocr-locale.md`.
+
+La configurazione qui descritta è predisposta: il router con il nuovo
+preset è stato collaudato in un'unità utente temporanea su game, con i pesi
+nello store. La riserva CPU è installata su deck e ha superato il test
+Nix senza rete. L'attivazione del servizio di sistema richiede ancora il
+rebuild autorizzato di game. La versione attiva non si deduce dal codice.
 
 ## Configurazione NixOS
 
@@ -110,7 +124,7 @@ risiedono insieme in VRAM. Gli alias API stabili sono:
 
 ```text
 qwen3.8-27b-iq3_xxs
-glm-ocr-q8_0
+minicpm-ocr
 ```
 
 Il modulo `o3/modules/system/services/llama-cpp.nix` è la fonte unica di nomi
@@ -126,7 +140,7 @@ quindi llama.cpp non adatta i layer alla VRAM libera: con Chromium aperto
 (circa 630 MiB per il suo processo GPU, circa 930 in tutto col desktop) il
 modello va in `CUDA error: out of memory` alla prima richiesta e il router
 risponde 500. Il 27B si usa poco: va usato a desktop scarico, senza browser
-né gioco. GLM-OCR non ha questo problema. Il modello (`qwen35`, attenzione
+né gioco. Il vincolo riguarda il 27B; MiniCPM è stato provato separatamente. Il modello (`qwen35`, attenzione
 piena ogni 4 layer) è addestrato a 262144 token: i 32768 sono una scelta del
 servizio per stare in VRAM, non un limite del modello. Se il 27B tornasse
 d'uso quotidiano, le leve sono un contesto più corto o i layer lasciati al
@@ -155,10 +169,10 @@ localhost e le regole firewall della porta 11434 non c'entrano.
 Il workflow OCR di `~/economia` usa per default:
 
 ```text
-glm-ocr-q8_0
+minicpm-ocr
 ```
 
-Modello e proiettore multimodale sono artefatti dichiarativi nel Nix store. Il
+Modello Q8, proiettore F16 4x e draft DSpark Q8 sono artefatti dichiarativi nel Nix store. Il
 client `o3/ocr.py` di `~/economia` parla il contratto OpenAI-compatible di
 `llama-server`.
 
@@ -173,8 +187,51 @@ Atteso per il workflow OCR:
 
 ```text
 qwen3.8-27b-iq3_xxs
-glm-ocr-q8_0
+minicpm-ocr
 ```
+
+Il preset `minicpm-ocr` usa `draft-dspark`, draft massimo 15 token, flash
+attention, un solo slot e contesto 8192, con reasoning disattivato e
+template Jinja. Il router carica un solo modello su richiesta: chat e OCR
+restano alternativi. Revisioni e hash dei tre pesi vivono nel modulo Nix.
+
+Il client manda l'immagine e il prompt esatto `Text Recognition:` a
+`/v1/chat/completions`, con modello `minicpm-ocr`. Per una nuova lettura
+usa temperatura zero e `cache_prompt=false`; un output troncato deve essere
+segnalato dal client. L'SDK con layout resta una modalità specialistica
+sperimentale, fuori dal servizio ordinario.
+
+## Riserva CPU su deck
+
+`o3/modules/home/ocr-cpu.nix`, importato dal solo profilo di deck, installa
+`ocr-cpu`. Il pacchetto è esposto anche dal flake come `.#ocr-cpu`;
+ricetta, runner e patch sono in `o3/modules/home/ocr-cpu/`.
+
+```bash
+ocr-cpu pagina-1.png pagina-2.png > documento.txt
+ocr-cpu pagina-1.png --json risultato.json --threads 4 > pagina-1.txt
+```
+
+Input: immagini singole, non PDF o immagini multipagina. Output standard:
+solo testo UTF-8, con pagine separate da una riga vuota; diagnostica su
+stderr. Il JSON opzionale conserva testo per riga, coordinate, confidenze,
+versioni e tempi. Conversione del PDF e gestione dei risultati restano a
+economia. Il comando non avvia un servizio e non sceglie da solo se usare
+la GPU: la riserva è esplicita nel workflow del client.
+
+PaddleOCR 3.7.0, PaddleX 3.7.2 e PaddlePaddle CPU 3.3.1, con i modelli
+PP-OCRv6 small di detection e recognition fissati per revisione e SHA-256
+nel Nix store. Nessun download o registry di modelli a runtime. Quattro
+thread predefiniti; orientamento, raddrizzamento e oneDNN disattivati,
+quest'ultimo dopo il difetto riscontrato nella prova. La ricetta usa le
+wheel ufficiali di Paddle e OpenCV già collaudate; esclude i downloader
+opzionali ModelScope (vulnerabile nel pin) e AIStudio (unfree), con una patch
+per gli import opzionali. Non autorizza pacchetti vulnerabili o nuove licenze
+unfree. Le versioni e la patch richiedono verifica al cambio del pin.
+
+I tempi sul campione di due pagine sono circa 47 s di riconoscimento caldo
+e circa un minuto dal PDF con una CLI nuova (somma di componenti misurate,
+non un unico cronometro). Dettagli e limiti nella sintesi del confronto.
 
 ## Uso operativo
 
@@ -219,12 +276,12 @@ GB, RTX 4070; bench e run in `~/llm-bench`, fuori dal repo), a cache calda:
 Per questo il preset Flash-Next di llama.cpp è stato rimosso dal servizio il
 2026-10-08 insieme ai suoi tre frammenti GGUF (circa 77 GB nello store): il
 preset, i pin e le misure restano recuperabili da git. llama.cpp resta per
-il 27B denso e per GLM-OCR. Strata resta però fuori dal servizio, come prova
+il 27B denso e per MiniCPM-OCR. Strata resta però fuori dal servizio, come prova
 in area utente (decisione del custode, 2026-10-08):
 
 - avvio a mano con `~/Strata/run.sh` (porta 18080, solo locale), che ferma
   `llama-cpp.service` se attivo (con sudo); con Strata acceso la GPU è sua,
-  quindi niente 27B, GLM-OCR, Whisper o gioco;
+  quindi niente 27B, MiniCPM-OCR, Whisper o gioco;
 - checkout su `main` di upstream, oggi `v0.2.9` (motore 0.1.55),
   compilato con CUDA 13.0 di nixpkgs (GC root `~/Strata/.cuda-env`,
   ambiente in `~/Strata/nixos-env.sh`), pesi, pack ed `experts.bin` in
@@ -246,7 +303,7 @@ Perché non un pacchetto Nix né un container:
   aggiornamento; container mezza giornata o una e circa un'ora per
   aggiornamento, ma senza pin per hash di immagine e pesi;
 - il costo ricorrente maggiore non è il packaging ma la GPU esclusiva, da
-  coordinare con il router llama.cpp, Whisper, GLM-OCR e il gioco.
+  coordinare con il router llama.cpp, Whisper, MiniCPM-OCR e il gioco.
 
 L'aggiornamento è diretto, sul posto (decisione del custode, 2026-11-01:
 il contesto è sperimentale, senza dati da perdere né utenti del servizio):

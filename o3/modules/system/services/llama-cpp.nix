@@ -14,16 +14,23 @@
     hash = "sha256-wLfDA4aB7S4wQEVsHdRfmFi2wikL7RcscDiKlIdPPu4=";
   };
 
-  glmOcr = pkgs.fetchurl {
-    name = "GLM-OCR-Q8_0.gguf";
-    url = "https://huggingface.co/ggml-org/GLM-OCR-GGUF/resolve/306e9d8bfd97fb453adad15d2f2220d0a2ce2133/GLM-OCR-Q8_0.gguf?download=true";
-    hash = "sha256-RbwkSmRGr/hQUh3EHxi8jXEFrV8MLIworwTnzE9NULE=";
+  # MiniCPM-OCR 1.0: main Q8, F16 4x projector and matching DSpark head.
+  miniOcr = pkgs.fetchurl {
+    name = "MiniCPM-OCR-1_0-Q8_0.gguf";
+    url = "https://huggingface.co/openbmb/MiniCPM-OCR-1.0-gguf/resolve/0133ad8db635210441a55dcf421e25bfb9915142/MiniCPM-OCR-1_0-Q8_0.gguf?download=true";
+    hash = "sha256-eRSGpHa9rLSKyz8xqjoY27W+h+cjpAdLzROjfWHIUuI=";
   };
 
-  glmOcrMmproj = pkgs.fetchurl {
-    name = "mmproj-GLM-OCR-Q8_0.gguf";
-    url = "https://huggingface.co/ggml-org/GLM-OCR-GGUF/resolve/964d28c9e3c3330b0f322235abefdcdd29116eb7/mmproj-GLM-OCR-Q8_0.gguf?download=true";
-    hash = "sha256-nEtY4z4xbtFC613LQavsOETT5uXcNh/7eCw/qdF1FB8=";
+  miniOcrMmproj = pkgs.fetchurl {
+    name = "mmproj-model-f16-4x.gguf";
+    url = "https://huggingface.co/openbmb/MiniCPM-OCR-1.0-gguf/resolve/0133ad8db635210441a55dcf421e25bfb9915142/mmproj-model-f16-4x.gguf?download=true";
+    hash = "sha256-zu2CJhs7E4DDFl+LN8EBF6UAk74TYsv+62kvoDZERoI=";
+  };
+
+  miniOcrDraft = pkgs.fetchurl {
+    name = "dspark-MiniCPM-OCR-1_0-Q8_0.gguf";
+    url = "https://huggingface.co/openbmb/MiniCPM-OCR-1.0-DSpark-gguf/resolve/cab493a5a26516a1c4c6e07c73b4470ff854a898/dspark-MiniCPM-OCR-1_0-Q8_0.gguf?download=true";
+    hash = "sha256-/Y9ku2LPWlxrTAmZv6WPZEU2kMn3XxEkq2E9+0SoIto=";
   };
 
   modelsPreset = pkgs.writeText "llama-cpp-models.ini" ''
@@ -40,12 +47,17 @@
     cache-type-k = q4_0
     cache-type-v = q4_0
 
-    [glm-ocr-q8_0]
-    model = ${glmOcr}
-    mmproj = ${glmOcrMmproj}
+    [minicpm-ocr]
+    model = ${miniOcr}
+    mmproj = ${miniOcrMmproj}
+    model-draft = ${miniOcrDraft}
+    spec-type = draft-dspark
+    spec-draft-n-max = 15
+    gpu-layers-draft = all
+    flash-attn = on
+    jinja = true
+    reasoning = off
     ctx-size = ${toString cfg.ocrContextSize}
-    cache-type-k = q8_0
-    cache-type-v = q8_0
   '';
 in {
   options.services.llamaCppServer = {
@@ -82,7 +94,7 @@ in {
     ocrContextSize = lib.mkOption {
       type = lib.types.ints.positive;
       default = 8192;
-      description = "Context size for the GLM-OCR model.";
+      description = "Context size for the MiniCPM-OCR model.";
     };
   };
 

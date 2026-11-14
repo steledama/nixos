@@ -135,6 +135,8 @@
         ];
       };
   in {
+    packages.${system}.ocr-cpu = pkgs.callPackage ./o3/modules/home/ocr-cpu/package.nix {};
+
     nixosConfigurations = {
       deck = mkHost "deck";
       game = mkHost "game";

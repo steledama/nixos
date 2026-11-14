@@ -9,6 +9,8 @@ vive in `../presentation/presentation.md` ([presentation](../method/presentation
 
 ## Contenuti
 
+- [OCR locale su GPU e CPU](confronto-ocr-locale.md) — prova pilota di GLM, MiniCPM e PaddleOCR sullo stesso documento, con tempi, copertura dei campi e limiti.
+
 - [Codex nel recinto dell'host](codex-recinto-host.md) — giro nixos
   completo con Codex riscontrato su deck; il fallback reale per credito
   esaurito non è ancora osservato e si legge quando accade.
