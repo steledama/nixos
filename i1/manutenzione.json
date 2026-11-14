@@ -1,9 +1,9 @@
 {
   "ultima_esecuzione": {
-    "data": "2026-11-13",
-    "ora": "04:33",
+    "data": "2026-11-14",
+    "ora": "04:32",
     "host": "deck",
-    "rami": ["ia", "world"]
+    "rami": ["ia"]
   },
   "autovalutazione": {
     "data": "2026-11-11",
@@ -13,29 +13,13 @@
   },
   "ia": {
     "cadenza_giorni": 1,
-    "data": "2026-11-13",
-    "ora": "04:33",
+    "data": "2026-11-14",
+    "ora": "04:32",
     "host_eseguito": "deck",
-    "esito": "eseguito",
+    "esito": "nessun_delta",
     "rev_ai": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
-    "pacchetti": [
-      {
-        "nome": "claude-code",
-        "da": "2.1.318",
-        "a": "2.1.321"
-      },
-      {
-        "nome": "codex",
-        "da": "0.167.0",
-        "a": "0.167.1"
-      },
-      {
-        "nome": "pi",
-        "da": "1.5.0",
-        "a": "1.5.2"
-      }
-    ],
-    "nota": "Giro autonomo: ai 177d054 -> d4f25a3, tre patch dalla cache (nessuna compilazione), changelog non letto per regola; herdr 0.9.5 invariato. Switch su deck riuscito.",
+    "pacchetti": [],
+    "nota": "Giro autonomo: ai d4f25a3 invariato; claude-code 2.1.321, codex 0.167.1, pi 1.5.2, herdr 0.9.5 pari a unstable (home-versions.sh). Nessun bump ne switch.",
     "applicato_su": ["deck"]
   },
   "home-manager": {

@@ -34,9 +34,9 @@ riesame (`method/plan.md`, «Risveglio»):
   probe: github ValveSoftware/steam-for-linux#13174 closed; by: 2027-02
 - `w2` — method: dal suo avvio `presentazione-nixos` non ha visto cambiare
   `o3/view/` del canone, quindi il riavvio dopo la pubblicazione non è
-  ancora stato osservato. probe: `git -C ~/method rev-parse HEAD:o3/view`
-  diverso dalla seconda riga di `~/.local/state/presentazione/nixos.serve`
-  dopo una pubblicazione; by: 2027-01
+  ancora stato osservato. arrival: un commit di `method` che tocca
+  `o3/view/`, riconosciuto in sessione col custode (il giro non legge né
+  `~/method` né lo stamp in `~/.local/state/`); by: 2027-01
 
 Dettagli in [o2/tasks.md](../o2/tasks.md).
 

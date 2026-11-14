@@ -36,6 +36,16 @@ quindi il ramo di riavvio non è stato esercitato. Al primo commit di
 Se tutti e tre tornano, il task si chiude. Se il riavvio manca, il difetto
 sta in `afterPublish` o nel momento in cui viene letto lo stamp.
 
+## Canale dell'attesa
+
+`w2` è un `arrival:` perché `o3/scripts/probe.sh` non ha un tipo per
+questa condizione e il giro non può leggerla: `git -C ~/method` e la
+lettura di `~/.local/state/presentazione/nixos.serve` sono fuori dai suoi
+permessi. Proposta per la sessione: un tipo nuovo di `probe.sh`, con test,
+che confronti la seconda riga dello stamp con `HEAD:o3/view` del canone,
+così il giro risveglia l'attesa da solo; in alternativa l'attesa resta al
+custode fino al `by:`.
+
 ## Connessioni
 
 - [`kb/deck-user-services.md`](../kb/deck-user-services.md) — presentazione
