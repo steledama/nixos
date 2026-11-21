@@ -9,8 +9,6 @@ in [tasks](../method/tasks.md).
 
 ## Contenuti
 
-- [riallineare-identita-seed.md](riallineare-identita-seed.md) — Riallineare identità locale e seed
-
 - [debug-steam-crash-game.md](debug-steam-crash-game.md) — Rimuovere steam-pipewire-wrapper dopo la prova su game
 
 - [semplificare-packaging-ocr-cpu.md](semplificare-packaging-ocr-cpu.md) — Semplificare il packaging OCR CPU dopo il supporto upstream

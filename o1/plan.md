@@ -20,7 +20,6 @@ Paddle CPU.
 
 | Ciclo   | Ob. | Task                                                        | Dip. |
 | ------- | --- | ----------------------------------------------------------- | ---- |
-| runtime | 2   | Riallineare identità locale e seed                          |      |
 | runtime | 1   | Rimuovere steam-pipewire-wrapper dopo la prova su game      | w1   |
 | runtime | 1   | Semplificare il packaging OCR CPU dopo il supporto upstream | w3   |
 
