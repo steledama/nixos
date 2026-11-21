@@ -52,10 +52,12 @@ Stesso desktop Niri e strumenti comuni; configurazioni specifiche per ogni host.
 Il **flake** è l'ingresso: dichiara host, profili e dipendenze fissate
 nel lock. I moduli comuni evitano di ripetere le stesse scelte.
 
-- **Sistema:** hardware, driver, rete e servizi in `o3/hosts/` e
-  `o3/modules/system/`. Si applica con `nixos-rebuild`, con autorizzazione.
-- **Utente:** shell, strumenti e servizi personali in `o3/home/` e
-  `o3/modules/home/`. Si applica con Home Manager.
+- **Sistema:** ciò che chiede privilegi o integrazione con la macchina
+  (hardware, driver, rete, servizi, sessione grafica) più una base di
+  soccorso, in `o3/hosts/` e `o3/modules/system/`. Si applica con
+  `nixos-rebuild`, con autorizzazione.
+- **Utente:** app grafiche, strumenti e servizi personali in `o3/home/` e
+  `o3/modules/home/`. Si applica con Home Manager, senza sudo.
 - **Differenze:** ogni host e profilo aggiunge ciò che gli serve alla base comune.
 
 Un commit registra una modifica; lo switch la rende attiva sull'host.
@@ -67,6 +69,8 @@ account ed endpoint reali arrivano da file locali di identità.
 
 - Il wrapper `con-identita.sh` collega quei dati ai comandi di build e switch.
 - Credenziali e chiavi private restano fuori da Git.
+- Un gate di privacy controlla ogni commit contro regole private, perché
+  nomi e dati personali non entrino nel repository pubblico.
 - Inventario, seed dei segreti e procedura di ripristino completano il codice.
 
 **Ricostruire un computer richiede repository, identità e segreti:**
@@ -110,7 +114,7 @@ nel progetto che li conosce.
 `method` fornisce il metodo e gli strumenti comuni. `nixos` li applica
 alla casa, mantenendo qui la conoscenza del proprio sistema.
 
-## Ogni giorno: osservare, decidere, verificare
+## Il ciclo: osservare, decidere, verificare
 
 ::: {.ciclo}
 [**eval**<br>osservare il sistema e confrontarlo con gli obiettivi]{.passo}
@@ -129,49 +133,17 @@ Un giro senza aggiornamenti resta utile se conferma lo stato e i limiti osservat
 
 ## Autonomia con confini leggibili
 
-Il giro può aggiornare gli strumenti AI e Home Manager su deck,
-verificare e correggere documentazione e pianificazione.
+La manutenzione ha due velocità. Ogni giorno l'agente aggiorna gli
+strumenti AI; ogni settimana controlla il pin comune di sistema e home e,
+senza rischi alti, lo aggiorna e attiva la home su deck e sugli host accesi.
 
-I task di sviluppo restano alle sessioni col custode. Il giro notturno
-non agisce su game o neve e non esegue rebuild di sistema, sudo o reboot.
+Il rebuild di sistema, sudo e reboot restano al custode, che li lancia dal
+proprio terminale; l'agente prepara i comandi e ne verifica l'esito.
 Scopi e condizioni della delega restano decisioni umane.
 
 **Il resoconto permette la supervisione:** esito effettivo, controlli,
-costo, dinieghi e questioni aperte. Un push pubblica il codice e le viste;
+rischi e questioni aperte. Un push pubblica il codice e le viste;
 l'attivazione del sistema è un atto separato.
-
-## Le viste: contenuti locali, programma condiviso
-
-![](assets/viste.svg){.tavola}
-
-## Dalla modifica alla pagina nel browser
-
-`build.py` genera HTML dal commit del progetto e da quello di `method`.
-`serve.py` consegna al browser la versione pubblicata.
-
-- **Contenuti nuovi:** la pubblicazione cambia il puntatore alla versione;
-  il server li mostra senza riavviarsi.
-- **Programma nuovo:** il server deve riavviarsi per caricare il codice aggiornato.
-- **Build fallita:** resta disponibile l'ultima versione buona, con errore consultabile.
-
-Su deck la pubblicazione segue i commit e i pull locali, con recupero ogni
-cinque minuti. Le pagine sono esposte solo alle reti private.
-
-## Casa e lavoro condividono strumenti, hanno governi distinti
-
-**Questo repo** configura deck, neve e game, compresi i servizi che deck
-ospita per `method`, `nixos`, `salute` ed `economia`.
-
-**Il repo NixOS di lavoro** configura svezia come server e norvegia come
-postazione di sviluppo. Svezia ospita le viste di `bi`,
-`nixos` di lavoro e `baserow`.
-
-**danea-auto** configura il proprio avvio su Windows: un task pianificato
-lancia il programma comune senza aprire finestre e verifica la pubblicazione
-ogni cinque minuti.
-
-Il codice delle viste è condiviso tramite una copia di `method` su ciascun
-host. I contenuti, le porte e le responsabilità restano dei rispettivi progetti.
 
 ## Come verificare che il racconto sia vero
 

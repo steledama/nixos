@@ -69,6 +69,7 @@ Se devi...
 - **fare setup, restore o recovery**: [post-installation](kb/post-installation.md), [disaster-recovery](kb/disaster-recovery.md)
 - **diagnosticare un problema senza sapere da dove partire**: [troubleshooting](kb/troubleshooting.md)
 - **consultare l'inventario hardware degli host**: [hardware-inventory](kb/hardware-inventory.md)
+- **stampare o scansionare con la multifunzione**: [printer-ricoh-im550](kb/printer-ricoh-im550.md)
 
 ## Stato e lavoro aperto
 
