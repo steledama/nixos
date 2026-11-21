@@ -30,6 +30,12 @@ Nessuna prescrizione narrativa aperta.
 - `scripts/con-identita.sh` — passa l'input locale a Nix, Home Manager o
   nixos-rebuild senza scriverlo nel lock pubblico; si ferma se manca la
   directory locale. I permessi dell'atto restano quelli di `CLAUDE.md`.
+- `scripts/seed-identita.sh verifica|aggiorna` — confronta byte per byte le
+  note `casa/identity/…` della cassaforte con i file d'identità locali e con
+  `privacy.json`, oppure riscrive le sole note diverse e le rilegge; stampa
+  solo nomi ed esiti e blocca la cassaforte alla fine. Lo lancia il custode
+  in un terminale proprio, mai l'agente. Test con un `bw` finto in
+  `scripts/tests/test_seed_identita.py`.
 - `tools/privacy.py` — controlla i file pubblicabili contro le regole private
   in `~/.config/nixos/privacy.json`, riportando solo file, riga e numero
   della regola, mai il dato. Nel gate `--if-configured` dichiara il controllo

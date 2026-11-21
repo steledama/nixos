@@ -120,9 +120,13 @@ La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
   seed: copie da `deck` e note riscritte e rilette byte per byte il
   2026-11-21, con il progetto `gcloud` e le regole private del gate.
 - **Scrittura:** file modificati a mano a ogni cambio d'assetto (un peer, una
-  chiave autorizzata, un indirizzo): la nota va aggiornata nello stesso
-  momento, altrimenti il seed ripristina un assetto superato. La prova
-  annuale confronta anche queste voci.
+  chiave autorizzata, un indirizzo, una regola privata del gate): la nota va
+  aggiornata nello stesso momento, altrimenti il seed ripristina un assetto
+  superato. Lo fa `o3/scripts/seed-identita.sh aggiorna`, lanciato dal
+  custode su `deck` in un terminale proprio: riscrive le sole note diverse
+  dai file, le rilegge byte per byte e blocca la cassaforte, senza stampare
+  valori. `seed-identita.sh verifica` fa il solo confronto. La prova annuale
+  confronta anche queste voci.
 - **Prova:** con la copia ripristinata, il path dell'`activationPackage` e
   il toplevel valutati col wrapper coincidono con quelli attivi
   (`home-drift.sh`, `system-drift.sh`). Non ancora eseguita.
@@ -181,7 +185,8 @@ token non più valido.
 nixpkgs#bitwarden-cli`, `bw login`), col prerequisito Gmail sul telefono
    (`kb/post-installation.md`, sezione 3).
 2. Confrontare le voci `casa/…` con `secret-inventory`: ogni voce marcata seed
-   presente e conforme al file dell'host, nessuna voce orfana.
+   presente e conforme al file dell'host, nessuna voce orfana. Per le quattro
+   note dell'identità il confronto è `o3/scripts/seed-identita.sh verifica`.
 3. Ripristinare davvero almeno un'identità diversa da quella dell'anno
    prima (2026: Syncthing di `neve`), fermando prima l'istanza originale, e
    provarne il consumer; per OAuth ripetere il rinnovo da una nota rclone.
