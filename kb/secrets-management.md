@@ -116,12 +116,11 @@ La copia sta nel seed (custode, 2026-11-11), accanto ai segreti:
   ufficio, `/etc/hosts`, `ssh-work-lan.nix`): sugli altri host deve solo valutarsi. Lo stesso giorno, con
   l'identità di `deck`, si valutano i toplevel e gli `activationPackage` di
   `neve` e `game`.
-  **Non allineato** (impronte confrontate il 2026-11-21): `default.nix` è
-  uguale sui tre host; `home.nix` e `privacy.json` di `neve` e `game` sono
-  indietro rispetto a `deck`, che ha anche le regole private aggiunte al gate
-  il 2026-11-21; `work.nix` è diverso su tutti e tre. Le note del seed non
-  hanno l'ultima versione di `deck`. Il riallineamento è il task «Riallineare
-  identità locale e seed» (`o1/plan.md`).
+  Le impronte dei quattro file coincidono sui tre host (copiate da `deck` e
+  confrontate il 2026-11-21). **Il seed non è allineato:** le note non hanno
+  l'ultima versione di `deck`, con il progetto `gcloud` e le regole private
+  del gate. Aggiornarle è il task «Riallineare identità locale e seed»
+  (`o1/plan.md`).
 - **Scrittura:** file modificati a mano a ogni cambio d'assetto (un peer, una
   chiave autorizzata, un indirizzo): la nota va aggiornata nello stesso
   momento, altrimenti il seed ripristina un assetto superato. La prova

@@ -7,23 +7,17 @@ ciclo: runtime
 
 ## Stato
 
-Le impronte confrontate il 2026-11-21 mostrano `default.nix` uguale sui tre
-host, `home.nix` e `privacy.json` di `neve` e `game` indietro rispetto a
-`deck`, `work.nix` diverso su tutti e tre. Le note `casa/identity/…` del seed
-non hanno l'ultima versione di `deck`, che include il progetto `gcloud` e le
-regole private aggiunte al gate il 2026-11-21. Un ripristino dal seed oggi
-rimetterebbe un assetto superato (`secrets-management`, «Identità separata
-dai segreti»).
+Le copie dei tre host sono allineate a `deck` dal 2026-11-21: le
+differenze di `neve` e `game` non erano volute (campi `gcloud` mancanti, un
+campo di `work.nix` che nessuna configurazione legge più), le copie
+precedenti restano con suffisso `.bak-2026-11-21` e le derive sono allineate.
+Le note `casa/identity/…` del seed non hanno ancora la versione di `deck`, che
+include il progetto `gcloud` e le regole private aggiunte al gate il
+2026-11-21: un ripristino dal seed oggi rimetterebbe un assetto superato
+(`secrets-management`, «Identità separata dai segreti»).
 
 ## Da fare
 
-- Scegliere `deck` come riferimento, salvo differenze volute: confrontare
-  prima, solo per chiave e senza stampare valori, cosa distingue le copie di
-  `neve` e `game`.
-- Copiare da `deck` a `neve` e `game` `home.nix`, `work.nix` e
-  `privacy.json`, conservando le copie precedenti; poi verificare con
-  `system-drift.sh` e `home-drift.sh` sui due host che sistema e home
-  restino allineati.
 - Con il custode, in un suo terminale con sessione `bw`: aggiornare le
   quattro note `casa/identity/…` dalla versione di `deck` e rileggerle byte
   per byte contro i file, senza stamparle.
