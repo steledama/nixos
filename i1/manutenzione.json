@@ -1,0 +1,150 @@
+{
+  "ultima_esecuzione": {
+    "data": "2026-11-21",
+    "ora": "06:39",
+    "host": "deck",
+    "rami": ["ia"]
+  },
+  "autovalutazione": {
+    "data": "2026-11-15",
+    "proposta": "Indicare in valutazione.md il feed Atom di Chrome Releases (chromereleases.googleblog.com/feeds/posts/default) come fonte per Chromium, invece della pagina del post.",
+    "motivo": "La pagina del post rende il corpo vuoto a WebFetch (giri del 2026-11-08 e del 2026-11-15); il feed contiene il testo e ha dato il rischio in questo giro.",
+    "volte": 1
+  },
+  "ia": {
+    "cadenza_giorni": 1,
+    "data": "2026-11-21",
+    "ora": "06:39",
+    "host_eseguito": "deck",
+    "esito": "eseguito",
+    "rev_ai": "0bb8272318b4ca41bf0edc6224df3e3e3046b70d",
+    "pacchetti": [
+      {
+        "nome": "claude-code",
+        "da": "2.1.325",
+        "a": "2.1.327"
+      },
+      {
+        "nome": "codex",
+        "da": "0.169.0",
+        "a": "0.170.0"
+      }
+    ],
+    "nota": "Patch claude-code e minor codex, changelog non letto per regola; pi 1.5.2 e herdr 0.9.5 invariati. Switch home riuscito su deck, game e neve (remoto allinea, home.json ai 0bb8272).",
+    "applicato_su": ["deck", "game", "neve"]
+  },
+  "world": {
+    "Rimuovere steam-pipewire-wrapper dopo la prova su game": {
+      "cadenza_giorni": 30,
+      "verifica_attiva_su_cadenza": false,
+      "data": "2026-11-13",
+      "ora": "04:33",
+      "esito": "invariato",
+      "dipendenza": "ValveSoftware/steam-for-linux #13174",
+      "nota": "probe.sh: OPEN. Voce spostata dal titolo precedente (Rimuovere steam-pipewire-wrapper dopo fix upstream, #9289), rinominato in cbb5d45 del 2026-11-12."
+    }
+  },
+  "sistema": {
+    "cadenza_giorni": 7,
+    "data": "2026-11-15",
+    "ora": "12:40",
+    "host_controllato": "deck",
+    "nixpkgs_rev": "d5cc6833999746cffdfe0598f7bc801a57b887a9",
+    "home_manager_rev": "82ce401aa350502897c3f2e85f384d61cd3b0b6d",
+    "esito": "diagnosticato",
+    "pacchetti": [
+      {
+        "nome": "chromium",
+        "da": "157.0.8103.38",
+        "a": "157.0.8103.78",
+        "rischio": "alto",
+        "nota": "Chrome Releases 2026-11-11: 83 fix di sicurezza, inclusi Critical; versione misurata con nix eval sul nuovo pin."
+      },
+      {
+        "nome": "kernel",
+        "da": "7.3.1",
+        "a": "7.3.4",
+        "rischio": "medio",
+        "nota": "ChangeLog 7.3.2-7.3.4 su cdn.kernel.org letti in parte: fix ksmbd, io_uring, tun, TCP, IPsec, xen-netback (host non Xen). Riavvio dopo il rebuild."
+      },
+      {
+        "nome": "zed",
+        "da": "1.26.2",
+        "a": "1.28.1",
+        "rischio": "basso",
+        "nota": "minor, changelog non consultato"
+      },
+      {
+        "nome": "mpv",
+        "da": "0.41.0",
+        "a": "0.42.0",
+        "rischio": "basso",
+        "nota": "minor, changelog non consultato"
+      },
+      {
+        "nome": "zathura",
+        "da": "2026.10.4",
+        "a": "2026.10.23",
+        "rischio": "basso",
+        "nota": "changelog non consultato"
+      },
+      {
+        "nome": "nodejs",
+        "da": "24.21.0",
+        "a": "24.22.2",
+        "rischio": "basso",
+        "nota": "minor LTS, changelog non consultato"
+      }
+    ],
+    "nota": "2c0c1f0 (2026-11-06) -> 82ce401 (2026-11-10), in linea (7/7). 24 commit letti per titolo (compare gh api): moduli nuovi tuicr e arf, foot con package nullable, thunderbird contatti, vscode, gradle, mise e altri; nessuno rompe moduli in uso. Tre homeConfigurations (deck, game, neve) valutate senza warning ne errori, nessun adeguamento. Switch su deck riuscito, nessuna unita utente fallita. home-manager news non letto (44 novita).",
+    "raccomandazione": "Pin d5cc683 applicato ai tre host; Chromium 157.0.8103.78 e kernel 7.3.4 verificati. Nessuna unita di sistema o utente fallita. Su deck nscd attivo con StartLimitBurst=20. Su game catalogo LLM e richiesta MiniCPM sintetica riusciti con llama.cpp 0.9.0; errore su una cifra del totale, registrato in i2/confronto-ocr-locale.md. Test OCR CPU senza rete riuscito su deck.",
+    "promosso": null,
+    "home_applicata_su": ["deck", "neve", "game"],
+    "applicato_su": ["deck", "game", "neve"],
+    "gogcli": {
+      "da": "0.48.0",
+      "a": "0.48.0",
+      "esito": "nessun_delta",
+      "nota": "pin v0.48.0 pari all ultima release upstream (2026-11-05, gh api releases/latest)."
+    },
+    "host_specifico": {
+      "neve": {
+        "pacchetti_host": {
+          "nixpkgs_rev_valutato": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+          "data": "2026-11-08",
+          "ora": "09:37",
+          "esito": "nessun_delta",
+          "pacchetti": []
+        }
+      },
+      "game": {
+        "pacchetti_host": {
+          "nixpkgs_rev_valutato": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+          "data": "2026-11-08",
+          "ora": "09:37",
+          "esito": "delta_trovato",
+          "pacchetti": [
+            {
+              "nome": "llama-cpp",
+              "da": "0.7.0",
+              "a": "0.8.0",
+              "rischio": "medio",
+              "nota": "backend LLM/OCR della LAN, build CUDA; changelog non consultato, dopo il rebuild verificare /models. steam, heroic, mangohud invariati."
+            }
+          ]
+        },
+        "pacchetti_dedicati": {
+          "whisper-cpp": {
+            "cadenza_giorni": 30,
+            "data": "2026-11-11",
+            "ora": "15:13",
+            "host_eseguito": "game",
+            "esito": "aggiornato",
+            "nota": "1.9.2 -> 1.9.5 (upstream ggml-org/whisper.cpp, release 2026-10-06; 1.9.3 e 1.9.4 intermedie). Note lette: patch senza breaking change della CLI, fix di robustezza (lettura oltre i limiti su audio molto corto, header di modelli malformati), sync ggml/CUDA. Pin nixpkgs-whisper spostato a f9a75f41, lo stesso rev del pin nixpkgs di casa (1.9.5 in nixpkgs = upstream). Validazione senza build locale (utente non trusted, cache CUDA non ancora attiva): path di game /nix/store/gbbdla2s...-whisper-cpp-1.9.5 presente in cache.nixos-cuda.org, nix store verify con la sola chiave della cache riuscito (download e firma); i 13 path della closure sono in locale o nelle cache configurate. Novità: whisper 1.9.5 referenzia a runtime un llama-cpp 0.8.0 con capability predefinite (lxpnw...), distinto da quello del servizio, anch esso in cache. Attivazione: rebuild di game riuscito il 2026-11-11, output inoltrato dal custode. Cache CUDA attiva e nessuna unita di sistema o utente fallita; whisper-cli riporta 1.9.5-dev. Il successivo rebuild di 8827fd7, riportato dal custode il 2026-11-11, collauda anche la correzione di tracciabilita: revisione nar:sha256, contenuto corrispondente al commit 8827fd7 e system-drift allineato. Task di tracciabilita chiuso; comportamento documentato in kb/development-workflow.md. Il dry-build prevedeva il download di Whisper e del relativo llama-cpp; l output dello switch inoltrato non mostra i trasferimenti.",
+            "applicato_su": ["game"]
+          }
+        }
+      }
+    }
+  }
+}

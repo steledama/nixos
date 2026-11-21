@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 560" role="img" aria-labelledby="t d" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<title id="t">La casa e i suoi accessi privati</title><desc id="d">Deck collega telefono e rete di casa tramite VPN casa; dalla casa solo deck raggiunge la rete ufficio tramite VPN lavoro. Il server svezia e la postazione di sviluppo norvegia sono configurati in un altro repository.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+<path d="M190 125 L190 180" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<path d="M145 320 L145 380" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<path d="M415 320 L415 380" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<path d="M530 235 L680 235" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<path d="M680 420 L540 285" stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<rect x="20" y="15" width="340" height="110" rx="16" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/><text x="42" y="50" fill="#0f766e" font-size="23" font-weight="700">Telefono</text>
+<text x="42" y="83" font-size="19" fill="#334155">VPN casa → deck</text>
+<text x="42" y="110" font-size="19" fill="#334155">Pagine e accesso SSH</text>
+<rect x="20" y="180" width="510" height="140" rx="16" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/><text x="42" y="215" fill="#0f766e" font-size="23" font-weight="700">deck · portatile e server casa</text>
+<text x="42" y="248" font-size="19" fill="#334155">Server VPN casa · client VPN lavoro</text>
+<text x="42" y="275" font-size="19" fill="#334155">Viste dei progetti · cicli autonomi</text>
+<text x="42" y="302" font-size="19" fill="#334155">Punto di accesso alla rete domestica</text>
+<rect x="20" y="380" width="245" height="110" rx="16" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/><text x="42" y="415" fill="#0f766e" font-size="23" font-weight="700">neve</text>
+<text x="42" y="448" font-size="19" fill="#334155">Desktop, media e scanner</text>
+<rect x="295" y="380" width="245" height="110" rx="16" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/><text x="317" y="415" fill="#0f766e" font-size="23" font-weight="700">game</text>
+<text x="317" y="448" font-size="19" fill="#334155">Gaming, modelli e GPU</text>
+<rect x="680" y="180" width="420" height="140" rx="16" fill="#f8fafc" stroke="#c2410c" stroke-width="2"/><text x="702" y="215" fill="#c2410c" font-size="23" font-weight="700">Ufficio · un altro repository</text>
+<text x="702" y="248" font-size="19" fill="#334155">svezia: server · norvegia: sviluppo</text>
+<text x="702" y="275" font-size="19" fill="#334155">Accesso dalla casa solo tramite deck</text>
+<text x="702" y="302" font-size="19" fill="#334155">SSH e pagine sulle reti private</text>
+<rect x="680" y="380" width="420" height="110" rx="16" fill="#f8fafc" stroke="#c2410c" stroke-width="2"/><text x="702" y="415" fill="#c2410c" font-size="23" font-weight="700">Ritorno verso casa</text>
+<text x="702" y="448" font-size="19" fill="#334155">VPN casa da norvegia</text>
+<text x="702" y="475" font-size="19" fill="#334155">Avvio manuale</text>
+<text x="560" y="540" text-anchor="middle" font-size="18" fill="#475569">SSH usa chiavi. Le pagine non sono esposte sulla rete pubblica; i tunnel collegano le reti private.</text></svg>

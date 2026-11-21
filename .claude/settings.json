@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 method/../o3/commit_gate.py *)",
+      "Bash(python3 method/../o3/skill_tools.py *)",
+      "Bash(git push)",
+      "Bash(git push -q)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * --force*)",
+      "Bash(git push * -f*)",
+      "Bash(git push * +*)",
+      "Bash(git reset*)",
+      "Bash(git rebase*)",
+      "Bash(git clean*)",
+      "Bash(git filter-branch*)",
+      "Bash(git checkout*)",
+      "Bash(git switch*)",
+      "Bash(git restore*)",
+      "Bash(git stash*)",
+      "Bash(git merge*)",
+      "Bash(git config*)",
+      "Bash(git branch -d*)",
+      "Bash(git branch -D*)",
+      "Bash(git branch --delete*)",
+      "Bash(git branch -m*)",
+      "Bash(git branch -M*)",
+      "Bash(git branch -f*)",
+      "Bash(git branch --force*)",
+      "Bash(git commit * --no-verify*)",
+      "Bash(git commit --no-verify*)",
+      "Bash(git add -f*)",
+      "Bash(git add --force*)",
+      "Bash(git add * -f*)",
+      "Bash(git add * --force*)"
+    ]
+  }
+}

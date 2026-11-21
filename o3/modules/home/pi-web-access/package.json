@@ -1,0 +1,8 @@
+{
+  "name": "pi-web-access-runtime",
+  "version": "0.33.0",
+  "private": true,
+  "dependencies": {
+    "pi-web-access": "0.33.0"
+  }
+}

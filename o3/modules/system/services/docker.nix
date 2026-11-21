@@ -1,0 +1,54 @@
+# modules/system/services/docker.nix
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.virtualisation.dockerSetup;
+in {
+  options.virtualisation.dockerSetup = {
+    enable = lib.mkEnableOption "Docker setup";
+    user = lib.mkOption {
+      type = lib.types.str;
+      description = "Username to add to the docker group";
+    };
+    enableNvidia = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable NVIDIA support for Docker";
+    };
+    pruneKeepLabel = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "prune.keep";
+      description = ''
+        Container label excluded from the weekly prune. A stopped container
+        carrying it survives, and so does its image, still referenced.
+      '';
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    virtualisation.docker = {
+      enable = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+        flags =
+          ["--all" "--volumes"]
+          ++ lib.optional (cfg.pruneKeepLabel != null) "--filter=label!=${cfg.pruneKeepLabel}";
+      };
+    };
+
+    hardware.nvidia-container-toolkit = lib.mkIf cfg.enableNvidia {
+      enable = true;
+    };
+
+    # Add the specified user to the docker group
+    users.users.${cfg.user}.extraGroups = ["docker"];
+
+    # Optionally, you can add Docker Compose
+    environment.systemPackages = [pkgs.docker-compose];
+  };
+}
