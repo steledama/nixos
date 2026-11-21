@@ -5,7 +5,8 @@
 #   aggiorna  riscrive le note dai file locali, poi le rilegge
 # Lo lancia il custode in un terminale proprio, mai in una sessione con un
 # agente: stampa solo nomi ed esiti, mai valori, e blocca la cassaforte alla
-# fine. Riusa BW_SESSION se già aperta, altrimenti chiede la master password.
+# fine. Riusa BW_SESSION se ancora valida, altrimenti chiede la master
+# password.
 # Uscita: 0 tutte conformi, 1 almeno una nota assente o diversa, 2 uso o file
 # locali mancanti, 3 bw o jq assenti.
 # NIXOS_IDENTITY_DIR e BW (il comando bw) consentono prove su fixture.
@@ -28,7 +29,8 @@ bw="${BW:-bw}"
 command -v "$bw" >/dev/null || { echo "comando bw assente" >&2; exit 3; }
 command -v jq >/dev/null || { echo "comando jq assente" >&2; exit 3; }
 
-if [[ -z "${BW_SESSION:-}" ]]; then
+# Una BW_SESSION rimasta in shell dopo un lock non vale più: si controlla.
+if [[ -z "${BW_SESSION:-}" ]] || ! "$bw" unlock --check >/dev/null 2>&1; then
   BW_SESSION=$("$bw" unlock --raw)
   export BW_SESSION
 fi

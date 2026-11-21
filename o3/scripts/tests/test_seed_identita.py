@@ -23,10 +23,14 @@ FAKE_BW = textwrap.dedent(
     args = sys.argv[1:]
     def save():
         json.dump(data, open(store, "w"))
-    if args[:2] == ["unlock", "--raw"]:
-        data["unlock"] += 1; save(); print("sessione")
-    elif args[0] in ("sync", "lock"):
-        data[args[0]] += 1; save()
+    if args[:2] == ["unlock", "--check"]:
+        sys.exit(0 if data["aperta"] else 1)
+    elif args[:2] == ["unlock", "--raw"]:
+        data["unlock"] += 1; data["aperta"] = True; save(); print("sessione")
+    elif args[0] == "lock":
+        data["lock"] += 1; data["aperta"] = False; save()
+    elif args[0] == "sync":
+        data["sync"] += 1; save()
     elif args[:2] == ["list", "items"]:
         term = args[3]
         print(json.dumps([i for i in data["items"] if term in i["name"]]))
@@ -75,9 +79,18 @@ class SeedIdentitaTests(unittest.TestCase):
     def tearDown(self):
         self.dir.cleanup()
 
-    def write_store(self, items):
+    def write_store(self, items, aperta=True):
         self.store.write_text(
-            json.dumps({"items": items, "unlock": 0, "sync": 0, "lock": 0, "edit": 0})
+            json.dumps(
+                {
+                    "items": items,
+                    "aperta": aperta,
+                    "unlock": 0,
+                    "sync": 0,
+                    "lock": 0,
+                    "edit": 0,
+                }
+            )
         )
 
     def state(self):
@@ -105,6 +118,13 @@ class SeedIdentitaTests(unittest.TestCase):
         self.assertEqual(result.stdout.count("conforme"), 4)
         state = self.state()
         self.assertEqual((state["lock"], state["edit"], state["unlock"]), (1, 0, 0))
+
+    def test_sessione_scaduta_chiede_lo_sblocco(self):
+        # BW_SESSION rimasta in shell dopo un lock: va riaperta, non riusata.
+        self.write_store(self.state()["items"], aperta=False)
+        result = self.run_seed("verifica")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.state()["unlock"], 1)
 
     def test_verifica_segnala_differenza_senza_scrivere(self):
         self.files["casa/identity/home.nix"].write_text("cambiato\n")
